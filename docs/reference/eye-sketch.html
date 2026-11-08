@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monster eye sketch (reference)</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #1b1b22; color: #e9e5da; margin: 0; padding: 24px; }
+  main { max-width: 420px; margin: 0 auto; }
+  p { font-size: 14px; line-height: 1.5; color: #b9b5aa; }
+  #moods { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 12px 0; }
+  button { background: transparent; color: #e9e5da; border: 1px solid #55525c; border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+  button[aria-pressed="true"] { background: #4b2f86; border-color: #7a55e0; }
+  label { display: flex; gap: 6px; justify-content: center; font-size: 14px; }
+  pre { background: #121218; padding: 12px; border-radius: 8px; font-size: 12px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<main>
+<p>Reference sketch for the eye renderer. Move the mouse (or touch) and the eye follows. Leave it alone and it wanders and blinks. The renderer should match this look and these expression numbers; the live values are shown below.</p>
+<svg id="eye" viewBox="0 0 300 400" style="width:100%;max-width:300px;display:block;margin:0 auto;touch-action:none" role="img" aria-label="Cartoon monster eye in a window">
+<defs><clipPath id="sc"><ellipse cx="150" cy="200" rx="118" ry="160"/></clipPath></defs>
+<rect x="5" y="5" width="290" height="390" fill="#0b0b12" stroke="#e9e5da" stroke-width="10"/>
+<ellipse cx="150" cy="200" rx="118" ry="160" fill="#f6f2e6"/>
+<g clip-path="url(#sc)">
+<g id="iris" transform="translate(150 200)">
+<circle r="62" fill="#7a55e0"/>
+<circle r="59" fill="none" stroke="#3b2a7a" stroke-width="6"/>
+<circle id="pupil" r="30" fill="#140f24"/>
+<circle cx="-20" cy="-24" r="13" fill="#ffffff"/>
+<circle cx="15" cy="17" r="5" fill="#ffffff" opacity="0.8"/>
+<g id="spark" opacity="0" fill="#ffffff">
+<path d="M28 -48 L32 -36 L44 -32 L32 -28 L28 -16 L24 -28 L12 -32 L24 -36 Z"/>
+<path d="M-34 14 L-31 22 L-23 25 L-31 28 L-34 36 L-37 28 L-45 25 L-37 22 Z"/>
+</g>
+</g>
+<path id="lidU" fill="#4b2f86"/>
+<path id="lidL" fill="#4b2f86"/>
+<path id="lineU" fill="none" stroke="#1a1030" stroke-width="7" stroke-linecap="round"/>
+<path id="lineL" fill="none" stroke="#1a1030" stroke-width="7" stroke-linecap="round"/>
+</g>
+<ellipse cx="150" cy="200" rx="118" ry="160" fill="none" stroke="#1a1030" stroke-width="8"/>
+<g id="grid" stroke="#e9e5da">
+<line x1="150" y1="5" x2="150" y2="395" stroke-width="6"/>
+<line x1="5" y1="103" x2="295" y2="103" stroke-width="6"/>
+<line x1="5" y1="200" x2="295" y2="200" stroke-width="12"/>
+<line x1="5" y1="297" x2="295" y2="297" stroke-width="6"/>
+</g>
+</svg>
+<div id="moods"></div>
+<label><input type="checkbox" id="g" checked> Show window grid</label>
+<pre id="vals"></pre>
+<p>Colors: sclera #f6f2e6, iris #7a55e0 with ring #3b2a7a, pupil #140f24, lids #4b2f86, outlines #1a1030, background #0b0b12 (renders as no light).</p>
+</main>
+<script>
+const svg = document.getElementById('eye');
+const $ = id => document.getElementById(id);
+const moods = {
+  neutral:   {open: 1,    low: 0,    curve: 0, pupil: 1,    spark: 0},
+  happy:     {open: .9,   low: .38,  curve: 1, pupil: 1.15, spark: 0},
+  sparkle:   {open: .95,  low: .3,   curve: 1, pupil: 1.3,  spark: 1},
+  surprised: {open: 1.15, low: 0,    curve: 0, pupil: .65,  spark: 0},
+  sleepy:    {open: .42,  low: .08,  curve: 0, pupil: .9,   spark: 0},
+  asleep:    {open: 0,    low: .05,  curve: 0, pupil: 1,    spark: 0}
+};
+let S = {...moods.neutral}, T = {...moods.neutral};
+let ox = 0, oy = 0, tx = 0, ty = 0, last = -1e9, nextWander = 0;
+let nextBlink = performance.now() + 2500, blinkStart = -1;
+const btns = {};
+Object.keys(moods).forEach(k => {
+  const b = document.createElement('button');
+  b.textContent = k;
+  b.setAttribute('aria-pressed', k === 'neutral');
+  b.onclick = () => { T = {...moods[k]}; Object.entries(btns).forEach(([n, x]) => x.setAttribute('aria-pressed', n === k)); };
+  btns[k] = b; $('moods').appendChild(b);
+});
+$('g').onchange = e => { $('grid').style.display = e.target.checked ? '' : 'none'; };
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+function aim(e) {
+  const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+  const q = p.matrixTransform(svg.getScreenCTM().inverse());
+  tx = clamp((q.x - 150) / 170, -1, 1) * 46;   // max iris travel x (px in 300x400 space)
+  ty = clamp((q.y - 200) / 220, -1, 1) * 88;   // max iris travel y
+  last = performance.now();
+}
+window.addEventListener('pointermove', aim);
+window.addEventListener('pointerdown', aim);
+function frame(now) {
+  for (const k in S) S[k] += (T[k] - S[k]) * 0.12;                 // expression easing
+  if (now - last > 2500 && now > nextWander) {                       // idle wander
+    tx = (Math.random() * 2 - 1) * 40; ty = (Math.random() * 2 - 1) * 60;
+    nextWander = now + 1200 + Math.random() * 1800;
+  }
+  ox += (tx - ox) * 0.2; oy += (ty - oy) * 0.2;                      // gaze smoothing
+  if (now > nextBlink && blinkStart < 0 && T.open > 0.2) blinkStart = now;
+  let f = 1;
+  if (blinkStart >= 0) {                                             // 200 ms blink
+    const t = (now - blinkStart) / 200;
+    if (t >= 1) { blinkStart = -1; nextBlink = now + 2500 + Math.random() * 3500; }
+    else f = Math.abs(1 - 2 * t);
+  }
+  const open = S.open * f, yT = 25, yl = 375 - S.low * 160, cu = 30, cl = 10 + S.curve * 45;
+  const yu = yT + (1 - Math.min(open, 1.2)) * (yl - yT) - (open > 1 ? (open - 1) * 60 : 0);
+  $('lidU').setAttribute('d', `M20 0 L280 0 L280 ${yu} Q150 ${yu + 2 * cu} 20 ${yu} Z`);
+  $('lineU').setAttribute('d', `M280 ${yu} Q150 ${yu + 2 * cu} 20 ${yu}`);
+  $('lidL').setAttribute('d', `M20 400 L280 400 L280 ${yl} Q150 ${yl - 2 * cl} 20 ${yl} Z`);
+  $('lineL').setAttribute('d', `M280 ${yl} Q150 ${yl - 2 * cl} 20 ${yl}`);
+  $('iris').setAttribute('transform', `translate(${150 + ox} ${200 + oy})`);
+  $('pupil').setAttribute('r', 30 * S.pupil);
+  $('spark').setAttribute('opacity', S.spark.toFixed(2));
+  $('vals').textContent = Object.entries(S).map(([k, v]) => `${k.padEnd(6)} ${v.toFixed(2)}`).join('\n')
+    + `\ngaze   x ${ox.toFixed(0)}  y ${oy.toFixed(0)}`;
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

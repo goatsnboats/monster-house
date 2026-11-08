@@ -1,6 +1,6 @@
 # TS-NNN — <the question, in a few words>
 
-> **Status:** Framing · **Date:** YYYY-MM-DD · **Decides:** <one line> · **ADR:** — · **Affects:** <requirements, studies, plan steps>
+> **Status:** Framing · **Date:** YYYY-MM-DD · **Decides:** <one line> · **TBD:** TBD-NNN · **ADR:** — · **Affects:** <requirements, studies, plan steps>
 
 Status moves through `Framing` → `Awaiting weights` (Stop 1) → `Evaluating` →
 `Recommended` (Stop 2) → `Decided (owner, YYYY-MM-DD, <where>)`.

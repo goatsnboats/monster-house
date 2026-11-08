@@ -1,6 +1,6 @@
 # TS-001 — How we document requirements, architecture and interfaces
 
-> **Status:** Awaiting weights · **Date:** 2026-11-08 · **Decides:** the format and tooling for requirements, architecture and ICDs · **ADR:** — · **Affects:** every requirement and ICD written from now on; the message-format study; the Stage 0 plan
+> **Status:** Awaiting weights · **Date:** 2026-11-08 · **Decides:** the format and tooling for requirements, architecture and ICDs · **TBD:** [TBD-001](../TBD.md) · **ADR:** — · **Affects:** every requirement and ICD written from now on; the message-format study (TBD-003); the Stage 0 plan
 
 ## 1. Question
 In what form, and with what tooling, should we keep the system requirements, their
@@ -15,7 +15,11 @@ decomposition and allocation to hardware and software components, the architectu
   and software components.
 - **ICDs** for the interfaces between components.
 - Every allocation recorded as a **parent/child link**.
-- Each requirement has a **type**: functional, performance or interface.
+- Each requirement has a **type**: functional, performance, interface or constraint.
+  The owner added **constraint** on 2026-11-08, for limits on the design rather than
+  behavior, e.g. GLES 3.0, budget, a livable bedroom, the "never scary" tone.
+- TBDs are allowed in any document if each has an ID in the top-level register
+  (`docs/TBD.md`), which links to the open trades and decisions (owner, 2026-11-08).
 - A design folder like cairn's, describing the hardware nodes, the software running on
   them (with its functions), and the interfaces between them.
 - Trade studies will change the allocation and the architecture over time.
@@ -26,10 +30,10 @@ model, and the options below are different ways of storing it:
 
 | Item | Fields |
 |---|---|
-| Requirement | ID (`SYS-001`, `EYE-014`…), *shall* text, type (F / P / I), parent ID(s), allocated to (component), verification method (inspection / analysis / demonstration / test), rationale, source (architecture § or owner), stage needed by, status |
+| Requirement | ID (`SYS-001`, `EYE-014`…), *shall* text, type (F / P / I / C), parent ID(s), allocated to (component), verification method (inspection / analysis / demonstration / test), rationale, source (architecture § or owner), stage needed by, status |
 | Component | ID, kind (hardware node / software / external), runs on (for software; this changes by stage, e.g. the brain runs on the desktop in Stages 0–2 and the porch Pi from Stage 3), functions |
 | Interface | ICD ID, the two ends, medium (Wi-Fi MQTT, DDP, HTTP, analog audio, power, mechanical), messages and payloads, timing, failure behavior |
-| Trace | requirement → parent, requirement → component, interface requirement → ICD, requirement → test, trade study → the requirements it changes |
+| Trace | requirement → parent, requirement → component, interface requirement → ICD, requirement → test, trade study → the requirements it changes, `TBD-NNN` → the register |
 
 **What depends on it:**
 - Every requirement and ICD from now on.
@@ -50,7 +54,7 @@ modeling language takes more work.
 | ID | Gate | How checked |
 |---|---|---|
 | G1 | The source of truth is plain text in git and can be reviewed as a diff | Inspect the files it produces |
-| G2 | A tool or script automatically flags broken parent/child links, orphaned or unallocated requirements, and missing types | Run it on a seeded broken example |
+| G2 | A tool or script automatically flags broken parent/child links, orphaned or unallocated requirements, missing types, and `TBD-NNN` references missing from the register | Run it on a seeded broken example |
 | G3 | No paid license | Documented licensing |
 | G4 | Runs on the Ubuntu 24.04 desktop | Install it and run it |
 | G5 | Claude Code can write and edit the source directly; no editing only through a graphical tool | Author a sample requirement, component and interface |

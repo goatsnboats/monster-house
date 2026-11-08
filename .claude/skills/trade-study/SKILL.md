@@ -33,8 +33,10 @@ the turn.
 
 1. **Frame the question.** Write one sentence for what's being decided. Then record what
    depends on it (requirements, other studies, stage-plan steps), the deadline, and the
-   cost of reversing it later. Read `CLAUDE.md`, `docs/architecture.md` and the code
-   before framing. A study framed only from the request repeats work already done.
+   cost of reversing it later. Read `CLAUDE.md`, `docs/architecture.md`, `docs/TBD.md`
+   and the code before framing. A study framed only from the request repeats work
+   already done. Link the study from its row in `docs/TBD.md`, adding a row if there
+   isn't one.
 2. **Set the criteria.**
    - **Gates** are must-haves, checked pass/fail. An option that fails a gate is out,
      whatever its score.
@@ -69,8 +71,11 @@ the turn.
 8. **🛑 Stop 2: the owner decides.** Draft the ADR as **Proposed**, and set the study
    to `Recommended`. Commit and stop. Only the owner's decision makes the ADR
    **Accepted**. When it does, record who decided, the date and where (the chat
-   session date, a commit or a PR), then update the study's Decision section and
-   any requirement allocations the decision changes.
+   session date, a commit or a PR). Then update the study's Decision section, any
+   requirement allocations the decision changes, and its `docs/TBD.md` row: move it
+   to Closed with a link to the ADR.
+   - **Keep the TBD row's status in step with the study:** `Awaiting weights` at
+     Stop 1, `Recommended` at Stop 2.
 
 ## Rules
 

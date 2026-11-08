@@ -496,6 +496,8 @@ Each stage is a complete, showable monster. Costs are rough, before tax and ship
 
 ## 12. Open questions
 
+> These are tracked, with IDs and what resolves them, in the [TBD register](TBD.md).
+
 - What's the monster's name, and who voices it?
 - Lopsided eyes (one big, one small) or matched eyes? Decide with the Stage 0 house preview
 - Does each projector sit on its side (tall eye) or flat? Depends on window shape and projector vents

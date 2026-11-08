@@ -7,6 +7,8 @@ Read these before making design decisions:
 - `docs/stage-0-plan.md`: what we're building right now, step by step, with "done when" criteria.
 - `docs/reference/eye-sketch.html`: interactive sketch of the eye. Open it in a browser. It defines the look and the expression parameters to match.
 - `docs/reference/house-front.jpg`: photo of the house, for the house preview.
+- `docs/TBD.md`: every open question, with what will resolve it. A TBD in any file must cite its `TBD-NNN` ID; never write a bare "TBD".
+- `docs/trades/` and `docs/decisions/`: trade studies and the decisions (ADRs) they produce. Run the `trade-study` skill for any choice of tool, library, hardware or approach with two or more defensible options.
 
 ## Current stage: Stage 0 (software-only prototype on the desktop)
 No hardware yet. Everything runs on one desktop: Mosquitto, the monster brain, both eyes (as windows), a fake radar, and a fake Falcon Player. Later stages move the eyes to Raspberry Pi 5 (1GB) pods and the brain to a porch Pi, so **everything must stay portable to Raspberry Pi OS (64-bit, Debian-based)**.

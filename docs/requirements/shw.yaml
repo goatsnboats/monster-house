@@ -1,0 +1,609 @@
+# SHW Show control subsystem requirements. Field meanings: README.md in this folder.
+# Show control is software only: monster-brain, phone-page, falcon-player, mosquitto.
+
+# ── monster-brain: moods ────────────────────────────────────────────────────────
+
+- id: SHW-001
+  text: >-
+    The brain shall run the mood state machine Asleep → Waking → Greeting → Watching →
+    Goodbye, with the transitions in architecture §3b and the timings from the theme.
+  type: functional
+  derives_from: [SYS-002, SYS-003, SYS-007, SYS-008]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
+  verify: test
+  source: architecture.md §3b "Moods"
+  stage: 0
+  status: proposed
+
+- id: SHW-002
+  text: >-
+    While Asleep, the brain shall keep the eyes in the asleep expression with an
+    occasional droopy flutter, and trigger a snore clip at the theme's snore interval.
+  type: functional
+  derives_from: [SYS-001]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
+  verify: demonstration
+  source: architecture.md §3b, Moods table (Asleep)
+  stage: 0
+  status: proposed
+
+- id: SHW-003
+  text: >-
+    When a visitor coming toward the house enters the approach zone, the brain shall
+    start Waking within its share of SYS-020 (TBD-034): open the eyes, look around, lock
+    on and trigger the wake clip.
+  type: functional
+  derives_from: [SYS-002, SYS-020]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision (brain), and the brain's hop in path P2.
+  verify: test
+  source: architecture.md §3b, Moods table (Waking)
+  stage: 0
+  status: proposed
+
+- id: SHW-004
+  text: >-
+    When the wake clip finishes and a visitor is still present, the brain shall command
+    the happy expression and trigger one clip from the greet pool.
+  type: functional
+  derives_from: [SYS-003]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
+  verify: test
+  source: architecture.md §3b, Moods table (Greeting)
+  stage: 0
+  status: proposed
+
+- id: SHW-005
+  text: >-
+    While Watching, the brain shall trigger a clip from the comment pool at a random
+    interval within the theme's comment range.
+  type: functional
+  derives_from: [SYS-006]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
+  verify: test
+  source: architecture.md §3b, Moods table (Watching)
+  stage: 0
+  status: proposed
+
+# ── monster-brain: gaze ─────────────────────────────────────────────────────────
+
+- id: SHW-006
+  text: >-
+    The brain shall convert each radar position (mm, radar-relative) to house
+    coordinates (m) using the radar's mount position from the site config, and set the
+    look height to the site config's head height.
+  type: functional
+  derives_from: [SYS-004]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    Gaze math lives in the brain (architecture §3b); the radar only reports raw
+    positions.
+  verify: test
+  source: architecture.md §3b "Turning radar data into a gaze" steps 1-2
+  stage: 0
+  status: proposed
+
+- id: SHW-007
+  text: >-
+    The brain shall smooth each visitor's position to remove radar jitter, adding no more
+    delay than its share of SYS-019 (TBD-034).
+  type: functional
+  derives_from: [SYS-004, SYS-019]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    Filtering goes with the gaze math in the brain, so the radar stays a simple limb;
+    the brain's hop in path P1.
+  verify: test
+  source: architecture.md §3b step 3
+  stage: 0
+  status: proposed
+
+- id: SHW-008
+  text: >-
+    The brain shall choose one focus visitor: a new arrival wins; otherwise it holds on
+    one visitor for a random 3-6 s, then switches; the closest visitor breaks ties.
+  type: functional
+  derives_from: [SYS-005]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
+  verify: test
+  source: architecture.md §3b step 4
+  stage: 0
+  status: proposed
+
+- id: SHW-009
+  text: >-
+    While a visitor is tracked, the brain shall publish the focus visitor's look point
+    at about 10 times per second.
+  type: performance
+  derives_from: [SYS-028, SYS-019]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is the only publisher of look points; this is its hop rate in path P1.
+  verify: test
+  source: architecture.md §3b step 5
+  stage: 0
+  status: proposed
+
+- id: SHW-010
+  text: >-
+    The brain shall follow each visitor across radar updates as the same visitor, and
+    mark each newly seen visitor as coming toward the house or going away from it.
+  type: functional
+  derives_from: [SYS-008, SYS-049, SYS-050]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    Who is who and which way they're heading is a decision built from raw radar slots
+    (brain).
+  verify: test
+  notes: >-
+    The LD2450 reports three target slots, not people; the brain matches slots to
+    visitors. Coming vs going comes from the radar's direction or from position change
+    (TBD-030).
+  source: owner 2026-11-09 (coming vs going)
+  stage: 0
+  status: proposed
+
+- id: SHW-011
+  text: >-
+    When a visitor is lost inside the door zone (site config), the brain shall keep them
+    as a visitor at the door until they are seen again or the theme's door hold time
+    (TBD-028) passes, and shall not count them as gone for the goodbye timer.
+  type: functional
+  derives_from: [SYS-047, SYS-007]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
+  verify: test
+  source: owner 2026-11-09 (door hold)
+  stage: 0
+  status: proposed
+
+- id: SHW-012
+  text: >-
+    While a visitor is at the door, the brain shall aim the eyes at the door point from
+    the site config, and may trigger clips from the theme's door pool.
+  type: functional
+  derives_from: [SYS-048]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
+  verify: demonstration
+  source: owner 2026-11-09
+  stage: 0
+  status: proposed
+
+- id: SHW-013
+  text: >-
+    When a visitor is marked as going, the brain shall make that visitor the focus until
+    they leave range and trigger one clip from the bye pool, keeping the minimum gap.
+  type: functional
+  derives_from: [SYS-049]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
+  verify: test
+  source: owner 2026-11-09
+  stage: 0
+  status: proposed
+
+- id: SHW-014
+  text: >-
+    When a visitor is marked as coming while the monster is awake, the brain shall glance
+    the eyes at them with the happy or surprised expression, and trigger a clip from the
+    arrival pool if the pool has any, keeping the minimum gap.
+  type: functional
+  derives_from: [SYS-050, SYS-005]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
+  verify: test
+  source: owner 2026-11-09
+  stage: 0
+  status: proposed
+
+# ── monster-brain: blinks, clips, rules ─────────────────────────────────────────
+
+- id: SHW-015
+  text: >-
+    While awake, the brain shall command blinks for both eyes with one message at a
+    random interval within the theme's blink range.
+  type: functional
+  derives_from: [SYS-009]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain owns blinks so that both eyes blink together (architecture §2).
+  verify: test
+  source: architecture.md §2 "Blinks"
+  stage: 0
+  status: proposed
+
+- id: SHW-016
+  text: >-
+    The brain shall pick clips from each pool in a shuffled order and not repeat a clip
+    until every clip in that pool has played.
+  type: functional
+  derives_from: [SYS-015]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
+  verify: test
+  source: architecture.md §3b "Variety and politeness rules"
+  stage: 0
+  status: proposed
+
+- id: SHW-017
+  text: >-
+    The brain shall not start a clip until the theme's minimum gap has passed since the
+    previous clip ended, except for clips the owner triggers from the phone.
+  type: performance
+  derives_from: [SYS-027]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    When clips play is a decision (brain); FPP only plays what it is told.
+  verify: test
+  source: architecture.md §3b "Variety and politeness rules"
+  stage: 0
+  status: proposed
+
+- id: SHW-018
+  text: >-
+    The brain shall handle failures as in architecture §3b: with the radar offline or
+    silent for TBD-023, stay in an ambient mode (eyes idle, no greetings); with an eye
+    pod offline, log it and carry on; with Falcon Player not responding, keep the eyes
+    going without voice.
+  type: functional
+  derives_from: [SYS-017, SYS-029]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    Only the brain sees every component's status, so it decides the fallback.
+  verify: test
+  source: architecture.md §3b "What happens when something fails"
+  stage: 0
+  status: proposed
+
+- id: SHW-019
+  text: >-
+    Outside the theme's show hours (TBD-024), the brain shall stay Asleep and trigger no
+    voice clips.
+  type: functional
+  derives_from: [SYS-014]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    One schedule, in the brain, so moods and voice follow it together.
+  verify: test
+  notes: Architecture §3a also mentions FPP's scheduler; the brain owning show hours keeps one schedule.
+  source: architecture.md §3a "Schedule"
+  stage: 0
+  status: proposed
+
+- id: SHW-020
+  text: >-
+    While muted, the brain shall trigger no voice clips and shall keep commanding the eyes.
+  type: functional
+  derives_from: [SYS-013]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is the only thing that triggers clips, so muting means not triggering.
+  verify: test
+  source: architecture.md §3b (mute)
+  stage: 0
+  status: proposed
+
+- id: SHW-021
+  text: >-
+    When a theme is chosen, the brain shall load its settings and clip pools and publish
+    the theme's name to the eyes.
+  type: functional
+  derives_from: [SYS-016]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain holds the pools and publishes the theme to the eyes.
+  verify: test
+  source: architecture.md §9 "Switching themes"
+  stage: 0
+  status: proposed
+
+- id: SHW-022
+  text: >-
+    The brain shall publish its current mood whenever it changes, retained.
+  type: functional
+  derives_from: [SYS-012]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    Only the brain knows the mood.
+  verify: test
+  source: architecture.md §3b "Outputs"
+  stage: 0
+  status: proposed
+
+- id: SHW-023
+  text: >-
+    The brain shall act on a phone button within its share of SYS-023's 0.5 s (TBD-034).
+  type: performance
+  derives_from: [SYS-023]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain's hop in path P4: turning a button into a command.
+  verify: test
+  source: timing-budgets.md, path P4
+  stage: 0
+  status: proposed
+
+# ── monster-brain: interfaces ───────────────────────────────────────────────────
+
+- id: SHW-024
+  text: >-
+    The brain shall send look, expression, blink and theme messages and watch the eyes'
+    status as specified in ICD-001.
+  type: interface
+  icd: ICD-001
+  derives_from: [SYS-042]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is the sending end of ICD-001.
+  verify: test
+  source: architecture.md §2, §3c
+  stage: 0
+  status: proposed
+
+- id: SHW-025
+  text: >-
+    The brain shall read visitor positions and the radar's status as specified in ICD-002.
+  type: interface
+  icd: ICD-002
+  derives_from: [SYS-042, SYS-028]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is the receiving end of ICD-002.
+  verify: test
+  source: architecture.md §3b "Inputs"
+  stage: 0
+  status: proposed
+
+- id: SHW-026
+  text: >-
+    The brain shall start clips by name and learn when they finish as specified in
+    ICD-003, working the same with the fake FPP and the real one.
+  type: interface
+  icd: ICD-003
+  derives_from: [SYS-042, SYS-043]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is the commanding end of ICD-003.
+  verify: test
+  source: architecture.md §3a "Being told what to play"
+  stage: 0
+  status: proposed
+
+- id: SHW-027
+  text: >-
+    The brain shall read its timings, clip pools and show hours from the theme folder as
+    specified in ICD-005, with none of them written in code.
+  type: interface
+  icd: ICD-005
+  derives_from: [SYS-041]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain reads the timings and pools it uses.
+  verify: inspection
+  source: CLAUDE.md "Themes are data"
+  stage: 0
+  status: proposed
+
+- id: SHW-028
+  text: >-
+    The brain shall read the radar mount, eye positions, head height and zones from the
+    site config as specified in ICD-015.
+  type: interface
+  icd: ICD-015
+  derives_from: [SYS-004, SYS-047]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain needs the radar mount, positions and zones for gaze and door hold.
+  verify: test
+  source: spec tree Q6 (site config)
+  stage: 0
+  status: proposed
+
+- id: SHW-029
+  text: >-
+    The brain shall run on the compute platform specified in ICD-013 (the desktop in
+    Stages 0-2, the porch Pi from Stage 3), with no desktop-only dependencies.
+  type: interface
+  icd: ICD-013
+  derives_from: [SYS-039]
+  allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is software that must fit the platform; the porch Pi's side is INF-002.
+  verify: test
+  source: architecture.md §3 "Where it runs, by stage"
+  stage: 0
+  status: proposed
+
+# ── phone-page ──────────────────────────────────────────────────────────────────
+
+- id: SHW-030
+  text: >-
+    The phone page shall offer great costume, burp, sing, mute and unmute, sleep now,
+    wake now and a theme choice, and show the current mood.
+  type: functional
+  derives_from: [SYS-012, SYS-016]
+  allocated_to: phone-page
+  allocation_rationale: >-
+    The phone page is the brain's user interface, kept as its own component so the web
+    page stays apart from the decisions.
+  verify: demonstration
+  source: architecture.md §3b "Inputs"; stage-0-plan.md Step 6
+  stage: 0
+  status: proposed
+
+- id: SHW-031
+  text: >-
+    The phone page shall work in an ordinary phone browser and answer only on the home
+    network, as specified in ICD-004.
+  type: interface
+  icd: ICD-004
+  derives_from: [SYS-032, SYS-038]
+  allocated_to: phone-page
+  allocation_rationale: >-
+    The phone page is the HTTP end of ICD-004.
+  verify: demonstration
+  source: architecture.md §3b, §8
+  stage: 0
+  status: proposed
+
+# ── falcon-player ───────────────────────────────────────────────────────────────
+
+- id: SHW-032
+  text: >-
+    Falcon Player shall play each clip's audio and lip sequence together, from one
+    playlist named after the clip.
+  type: functional
+  derives_from: [SYS-011, SYS-022]
+  allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP plays the audio and the lip sequence from one playlist, which is what keeps
+    them in step (architecture §1, principle 3).
+  verify: test
+  source: architecture.md §3a "What it plays", "Playlists"
+  stage: 3
+  status: proposed
+
+- id: SHW-033
+  text: >-
+    Falcon Player shall start a clip within its share of SYS-021 (TBD-034, TBD-022).
+  type: performance
+  derives_from: [SYS-021]
+  allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP's start-up is a hop in path P3.
+  verify: test
+  source: timing-budgets.md, path P3
+  stage: 3
+  status: proposed
+
+- id: SHW-034
+  text: >-
+    Falcon Player's volume shall be capped at the theme's volume_cap, below the operating
+    system's hard cap.
+  type: performance
+  derives_from: [SYS-030]
+  allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP sets the playback volume; the OS cap and the amp's gain (VOC-002) complete the
+    chain.
+  verify: test
+  source: architecture.md §3a "Audio output", §6 "Neighbor-friendly"
+  stage: 3
+  status: proposed
+
+- id: SHW-035
+  text: >-
+    Falcon Player shall accept clip commands and report clip status as specified in
+    ICD-003.
+  type: interface
+  icd: ICD-003
+  derives_from: [SYS-042]
+  allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP is the player end of ICD-003.
+  verify: test
+  source: architecture.md §3a; topics TBD-015
+  stage: 3
+  status: proposed
+
+- id: SHW-036
+  text: >-
+    Falcon Player shall send the lip frames to the lip controller as specified in ICD-006.
+  type: interface
+  icd: ICD-006
+  derives_from: [SYS-011]
+  allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP generates the lip frames (the DDP sender).
+  verify: test
+  source: architecture.md §3a "Light output"
+  stage: 4
+  status: proposed
+
+- id: SHW-037
+  text: >-
+    Falcon Player shall send the voice to the USB audio adapter as specified in ICD-007.
+  type: interface
+  icd: ICD-007
+  derives_from: [SYS-021]
+  allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP is the source of the voice audio.
+  verify: test
+  source: architecture.md §3a "Audio output"
+  stage: 3
+  status: proposed
+
+- id: SHW-038
+  text: >-
+    Falcon Player shall accept sequences and audio uploaded from xLights as specified in
+    ICD-012.
+  type: interface
+  icd: ICD-012
+  derives_from: [SYS-011]
+  allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP stores the sequences it plays.
+  verify: demonstration
+  source: architecture.md §1 connections table, §7
+  stage: 3
+  status: proposed
+
+# ── mosquitto ───────────────────────────────────────────────────────────────────
+
+- id: SHW-039
+  text: >-
+    Mosquitto shall be the single MQTT broker for the monster, keep retained messages and
+    deliver last-will messages, and accept connections only from the home network.
+  type: functional
+  derives_from: [SYS-042, SYS-038, SYS-017]
+  allocated_to: mosquitto
+  allocation_rationale: >-
+    Every MQTT message passes through the broker, so retained messages, last-wills and
+    who may connect are set there.
+  verify: test
+  notes: Architecture §3c asks for a username and password; for the prototype the owner accepted none (deploy/mosquitto/).
+  source: architecture.md §3c
+  stage: 0
+  status: proposed
+
+- id: SHW-040
+  text: >-
+    The phone page shall hand a button press to the brain within its share of SYS-023's
+    0.5 s (TBD-034).
+  type: performance
+  derives_from: [SYS-023]
+  allocated_to: phone-page
+  allocation_rationale: >-
+    The phone page's hop in path P4: taking the press and handing it to the brain.
+  verify: test
+  source: timing-budgets.md, path P4
+  stage: 0
+  status: proposed

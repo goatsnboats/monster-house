@@ -1,0 +1,696 @@
+# System requirements (SYS): what the whole Monster House shall do.
+# Field meanings: README.md in this folder. Approved by the owner on 2026-11-09.
+# Values the docs don't give are TBD-NNN items in docs/TBD.md; times marked "theme
+# setting" come from the theme's settings file, with the architecture's default shown.
+
+# ── Functional: behavior ────────────────────────────────────────────────────────
+
+- id: SYS-001
+  text: >-
+    When no visitor is in range, the monster shall show its asleep behavior: eyes
+    closed, lips glowing slowly in and out, and a quiet snore at intervals set in the
+    theme (default about 30 s).
+  type: functional
+  verify: demonstration
+  rationale: A sleeping monster is still part of the show and tells visitors it can wake up.
+  decomposition: >-
+    By face part: the brain chooses the asleep look and the snores (SHW-002); the lips
+    breathe on WLED's own fallback, with no command needed (MTH-001).
+  source: architecture.md §3b, Moods table (Asleep)
+  stage: 0
+  status: approved
+
+- id: SYS-002
+  text: >-
+    When a visitor enters the approach zone heading toward the house, the monster shall
+    wake: open its eyes, look around, lock on to the visitor and yawn.
+  type: functional
+  verify: demonstration
+  decomposition: >-
+    Behavior decided in one place: the brain's mood machine (SHW-001) and its wake
+    logic (SHW-003). The eyes and voice only carry out its commands, under their
+    general requirements (EYE-002, SHW-032).
+  source: architecture.md §3b, Moods table (Waking)
+  stage: 0
+  status: approved
+
+- id: SYS-003
+  text: >-
+    When the wake clip ends with a visitor still in range, the monster shall greet the
+    visitor with one greeting line, with a happy squint.
+  type: functional
+  verify: demonstration
+  decomposition: >-
+    Decided by the brain: the Greeting mood (SHW-001) and its expression and clip
+    choice (SHW-004).
+  source: architecture.md §3b, Moods table (Greeting)
+  stage: 0
+  status: approved
+
+- id: SYS-004
+  text: >-
+    While visitors are in range, both eyes shall look toward the focus visitor's head,
+    each eye aiming from its own window's position, so that the eyes converge on a near
+    visitor and look parallel at a far one.
+  type: functional
+  verify: test
+  rationale: The small parallax between two windows is what makes the eyes look like they are focusing.
+  decomposition: >-
+    Split along the gaze path: the site config holds the positions (INF-007); the
+    brain converts and smooths radar data (SHW-006, SHW-007, SHW-028); each eye aims
+    from its own window (EYE-003, EYE-017) and glides (EYE-004).
+  source: architecture.md §2, "Looking at a visitor"
+  stage: 0
+  status: approved
+
+- id: SYS-005
+  text: >-
+    When more than one visitor is in range, the monster shall move its gaze between
+    them, giving a newly arrived visitor the focus first.
+  type: functional
+  verify: demonstration
+  decomposition: >-
+    Decided by the brain: focus choice (SHW-008) and the glance at newcomers
+    (SHW-014).
+  source: architecture.md §3b, Moods table (Watching) and "Turning radar data into a gaze" step 4
+  stage: 0
+  status: approved
+
+- id: SYS-006
+  text: >-
+    While watching visitors, the monster shall say a comment or giggle at intervals set in
+    the theme (default 10–20 s, chosen at random within that range).
+  type: functional
+  verify: test
+  decomposition: >-
+    One owner: the brain decides when to comment (SHW-005).
+  source: architecture.md §3b, Moods table (Watching); settings example comment_every_s
+  stage: 0
+  status: approved
+
+- id: SYS-007
+  text: >-
+    When no visitor has been in range for the time set in the theme (default 5 s), not
+    counting visitors at the door (SYS-047), the monster shall look toward where they
+    left, droop its eyes, and say a goodbye line unless the last visitor to leave already
+    got one (SYS-049).
+  type: functional
+  verify: test
+  decomposition: >-
+    Decided by the brain: the Goodbye mood (SHW-001), with door-held visitors not
+    counted as gone (SHW-011).
+  source: architecture.md §3b, Moods table (Goodbye); settings example goodbye_after_s; owner 2026-11-09 (door hold)
+  stage: 0
+  status: approved
+
+- id: SYS-008
+  text: >-
+    After a goodbye, the monster shall go back to sleep when no visitor has arrived for
+    the time set in the theme (default 20 s), or greet a visitor coming toward the house
+    without yawning first. A visitor picked up again on the way out is not a new arrival.
+  type: functional
+  verify: test
+  decomposition: >-
+    Decided by the brain: the mood transitions (SHW-001), using its coming/going marks
+    (SHW-010).
+  source: architecture.md §3b, Moods state diagram (Goodbye → Asleep, Goodbye → Greeting); owner 2026-11-09 (coming vs going)
+  stage: 0
+  status: approved
+
+- id: SYS-009
+  text: >-
+    While awake, the monster shall blink both eyes together, at intervals set in the theme.
+  type: functional
+  verify: demonstration
+  rationale: Simultaneous blinks are why the brain, not each eye, owns blinking.
+  decomposition: >-
+    Decide vs draw: the brain sends one blink to both eyes (SHW-015); each eye draws
+    it (EYE-005).
+  source: architecture.md §2, "Blinks"; CLAUDE.md, Eye renderer constraints
+  stage: 0
+  status: approved
+
+- id: SYS-010
+  text: >-
+    The eyes shall be able to show at least the expressions neutral, happy, sparkle,
+    surprised, sleepy and asleep, easing from one to the next without jumps.
+  type: functional
+  verify: demonstration
+  decomposition: >-
+    Drawing only, so all in the eye renderer: the layered look (EYE-001) and the eased
+    expression values (EYE-002).
+  source: architecture.md §2, expression table; docs/reference/eye-sketch.html
+  stage: 0
+  status: approved
+
+- id: SYS-011
+  text: >-
+    Whenever the monster speaks, its lips shall move in time with its voice.
+  type: functional
+  verify: demonstration
+  decomposition: >-
+    Along the voice-and-lips chain: theme content shares names (THM-006); FPP plays
+    audio and sequence together (SHW-032) and streams frames (SHW-036, SHW-038); the
+    lip controller and WLED show them (MTH-005, MTH-001, MTH-003).
+  source: architecture.md §1 design principle 3, §3a, §5
+  stage: 4
+  status: approved
+
+- id: SYS-012
+  text: >-
+    The owner shall be able to trigger great costume (sparkle eyes and a compliment),
+    burp, sing, mute voice, sleep now and wake now from a phone, and see the monster's
+    current mood there.
+  type: functional
+  verify: demonstration
+  rationale: These cover what the radar can't know, like costumes or when candy was handed out.
+  decomposition: >-
+    The brain publishes the mood (SHW-022); the phone page shows it and offers the
+    buttons (SHW-030).
+  source: architecture.md §3b, Inputs (phone buttons); stage-0-plan.md Step 6
+  stage: 0
+  status: approved
+
+- id: SYS-013
+  text: >-
+    While muted, the monster shall make no voice sound and shall keep its eyes and lip
+    lights working.
+  type: functional
+  verify: demonstration
+  decomposition: >-
+    The brain stops triggering clips (SHW-020); the lips keep breathing on WLED's
+    fallback (MTH-001).
+  source: architecture.md §3b, "Variety and politeness rules" (mute)
+  stage: 0
+  status: approved
+
+- id: SYS-014
+  text: >-
+    Outside show hours (TBD-024), the monster shall stay asleep and make no voice sound,
+    whatever the radar reports.
+  type: functional
+  verify: test
+  rationale: Neighbor-friendly; also keeps the bedroom quiet late at night.
+  decomposition: >-
+    The brain keeps the schedule (SHW-019), using the network's clock sync (INF-008).
+  source: architecture.md §3a (Schedule), §6 "Neighbor-friendly"
+  stage: 0
+  status: approved
+
+- id: SYS-015
+  text: >-
+    Within each clip pool (greetings, comments, goodbyes, and so on), the monster shall
+    not repeat a clip until every clip in that pool has played.
+  type: functional
+  verify: test
+  decomposition: >-
+    The brain shuffles without repeats (SHW-016); the theme supplies enough clips per
+    pool (THM-003).
+  source: architecture.md §3b, "Variety and politeness rules" (clip pools)
+  stage: 0
+  status: approved
+
+- id: SYS-016
+  text: >-
+    When the owner chooses a theme, the monster shall change to that theme's eye art,
+    voice clips, lip sequences and timings without a software change.
+  type: functional
+  verify: demonstration
+  decomposition: >-
+    Chosen on the phone page (SHW-030); the brain loads it and tells the eyes
+    (SHW-021); the eyes swap their art (EYE-014); the format makes themes swappable
+    (THM-001).
+  source: architecture.md §9 (switching themes); CLAUDE.md "Themes are data"
+  stage: 0
+  status: approved
+
+- id: SYS-017
+  text: >-
+    If any one component stops working (an eye pod, the radar, Falcon Player, the brain
+    or the Wi-Fi), the remaining components shall keep running and the monster shall fall
+    back to a sleepy or idle look: eyes wandering and blinking on their own, no greetings
+    without the radar, no voice or lip movement without Falcon Player.
+  type: functional
+  verify: test
+  rationale: Fail friendly. A broken piece should look sleepy, never broken.
+  decomposition: >-
+    Each part keeps going on its own: the brain handles lost parts (SHW-018), the eyes
+    fall back without the brain (EYE-006, EYE-007), the broker reports drop-outs by
+    last-will (SHW-039), and services restart crashed programs (DEP-002).
+  source: CLAUDE.md "Fail friendly"; architecture.md §3b "What happens when something fails"
+  stage: 0
+  status: approved
+
+- id: SYS-018
+  text: >-
+    The eye pods shall switch off at bedtime (time and method TBD-025) and stay off until
+    the next show day.
+  type: functional
+  verify: demonstration
+  rationale: Projector fan noise and light must not disturb whoever sleeps in the bedroom.
+  decomposition: >-
+    One owner for now: power distribution (INF-012), assuming switched power; revisit
+    when TBD-025 is decided.
+  source: architecture.md §2 "Risks and open questions" (fan noise); spec tree Q12
+  stage: 1
+  status: approved
+
+# ── Performance: timing, rates, capacity, levels ────────────────────────────────
+
+- id: SYS-019
+  text: >-
+    The eyes shall begin turning toward a visitor's new position within TBD-020 of the
+    visitor moving.
+  type: performance
+  verify: test
+  rationale: End-to-end information path radar → brain → eyes; split into per-hop budgets at STOP 2.
+  decomposition: >-
+    Timing path P1, one share per hop: radar publish rate (EAR-004), brain smoothing
+    and publish rate (SHW-007, SHW-009), eye start on the next frame (EYE-009).
+    Shares: TBD-034.
+  source: owner (timing process agreed 2026-11-09); value TBD-020
+  stage: 0
+  status: approved
+
+- id: SYS-020
+  text: >-
+    The monster shall begin to wake within TBD-021 of a visitor entering the approach zone.
+  type: performance
+  verify: test
+  decomposition: >-
+    Timing path P2: radar publish rate (EAR-004), brain wake decision (SHW-003), eye
+    expression start (EYE-024). Shares: TBD-034.
+  source: owner (timing process agreed 2026-11-09); value TBD-021
+  stage: 0
+  status: approved
+
+- id: SYS-021
+  text: >-
+    The voice shall begin within TBD-022 of the brain deciding to say a line.
+  type: performance
+  verify: test
+  decomposition: >-
+    Timing path P3: FPP start-up (SHW-033), audio out of FPP and the porch Pi's USB
+    port (SHW-037, INF-005), USB adapter (VOC-001). Shares: TBD-034.
+  source: owner (timing process agreed 2026-11-09); value TBD-022
+  stage: 3
+  status: approved
+
+- id: SYS-022
+  text: >-
+    Each lip shape shall appear no more than 45 ms after, and no more than 125 ms before,
+    the matching sound.
+  type: performance
+  verify: test
+  rationale: >-
+    ITU-R BT.1359's detectability thresholds for sound vs picture (sound ahead by 45 ms,
+    or behind by 125 ms). Proposed starting values; the owner may relax them after a test.
+  decomposition: >-
+    Timing path P5: both start from one FPP playlist (SHW-032); the skew is the lip
+    path (MTH-010) against the audio path (VOC-006). Shares: TBD-034.
+  source: ITU-R BT.1359-1; owner (timing process agreed 2026-11-09)
+  stage: 4
+  status: approved
+
+- id: SYS-023
+  text: >-
+    A button pressed on the phone page shall visibly change the monster within 0.5 s.
+  type: performance
+  verify: test
+  decomposition: >-
+    Timing path P4: phone page (SHW-040), brain (SHW-023), eye expression start
+    (EYE-024). Shares of 0.5 s: TBD-034.
+  source: stage-0-plan.md Step 6, "Done when"
+  stage: 0
+  status: approved
+
+- id: SYS-024
+  text: >-
+    Each eye shall be drawn at a steady 60 frames per second, at its projector's native
+    resolution (projector model TBD-012).
+  type: performance
+  verify: test
+  basis: {method: measurement, ref: docs/trades/results/TS-002/README.md}
+  decomposition: >-
+    The renderer draws 60 fps (EYE-008) to the window settings (EYE-013); the eye Pi
+    has the memory (INF-003) and the HDMI output (INF-006); the projector shows it
+    (EYE-019).
+  source: architecture.md §2 (target 60 fps); CLAUDE.md, Eye renderer constraints
+  stage: 0
+  status: approved
+
+- id: SYS-025
+  text: >-
+    The monster shall track up to 3 visitors at the same time.
+  type: performance
+  verify: test
+  basis: {method: estimate, ref: docs/interfaces/ICD-002-radar-targets.md}
+  decomposition: >-
+    A property of the sensor: 3 targets (EAR-001), with the firmware ESPHome needs
+    (EAR-002).
+  source: architecture.md §4 (LD2450 reports up to 3 people)
+  stage: 2
+  status: approved
+
+- id: SYS-026
+  text: >-
+    The monster shall detect visitors anywhere in the approach zone, which covers the
+    walkway and the steps (whether it reaches the sidewalk: TBD-016).
+  type: performance
+  verify: test
+  decomposition: >-
+    Coverage comes from the sensor's range and mounting (EAR-003); filter zones remove
+    the street (EAR-005).
+  source: architecture.md §4, Placement and Calibration
+  stage: 2
+  status: approved
+
+- id: SYS-027
+  text: >-
+    The monster shall leave at least 10 s (theme setting) between the end of one spoken
+    line and the start of the next, except for lines the owner triggers from the phone.
+  type: performance
+  verify: test
+  rationale: So the monster doesn't chatter.
+  decomposition: >-
+    One owner: the brain times the clips (SHW-017).
+  source: architecture.md §3b, "Variety and politeness rules" (minimum gap)
+  stage: 0
+  status: approved
+
+- id: SYS-028
+  text: >-
+    While a visitor is tracked, the visitor's position shall be updated at about 10 times
+    per second from the radar through to the eyes.
+  type: performance
+  verify: test
+  decomposition: >-
+    The ~10/s rate must hold on every hop: radar firmware (EAR-004, EAR-006), fake
+    radar (SIM-002), brain in and out (SHW-025, SHW-009).
+  source: architecture.md §1 (connections table), §3b step 5, §4 Software
+  stage: 0
+  status: approved
+
+- id: SYS-029
+  text: >-
+    Each fallback in SYS-017 shall begin within TBD-023 of the failure.
+  type: performance
+  verify: test
+  decomposition: >-
+    Each loss is noticed where it can be seen: the eye notices a silent brain
+    (EYE-006); the brain notices everything else (SHW-018).
+  source: owner (timing process agreed 2026-11-09); value TBD-023
+  stage: 0
+  status: approved
+
+- id: SYS-030
+  text: >-
+    The monster's sound shall never exceed TBD-026 at the sidewalk.
+  type: performance
+  verify: test
+  rationale: Neighbor-friendly volume.
+  decomposition: >-
+    The volume chain: FPP's cap (SHW-034), the amp's gain (VOC-002), and clips
+    normalized so none jumps out (THM-004).
+  source: architecture.md §3a (volume cap), §6 "Neighbor-friendly"
+  stage: 3
+  status: approved
+
+- id: SYS-031
+  text: >-
+    The lip lights shall never exceed the brightness cap TBD-027.
+  type: performance
+  verify: test
+  rationale: Lips don't need to be blinding to read; neighbors.
+  decomposition: >-
+    WLED caps the brightness (MTH-002); the lip supply must cover the draw at that cap
+    (MTH-009).
+  source: architecture.md §5, Risks ("Neighbors and brightness")
+  stage: 4
+  status: approved
+
+# ── Interface: where the system meets the outside world ─────────────────────────
+
+- id: SYS-032
+  text: >-
+    The owner's controls (SYS-012) shall work in an ordinary phone web browser on the home
+    network, with no app to install, as specified in ICD-004.
+  type: interface
+  icd: ICD-004
+  verify: demonstration
+  decomposition: >-
+    One owner: the phone page is the only part the phone talks to (SHW-031).
+  source: architecture.md §3b, Inputs (phone buttons)
+  stage: 0
+  status: approved
+
+- id: SYS-033
+  text: >-
+    Every networked part of the monster shall use the home Wi-Fi, with a reserved address
+    and a friendly name, as specified in ICD-009.
+  type: interface
+  icd: ICD-009
+  verify: inspection
+  decomposition: >-
+    The network gives names, addresses and coverage (INF-008, INF-009); each Wi-Fi
+    node joins it (EAR-007, MTH-006).
+  source: architecture.md §8 Network
+  stage: 1
+  status: approved
+
+- id: SYS-034
+  text: >-
+    Each box on the house shall need only one plug in an ordinary household outlet, as
+    specified in ICD-008, and no data cable other than the audio cable to the amp.
+  type: interface
+  icd: ICD-008
+  verify: inspection
+  decomposition: >-
+    INF provides the outlets (INF-011); each box has one supply or strip that plugs in
+    (EYE-020, EAR-009, MTH-007, VOC-005).
+  source: architecture.md §1 design principle 2 ("Wi-Fi everywhere except audio"); §2 hardware (one power strip)
+  stage: 1
+  status: approved
+
+- id: SYS-035
+  text: >-
+    Each eye pod shall fit its bedroom window and floor space using only removable
+    fittings, as specified in ICD-011.
+  type: interface
+  icd: ICD-011
+  verify: inspection
+  decomposition: >-
+    The screen and stand fit the window and floor (EYE-021, EYE-023); the renderer
+    draws to that window's settings (EYE-013, EYE-017), held in the site config
+    (INF-007).
+  source: architecture.md §2 "Setup and teardown"; window sizes TBD-006
+  stage: 1
+  status: approved
+
+# ── Constraints ─────────────────────────────────────────────────────────────────
+
+- id: SYS-036
+  text: >-
+    Everything the monster shows and says shall be friendly and goofy: big round pupils,
+    smiles made with the lower lid, no slit pupils, no horror imagery and no horror sounds.
+  type: constraint
+  verify: inspection
+  decomposition: >-
+    What is drawn (EYE-001, EYE-011) and what is played or shown from the theme
+    (THM-005).
+  source: CLAUDE.md "Tone"; architecture.md §2 design rules
+  stage: 0
+  status: approved
+
+- id: SYS-037
+  text: >-
+    The eye screens shall never show an error message, text, a desktop or a cursor.
+  type: constraint
+  verify: test
+  decomposition: >-
+    One owner: the renderer owns the eye screen (EYE-012).
+  source: CLAUDE.md "Fail friendly"; architecture.md §2 (cursor hidden)
+  stage: 0
+  status: approved
+
+- id: SYS-038
+  text: >-
+    No part of the monster shall be reachable from the internet; the phone page shall
+    work only on the home network.
+  type: constraint
+  verify: inspection
+  decomposition: >-
+    The network forwards nothing in (INF-010); the phone page and the broker answer
+    only on the home network (SHW-031, SHW-039).
+  source: architecture.md §8 Network
+  stage: 0
+  status: approved
+
+- id: SYS-039
+  text: >-
+    All monster software that runs on the house shall run on Raspberry Pi OS (64-bit,
+    Bookworm) with Python 3.11, and on the Ubuntu desktop for development.
+  type: constraint
+  verify: test
+  decomposition: >-
+    Platform vs software: the Pis provide Pi OS and Python (INF-001, INF-002) and
+    enough memory (INF-003, INF-004); the programs fit it (EYE-018, SHW-029); the
+    setup script builds it (DEP-001).
+  source: CLAUDE.md "Current stage" and Coding conventions; architecture.md §3
+  stage: 0
+  status: approved
+
+- id: SYS-040
+  text: >-
+    The eyes shall be drawn on the GPU, with shaders that are compatible with OpenGL ES 3.0
+    (GLSL ES 3.00), and no per-frame drawing on the CPU.
+  type: constraint
+  verify: inspection
+  decomposition: >-
+    The renderer's shaders (EYE-010) and the eye Pi's GPU (INF-001).
+  source: CLAUDE.md, Eye renderer constraints; ADR 0002
+  stage: 0
+  status: approved
+
+- id: SYS-041
+  text: >-
+    Timings, clip pools, colors and eye art shall come from the theme folder, not from code.
+  type: constraint
+  verify: inspection
+  decomposition: >-
+    The format holds every setting (THM-001, THM-002); the brain and eyes read them
+    instead of code (SHW-027, EYE-016).
+  source: CLAUDE.md "Themes are data"; architecture.md §9
+  stage: 0
+  status: approved
+
+- id: SYS-042
+  text: >-
+    All messages between the monster's parts, except lip light data and audio, shall pass
+    through one MQTT broker, with every topic name and payload format defined in one place
+    in the code (shared/).
+  type: constraint
+  verify: inspection
+  decomposition: >-
+    Every MQTT user follows its ICD: radar (EAR-006), eyes (EYE-015), brain (SHW-024
+    to SHW-026), FPP (SHW-035); one broker (SHW-039).
+  source: CLAUDE.md "Everything talks over MQTT"
+  stage: 0
+  status: approved
+
+- id: SYS-043
+  text: >-
+    Every hardware part that sends or receives messages shall have a desktop simulator
+    that sends or receives exactly the same messages.
+  type: constraint
+  verify: test
+  rationale: Lets the monster be built and tuned in winter, and swapped to real hardware later without code changes.
+  decomposition: >-
+    One simulator per hardware part that talks: fake radar (SIM-001 to SIM-003), fake
+    FPP (SIM-004), house preview for the eye pods (SIM-005, SIM-006); the brain works
+    the same with either (SHW-026).
+  source: CLAUDE.md "Simulator parity"; architecture.md §10
+  stage: 0
+  status: approved
+
+- id: SYS-044
+  text: >-
+    With an eye pod running, no projector light shall reach the bedroom outside the shroud.
+  type: constraint
+  verify: inspection
+  rationale: The bedroom has to stay livable.
+  decomposition: >-
+    One owner: the shroud is the only part between the beam and the room (EYE-022).
+  source: architecture.md §2 hardware (light shroud); overview ("the bedroom has to stay livable")
+  stage: 1
+  status: approved
+
+- id: SYS-045
+  text: >-
+    The monster shall be installed and removed each season with nothing left in the
+    bedroom and nothing left on the house except the year-round lip clips.
+  type: constraint
+  verify: demonstration
+  decomposition: >-
+    Every part that touches the house mounts removably (EYE-021, EAR-008, MTH-008,
+    VOC-004, INF-013), powers up on its own (EYE-019, DEP-002), and is set up and
+    taken down by script and checklist (DEP-001, DEP-003).
+  source: architecture.md overview, §2 "Setup and teardown", §5 (year-round clips)
+  stage: 1
+  status: approved
+
+- id: SYS-046
+  text: >-
+    Every outdoor part shall be rated for outdoor use or sheltered from rain and snow.
+  type: constraint
+  verify: inspection
+  decomposition: >-
+    Each outdoor part is rated or sheltered: radar box, lower lip, speakers, cords,
+    mounting (EAR-008, MTH-004, VOC-003, INF-011, INF-013).
+  source: architecture.md §4 Placement, §5 hardware and Risks, §6 hardware
+  stage: 2
+  status: approved
+
+# ── Functional: visitors coming, at the door, and going (owner, 2026-11-09) ─────
+# These are triggers for talking and eye tracking while awake, not new moods: the
+# five moods stay as they are. The radar is expected to lose visitors at the door.
+
+- id: SYS-047
+  text: >-
+    When the radar loses a visitor inside the door zone, the monster shall keep treating
+    that visitor as present, at the door, until the visitor is detected again or the door
+    hold time (theme setting, TBD-028) passes.
+  type: functional
+  verify: test
+  rationale: >-
+    Without it the monster says goodbye while the kids are getting candy, and greets them
+    as they leave.
+  decomposition: >-
+    The site config holds the door zone (INF-007); the brain holds visitors there
+    (SHW-011, SHW-028); the fake radar has the same blind spot (SIM-003).
+  source: owner 2026-11-09
+  notes: The door zone is set at radar calibration, from where the real radar loses people (TBD-029).
+  stage: 0
+  status: approved
+
+- id: SYS-048
+  text: >-
+    While a visitor is at the door, the eyes shall look toward the door, and the monster
+    may say lines from the theme's door pool (an empty pool means no door talk).
+  type: functional
+  verify: demonstration
+  decomposition: >-
+    The brain looks at the door and may talk (SHW-012); the theme holds the door lines
+    (THM-007).
+  source: owner 2026-11-09
+  stage: 0
+  status: approved
+
+- id: SYS-049
+  text: >-
+    When a visitor walks away from the house while the monster is awake, the eyes shall
+    follow that visitor and the monster shall say a goodbye line to them, even if other
+    visitors remain, keeping the minimum gap between lines (SYS-027).
+  type: functional
+  verify: test
+  decomposition: >-
+    The brain marks visitors as going (SHW-010) and says goodbye to them (SHW-013).
+  source: owner 2026-11-09
+  notes: Coming vs going is told from the radar's speed sign if it carries direction (TBD-030), otherwise from the change in position.
+  stage: 0
+  status: approved
+
+- id: SYS-050
+  text: >-
+    When a new visitor comes toward the house while the monster is awake, the eyes shall
+    glance at them with a happy or surprised look, and the monster may say a line from
+    the theme's arrival pool, keeping the minimum gap between lines (SYS-027).
+  type: functional
+  verify: demonstration
+  rationale: Eyes only by default (the Halloween theme's arrival pool starts empty); a theme can add short hello lines.
+  decomposition: >-
+    The brain marks visitors as coming (SHW-010) and glances or greets (SHW-014); the
+    theme's arrival pool starts empty (THM-007).
+  source: owner 2026-11-09
+  stage: 0
+  status: approved

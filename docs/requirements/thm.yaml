@@ -1,0 +1,97 @@
+# THM Themes subsystem requirements. Field meanings: README.md in this folder.
+
+- id: THM-001
+  text: >-
+    Every theme shall be a folder with settings.yaml, eyes/, audio/ and sequences/ as
+    specified in ICD-005.
+  type: interface
+  icd: ICD-005
+  derives_from: [SYS-041, SYS-016]
+  allocated_to: theme-format
+  allocation_rationale: >-
+    The format is defined once, for every theme.
+  verify: inspection
+  source: architecture.md §9
+  stage: 0
+  status: proposed
+
+- id: THM-002
+  text: >-
+    A theme's settings.yaml shall hold every timing, clip pool, color and show-hour
+    setting the brain and eyes use, so that no such value lives in code.
+  type: functional
+  derives_from: [SYS-041]
+  allocated_to: theme-format
+  allocation_rationale: >-
+    The format is defined once, for every theme.
+  verify: inspection
+  source: CLAUDE.md "Themes are data"; architecture.md §3b settings file
+  stage: 0
+  status: proposed
+
+- id: THM-003
+  text: >-
+    The Halloween theme shall have 5-10 clips in each of its greet, comment and bye pools.
+  type: functional
+  derives_from: [SYS-015]
+  allocated_to: theme-halloween
+  allocation_rationale: >-
+    Pool sizes are content of one theme.
+  verify: inspection
+  source: architecture.md §3b "Variety and politeness rules"
+  stage: 3
+  status: proposed
+
+- id: THM-004
+  text: >-
+    Every audio clip shall be 48 kHz and normalized to the same loudness as the others.
+  type: constraint
+  derives_from: [SYS-030]
+  allocated_to: theme-halloween
+  allocation_rationale: >-
+    Audio files are theme content.
+  verify: analysis
+  rationale: So no clip jumps out above the volume cap.
+  source: architecture.md §6 "Audio content"
+  stage: 3
+  status: proposed
+
+- id: THM-005
+  text: >-
+    Every clip and image in the theme shall be friendly: no horror sounds or imagery.
+  type: constraint
+  derives_from: [SYS-036]
+  allocated_to: theme-halloween
+  allocation_rationale: >-
+    Clips and images are theme content.
+  verify: inspection
+  source: CLAUDE.md "Tone"
+  stage: 0
+  status: proposed
+
+- id: THM-006
+  text: >-
+    Each clip's audio file, lip sequence and Falcon Player playlist shall share one name.
+  type: constraint
+  derives_from: [SYS-011]
+  allocated_to: theme-halloween
+  allocation_rationale: >-
+    Names are set when the content is made.
+  verify: inspection
+  source: architecture.md §3a "Playlists as the building blocks"
+  stage: 3
+  status: proposed
+
+- id: THM-007
+  text: >-
+    The Halloween theme's arrival pool shall start empty (eyes only when someone new
+    arrives); its door pool holds the lines for visitors at the door.
+  type: functional
+  derives_from: [SYS-050, SYS-048]
+  allocated_to: theme-halloween
+  allocation_rationale: >-
+    What a pool holds is theme content.
+  verify: inspection
+  source: owner 2026-11-09
+  stage: 0
+  status: proposed

@@ -1,0 +1,365 @@
+# EYE Eyes subsystem requirements. Field meanings: README.md in this folder.
+# Most are allocated to eye-renderer (the software); the rest to the eye pod's parts.
+
+# ── eye-renderer: the look ──────────────────────────────────────────────────────
+
+- id: EYE-001
+  text: >-
+    The eye renderer shall draw the eye in layers, back to front: sclera, iris and
+    pupil, highlights and sparkles, upper and lower eyelids, and an optional brow, with a
+    bold dark outline and a big catchlight, matching docs/reference/eye-sketch.html.
+  type: functional
+  derives_from: [SYS-010, SYS-036]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The renderer is the only component that draws the eye.
+  verify: inspection
+  source: architecture.md §2 "How an eye is drawn"; stage-0-plan.md Step 2
+  stage: 0
+  status: proposed
+
+- id: EYE-002
+  text: >-
+    The eye renderer shall show each named expression with the open, low, curve, pupil
+    and spark values in the architecture's expression table, easing every value from
+    its current setting to the new one over the duration given in the command.
+  type: functional
+  derives_from: [SYS-010]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    Easing happens frame by frame, so it belongs where frames are drawn; the brain
+    only names the expression.
+  verify: test
+  source: architecture.md §2 expression table; ICD-001 (expression message)
+  stage: 0
+  status: proposed
+
+- id: EYE-003
+  text: >-
+    The eye renderer shall aim its pupil from its own window's position (site config)
+    toward the commanded look point in house coordinates.
+  type: functional
+  derives_from: [SYS-004]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    Each eye knows its own window position, so each works out its own angle from the
+    one point the brain sends (architecture §2).
+  verify: test
+  rationale: Each eye doing its own angle math is what gives the parallax.
+  source: architecture.md §2 "Looking at a visitor"
+  stage: 0
+  status: proposed
+
+- id: EYE-004
+  text: >-
+    The pupil shall glide to each new target with an ease-out curve, with small random
+    movements on top so it never looks frozen.
+  type: functional
+  derives_from: [SYS-004]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    Gliding and micro-movements are frame-by-frame motion, drawn by the renderer.
+  verify: demonstration
+  source: architecture.md §2 "Looking at a visitor"; CLAUDE.md, Eye renderer constraints
+  stage: 0
+  status: proposed
+
+- id: EYE-005
+  text: >-
+    The eye renderer shall start a blink when commanded, closing and opening the lids
+    over the commanded duration.
+  type: functional
+  derives_from: [SYS-009]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The brain decides when; the renderer draws the blink.
+  verify: test
+  source: architecture.md §2 "Blinks"; ICD-001 (blink message)
+  stage: 0
+  status: proposed
+
+- id: EYE-006
+  text: >-
+    If the eye renderer hears nothing from the brain for TBD-023, it shall wander and
+    blink on its own fallback timer until the brain's messages return.
+  type: functional
+  derives_from: [SYS-017, SYS-029]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    Only the eye can tell it has stopped hearing from the brain, so the fallback timer
+    has to live in the eye.
+  verify: test
+  source: architecture.md §3b "What happens when something fails" (Wi-Fi blip)
+  stage: 0
+  status: proposed
+
+- id: EYE-007
+  text: >-
+    On an idle look command, the eye renderer shall wander and look around on its own
+    until it receives a look point.
+  type: functional
+  derives_from: [SYS-017]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    Wandering is frame-by-frame motion; the brain only asks for it.
+  verify: demonstration
+  source: 'architecture.md §2 messages table ({"mode": "idle"})'
+  stage: 0
+  status: proposed
+
+- id: EYE-008
+  text: >-
+    The eye renderer shall draw a steady 60 frames per second at its output resolution.
+  type: performance
+  derives_from: [SYS-024]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The renderer produces every frame; the eye Pi's capacity is covered by INF-003.
+  verify: test
+  basis: {method: measurement, ref: docs/trades/results/TS-002/README.md}
+  source: architecture.md §2 (60 fps target)
+  stage: 0
+  status: proposed
+
+- id: EYE-009
+  text: >-
+    The eye renderer shall start moving the pupil toward a new look point within its
+    share of SYS-019's end-to-end time (TBD-034).
+  type: performance
+  derives_from: [SYS-019]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The renderer is the hop that turns a received look point into motion (path P1).
+  verify: test
+  source: timing-budgets.md, path P1
+  stage: 0
+  status: proposed
+
+- id: EYE-010
+  text: >-
+    The eye renderer shall draw on the GPU with shaders written for OpenGL ES 3.0
+    (GLSL ES 3.00), doing no per-frame drawing on the CPU.
+  type: constraint
+  derives_from: [SYS-040]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The shaders are part of the renderer; OpenGL ES 3.0 is what the Pi 5's GPU offers
+    (ADR 0002).
+  verify: inspection
+  source: CLAUDE.md, Eye renderer constraints; ADR 0002
+  stage: 0
+  status: proposed
+
+- id: EYE-011
+  text: >-
+    The eye renderer shall draw only round pupils and make smiles with the lower lid;
+    it shall not draw slit pupils.
+  type: constraint
+  derives_from: [SYS-036]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    Pupil and lid shapes are drawn by the renderer.
+  verify: inspection
+  source: CLAUDE.md "Tone"
+  stage: 0
+  status: proposed
+
+- id: EYE-012
+  text: >-
+    The eye renderer shall never draw text or an error, and shall hide the mouse cursor;
+    if something goes wrong it shall keep drawing an eye.
+  type: constraint
+  derives_from: [SYS-037]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The renderer owns the screen, so only it can guarantee nothing but an eye appears.
+  verify: test
+  source: CLAUDE.md "Fail friendly"; architecture.md §2 (cursor hidden)
+  stage: 0
+  status: proposed
+
+- id: EYE-013
+  text: >-
+    The eye renderer shall apply its eye's window settings from the site config: window
+    size, eye placement and size within it, rotation 0° or 90°, horizontal mirroring
+    and brightness.
+  type: functional
+  derives_from: [SYS-035, SYS-024]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    Window settings change what is drawn and where, which only the renderer controls.
+  verify: test
+  rationale: The two windows are different sizes, and a projector may lie on its side.
+  source: architecture.md §2 "Per-eye configuration"; CLAUDE.md "Configuration in YAML files"
+  stage: 0
+  status: proposed
+
+- id: EYE-014
+  text: >-
+    When told to load a theme, the eye renderer shall switch to that theme's eye art and
+    colors without restarting.
+  type: functional
+  derives_from: [SYS-016]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The renderer loads and draws the art; the brain only names the theme.
+  verify: demonstration
+  source: architecture.md §9 "Switching themes"
+  stage: 0
+  status: proposed
+
+# ── eye-renderer: interfaces ────────────────────────────────────────────────────
+
+- id: EYE-015
+  text: >-
+    The eye renderer shall obey the look, expression, blink and theme messages and
+    publish its online/offline status, as specified in ICD-001, ignoring malformed
+    messages.
+  type: interface
+  icd: ICD-001
+  derives_from: [SYS-042]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The renderer is the eye end of ICD-001.
+  verify: test
+  source: architecture.md §2 "Messages it listens to"
+  stage: 0
+  status: proposed
+
+- id: EYE-016
+  text: >-
+    The eye renderer shall read its eye art and colors from the theme folder as
+    specified in ICD-005.
+  type: interface
+  icd: ICD-005
+  derives_from: [SYS-041]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The renderer is the only reader of eye art.
+  verify: test
+  source: architecture.md §9
+  stage: 0
+  status: proposed
+
+- id: EYE-017
+  text: >-
+    The eye renderer shall read its window position and window settings from the site
+    config as specified in ICD-015.
+  type: interface
+  icd: ICD-015
+  derives_from: [SYS-004, SYS-035]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The renderer needs its own window position and settings for EYE-003 and EYE-013.
+  verify: test
+  source: spec tree Q6 (site config)
+  stage: 0
+  status: proposed
+
+- id: EYE-018
+  text: >-
+    The eye renderer shall run on the compute platform specified in ICD-013: in a
+    desktop window for development, and full-screen on KMS/DRM with no desktop
+    environment on an eye Pi.
+  type: interface
+  icd: ICD-013
+  derives_from: [SYS-039]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The renderer is the software that must fit the eye Pi; the Pi's side is INF-001.
+  verify: test
+  source: CLAUDE.md, Eye renderer constraints; ADR 0002
+  stage: 0
+  status: proposed
+
+# ── The eye pod's parts ─────────────────────────────────────────────────────────
+
+- id: EYE-019
+  text: >-
+    Each projector shall show the eye Pi's HDMI picture as specified in ICD-014, and
+    start showing it when powered on, without a remote.
+  type: interface
+  icd: ICD-014
+  derives_from: [SYS-024, SYS-045]
+  allocated_to: eye-projector
+  allocation_rationale: >-
+    The projector turns HDMI into light; starting without a remote is a projector
+    feature to check before buying (TBD-012).
+  verify: test
+  rationale: Setup is "power on and the eye appears" (architecture §2, step 3).
+  source: architecture.md §2 "Setup and teardown"; projector model TBD-012
+  stage: 1
+  status: proposed
+
+- id: EYE-020
+  text: >-
+    Each eye pod's power strip shall feed its Pi and projector from one household outlet,
+    as specified in ICD-008.
+  type: interface
+  icd: ICD-008
+  derives_from: [SYS-034]
+  allocated_to: eye-power-strip
+  allocation_rationale: >-
+    The power strip is the eye pod's one connection to the mains.
+  verify: inspection
+  source: architecture.md §2 hardware (one power strip)
+  stage: 1
+  status: proposed
+
+- id: EYE-021
+  text: >-
+    Each screen shall hang in its window from a tension rod or removable hooks, with the
+    black mask over it, as specified in ICD-011, leaving no mark on the window.
+  type: interface
+  icd: ICD-011
+  derives_from: [SYS-035, SYS-045]
+  allocated_to: eye-screen
+  allocation_rationale: >-
+    The screen is the part that touches the window; the mask rides on it.
+  verify: inspection
+  source: architecture.md §2 "Setup and teardown"; window sizes TBD-006
+  stage: 1
+  status: proposed
+
+- id: EYE-022
+  text: >-
+    Each shroud shall enclose the projector's light path from projector to window frame,
+    so that no projector light reaches the bedroom.
+  type: constraint
+  derives_from: [SYS-044]
+  allocated_to: eye-shroud
+  allocation_rationale: >-
+    The shroud is the only part between the projector's beam and the room.
+  verify: inspection
+  source: architecture.md §2 hardware (light shroud)
+  stage: 1
+  status: proposed
+
+- id: EYE-023
+  text: >-
+    Each stand shall hold its projector at the height and angle that puts the image
+    square on the screen, with no keystone correction.
+  type: functional
+  derives_from: [SYS-035]
+  allocated_to: eye-stand
+  allocation_rationale: >-
+    The stand sets the projector's height and angle.
+  verify: inspection
+  source: architecture.md §2 hardware (stand or small cart)
+  stage: 1
+  status: proposed
+
+- id: EYE-024
+  text: >-
+    The eye renderer shall start easing toward a newly commanded expression within its
+    share of SYS-020 and SYS-023 (TBD-034).
+  type: performance
+  derives_from: [SYS-020, SYS-023]
+  allocated_to: eye-renderer
+  allocation_rationale: >-
+    The renderer is the hop that turns a received expression into motion (paths P2 and
+    P4).
+  verify: test
+  source: timing-budgets.md, paths P2 and P4
+  stage: 0
+  status: proposed

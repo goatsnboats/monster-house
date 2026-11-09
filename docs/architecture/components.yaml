@@ -1,0 +1,524 @@
+# Components of the Monster House: every hardware part and software item in the
+# approved spec tree (docs/requirements/spec-tree.md). Requirements are allocated to
+# these IDs (allocated_to), and ICD ends name them. IDs are permanent (ADR 0001).
+#
+# Fields
+#   id          kebab-case, permanent
+#   kind        part (hardware) | software (programs, configuration data, documents)
+#   subsystem   the owning subsystem's prefix from the spec tree (EYE, SHW, ... DEP)
+#   name        what it is, in plain words
+#   stage       the first stage in which it exists (0-5)
+#   location    parts only: where it sits on (or in) the house
+#   functions   what it does
+#   ports       its connection points: name and protocol or medium
+#   deployed_on software only: {first stage: the part(s) it runs on or is stored on}.
+#               An entry holds until a later stage replaces it.
+#   provides    hosts: resources they have, e.g. {memory_mb: 1024, usb_ports: 4}
+#   needs       resources used, e.g. {memory_mb: 153}; a number or a TBD-NNN.
+#               Software draws from where it is deployed_on; a part from supplied_by;
+#               a host's own needs (its operating system) from itself.
+#   supplied_by parts with needs: the host that supplies them
+#   Budgets are added up by tools/reqs/budget.py.
+#
+# Checked by tools/reqs/check.py.
+
+# ── EYE · Eyes ──────────────────────────────────────────────────────────────────
+# One set of these parts per window. With that window's Pi (INF) they make an eye pod.
+- id: eye-projector
+  kind: part
+  subsystem: EYE
+  name: Short-throw LED projector, AAXA P400 class (model TBD-012), one per window
+  stage: 1
+  location: bedroom, behind each eye window
+  functions: [project the eye image onto the rear screen]
+  ports: [{name: video-in, protocol: HDMI}, {name: mains, protocol: power}]
+
+- id: eye-screen
+  kind: part
+  subsystem: EYE
+  name: Rear-projection screen cut to the window glass, one per window
+  stage: 1
+  location: inside each eye window, facing out
+  functions: [show the projected eye to the street]
+  ports: [{name: window-mount, protocol: mechanical}]
+
+- id: eye-mask
+  kind: part
+  subsystem: EYE
+  name: Black fabric mask with an eye-shaped hole, one per window
+  stage: 1
+  location: over each eye screen
+  functions: [hide the projector's gray "black" around the eye]
+  ports: [{name: screen-mount, protocol: mechanical}]
+
+- id: eye-shroud
+  kind: part
+  subsystem: EYE
+  name: Blackout shroud on a light PVC or 1x2 frame, projector to window frame
+  stage: 1
+  location: bedroom, around each projector beam
+  functions: [keep projector light out of the bedroom]
+  ports: [{name: window-frame, protocol: mechanical}]
+
+- id: eye-stand
+  kind: part
+  subsystem: EYE
+  name: Stand or small cart that sets each projector's height
+  stage: 1
+  location: bedroom floor, behind each eye window
+  functions: [aim the projector straight at the screen (no keystone)]
+  ports: [{name: floor, protocol: mechanical}]
+
+- id: eye-power-strip
+  kind: part
+  subsystem: EYE
+  name: Power strip, one per eye pod, for its Pi and projector
+  stage: 1
+  location: bedroom, by each eye stand
+  functions: [give each eye pod a single mains plug]
+  ports: [{name: mains-in, protocol: power}, {name: outlets, protocol: power}]
+
+- id: eye-renderer
+  kind: software
+  subsystem: EYE
+  name: Eye renderer (Python + moderngl + pygame-ce, ADR 0002)
+  stage: 0
+  needs: {memory_mb: 153}   # TS-002 peak at 60 fps on the desktop; Pi figure after TBD-013
+  functions:
+    - draw the layered eye on the GPU (OpenGL ES 3.0 / GLSL ES 3.00)
+    - ease between expressions
+    - glide the pupil toward a look point, computed from its own window's position
+    - blink on command, with a fallback blink timer
+    - apply per-eye window settings (size, placement, rotation, mirroring, brightness)
+    - publish its online/offline status
+  ports: [{name: mqtt, protocol: MQTT}, {name: display, protocol: KMS/DRM or desktop window}]
+  deployed_on: {0: desktop, 1: [eye-pi-left, eye-pi-right]}
+
+# ── SHW · Show control (software only) ───────────────────────────────────────────
+- id: monster-brain
+  kind: software
+  subsystem: SHW
+  name: Monster brain (Python service)
+  stage: 0
+  needs: {memory_mb: TBD-032}
+  functions:
+    - run the mood state machine (Asleep, Waking, Greeting, Watching, Goodbye)
+    - turn radar positions into a look point and choose the focus visitor
+    - own blinks for both eyes
+    - pick clips from the theme's pools and trigger them
+    - handle failures so the monster looks sleepy, never broken
+  ports: [{name: mqtt, protocol: MQTT}, {name: http, protocol: HTTP}, {name: fpp, protocol: MQTT or HTTP}]
+  deployed_on: {0: desktop, 3: porch-pi}
+
+- id: phone-page
+  kind: software
+  subsystem: SHW
+  name: Phone page served by the brain on the home network
+  stage: 0
+  needs: {memory_mb: 0}     # runs inside the brain's process
+  functions: [show buttons (great costume, burp, sing, mute voice, sleep now, wake now), show the current mood, choose a theme]
+  ports: [{name: http, protocol: HTTP}]
+  deployed_on: {0: desktop, 3: porch-pi}
+
+- id: falcon-player
+  kind: software
+  subsystem: SHW
+  name: Falcon Player (FPP), third-party; faked by fake-fpp in Stages 0-2
+  stage: 3
+  needs: {memory_mb: TBD-032}
+  functions: [play a voice clip and its lip sequence together, run the show schedule, send lip frames over DDP, report clip status]
+  ports: [{name: mqtt, protocol: MQTT}, {name: http, protocol: HTTP}, {name: ddp, protocol: DDP}, {name: audio, protocol: USB audio device}]
+  deployed_on: {3: porch-pi}
+
+- id: mosquitto
+  kind: software
+  subsystem: SHW
+  name: Mosquitto MQTT broker, third-party, with our config (deploy/mosquitto/)
+  stage: 0
+  needs: {memory_mb: TBD-032}
+  functions: [pass every MQTT message between components, hold retained messages, deliver last-will messages]
+  ports: [{name: mqtt, protocol: MQTT}]
+  deployed_on: {0: desktop, 3: porch-pi}
+
+# ── EAR · Ears ──────────────────────────────────────────────────────────────────
+- id: radar-sensor
+  kind: part
+  subsystem: EAR
+  name: HLK-LD2450 24 GHz radar (firmware V2.02.23090617 or newer)
+  stage: 2
+  location: under the porch roof, aimed down the walkway
+  functions: [report X/Y position and speed of up to 3 people]
+  ports: [{name: serial, protocol: UART}]
+
+- id: radar-esp32
+  kind: part
+  subsystem: EAR
+  name: ESP32 dev board, network name monster-radar
+  stage: 2
+  location: radar-box, under the porch roof
+  functions: [read the radar, run ESPHome, publish over Wi-Fi]
+  ports: [{name: serial, protocol: UART}, {name: wifi, protocol: Wi-Fi 2.4 GHz}, {name: usb-power, protocol: power}]
+
+- id: radar-psu
+  kind: part
+  subsystem: EAR
+  name: 5 V USB power supply for the ESP32 and radar
+  stage: 2
+  location: porch, near radar-box
+  functions: [power the radar node]
+  ports: [{name: mains, protocol: power}, {name: usb, protocol: power}]
+
+- id: radar-box
+  kind: part
+  subsystem: EAR
+  name: Small enclosure for the ESP32 and radar
+  stage: 2
+  location: under the porch roof
+  functions: [shelter the radar node]
+  ports: [{name: mount, protocol: mechanical}]
+
+- id: radar-firmware
+  kind: software
+  subsystem: EAR
+  name: Our ESPHome configuration (esphome/)
+  stage: 2
+  functions: [expose X, Y and speed per target, a target count and the approach zone, publish them over MQTT at about 10 per second]
+  ports: [{name: mqtt, protocol: MQTT}]
+  deployed_on: {2: radar-esp32}
+
+# ── MTH · Mouth ─────────────────────────────────────────────────────────────────
+- id: lip-upper
+  kind: part
+  subsystem: MTH
+  name: Upper lip, WS2815 12 V strip, 60 LEDs/m, IP65
+  stage: 4
+  needs: {power_w: TBD-033}
+  supplied_by: lip-psu
+  location: under the porch roof edge
+  functions: [show the upper lip]
+  ports: [{name: power-data-in, protocol: 12 V + LED data}]
+
+- id: lip-lower
+  kind: part
+  subsystem: MTH
+  name: Lower lip, WS2815 12 V strip, 60 LEDs/m, IP65
+  stage: 4
+  needs: {power_w: TBD-033}
+  supplied_by: lip-psu
+  location: along the porch railing
+  functions: [show the lower lip]
+  ports: [{name: power-data-in, protocol: 12 V + LED data}]
+
+- id: mouth-extras
+  kind: part
+  subsystem: MTH
+  name: Extras on the controller's spare outputs (teeth uplight, throat glow, tongue)
+  stage: 4
+  needs: {power_w: TBD-033}
+  supplied_by: lip-psu
+  location: porch
+  functions: [add teeth, throat and tongue effects]
+  ports: [{name: power-data-in, protocol: 12 V + LED data}]
+
+- id: lip-channel
+  kind: part
+  subsystem: MTH
+  name: Aluminum channel and diffuser for the lip strips
+  stage: 4
+  location: porch roof edge and railing
+  functions: [turn the LED dots into a smooth line, protect the strips]
+  ports: [{name: clips, protocol: mechanical}]
+
+- id: lip-clips
+  kind: part
+  subsystem: MTH
+  name: Year-round mounting clips for the lip channels
+  stage: 4
+  location: porch roof edge and railing (stay up all year)
+  functions: [hold the channels; channels snap on and off each season]
+  ports: [{name: house, protocol: mechanical}]
+
+- id: lip-controller
+  kind: part
+  subsystem: MTH
+  name: QuinLED Dig-Quad with WLED, network name monster-lips
+  stage: 4
+  needs: {power_w: TBD-033}
+  supplied_by: lip-psu
+  location: lip-box on the porch
+  functions: [drive up to 4 LED outputs, receive DDP frames over Wi-Fi]
+  ports: [{name: wifi, protocol: Wi-Fi 2.4 GHz}, {name: outputs, protocol: 12 V + LED data}, {name: power-in, protocol: 12 V}]
+
+- id: lip-psu
+  kind: part
+  subsystem: MTH
+  name: 12 V ~350 W power supply for the lips
+  stage: 4
+  provides: {power_w: 350}   # architecture §5: 12 V ~350 W
+  location: lip-box on the porch
+  functions: [power the lip controller and strips]
+  ports: [{name: mains, protocol: power}, {name: dc-out, protocol: 12 V}]
+
+- id: lip-box
+  kind: part
+  subsystem: MTH
+  name: Weatherproof box for the lip controller and supply
+  stage: 4
+  location: porch, near one end of the lips
+  functions: [shelter the lip controller and supply]
+  ports: [{name: mount, protocol: mechanical}]
+
+- id: wled
+  kind: software
+  subsystem: MTH
+  name: WLED firmware and its settings (segments, fallback breathe effect, brightness limit)
+  stage: 4
+  functions: [show DDP frames while FPP streams, fall back to a slow breathe when it stops, cap brightness]
+  ports: [{name: ddp, protocol: DDP}]
+  deployed_on: {4: lip-controller}
+
+# ── VOC · Voice ─────────────────────────────────────────────────────────────────
+- id: usb-audio
+  kind: part
+  subsystem: VOC
+  name: USB audio adapter (the Pi 5 has no headphone jack)
+  stage: 3
+  needs: {usb_ports: 1}
+  supplied_by: porch-pi
+  location: plugged into porch-pi, inside the front door
+  functions: [turn the porch Pi's audio into a line-level signal]
+  ports: [{name: usb, protocol: USB audio}, {name: line-out, protocol: analog line level}]
+
+- id: amp
+  kind: part
+  subsystem: VOC
+  name: Class-D stereo amp board, TPA3116 class
+  stage: 3
+  location: porch weatherproof box or just inside the door (TBD-010)
+  functions: [drive the speakers]
+  ports: [{name: line-in, protocol: analog line level}, {name: speaker-out, protocol: speaker level}, {name: power-in, protocol: 24 V}]
+
+- id: amp-psu
+  kind: part
+  subsystem: VOC
+  name: 24 V supply for the amp
+  stage: 3
+  location: next to the amp
+  functions: [power the amp]
+  ports: [{name: mains, protocol: power}, {name: dc-out, protocol: 24 V}]
+
+- id: speakers
+  kind: part
+  subsystem: VOC
+  name: Pair of 5.25 inch weatherproof speakers
+  stage: 3
+  location: under the porch ceiling, aimed down the walkway
+  functions: [play the monster's voice]
+  ports: [{name: speaker-in, protocol: speaker level}, {name: mount, protocol: mechanical}]
+
+- id: speaker-wire
+  kind: part
+  subsystem: VOC
+  name: 16 AWG speaker wire
+  stage: 3
+  location: porch, amp to speakers
+  functions: [carry speaker-level audio]
+  ports: [{name: ends, protocol: speaker level}]
+
+- id: rumble
+  kind: part
+  subsystem: VOC
+  name: Optional tactile transducer or small sub
+  stage: 5
+  location: under the porch floor
+  functions: [add a rumble visitors can feel]
+  ports: [{name: speaker-in, protocol: speaker level}]
+
+# ── INF · Infrastructure ────────────────────────────────────────────────────────
+- id: eye-pi-left
+  kind: part
+  subsystem: INF
+  name: Raspberry Pi 5 (1GB) with supply and microSD, left (small) window's eye pod
+  stage: 1
+  provides: {memory_mb: 1024, usb_ports: 4}   # Pi 5 1GB (architecture §2); 2 USB 3 + 2 USB 2
+  needs: {memory_mb: TBD-032}                 # the operating system's own share
+  location: bedroom, left eye pod
+  functions: [host eye-renderer full-screen on KMS/DRM, output video to the projector]
+  ports: [{name: hdmi, protocol: HDMI}, {name: wifi, protocol: Wi-Fi}, {name: power-in, protocol: USB-C power}]
+
+- id: eye-pi-right
+  kind: part
+  subsystem: INF
+  name: Raspberry Pi 5 (1GB) with supply and microSD, right (large) window's eye pod
+  stage: 1
+  provides: {memory_mb: 1024, usb_ports: 4}
+  needs: {memory_mb: TBD-032}
+  location: bedroom, right eye pod
+  functions: [host eye-renderer full-screen on KMS/DRM, output video to the projector]
+  ports: [{name: hdmi, protocol: HDMI}, {name: wifi, protocol: Wi-Fi}, {name: power-in, protocol: USB-C power}]
+
+- id: porch-pi
+  kind: part
+  subsystem: INF
+  name: Raspberry Pi 5 with official supply, case with fan and 32 GB microSD
+  stage: 3
+  provides: {memory_mb: TBD-031, usb_ports: 4}
+  needs: {memory_mb: TBD-032}
+  location: shelf just inside the front door (TBD-010)
+  functions: [host the Show control software, provide the USB audio port]
+  ports: [{name: usb, protocol: USB}, {name: wifi, protocol: Wi-Fi}, {name: power-in, protocol: USB-C power}]
+
+- id: site-config
+  kind: software
+  subsystem: INF
+  name: Site configuration file (the house's own settings, the same for every theme)
+  stage: 0
+  functions: [hold eye and radar positions in house coordinates, hold each eye's window settings, hold network names]
+  ports: [{name: file, protocol: YAML file}]
+  deployed_on: {0: desktop, 1: [desktop, eye-pi-left, eye-pi-right], 3: [porch-pi, eye-pi-left, eye-pi-right]}
+
+- id: home-network
+  kind: part
+  subsystem: INF
+  name: Our setup of the home Wi-Fi (the router itself is the house's)
+  stage: 1
+  location: house-wide
+  functions: [2.4 GHz coverage on the porch, reserved addresses, friendly names, clock sync, nothing exposed to the internet]
+  ports: [{name: wifi, protocol: Wi-Fi}]
+
+- id: power-distribution
+  kind: part
+  subsystem: INF
+  name: Outdoor-rated cords and outlets, and which circuit feeds what
+  stage: 1
+  location: bedroom and porch
+  functions: [bring mains power to every box]
+  ports: [{name: outlets, protocol: power}]
+
+- id: porch-mounting
+  kind: part
+  subsystem: INF
+  name: Brackets and cable routes on the house
+  stage: 2
+  location: porch, front door frame
+  functions: [hold outdoor boxes, route cables (for example porch Pi to amp through the door frame)]
+  ports: [{name: house, protocol: mechanical}]
+
+- id: porch-enclosure
+  kind: part
+  subsystem: INF
+  name: Shared weatherproof box, if more than one subsystem uses one
+  stage: 3
+  location: porch
+  functions: [shelter equipment from more than one subsystem]
+  ports: [{name: mount, protocol: mechanical}]
+
+# ── THM · Themes ────────────────────────────────────────────────────────────────
+- id: theme-format
+  kind: software
+  subsystem: THM
+  name: Theme folder format (layout and settings.yaml contents every theme follows)
+  stage: 0
+  functions: [define where a theme's settings, eye art, audio and sequences go]
+  ports: [{name: folder, protocol: files}]
+
+- id: theme-halloween
+  kind: software
+  subsystem: THM
+  name: Halloween theme folder (themes/halloween/)
+  stage: 0
+  functions: [give the monster its Halloween settings, eye art, voice clips and lip sequences]
+  ports: [{name: folder, protocol: files}]
+  deployed_on: {0: desktop, 1: [desktop, eye-pi-left, eye-pi-right], 3: [porch-pi, eye-pi-left, eye-pi-right]}
+
+# ── SIM · Simulators (enabling) ─────────────────────────────────────────────────
+- id: fake-radar
+  kind: software
+  subsystem: SIM
+  name: Fake radar (drag up to 3 pretend visitors)
+  stage: 0
+  functions: [publish exactly the topics and units the real radar does]
+  ports: [{name: mqtt, protocol: MQTT}]
+  deployed_on: {0: desktop}
+
+- id: fake-fpp
+  kind: software
+  subsystem: SIM
+  name: Fake Falcon Player
+  stage: 0
+  functions: [log clip triggers, play placeholder audio, report clip finished like FPP]
+  ports: [{name: mqtt, protocol: MQTT}, {name: http, protocol: HTTP}]
+  deployed_on: {0: desktop}
+
+- id: house-preview
+  kind: software
+  subsystem: SIM
+  name: House preview (live eyes on the house photo, plus a lip line)
+  stage: 0
+  functions: [composite both eyes onto docs/reference/house-front.jpg, draw a lip line]
+  ports: [{name: mqtt, protocol: MQTT}]
+  deployed_on: {0: desktop}
+
+# ── DEV · Desktop tooling (enabling) ────────────────────────────────────────────
+- id: desktop
+  kind: part
+  subsystem: DEV
+  name: The owner's Ubuntu desktop
+  stage: 0
+  location: elsewhere in the house
+  functions: [development, content creation, host Show control and eye software in Stages 0-2]
+  ports: [{name: network, protocol: Wi-Fi or Ethernet}]
+
+- id: xlights
+  kind: software
+  subsystem: DEV
+  name: xLights (lip models, Singing Faces sequences)
+  stage: 3
+  functions: [make lip sequences from voice clips, upload them to FPP]
+  ports: [{name: upload, protocol: HTTP}]
+  deployed_on: {3: desktop}
+
+- id: content-tools
+  kind: software
+  subsystem: DEV
+  name: Audacity, Inkscape or Krita
+  stage: 0
+  functions: [record and edit voice clips, draw eye art]
+  ports: [{name: files, protocol: files}]
+  deployed_on: {0: desktop}
+
+- id: dev-env
+  kind: software
+  subsystem: DEV
+  name: Repository, Python virtual environment, tests, debug tools, requirements checker
+  stage: 0
+  functions: [build and test the code, check requirements traceability]
+  ports: [{name: files, protocol: files}]
+  deployed_on: {0: desktop}
+
+# ── DEP · Deployment (enabling) ─────────────────────────────────────────────────
+- id: pi-setup
+  kind: software
+  subsystem: DEP
+  name: Pi setup scripts (deploy/)
+  stage: 0
+  functions: [turn a fresh Raspberry Pi OS Lite (64-bit) install into an eye pod or the porch Pi]
+  ports: [{name: shell, protocol: SSH or console}]
+  deployed_on: {1: [eye-pi-left, eye-pi-right], 3: [porch-pi, eye-pi-left, eye-pi-right]}
+
+- id: service-units
+  kind: software
+  subsystem: DEP
+  name: System service files (start at boot)
+  stage: 1
+  functions: [start the renderer, brain and broker at boot and restart them if they stop]
+  ports: [{name: systemd, protocol: systemd}]
+  deployed_on: {1: [eye-pi-left, eye-pi-right], 3: [porch-pi, eye-pi-left, eye-pi-right]}
+
+- id: install-checklists
+  kind: software
+  subsystem: DEP
+  name: Install, setup and teardown checklists (documents)
+  stage: 1
+  functions: [guide each season's setup and teardown]
+  ports: []

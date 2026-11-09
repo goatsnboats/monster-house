@@ -1,0 +1,44 @@
+# DEP Deployment (enabling) requirements. Field meanings: README.md in this folder.
+
+- id: DEP-001
+  text: >-
+    One setup script shall turn a fresh Raspberry Pi OS Lite (64-bit) install on a Pi 5
+    (1GB) into an eye pod: dependencies installed, the renderer as a service, full-screen
+    on KMS/DRM, cursor hidden, starting at boot.
+  type: functional
+  derives_from: [SYS-039, SYS-045]
+  allocated_to: pi-setup
+  allocation_rationale: >-
+    Building a node from a fresh install is deployment's job.
+  verify: demonstration
+  source: stage-0-plan.md Step 8
+  stage: 1
+  status: proposed
+
+- id: DEP-002
+  text: >-
+    The system services shall start the renderer, brain and broker at boot and restart
+    any of them that stops.
+  type: functional
+  derives_from: [SYS-017, SYS-045]
+  allocated_to: service-units
+  allocation_rationale: >-
+    Starting and restarting at boot is a system service's job.
+  verify: test
+  source: architecture.md §2 "On the Pi"; §3
+  stage: 1
+  status: proposed
+
+- id: DEP-003
+  text: >-
+    The install checklists shall cover each season's setup and teardown, and the first
+    one-eye test (projector, screen, mask, shroud, mirroring, rotation).
+  type: functional
+  derives_from: [SYS-045]
+  allocated_to: install-checklists
+  allocation_rationale: >-
+    Checklists are deployment documents.
+  verify: inspection
+  source: stage-0-plan.md Step 8; architecture.md §2 "Setup and teardown"
+  stage: 1
+  status: proposed

@@ -1,0 +1,89 @@
+# VOC Voice subsystem requirements. Field meanings: README.md in this folder.
+# The clips themselves are theme content (THM).
+
+- id: VOC-001
+  text: >-
+    The USB audio adapter shall turn the porch Pi's audio into a line-level signal for
+    the amp, as specified in ICD-007.
+  type: interface
+  icd: ICD-007
+  derives_from: [SYS-021]
+  allocated_to: usb-audio
+  allocation_rationale: >-
+    The adapter turns USB audio into line level (the Pi 5 has no headphone jack).
+  verify: test
+  rationale: The Pi 5 has no headphone jack.
+  source: architecture.md §3a "Audio output", §6
+  stage: 3
+  status: proposed
+
+- id: VOC-002
+  text: >-
+    The amp's gain shall be set so that at Falcon Player's capped volume the sound at the
+    sidewalk does not exceed TBD-026.
+  type: performance
+  derives_from: [SYS-030]
+  allocated_to: amp
+  allocation_rationale: >-
+    For a given input level, the amp's gain sets the loudness at the sidewalk.
+  verify: test
+  source: architecture.md §6 "Neighbor-friendly"
+  stage: 3
+  status: proposed
+
+- id: VOC-003
+  text: >-
+    The speakers shall be weatherproof and hang under the porch ceiling, aimed down the
+    walkway.
+  type: constraint
+  derives_from: [SYS-046]
+  allocated_to: speakers
+  allocation_rationale: >-
+    The speakers are the voice's outdoor part.
+  verify: inspection
+  source: architecture.md §6 "Hardware"
+  stage: 3
+  status: proposed
+
+- id: VOC-004
+  text: >-
+    The speakers shall mount on removable brackets as specified in ICD-010.
+  type: interface
+  icd: ICD-010
+  derives_from: [SYS-045]
+  allocated_to: speakers
+  allocation_rationale: >-
+    The speakers are the voice part that mounts on the house.
+  verify: inspection
+  source: architecture.md §6; amp location TBD-010
+  stage: 3
+  status: proposed
+
+- id: VOC-005
+  text: >-
+    The amp's 24 V supply shall plug into one household outlet as specified in ICD-008.
+  type: interface
+  icd: ICD-008
+  derives_from: [SYS-034]
+  allocated_to: amp-psu
+  allocation_rationale: >-
+    The 24 V supply is the voice's one connection to the mains.
+  verify: inspection
+  source: architecture.md §6 "Hardware"
+  stage: 3
+  status: proposed
+
+- id: VOC-006
+  text: >-
+    The USB audio adapter shall delay the voice by no more than the audio path's share of
+    SYS-022's limits (TBD-034).
+  type: performance
+  derives_from: [SYS-022]
+  allocated_to: usb-audio
+  allocation_rationale: >-
+    The adapter's buffering is the audio path's main delay in path P5; the analog amp
+    adds almost none.
+  verify: test
+  source: timing-budgets.md, path P5
+  stage: 4
+  status: proposed

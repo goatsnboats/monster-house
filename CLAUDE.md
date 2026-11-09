@@ -8,6 +8,7 @@ Read these before making design decisions:
 - `docs/reference/eye-sketch.html`: interactive sketch of the eye. Open it in a browser. It defines the look and the expression parameters to match.
 - `docs/reference/house-front.jpg`: photo of the house, for the house preview.
 - `docs/TBD.md`: every open question, with what will resolve it. A TBD in any file must cite its `TBD-NNN` ID; never write a bare "TBD".
+- `docs/requirements/`: the requirements baseline (spec tree, `SYS-` and subsystem *shall* requirements, generated `trace.md`), with `docs/architecture/components.yaml` and the ICDs in `docs/interfaces/`. Trace design decisions to requirement IDs, and run `.venv/bin/python -m tools.reqs.check` after changing any of them.
 - `docs/trades/` and `docs/decisions/`: trade studies and the decisions (ADRs) they produce. Run the `trade-study` skill for any choice of tool, library, hardware or approach with two or more defensible options.
 
 ## Current stage: Stage 0 (software-only prototype on the desktop)

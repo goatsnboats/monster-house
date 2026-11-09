@@ -48,6 +48,9 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-025 | Bedtime for the eye pods: when they switch off, and how (smart plug, Pi command to the projector, or FPP's schedule) (SYS-018; spec tree Q12) | Owner decision, then a Test with a real pod | Eye pod power design, INF power | Stage 1 | Open |
 | TBD-026 | Loudest acceptable sound level at the sidewalk, and how to measure it (SYS-030) | Owner decision, then a Measurement | Amp gain, FPP and operating-system volume caps | Stage 3 | Open |
 | TBD-027 | Brightness cap for the lips (SYS-031) | Owner decision, then a Test at the house | WLED brightness limit, power supply sizing | Stage 4 | Open |
+| TBD-028 | Door hold time: how long a visitor lost at the door still counts as present (SYS-047) | Owner decision, tuned in the Stage 0 simulator | Brain door-hold logic, theme settings | Stage 0 Step 4 | Open |
+| TBD-029 | Where the real radar loses visitors near the door (sets the door zone) (SYS-047) | Measurement at the Stage 2 install | Door zone in the site config, fake radar's blind spot | Stage 2 (simulator uses a guess until then) | Open |
+| TBD-030 | Whether ESPHome's LD2450 speed value carries direction (coming vs going) (SYS-049) | Verify against ESPHome's LD2450 documentation | How the brain tells coming from going | Stage 0 Step 3 (fake radar must match) | Open |
 
 ## Closed
 

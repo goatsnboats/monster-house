@@ -71,22 +71,24 @@
 
 - id: SYS-007
   text: >-
-    When no visitor has been in range for the time set in the theme (default 5 s), the
-    monster shall look toward where they left, say a goodbye line and droop its eyes.
+    When no visitor has been in range for the time set in the theme (default 5 s), not
+    counting visitors at the door (SYS-047), the monster shall look toward where they
+    left, droop its eyes, and say a goodbye line unless the last visitor to leave already
+    got one (SYS-049).
   type: functional
   verify: test
-  source: architecture.md §3b, Moods table (Goodbye); settings example goodbye_after_s
+  source: architecture.md §3b, Moods table (Goodbye); settings example goodbye_after_s; owner 2026-11-09 (door hold)
   stage: 0
   status: proposed
 
 - id: SYS-008
   text: >-
     After a goodbye, the monster shall go back to sleep when no visitor has arrived for
-    the time set in the theme (default 20 s), or greet a newly arrived visitor without
-    yawning first.
+    the time set in the theme (default 20 s), or greet a visitor coming toward the house
+    without yawning first. A visitor picked up again on the way out is not a new arrival.
   type: functional
   verify: test
-  source: architecture.md §3b, Moods state diagram (Goodbye → Asleep, Goodbye → Greeting)
+  source: architecture.md §3b, Moods state diagram (Goodbye → Asleep, Goodbye → Greeting); owner 2026-11-09 (coming vs going)
   stage: 0
   status: proposed
 
@@ -483,4 +485,57 @@
   verify: inspection
   source: architecture.md §4 Placement, §5 hardware and Risks, §6 hardware
   stage: 2
+  status: proposed
+
+# ── Functional: visitors coming, at the door, and going (owner, 2026-11-09) ─────
+# These are triggers for talking and eye tracking while awake, not new moods: the
+# five moods stay as they are. The radar is expected to lose visitors at the door.
+
+- id: SYS-047
+  text: >-
+    When the radar loses a visitor inside the door zone, the monster shall keep treating
+    that visitor as present, at the door, until the visitor is detected again or the door
+    hold time (theme setting, TBD-028) passes.
+  type: functional
+  verify: test
+  rationale: >-
+    Without it the monster says goodbye while the kids are getting candy, and greets them
+    as they leave.
+  source: owner 2026-11-09
+  notes: The door zone is set at radar calibration, from where the real radar loses people (TBD-029).
+  stage: 0
+  status: proposed
+
+- id: SYS-048
+  text: >-
+    While a visitor is at the door, the eyes shall look toward the door, and the monster
+    may say lines from the theme's door pool (an empty pool means no door talk).
+  type: functional
+  verify: demonstration
+  source: owner 2026-11-09
+  stage: 0
+  status: proposed
+
+- id: SYS-049
+  text: >-
+    When a visitor walks away from the house while the monster is awake, the eyes shall
+    follow that visitor and the monster shall say a goodbye line to them, even if other
+    visitors remain, keeping the minimum gap between lines (SYS-027).
+  type: functional
+  verify: test
+  source: owner 2026-11-09
+  notes: Coming vs going is told from the radar's speed sign if it carries direction (TBD-030), otherwise from the change in position.
+  stage: 0
+  status: proposed
+
+- id: SYS-050
+  text: >-
+    When a new visitor comes toward the house while the monster is awake, the eyes shall
+    glance at them with a happy or surprised look, and the monster may say a line from
+    the theme's arrival pool, keeping the minimum gap between lines (SYS-027).
+  type: functional
+  verify: demonstration
+  rationale: Eyes only by default (the Halloween theme's arrival pool starts empty); a theme can add short hello lines.
+  source: owner 2026-11-09
+  stage: 0
   status: proposed

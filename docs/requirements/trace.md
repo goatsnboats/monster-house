@@ -8,8 +8,8 @@
 
 | Subsystem | functional | performance | interface | constraint | Total |
 |---|---|---|---|---|---|
-| SYS Monster House system specification | 18 | 13 | 4 | 11 | 46 |
-| **All** | 18 | 13 | 4 | 11 | **46** |
+| SYS Monster House system specification | 22 | 13 | 4 | 11 | 50 |
+| **All** | 22 | 13 | 4 | 11 | **50** |
 
 **Components:** 51 (32 parts, 19 software). **ICDs:** 15 (15 stub).
 
@@ -17,7 +17,7 @@
 
 | Check | Result |
 |---|---|
-| System requirements with children | 0 of 46 |
+| System requirements with children | 0 of 50 |
 | Subsystem requirements allocated to a component | 0 of 0 |
 | Interface requirements with an ICD | 4 of 4 |
 | ICD sides with an interface requirement | 0 of 37 |
@@ -25,7 +25,7 @@
 
 **Components with no requirement yet** (51): `amp`, `amp-psu`, `content-tools`, `desktop`, `dev-env`, `eye-mask`, `eye-pi-left`, `eye-pi-right`, `eye-power-strip`, `eye-projector`, `eye-renderer`, `eye-screen`, `eye-shroud`, `eye-stand`, `fake-fpp`, `fake-radar`, `falcon-player`, `home-network`, `house-preview`, `install-checklists`, `lip-box`, `lip-channel`, `lip-clips`, `lip-controller`, `lip-lower`, `lip-psu`, `lip-upper`, `monster-brain`, `mosquitto`, `mouth-extras`, `phone-page`, `pi-setup`, `porch-enclosure`, `porch-mounting`, `porch-pi`, `power-distribution`, `radar-box`, `radar-esp32`, `radar-firmware`, `radar-psu`, `radar-sensor`, `rumble`, `service-units`, `site-config`, `speaker-wire`, `speakers`, `theme-format`, `theme-halloween`, `usb-audio`, `wled`, `xlights`
 
-### Gaps (83)
+### Gaps (87)
 
 - SYS-001: system requirement has no children yet (not decomposed)
 - SYS-002: system requirement has no children yet (not decomposed)
@@ -73,6 +73,10 @@
 - SYS-044: system requirement has no children yet (not decomposed)
 - SYS-045: system requirement has no children yet (not decomposed)
 - SYS-046: system requirement has no children yet (not decomposed)
+- SYS-047: system requirement has no children yet (not decomposed)
+- SYS-048: system requirement has no children yet (not decomposed)
+- SYS-049: system requirement has no children yet (not decomposed)
+- SYS-050: system requirement has no children yet (not decomposed)
 - ICD-001: no interface requirement on the SHW side
 - ICD-001: no interface requirement on the EYE side
 - ICD-002: no interface requirement on the EAR side
@@ -146,6 +150,7 @@
 - TBD-025: SYS-018
 - TBD-026: SYS-030
 - TBD-027: SYS-031
+- TBD-028: SYS-047
 
 ## Requirements
 
@@ -159,8 +164,8 @@
 | SYS-004 | functional | 0 | proposed | While visitors are in range, both eyes shall look toward the focus visitor's head, each eye aiming from its own window's position, so that the eyes converge on a near visitor and look parallel at a far one. | — | test |
 | SYS-005 | functional | 0 | proposed | When more than one visitor is in range, the monster shall move its gaze between them, giving a newly arrived visitor the focus first. | — | demonstration |
 | SYS-006 | functional | 0 | proposed | While watching visitors, the monster shall say a comment or giggle at intervals set in the theme (default 10–20 s, chosen at random within that range). | — | test |
-| SYS-007 | functional | 0 | proposed | When no visitor has been in range for the time set in the theme (default 5 s), the monster shall look toward where they left, say a goodbye line and droop its eyes. | — | test |
-| SYS-008 | functional | 0 | proposed | After a goodbye, the monster shall go back to sleep when no visitor has arrived for the time set in the theme (default 20 s), or greet a newly arrived visitor without yawning first. | — | test |
+| SYS-007 | functional | 0 | proposed | When no visitor has been in range for the time set in the theme (default 5 s), not counting visitors at the door (SYS-047), the monster shall look toward where they left, droop its eyes, and say a goodbye line unless the last visitor to leave already got one (SYS-049). | — | test |
+| SYS-008 | functional | 0 | proposed | After a goodbye, the monster shall go back to sleep when no visitor has arrived for the time set in the theme (default 20 s), or greet a visitor coming toward the house without yawning first. A visitor picked up again on the way out is not a new arrival. | — | test |
 | SYS-009 | functional | 0 | proposed | While awake, the monster shall blink both eyes together, at intervals set in the theme. | — | demonstration |
 | SYS-010 | functional | 0 | proposed | The eyes shall be able to show at least the expressions neutral, happy, sparkle, surprised, sleepy and asleep, easing from one to the next without jumps. | — | demonstration |
 | SYS-011 | functional | 4 | proposed | Whenever the monster speaks, its lips shall move in time with its voice. | — | demonstration |
@@ -199,6 +204,10 @@
 | SYS-044 | constraint | 1 | proposed | With an eye pod running, no projector light shall reach the bedroom outside the shroud. | — | inspection |
 | SYS-045 | constraint | 1 | proposed | The monster shall be installed and removed each season with nothing left in the bedroom and nothing left on the house except the year-round lip clips. | — | demonstration |
 | SYS-046 | constraint | 2 | proposed | Every outdoor part shall be rated for outdoor use or sheltered from rain and snow. | — | inspection |
+| SYS-047 | functional | 0 | proposed | When the radar loses a visitor inside the door zone, the monster shall keep treating that visitor as present, at the door, until the visitor is detected again or the door hold time (theme setting, TBD-028) passes. | — | test |
+| SYS-048 | functional | 0 | proposed | While a visitor is at the door, the eyes shall look toward the door, and the monster may say lines from the theme's door pool (an empty pool means no door talk). | — | demonstration |
+| SYS-049 | functional | 0 | proposed | When a visitor walks away from the house while the monster is awake, the eyes shall follow that visitor and the monster shall say a goodbye line to them, even if other visitors remain, keeping the minimum gap between lines (SYS-027). | — | test |
+| SYS-050 | functional | 0 | proposed | When a new visitor comes toward the house while the monster is awake, the eyes shall glance at them with a happy or surprised look, and the monster may say a line from the theme's arrival pool, keeping the minimum gap between lines (SYS-027). | — | demonstration |
 
 ## Allocation
 

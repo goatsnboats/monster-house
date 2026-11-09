@@ -1,0 +1,19 @@
+; TS-002 trial, option B: the minimal eye in Godot 4 (Compatibility renderer).
+; Throwaway trial project.
+
+config_version=5
+
+[application]
+config/name="TS-002 option B: Godot"
+run/main_scene="res://eye.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="disabled"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.043, 0.043, 0.071, 1)

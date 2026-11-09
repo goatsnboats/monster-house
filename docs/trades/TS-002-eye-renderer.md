@@ -1,6 +1,6 @@
 # TS-002 — Eye renderer: Python + moderngl, or Godot
 
-> **Status:** Evaluating · **Date:** 2026-11-08 · **Decides:** what the eye renderer is built with · **TBD:** TBD-002 · **ADR:** — · **Affects:** Stage 0 Step 2 (and every later step that touches the eyes); TBD-003 (message schemas); TBD-013 (buy a Pi early?); `shared/topics.py`
+> **Status:** Recommended · **Date:** 2026-11-08 · **Decides:** what the eye renderer is built with · **TBD:** TBD-002 · **ADR:** [0002](../decisions/0002-eye-renderer.md) (Proposed) · **Affects:** Stage 0 Step 2 (and every later step that touches the eyes); TBD-003 (message schemas); TBD-013 (buy a Pi early?); `shared/topics.py`
 
 Status moves through `Framing` → `Awaiting weights` (Stop 1) → `Evaluating` →
 `Recommended` (Stop 2) → `Decided (owner, YYYY-MM-DD, <where>)`.
@@ -116,33 +116,117 @@ support and how it gets a full-screen output without X11 or a desktop (likely th
 kiosk Wayland compositor).
 
 ## 5. Evidence
-*Not started. Gathered after Stop 1.*
 
-Planned trial (about a day, throwaway code in `trials/ts-002/`, imported by nothing):
-- The **same minimal eye** both ways: sclera, iris, pupil, upper and lower lids with the
-  lower-lid smile, bold outline, catchlight.
-- Pupil glides after the mouse; keys switch `neutral` ↔ `happy` with easing and trigger a blink.
-- A 1280×720 window, with mirroring and 90° rotation switches.
-- Logs fps and frame times for 60 s; records memory use.
-- Receives `monster/eyes/blink` over MQTT from the Step 1 debug tool, to prove G4.
+**Trial set-up (2026-11-08).** The same minimal eye was built both ways in
+[`trials/ts-002/`](../../trials/ts-002/README.md): sclera, iris and ring, pupil,
+catchlights, sparkle, both lids with the lower-lid smile, and the bold outline. It has
+the expression table, gaze easing, wandering, blinks, mirroring, 90° rotation, and MQTT
+control. Both versions use the **same shader math**: the Godot shader is a line-for-line
+copy, and only the entry point and output names differ. The screenshots match
+([`results/compare-a-top-b-bottom.png`](../../trials/ts-002/results/compare-a-top-b-bottom.png)).
 
-Planned documented checks (sources and dates recorded at the time): the GL/GLES versions
-each needs vs. the Pi 5's Mesa V3D driver; KMS/DRM support; arm64 builds; MQTT options for Godot.
+**Machine:** the Ubuntu 24.04 desktop (Intel Arrow Lake graphics, Mesa 26.0.8, 24 cores),
+Python 3.11.18, moderngl 5.13.0, pygame-ce 2.5.8 (SDL 2.32.10), Godot 4.7.2.
 
-**What a Pi would measure later (TBD-013):** fps and memory at 720p full-screen on
-Pi OS Lite, start-up time from boot, and whether the no-desktop path works as documented.
+**Limit on the smoothness tests:** Claude runs in the `dev` account, whose desktop
+session isn't on a monitor. The compositor slows down windows nobody can see (with vsync
+on, A got about 20 fps), so **frame pacing on a real 60 Hz screen was not measured**.
+Instead, both options ran with vsync off and a 60 fps software cap (smoothness and CPU
+use), and uncapped (cost per frame). The owner can check a visible screen with the
+commands in the trial README.
+
+| # | Option | Criterion | Finding | Kind | Source |
+|---|---|---|---|---|---|
+| E1 | A | C1 | At a 60 fps cap, OpenGL ES context, 1280×720: 62 fps, worst 1% frame 16.9 ms, **0 frames over 25 ms** in 2 × 27 s runs | measured | `measure.sh` + `eye.py --bench 27 --no-vsync --fps-cap 60 --gles`, desktop, Wayland |
+| E2 | B | C1 | Same test: 60.0 fps, worst 1% frame 16.9 ms, **0 frames over 25 ms** in 2 × 27 s runs | measured | `measure.sh` + Godot `--rendering-driver opengl3_es -- --bench 27 --no-vsync --fps-cap 60` |
+| E3 | A | C1, C2 | Uncapped: **0.25 ms per frame** on average (about 3,900 fps), 0 hitches | measured | `eye.py --bench 8 --no-vsync`, Wayland |
+| E4 | B | C1, C2 | Uncapped: **3.0–3.2 ms per frame** (about 320 fps on OpenGL ES), worst frame about 7 ms every run. This includes Godot's engine loop and compositor pacing, not only drawing | measured | Godot `-- --bench 8 --no-vsync`, 3 runs |
+| E5 | A, B | C2 | At 60 fps: **CPU A 4.0–4.4 % vs B 5.0–5.9 %** of one core; **memory A 147–153 MB vs B 217 MB**. Desktop memory includes the Intel driver, so Pi figures will differ; the comparison is fair | measured | `measure.sh`, 20 s samples from `/proc` |
+| E6 | — | C2 | The Pi 5 GPU (Mesa V3D) offers **OpenGL ES 3.1** (conformant) and **desktop OpenGL 3.1** (not conformant); no plans for 3.2 | documented | [Mesa V3D docs](https://docs.mesa3d.org/drivers/v3d.html); [Phoronix Pi 5 review](https://Phoronix.com/review/raspberry-pi-5-graphics); [FOSDEM 2025 talk](https://fosdem.org/schedule/event/BMFQSE-raspberry-pi-gpu-drivers-from-bookworm-to-trixie); checked 2026-11-08 |
+| E7 | A | C2, G1 | `moderngl` asks for OpenGL 3.3 by default, but **runs with `require=310`** on a context capped at OpenGL 3.1 and on an **OpenGL ES 3.x context through EGL**, compiling `#version 300 es` shaders. Imitated on the desktop (`MESA_GL_VERSION_OVERRIDE=3.1`; SDL ES profile), **not on a Pi** | measured + documented | Probe scripts (2026-11-08); [moderngl context docs](https://moderngl.readthedocs.io/en/latest/reference/context.html) |
+| E8 | A | C2 | On OpenGL ES, reading pixels back as RGB returns garbage; RGBA works. Matters only for screenshots | measured | Read-back probe, 2026-11-08 |
+| E9 | A | C2, G2 | pygame-ce's bundled SDL 2.32.10 **includes the KMS/DRM driver** (it can't start here because the desktop owns the screen). Others run pygame-ce with `SDL_VIDEODRIVER=kmsdrm` on Pi OS Lite; older reports needed EGL driver overrides | measured + documented | SDL library symbols; [photobooth project](https://git.autonomic.zone/trav/nissaphotobooth/commit/f51f204a9deb96fcab959aa5fe159af6bbced1b3); [SDL Pi notes](https://wiki.libsdl.org/SDL3/README/raspberrypi); checked 2026-11-08 |
+| E10 | B | C2, G2 | Godot 4.7.2 display drivers: **x11, wayland, headless only. No KMS/DRM.** On Pi OS Lite it needs a compositor (e.g. `cage`) or X. No source found showing Godot under `cage` on a Pi 5; one forum user reports Godot 4.6 running well on Pi OS **with** its desktop | measured + documented | `Godot --help`; [Godot Wayland/X11 docs](https://docs.godotengine.org/en/4.7/tutorials/platform/linux/wayland_x11.html); [Godot forum: Pi](https://forum.godotengine.org/t/godot-4-x-on-the-raspberry-pi/34417); checked 2026-11-08 |
+| E11 | B | C2 | Godot **didn't exit after `quit()`** in 2 of about 12 launches (it finished its work, then hung). Seen in the off-screen session; cause not investigated | measured | Trial runs, 2026-11-08 |
+| E12 | A | C6 | **No Linux ARM64 wheels** for `moderngl` 5.13.0 or `glcontext` 3.1.0, so a Pi compiles them, which needs build tools and X11/GL headers (a source build here stopped at a missing `X11/Xlib.h`). `pygame-ce` 2.5.8 has a Pi wheel. Bookworm packages `python3-moderngl` 5.7.4 | measured + documented | [PyPI moderngl files](https://pypi.org/project/moderngl/5.13.0/#files); [Debian python-moderngl](https://sources.debian.org/src/python-moderngl/); checked 2026-11-08 |
+| E13 | B | C6 | Godot is **one 146 MB program** (78 MB zip); an official `linux.arm64` build of 4.7.2 exists. On the Pi it also needs a compositor installed and configured | measured + documented | Download, 2026-11-08; [godotengine.org/download](https://godotengine.org/download/linux) |
+| E14 | A, B | G1 | Both draw entirely on the GPU in a fragment shader. A's shader is plain `#version 300 es`; B's ran on Godot's `opengl3_es` driver | measured | Trial runs |
+| E15 | A, B | G4, C5 | Both obey `blink` and `expression`, ignore a malformed message, publish `online`/`offline`, and the broker sends the **last will when the process is killed**. A uses `paho-mqtt` and `shared/topics.py`. B needed a hand-written MQTT client (82 lines) with the **topic names copied by hand**; an MIT add-on (godot-mqtt) exists. Godot reads `180` as `180.0` and logs an engine error for bad JSON | measured + documented | Trial runs with the Step 1 debug tool; [godot-mqtt](https://github.com/goatchurchprime/godot-mqtt) |
+| E16 | A, B | C3 | Start-to-quit: **A 0.29–0.32 s, B 0.49 s**, so both restart quickly after an edit. Godot's editor shows shader settings as live sliders (from tutorials; not tried here, because the editor needs a visible screen). A has no editor; shader reload while running could be added (judgment) | measured + documented | 3 timed runs each; [Godot shader tutorial](https://www.generalistprogrammer.com/tutorials/godot-4-shaders-tutorial) |
+| E17 | A, B | C4 | Code size (non-blank, non-comment lines): A **204 Python + 69 shader**. B **164 GDScript + 82 MQTT + 68 shader + 24 scene/project**. A is in the repo's language; B adds GDScript, Godot's scene and node ideas, and its editor | measured + judgment | Line counts |
+| E18 | B | C5 | Needs a neutral topic file (or generated code), its own test setup for gaze math, and an add-on or JSON for config (no built-in YAML) | judgment | See §2 *Couplings* |
+| E19 | A, B | G5 | moderngl MIT, pygame-ce LGPL-2.1, Godot MIT: all open source, with no per-device fee | documented | Project licences, checked 2026-11-08 |
+
+**Gates:** both options pass all five.
+- **G2 passes narrowly for both.** For A, the parts are proven separately (SDL has KMS/DRM; moderngl runs at the Pi's GL level), but not together on a Pi. For B, it relies on an extra compositor that nobody documents with Godot on a Pi 5.
+- **G4 passes for B** only with a hand-written client or a third-party add-on.
+
+**What a Pi would measure (TBD-013):** A with `SDL_VIDEODRIVER=kmsdrm` and `require=310`
+full-screen on Pi OS Lite; B under `cage`. Fps, memory and start-up for each, and
+whether `moderngl` builds and runs on the V3D driver.
 
 ## 6. Scores
-*Not run. Scoring waits for the owner's weights (Stop 1).*
+| Criterion | Weight | A: Python + moderngl | B: Godot 4 |
+|---|---|---|---|
+| C1 Smoothness | 20 | 5 (E1, E3) | 5 (E2) |
+| C2 Path to Pi 5 | 25 | 4 (E5, E7, E9) | 3 (E4, E5, E10, E11) |
+| C3 Look iteration | 15 | 4 (E16) | 5 (E16) |
+| C4 Readable by the owner | 15 | 4 (E17) | 3 (E17) |
+| C5 Fits the system | 15 | 5 (E15) | 2 (E15, E18) |
+| C6 Setup and deploy | 10 | 3 (E12) | 3 (E13, E10) |
+| **Weighted total (max 500)** | 100 | **425** | **355** |
+
+Score notes:
+- **C1:** both met the "5" description (60 fps, worst 1 % under 20 ms, no hitches), but
+  only under a software cap with the window off screen. Provisional until checked on a
+  visible screen. It doesn't separate the options either way.
+- **C2:** A gets 4, not 5, because nothing has run on a real Pi 5 yet. B gets 3: it
+  needs a compositor layer, uses more memory and CPU, and has the exit hang.
+- **C4:** the shader math is the hardest part to read in both, so neither gets 5.
 
 ## 7. Sensitivity
-*Not run.*
+B trails by 70 points. No single weight change can close that gap:
+- **C3** is the only criterion where B leads, by one score step. Its weight would have
+  to rise by 70 points.
+- **Lowering a weight where A leads** isn't enough either. Setting C5 (A ahead by 3
+  steps) to **zero** removes only 45 points; C2 to zero removes 25.
+- **Only combinations flip it**, for example C5 to zero and C3 up by 25. That would mean
+  sharing code with the rest of the system doesn't matter at all and a live editor
+  matters most.
+
+**Not close.** The result also holds if C2 is scored equal (A still leads by 45) or if
+C1 is re-scored after a visible-screen check, since both options would move together.
+
+**Narrow gates:** G2 for both options (see §5), and G4 for B.
 
 ## 8. Recommendation
-*Not run.*
+**Option A: Python + `moderngl` + `pygame-ce`.**
+
+- **Why:** it does the same job with less CPU and memory, stays in the repo's one
+  language, and uses `shared/topics.py`, `paho-mqtt`, YAML and `pytest` directly. It
+  also has a no-desktop path (SDL's KMS/DRM driver) that needs no extra compositor.
+- **Main risks:**
+  1. **Unproven on a real Pi 5.** `moderngl` at OpenGL 3.1 / ES 3.1 was only imitated
+     on the desktop. If it misbehaves on the V3D driver, the fallback is the screened
+     Python + raylib option, or Godot.
+  2. **The Pi install compiles `moderngl`** (no ARM wheels): Step 8's setup script must
+     install build tools and the X11/GL headers, or use Bookworm's older
+     `python3-moderngl` 5.7.4.
+  3. **No visual editor** for tuning the look. Mitigation: reload the shader and theme
+     values while the eye runs (a small feature for Step 2).
+- **What would change this recommendation:**
+  - A Pi 5 test where `moderngl` can't create its context or draw correctly on V3D.
+  - The owner deciding that tuning the look in a visual editor outweighs sharing code
+    with the rest of the system (see §7).
+  - A visible-screen check showing A stutters where Godot doesn't.
+- **Cost to reverse:** low now (only trial code). By the end of Step 2, about 1–2 weeks
+  of sessions (judgment), because the eye's logic would move to GDScript and topics and
+  schemas would need a neutral file. **Buying one Pi 5 now (TBD-013)** would retire risk
+  1 for about $45 before Step 2 builds on it.
 
 ## 9. Decision
-*Open.*
+*Open.* Awaiting the owner (Stop 2). Proposed ADR:
+[0002](../decisions/0002-eye-renderer.md).
 
 ## Links
 - Stage 0 plan, Step 2: [`../stage-0-plan.md`](../stage-0-plan.md)

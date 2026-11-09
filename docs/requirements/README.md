@@ -13,8 +13,10 @@ that do it, with a check that every link holds.
 | [system.yaml](system.yaml) | System requirements, `SYS-NNN` |
 | `eye.yaml`, `shw.yaml`, `ear.yaml`, `mth.yaml`, `voc.yaml`, `inf.yaml`, `thm.yaml` | Subsystem requirements, one file per subsystem, named after its prefix |
 | `sim.yaml`, `dep.yaml`, `dev.yaml` | Enabling-system requirements (DEV has none for now) |
-| [trace.md](trace.md) | **Generated, do not edit:** traceability matrix, coverage, diagrams |
-| [../architecture/components.yaml](../architecture/components.yaml) | Every component that requirements are allocated to |
+| [trace.md](trace.md) | **Generated, do not edit:** traceability matrix, coverage, budgets, diagrams |
+| [timing-budgets.md](timing-budgets.md) | The end-to-end information paths, hop by hop |
+| [../architecture/components.yaml](../architecture/components.yaml) | Every component that requirements are allocated to, with its budget figures |
+| `../architecture/nodes/`, `../architecture/software/` | One page per computer or controller, and per software item |
 | [../interfaces/](../interfaces/) | One ICD per interface, `ICD-NNN-<slug>.md` |
 | [../TBD.md](../TBD.md) | Every open value, cited as `TBD-NNN` |
 
@@ -38,7 +40,7 @@ The checker reports three levels:
 | Level | Means | Fails the check? |
 |---|---|---|
 | **error** | Something is wrong: a broken link, a missing or misspelled field, a TBD-NNN that isn't in the register | Yes |
-| **gap** | Something isn't done yet: a system requirement with no children, an ICD side with no interface requirement | Only with `--strict` |
+| **gap** | Something isn't done yet: a system requirement with no children, an ICD side with no interface requirement, a budget still waiting for a TBD-NNN | Only with `--strict` |
 | **warning** | The ICDs and `shared/topics.py` disagree about a topic name. The checker never changes either; a topic change is a message-format change, so ask the owner | Only with `--strict` |
 
 ## A requirement
@@ -62,7 +64,7 @@ The checker reports three levels:
 | `text` | yes | One *shall* statement, worded so it can be checked. Write `TBD-NNN` for a value that isn't decided yet |
 | `type` | yes | `functional` (what it does), `performance` (how fast, how often, how much, how loud), `interface` (how it meets another part or the outside world), `constraint` (a limit on how it may be built) |
 | `derives_from` | subsystem requirements | The parent requirement(s) this one helps meet. System requirements have none |
-| `allocated_to` | subsystem requirements | The one component that meets it, from `components.yaml`. It must belong to the same subsystem as the prefix, unless `allocation_note` says why not |
+| `allocated_to` | subsystem requirements | The component that meets it, from `components.yaml`, or a list of identical twins that each meet it (`[eye-pi-left, eye-pi-right]`). It must belong to the same subsystem as the prefix, unless `allocation_note` says why not; for an interface requirement it must be one of the ICD's ends |
 | `allocation_note` | no | Why a requirement is allocated outside its own subsystem |
 | `icd` | interface requirements | The ICD that specifies the interface, e.g. `ICD-001` |
 | `verify` | yes | How it will be shown to be met: `inspection` (look at it), `analysis` (calculate, including the budget check), `demonstration` (run it and watch), `test` (run it and measure) |
@@ -96,16 +98,19 @@ Errors:
 - system requirements have no parent and no allocation; subsystem requirements have at
   least one existing parent, no loops, and an allocation to a component of their own
   subsystem (or an `allocation_note`)
-- interface requirements name an ICD that exists
+- interface requirements name an ICD that exists, and are allocated to one of its ends
 - `verified_by` paths exist
 - components: allowed `kind`, a subsystem from the spec tree, named in the spec tree,
-  `deployed_on` only on software and only onto parts
+  `deployed_on` only on software and only onto parts, a page for every software item
+  and every computer or controller
+- budgets: amounts are numbers or TBD-NNN, and no host is over budget at any stage
 - ICDs: file name matches the ID, allowed status, every end is a component or a named
   outside entity, message `from`/`to` are ends, payload examples match their schema
 - every `TBD-NNN` in the requirements, architecture and ICD folders is in the register,
   and none appears without its number
 
-Gaps: system requirements with no children; ICD sides with no interface requirement.
+Gaps: system requirements with no children; ICD sides with no interface requirement;
+budgets waiting for a TBD-NNN.
 
 Warnings: topics in an ICD but not in `shared/topics.py`, and the other way round.
 
@@ -133,4 +138,19 @@ messages:
     rate: about 10 per second
     payload_schema: {...}          # JSON Schema subset, see tools/reqs/schema.py
     examples: [...]                # each one must match payload_schema
+files:                             # for file interfaces (theme folder, site config)
+  - name: settings
+    path: themes/{name}/settings.yaml
+    payload_schema: {...}
+    examples: [...]
 ```
+
+## Budgets
+
+`components.yaml` can say what a host **provides** (`{memory_mb: 1024, usb_ports: 4}`)
+and what a component **needs** (`{memory_mb: 153}`). Software draws from the computer
+it is `deployed_on`; a part draws from its `supplied_by`; a host's own needs (its
+operating system) come from itself. `tools/reqs/budget.py` adds them up for every stage
+and host. Over budget is an error; a TBD-NNN anywhere leaves that budget waiting (a
+gap). Requirements that set these limits use `verify: analysis` and
+`verified_by: [tools/reqs/budget.py]`. The results are in [trace.md](trace.md#budgets).

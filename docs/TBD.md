@@ -50,7 +50,13 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-027 | Brightness cap for the lips (SYS-031) | Owner decision, then a Test at the house | WLED brightness limit, power supply sizing | Stage 4 | Open |
 | TBD-028 | Door hold time: how long a visitor lost at the door still counts as present (SYS-047) | Owner decision, tuned in the Stage 0 simulator | Brain door-hold logic, theme settings | Stage 0 Step 4 | Open |
 | TBD-029 | Where the real radar loses visitors near the door (sets the door zone) (SYS-047) | Measurement at the Stage 2 install | Door zone in the site config, fake radar's blind spot | Stage 2 (simulator uses a guess until then) | Open |
-| TBD-030 | Whether ESPHome's LD2450 speed value carries direction (coming vs going) (SYS-049) | Verify against ESPHome's LD2450 documentation | How the brain tells coming from going | Stage 0 Step 3 (fake radar must match) | Open |
+| TBD-030 | How the radar tells coming from going, and the exact text of its messages. ESPHome's LD2450 page (checked 2026-11-09) gives speed in mm/s with no sign convention, and a per-target `direction` text sensor (`Approaching`, `Moving away`, `Stationary`) that would need a topic `shared/topics.py` doesn't have yet. It also doesn't state the state payload's number format (SYS-049, ICD-002) | Owner decision (use the `direction` sensor, which adds a topic), then a Test with the real ESP32 | How the brain tells coming from going; fake-radar parity | Stage 0 Step 3 (fake radar must match) | Open |
+| TBD-031 | How much memory (RAM) the porch Pi has (architecture §3 doesn't say) | Owner decision at the Stage 3 purchase, using the budget check | Porch Pi memory budget (INF-009) | Stage 3 purchase | Open |
+| TBD-032 | Memory each program and the operating system use on a Pi | Measurement on a real Pi (with TBD-013) | Eye Pi and porch Pi memory budgets | Stage 1 (eye Pi), Stage 3 (porch Pi) | Open |
+| TBD-033 | Power the lip strips, extras and controller draw at the brightness cap | Analysis, after TBD-007 (lengths) and TBD-027 (cap) | Lip supply budget (MTH-009) | Stage 4 purchase | Open |
+| TBD-034 | How each end-to-end time (SYS-019 to SYS-023, SYS-029) is shared between the hops on its path | Analysis, then a Measurement in the Stage 0 simulator and again on hardware | Per-hop budgets in the ICDs' timing sections ([timing-budgets.md](requirements/timing-budgets.md)) | Stage 0 Step 4 | Open |
+| TBD-035 | How the lips' idle "breathe" color follows the theme (a WLED preset per theme, chosen by the brain or by FPP) | Owner decision, then a Test with WLED | MTH-001, theme format (ICD-005) | Stage 4 | Open |
+| TBD-036 | Whether Falcon Player can run on the porch Pi 5 next to the brain and Mosquitto (FPP's own OS image vs Raspberry Pi OS) | Verify against FPP's documentation, then a Test | Porch Pi software setup (ICD-013), SYS-039 | Before the Stage 3 purchase | Open |
 
 ## Closed
 

@@ -1,3 +1,113 @@
 # EAR Ears subsystem requirements. Field meanings: README.md in this folder.
-# Decomposed from system.yaml at STOP 2.
-[]
+
+- id: EAR-001
+  text: >-
+    The radar shall report the position (x, y in mm) and speed of up to 3 people at once.
+  type: performance
+  derives_from: [SYS-025]
+  allocated_to: radar-sensor
+  verify: test
+  source: architecture.md §4; ESPHome LD2450 page (checked 2026-11-09)
+  stage: 2
+  status: proposed
+
+- id: EAR-002
+  text: >-
+    The radar's firmware shall be V2.02.23090617 or later.
+  type: constraint
+  derives_from: [SYS-025]
+  allocated_to: radar-sensor
+  verify: inspection
+  rationale: ESPHome's LD2450 component requires it.
+  source: architecture.md §4 "Software"; ESPHome LD2450 page
+  stage: 2
+  status: proposed
+
+- id: EAR-003
+  text: >-
+    Mounted under the porch roof, about 1-1.5 m high and aimed down the walkway, the
+    radar shall see visitors anywhere on the walkway and steps (the sidewalk: TBD-016).
+  type: performance
+  derives_from: [SYS-026]
+  allocated_to: radar-sensor
+  verify: test
+  source: architecture.md §4 "Placement"
+  stage: 2
+  status: proposed
+
+- id: EAR-004
+  text: >-
+    The radar firmware shall publish each target's x, y and speed and the target count at
+    about 10 times per second, overriding ESPHome's default one-per-second throttle.
+  type: performance
+  derives_from: [SYS-028, SYS-019]
+  allocated_to: radar-firmware
+  verify: test
+  rationale: ESPHome's LD2450 sensors default to throttle_with_priority 1000 ms (ESPHome page, 2026-11-09).
+  source: architecture.md §4 "Software"
+  stage: 2
+  status: proposed
+
+- id: EAR-005
+  text: >-
+    The radar firmware shall use filter zones so that passing cars, the street and moving
+    branches are not reported as visitors.
+  type: functional
+  derives_from: [SYS-026]
+  allocated_to: radar-firmware
+  verify: test
+  notes: The approach and door zones are decided by the brain from x and y, using the site config (ICD-015), so all decisions stay in the brain.
+  source: architecture.md §4 "Placement", "Calibration"
+  stage: 2
+  status: proposed
+
+- id: EAR-006
+  text: >-
+    The radar firmware shall publish to MQTT (not Home Assistant's API) as specified in
+    ICD-002.
+  type: interface
+  icd: ICD-002
+  derives_from: [SYS-042, SYS-028]
+  allocated_to: radar-firmware
+  verify: test
+  source: architecture.md §4 "Software"
+  stage: 2
+  status: proposed
+
+- id: EAR-007
+  text: >-
+    The radar node shall join the home Wi-Fi (2.4 GHz) with the name monster-radar, as
+    specified in ICD-009.
+  type: interface
+  icd: ICD-009
+  derives_from: [SYS-033]
+  allocated_to: radar-esp32
+  verify: inspection
+  source: architecture.md §8
+  stage: 2
+  status: proposed
+
+- id: EAR-008
+  text: >-
+    The radar's box shall mount under the porch roof, sheltered from rain, as specified
+    in ICD-010.
+  type: interface
+  icd: ICD-010
+  derives_from: [SYS-046, SYS-045]
+  allocated_to: radar-box
+  verify: inspection
+  source: architecture.md §4 "Placement" (the module is meant for indoor use)
+  stage: 2
+  status: proposed
+
+- id: EAR-009
+  text: >-
+    The radar's 5 V supply shall plug into one household outlet as specified in ICD-008.
+  type: interface
+  icd: ICD-008
+  derives_from: [SYS-034]
+  allocated_to: radar-psu
+  verify: inspection
+  source: architecture.md §4 "Hardware"
+  stage: 2
+  status: proposed

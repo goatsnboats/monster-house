@@ -1,3 +1,78 @@
-# SIM Simulators (enabling) subsystem requirements. Field meanings: README.md in this folder.
-# Decomposed from system.yaml at STOP 2.
-[]
+# SIM Simulators (enabling) requirements. Field meanings: README.md in this folder.
+
+- id: SIM-001
+  text: >-
+    The fake radar shall show a top-down view of the walk, steps and sidewalk, and let
+    the owner add, remove and drag up to 3 pretend visitors with the mouse.
+  type: functional
+  derives_from: [SYS-043]
+  allocated_to: fake-radar
+  verify: demonstration
+  source: stage-0-plan.md Step 3
+  stage: 0
+  status: proposed
+
+- id: SIM-002
+  text: >-
+    The fake radar shall publish exactly the topics, units (mm, radar-relative) and rate
+    of the real radar, as specified in ICD-002.
+  type: interface
+  icd: ICD-002
+  derives_from: [SYS-043, SYS-028]
+  allocated_to: fake-radar
+  verify: test
+  source: CLAUDE.md "Simulator parity"; stage-0-plan.md Step 3
+  stage: 0
+  status: proposed
+
+- id: SIM-003
+  text: >-
+    The fake radar shall have an adjustable blind spot by the door where it stops
+    reporting a visitor, as the real radar will (TBD-029).
+  type: functional
+  derives_from: [SYS-043, SYS-047]
+  allocated_to: fake-radar
+  verify: demonstration
+  source: owner 2026-11-09 (visitors lost at the door)
+  stage: 0
+  status: proposed
+
+- id: SIM-004
+  text: >-
+    The fake FPP shall accept clip commands and report clip status exactly as specified
+    in ICD-003, log each trigger, and play placeholder audio through the desktop speakers.
+  type: interface
+  icd: ICD-003
+  derives_from: [SYS-043]
+  allocated_to: fake-fpp
+  verify: test
+  source: stage-0-plan.md Step 4
+  stage: 0
+  status: proposed
+
+- id: SIM-005
+  text: >-
+    The house preview shall show the live eyes on docs/reference/house-front.jpg at the
+    two window positions (adjustable by dragging corners), plus a glowing line where the
+    lips will go.
+  type: functional
+  derives_from: [SYS-043]
+  allocated_to: house-preview
+  verify: demonstration
+  rationale: The owner decides lopsided vs matched eyes, size and colors from it (TBD-004).
+  source: stage-0-plan.md Step 5
+  stage: 0
+  status: proposed
+
+- id: SIM-006
+  text: >-
+    The house preview shall listen to the same eye messages as an eye pod, as specified
+    in ICD-001.
+  type: interface
+  icd: ICD-001
+  derives_from: [SYS-043]
+  allocated_to: house-preview
+  verify: test
+  source: spec tree (enabling-system interfaces)
+  stage: 0
+  status: proposed

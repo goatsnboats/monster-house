@@ -1,5 +1,5 @@
 # System requirements (SYS): what the whole Monster House shall do.
-# Field meanings: README.md in this folder. All are "proposed" until the owner reviews them.
+# Field meanings: README.md in this folder. Approved by the owner on 2026-11-09.
 # Values the docs don't give are TBD-NNN items in docs/TBD.md; times marked "theme
 # setting" come from the theme's settings file, with the architecture's default shown.
 
@@ -15,7 +15,7 @@
   rationale: A sleeping monster is still part of the show and tells visitors it can wake up.
   source: architecture.md §3b, Moods table (Asleep)
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-002
   text: >-
@@ -25,7 +25,7 @@
   verify: demonstration
   source: architecture.md §3b, Moods table (Waking)
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-003
   text: >-
@@ -35,7 +35,7 @@
   verify: demonstration
   source: architecture.md §3b, Moods table (Greeting)
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-004
   text: >-
@@ -47,7 +47,7 @@
   rationale: The small parallax between two windows is what makes the eyes look like they are focusing.
   source: architecture.md §2, "Looking at a visitor"
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-005
   text: >-
@@ -57,7 +57,7 @@
   verify: demonstration
   source: architecture.md §3b, Moods table (Watching) and "Turning radar data into a gaze" step 4
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-006
   text: >-
@@ -67,7 +67,7 @@
   verify: test
   source: architecture.md §3b, Moods table (Watching); settings example comment_every_s
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-007
   text: >-
@@ -79,7 +79,7 @@
   verify: test
   source: architecture.md §3b, Moods table (Goodbye); settings example goodbye_after_s; owner 2026-11-09 (door hold)
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-008
   text: >-
@@ -90,7 +90,7 @@
   verify: test
   source: architecture.md §3b, Moods state diagram (Goodbye → Asleep, Goodbye → Greeting); owner 2026-11-09 (coming vs going)
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-009
   text: >-
@@ -100,7 +100,7 @@
   rationale: Simultaneous blinks are why the brain, not each eye, owns blinking.
   source: architecture.md §2, "Blinks"; CLAUDE.md, Eye renderer constraints
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-010
   text: >-
@@ -110,7 +110,7 @@
   verify: demonstration
   source: architecture.md §2, expression table; docs/reference/eye-sketch.html
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-011
   text: >-
@@ -119,7 +119,7 @@
   verify: demonstration
   source: architecture.md §1 design principle 3, §3a, §5
   stage: 4
-  status: proposed
+  status: approved
 
 - id: SYS-012
   text: >-
@@ -131,7 +131,7 @@
   rationale: These cover what the radar can't know, like costumes or when candy was handed out.
   source: architecture.md §3b, Inputs (phone buttons); stage-0-plan.md Step 6
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-013
   text: >-
@@ -141,7 +141,7 @@
   verify: demonstration
   source: architecture.md §3b, "Variety and politeness rules" (mute)
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-014
   text: >-
@@ -152,7 +152,7 @@
   rationale: Neighbor-friendly; also keeps the bedroom quiet late at night.
   source: architecture.md §3a (Schedule), §6 "Neighbor-friendly"
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-015
   text: >-
@@ -162,7 +162,7 @@
   verify: test
   source: architecture.md §3b, "Variety and politeness rules" (clip pools)
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-016
   text: >-
@@ -172,7 +172,7 @@
   verify: demonstration
   source: architecture.md §9 (switching themes); CLAUDE.md "Themes are data"
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-017
   text: >-
@@ -185,7 +185,7 @@
   rationale: Fail friendly. A broken piece should look sleepy, never broken.
   source: CLAUDE.md "Fail friendly"; architecture.md §3b "What happens when something fails"
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-018
   text: >-
@@ -196,7 +196,7 @@
   rationale: Projector fan noise and light must not disturb whoever sleeps in the bedroom.
   source: architecture.md §2 "Risks and open questions" (fan noise); spec tree Q12
   stage: 1
-  status: proposed
+  status: approved
 
 # ── Performance: timing, rates, capacity, levels ────────────────────────────────
 
@@ -209,7 +209,7 @@
   rationale: End-to-end information path radar → brain → eyes; split into per-hop budgets at STOP 2.
   source: owner (timing process agreed 2026-11-09); value TBD-020
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-020
   text: >-
@@ -218,7 +218,7 @@
   verify: test
   source: owner (timing process agreed 2026-11-09); value TBD-021
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-021
   text: >-
@@ -227,7 +227,7 @@
   verify: test
   source: owner (timing process agreed 2026-11-09); value TBD-022
   stage: 3
-  status: proposed
+  status: approved
 
 - id: SYS-022
   text: >-
@@ -240,7 +240,7 @@
     or behind by 125 ms). Proposed starting values; the owner may relax them after a test.
   source: ITU-R BT.1359-1; owner (timing process agreed 2026-11-09)
   stage: 4
-  status: proposed
+  status: approved
 
 - id: SYS-023
   text: >-
@@ -249,7 +249,7 @@
   verify: test
   source: stage-0-plan.md Step 6, "Done when"
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-024
   text: >-
@@ -259,7 +259,7 @@
   verify: test
   source: architecture.md §2 (target 60 fps); CLAUDE.md, Eye renderer constraints
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-025
   text: >-
@@ -268,7 +268,7 @@
   verify: test
   source: architecture.md §4 (LD2450 reports up to 3 people)
   stage: 2
-  status: proposed
+  status: approved
 
 - id: SYS-026
   text: >-
@@ -278,7 +278,7 @@
   verify: test
   source: architecture.md §4, Placement and Calibration
   stage: 2
-  status: proposed
+  status: approved
 
 - id: SYS-027
   text: >-
@@ -289,7 +289,7 @@
   rationale: So the monster doesn't chatter.
   source: architecture.md §3b, "Variety and politeness rules" (minimum gap)
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-028
   text: >-
@@ -299,7 +299,7 @@
   verify: test
   source: architecture.md §1 (connections table), §3b step 5, §4 Software
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-029
   text: >-
@@ -308,7 +308,7 @@
   verify: test
   source: owner (timing process agreed 2026-11-09); value TBD-023
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-030
   text: >-
@@ -318,7 +318,7 @@
   rationale: Neighbor-friendly volume.
   source: architecture.md §3a (volume cap), §6 "Neighbor-friendly"
   stage: 3
-  status: proposed
+  status: approved
 
 - id: SYS-031
   text: >-
@@ -328,7 +328,7 @@
   rationale: Lips don't need to be blinding to read; neighbors.
   source: architecture.md §5, Risks ("Neighbors and brightness")
   stage: 4
-  status: proposed
+  status: approved
 
 # ── Interface: where the system meets the outside world ─────────────────────────
 
@@ -341,7 +341,7 @@
   verify: demonstration
   source: architecture.md §3b, Inputs (phone buttons)
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-033
   text: >-
@@ -352,7 +352,7 @@
   verify: inspection
   source: architecture.md §8 Network
   stage: 1
-  status: proposed
+  status: approved
 
 - id: SYS-034
   text: >-
@@ -363,7 +363,7 @@
   verify: inspection
   source: architecture.md §1 design principle 2 ("Wi-Fi everywhere except audio"); §2 hardware (one power strip)
   stage: 1
-  status: proposed
+  status: approved
 
 - id: SYS-035
   text: >-
@@ -374,7 +374,7 @@
   verify: inspection
   source: architecture.md §2 "Setup and teardown"; window sizes TBD-006
   stage: 1
-  status: proposed
+  status: approved
 
 # ── Constraints ─────────────────────────────────────────────────────────────────
 
@@ -386,7 +386,7 @@
   verify: inspection
   source: CLAUDE.md "Tone"; architecture.md §2 design rules
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-037
   text: >-
@@ -395,7 +395,7 @@
   verify: test
   source: CLAUDE.md "Fail friendly"; architecture.md §2 (cursor hidden)
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-038
   text: >-
@@ -405,7 +405,7 @@
   verify: inspection
   source: architecture.md §8 Network
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-039
   text: >-
@@ -415,7 +415,7 @@
   verify: test
   source: CLAUDE.md "Current stage" and Coding conventions; architecture.md §3
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-040
   text: >-
@@ -425,7 +425,7 @@
   verify: inspection
   source: CLAUDE.md, Eye renderer constraints; ADR 0002
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-041
   text: >-
@@ -434,7 +434,7 @@
   verify: inspection
   source: CLAUDE.md "Themes are data"; architecture.md §9
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-042
   text: >-
@@ -445,7 +445,7 @@
   verify: inspection
   source: CLAUDE.md "Everything talks over MQTT"
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-043
   text: >-
@@ -456,7 +456,7 @@
   rationale: Lets the monster be built and tuned in winter, and swapped to real hardware later without code changes.
   source: CLAUDE.md "Simulator parity"; architecture.md §10
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-044
   text: >-
@@ -466,7 +466,7 @@
   rationale: The bedroom has to stay livable.
   source: architecture.md §2 hardware (light shroud); overview ("the bedroom has to stay livable")
   stage: 1
-  status: proposed
+  status: approved
 
 - id: SYS-045
   text: >-
@@ -476,7 +476,7 @@
   verify: demonstration
   source: architecture.md overview, §2 "Setup and teardown", §5 (year-round clips)
   stage: 1
-  status: proposed
+  status: approved
 
 - id: SYS-046
   text: >-
@@ -485,7 +485,7 @@
   verify: inspection
   source: architecture.md §4 Placement, §5 hardware and Risks, §6 hardware
   stage: 2
-  status: proposed
+  status: approved
 
 # ── Functional: visitors coming, at the door, and going (owner, 2026-11-09) ─────
 # These are triggers for talking and eye tracking while awake, not new moods: the
@@ -504,7 +504,7 @@
   source: owner 2026-11-09
   notes: The door zone is set at radar calibration, from where the real radar loses people (TBD-029).
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-048
   text: >-
@@ -514,7 +514,7 @@
   verify: demonstration
   source: owner 2026-11-09
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-049
   text: >-
@@ -526,7 +526,7 @@
   source: owner 2026-11-09
   notes: Coming vs going is told from the radar's speed sign if it carries direction (TBD-030), otherwise from the change in position.
   stage: 0
-  status: proposed
+  status: approved
 
 - id: SYS-050
   text: >-
@@ -538,4 +538,4 @@
   rationale: Eyes only by default (the Halloween theme's arrival pool starts empty); a theme can add short hello lines.
   source: owner 2026-11-09
   stage: 0
-  status: proposed
+  status: approved

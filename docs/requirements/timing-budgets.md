@@ -8,6 +8,10 @@ end-to-end time is shared out between its hops is **TBD-034**: decided by analys
 measured in the Stage 0 simulator, and again on hardware. The ICDs' timing sections point
 here.
 
+A latency model (each hop's estimated or measured delay, added up per path, like the
+budget check) will be built while burning down these TBDs (owner, 2026-11-09). It becomes
+the `basis` of the timing requirements, which the checker lists as gaps until then.
+
 ## P1 — Visitor moves → eyes follow (SYS-019, total TBD-020)
 
 ```mermaid

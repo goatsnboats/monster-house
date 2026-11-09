@@ -15,7 +15,8 @@ import re
 from dataclasses import dataclass
 
 from tools.reqs import schema, shared_topics
-from tools.reqs.load import COMPONENTS, ICD_DIR, REQ_DIR, SPEC_TREE, TOPICS_FILE, Model
+from tools.reqs import budget
+from tools.reqs.load import ARCH_DIR, COMPONENTS, ICD_DIR, REQ_DIR, SPEC_TREE, TOPICS_FILE, Model
 
 TYPES = {"functional", "performance", "interface", "constraint"}
 VERIFY = {"inspection", "analysis", "demonstration", "test"}
@@ -28,7 +29,7 @@ REQ_FIELDS_KNOWN = set(REQ_FIELDS_REQUIRED) | {
 COMP_KINDS = {"part", "software"}
 COMP_FIELDS_KNOWN = {
     "id", "kind", "subsystem", "name", "stage", "location", "functions", "ports", "deployed_on", "notes",
-    "needs", "provides",
+    "needs", "provides", "supplied_by",
 }
 ICD_STATUSES = {"stub", "skeleton", "draft", "approved"}
 
@@ -40,7 +41,7 @@ TBD_REF = re.compile(r"TBD-\d{3}")
 BARE_TBD = re.compile(r"\bTBD\b(?![-.]\w| register)")
 
 # Files whose TBD references are checked (TBD.md itself is the register).
-TBD_CHECKED_DIRS = [REQ_DIR, "docs/architecture", ICD_DIR]
+TBD_CHECKED_DIRS = [REQ_DIR, ARCH_DIR, ICD_DIR]
 
 
 @dataclass(frozen=True)
@@ -61,6 +62,7 @@ def check_all(model: Model) -> list[Finding]:
     findings += check_tbds(model)
     findings += check_coverage(model)
     findings += check_topics(model)
+    findings += [Finding(level, where, msg) for level, where, msg in budget.findings(model)]
     return findings
 
 
@@ -129,6 +131,11 @@ def check_requirements(model: Model) -> list[Finding]:
                 err("interface requirement has no icd")
             elif icd not in model.icds:
                 err(f"icd {icd} does not exist in {ICD_DIR}/")
+            else:
+                ends = set(icd_end_names(model.icds[icd]))
+                for comp in allocations(r):
+                    if comp not in ends:
+                        err(f"allocated to {comp}, which is not one of {icd}'s ends")
         elif r.get("icd") and r["icd"] not in model.icds:
             err(f"icd {r['icd']} does not exist in {ICD_DIR}/")
 
@@ -142,19 +149,29 @@ def check_requirements(model: Model) -> list[Finding]:
     return out
 
 
+def allocations(r: dict) -> list[str]:
+    """allocated_to as a list. It is one component, or a list of identical twins
+    (e.g. [eye-pi-left, eye-pi-right]) that each meet the requirement."""
+    value = r.get("allocated_to")
+    if not value:
+        return []
+    return value if isinstance(value, list) else [value]
+
+
 def _check_allocation(model: Model, rid: str, r: dict, prefix: str) -> list[Finding]:
     where = f"{r['_file']}: {rid}"
-    comp_id = r.get("allocated_to")
-    if not comp_id:
+    if not allocations(r):
         return [Finding("error", where, "not allocated to a component (allocated_to)")]
-    comp = model.comps.get(comp_id)
-    if comp is None:
-        return [Finding("error", where, f"allocated to {comp_id}, which is not in {COMPONENTS}")]
-    if comp.get("subsystem") != prefix and not r.get("allocation_note"):
-        return [Finding("error", where,
-                        f"allocated to {comp_id}, which belongs to {comp.get('subsystem')}, not {prefix}; "
-                        "allocate within the subsystem or explain why in allocation_note")]
-    return []
+    out = []
+    for comp_id in allocations(r):
+        comp = model.comps.get(comp_id)
+        if comp is None:
+            out.append(Finding("error", where, f"allocated to {comp_id}, which is not in {COMPONENTS}"))
+        elif comp.get("subsystem") != prefix and not r.get("allocation_note"):
+            out.append(Finding("error", where,
+                               f"allocated to {comp_id}, which belongs to {comp.get('subsystem')}, not {prefix}; "
+                               "allocate within the subsystem or explain why in allocation_note"))
+    return out
 
 
 def _check_cycles(model: Model) -> list[Finding]:
@@ -198,6 +215,10 @@ def check_components(model: Model) -> list[Finding]:
         if cid not in mentioned:
             err(f"not named in {SPEC_TREE} (add it to its subsystem's table)")
 
+        page = component_page(model, cid)
+        if page is not None and not (model.root / page).exists():
+            err(f"needs a page: {page}")
+
         deployed = c.get("deployed_on")
         if c.get("kind") == "part" and deployed:
             err("a part isn't deployed on anything (deployed_on is for software)")
@@ -212,6 +233,25 @@ def check_components(model: Model) -> list[Finding]:
                     if model.comps.get(host, {}).get("kind") != "part":
                         err(f"deployed_on {host!r} (stage {stage}) is not a part in {COMPONENTS}")
     return out
+
+
+def hosts(model: Model) -> set[str]:
+    """Parts that some software runs on: the hardware nodes."""
+    found = set()
+    for c in model.comps.values():
+        for stage_hosts in (c.get("deployed_on") or {}).values():
+            found.update(stage_hosts if isinstance(stage_hosts, list) else [stage_hosts])
+    return found
+
+
+def component_page(model: Model, cid: str) -> str | None:
+    """The page a component must have: every software item and every hardware node."""
+    c = model.comps[cid]
+    if c.get("kind") == "software":
+        return f"{ARCH_DIR}/software/{cid}.md"
+    if cid in hosts(model):
+        return f"{ARCH_DIR}/nodes/{cid}.md"
+    return None
 
 
 # ── ICDs ────────────────────────────────────────────────────────────────────────
@@ -272,8 +312,8 @@ def check_icds(model: Model) -> list[Finding]:
             elif end.get("external") and end["external"] not in model.externals:
                 err(f"external end {end['external']} is not in the spec tree's externals")
         names = set(icd_end_names(icd))
-        for i, msg in enumerate(icd.get("messages") or []):
-            label = msg.get("name") or msg.get("topic") or msg.get("path") or f"message {i + 1}"
+        for i, msg in enumerate((icd.get("messages") or []) + (icd.get("files") or [])):
+            label = msg.get("name") or msg.get("topic") or msg.get("path") or f"item {i + 1}"
             for side in ("from", "to"):
                 for name in _as_list(msg.get(side)):
                     if name not in names:
@@ -326,7 +366,7 @@ def check_coverage(model: Model) -> list[Finding]:
             out.append(Finding("gap", rid, "system requirement has no children yet (not decomposed)"))
     for iid, icd in sorted(model.icds.items()):
         for side, comps in icd_sides(model, icd).items():
-            if not any(r.get("icd") == iid and r.get("allocated_to") in comps and r.get("type") == "interface"
+            if not any(r.get("icd") == iid and set(allocations(r)) & comps and r.get("type") == "interface"
                        for r in live.values()):
                 out.append(Finding("gap", iid, f"no interface requirement on the {side} side"))
     return out

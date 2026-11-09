@@ -25,6 +25,7 @@ What it checks and what the fields mean: `docs/requirements/README.md`.
 | `reqs/checks.py` | The checks (errors, gaps, warnings) |
 | `reqs/schema.py` | A small JSON-Schema checker for ICD payload examples |
 | `reqs/shared_topics.py` | Compares ICD topics with `shared/topics.py` |
+| `reqs/budget.py` | Adds up what components need against what their hosts provide, per stage |
 | `reqs/trace.py` | Writes `trace.md` |
 
 It grew from the TS-001 trial script (`trials/ts-001/a/check.py`), which stays as it was.

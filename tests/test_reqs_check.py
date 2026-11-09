@@ -99,7 +99,8 @@ def is_pattern(topic):
 '''
 
 
-def write_baseline(root: Path, system=None, eye=None, shw=None, icd=ICD, topics=TOPICS) -> Path:
+def write_baseline(root: Path, system=None, eye=None, shw=None, icd=ICD, topics=TOPICS,
+                   components=None, pages=True) -> Path:
     """A small, valid baseline under root. Pass a list or text to replace one part."""
     req = root / "docs/requirements"
     req.mkdir(parents=True)
@@ -110,7 +111,12 @@ def write_baseline(root: Path, system=None, eye=None, shw=None, icd=ICD, topics=
     (req / "system.yaml").write_text(yaml.safe_dump(system if system is not None else SYSTEM, sort_keys=False))
     (req / "eye.yaml").write_text(yaml.safe_dump(eye if eye is not None else EYE, sort_keys=False))
     (req / "shw.yaml").write_text(yaml.safe_dump(shw if shw is not None else SHW, sort_keys=False))
-    (root / "docs/architecture/components.yaml").write_text(yaml.safe_dump(COMPONENTS, sort_keys=False))
+    comps = components if components is not None else COMPONENTS
+    (root / "docs/architecture/components.yaml").write_text(yaml.safe_dump(comps, sort_keys=False))
+    if pages:
+        for folder, cid in (("software", "monster-brain"), ("software", "eye-renderer"), ("nodes", "desktop")):
+            (root / f"docs/architecture/{folder}").mkdir(exist_ok=True)
+            (root / f"docs/architecture/{folder}/{cid}.md").write_text(f"# {cid}\n")
     (root / "docs/interfaces/ICD-001-look.md").write_text(icd)
     (root / "docs/TBD.md").write_text(TBD)
     (root / "shared/topics.py").write_text(topics)
@@ -276,6 +282,77 @@ def test_undecomposed_system_requirement_is_a_gap(tmp_path):
 def test_icd_side_without_interface_requirement_is_a_gap(tmp_path):
     root = write_baseline(tmp_path, shw=changed(SHW, "SHW-001", type="functional", icd=None))
     assert any("ICD-001" in g and "SHW side" in g for g in findings(root, "gap"))
+
+
+def test_interface_requirement_must_be_on_an_icd_end(tmp_path):
+    comps = COMPONENTS + [{"id": "eye-helper", "kind": "part", "subsystem": "EYE", "name": "Helper", "stage": 0}]
+    root = write_baseline(tmp_path, components=comps, eye=changed(EYE, "EYE-002", allocated_to="eye-helper"))
+    assert any("not one of ICD-001's ends" in e for e in findings(root))
+
+
+def test_allocation_to_twin_parts(tmp_path):
+    comps = COMPONENTS + [
+        {"id": "pi-left", "kind": "part", "subsystem": "EYE", "name": "Pi L", "stage": 0},
+        {"id": "pi-right", "kind": "part", "subsystem": "EYE", "name": "Pi R", "stage": 0},
+    ]
+    eye = EYE + [dict(EYE[0], id="EYE-003", allocated_to=["pi-left", "pi-right"])]
+    root = write_baseline(tmp_path, components=comps, eye=eye)
+    spec = (root / "docs/requirements/spec-tree.md")
+    spec.write_text(spec.read_text().replace("`desktop`.", "`desktop`, `pi-left`, `pi-right`."))
+    assert findings(root) == []
+    eye_bad = EYE + [dict(EYE[0], id="EYE-003", allocated_to=["pi-left", "monster-brain"])]
+    root2 = write_baseline(tmp_path / "b", components=comps, eye=eye_bad)
+    assert any("monster-brain, which belongs to SHW" in e for e in findings(root2))
+
+
+def test_software_and_hosts_need_pages(tmp_path):
+    root = write_baseline(tmp_path, pages=False)
+    errors = findings(root)
+    assert any("needs a page: docs/architecture/software/eye-renderer.md" in e for e in errors)
+    assert any("needs a page: docs/architecture/nodes/desktop.md" in e for e in errors)
+
+
+def _budget_components(have, renderer_need, os_need=0):
+    comps = [dict(c) for c in COMPONENTS]
+    for c in comps:
+        if c["id"] == "desktop":
+            c["provides"] = {"memory_mb": have}
+            c["needs"] = {"memory_mb": os_need}
+        if c["id"] == "eye-renderer":
+            c["needs"] = {"memory_mb": renderer_need}
+        if c["id"] == "monster-brain":
+            c["needs"] = {"memory_mb": 100}
+    return comps
+
+
+def test_budget_within_capacity_is_clean(tmp_path):
+    root = write_baseline(tmp_path, components=_budget_components(1024, 153, os_need=300))
+    assert [str(f) for f in check_all(load(root))] == []
+
+
+def test_budget_over_capacity_is_an_error(tmp_path):
+    root = write_baseline(tmp_path, components=_budget_components(512, 153, os_need=300))
+    assert any("budget desktop" in e and "needs 553 but has 512" in e for e in findings(root))
+
+
+def test_budget_with_tbd_is_a_gap(tmp_path):
+    tbd = (TBD + "| TBD-002 | Memory | Measurement | — | — | Open |\n")
+    root = write_baseline(tmp_path, components=_budget_components(1024, "TBD-002"))
+    (root / "docs/TBD.md").write_text(tbd)
+    assert any("budget desktop" in g and "waiting for TBD-002" in g for g in findings(root, "gap"))
+    assert findings(root) == []
+
+
+def test_budget_amount_must_be_number_or_tbd(tmp_path):
+    root = write_baseline(tmp_path, components=_budget_components(1024, "lots"))
+    assert any("must be a number or a TBD-NNN" in e for e in findings(root))
+
+
+def test_icd_file_examples_are_checked_too(tmp_path):
+    icd = ICD.replace("medium: MQTT\n", "medium: MQTT\nfiles:\n  - name: settings\n    path: x.yaml\n"
+                      "    payload_schema: {type: object, required: [a]}\n    examples: [{b: 1}]\n")
+    root = write_baseline(tmp_path, icd=icd)
+    assert any("settings: example" in e and "missing required key 'a'" in e for e in findings(root))
 
 
 def test_schema_subset():

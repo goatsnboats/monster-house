@@ -9,7 +9,8 @@ from __future__ import annotations
 import re
 from collections import Counter
 
-from tools.reqs.checks import Finding, children_of, icd_end_names, icd_sides
+from tools.reqs import budget
+from tools.reqs.checks import Finding, allocations, children_of, icd_end_names, icd_sides
 from tools.reqs.load import Model
 
 TYPE_ORDER = ["functional", "performance", "interface", "constraint"]
@@ -26,6 +27,7 @@ def render(model: Model, findings: list[Finding]) -> str:
     ]
     lines += _summary(model)
     lines += _coverage(model, findings)
+    lines += _budgets(model)
     lines += _matrix(model)
     lines += _allocation_diagrams(model)
     lines += _interface_diagram(model)
@@ -67,7 +69,7 @@ def _coverage(model: Model, findings: list[Finding]) -> list[str]:
     system = [rid for rid in reqs if rid.startswith("SYS-")]
     sub = [rid for rid in reqs if not rid.startswith("SYS-")]
     with_children = [rid for rid in system if children_of(model, rid)]
-    allocated = [rid for rid in sub if reqs[rid].get("allocated_to") in model.comps]
+    allocated = [rid for rid in sub if allocations(reqs[rid]) and all(c in model.comps for c in allocations(reqs[rid]))]
     interface = [rid for rid in reqs if reqs[rid].get("type") == "interface"]
     with_icd = [rid for rid in interface if reqs[rid].get("icd") in model.icds]
 
@@ -84,7 +86,7 @@ def _coverage(model: Model, findings: list[Finding]) -> list[str]:
     lines.append("")
 
     unallocated = sorted(cid for cid in model.comps
-                         if not any(r.get("allocated_to") == cid for r in reqs.values()))
+                         if not any(cid in allocations(r) for r in reqs.values()))
     if unallocated:
         lines += [f"**Components with no requirement yet** ({len(unallocated)}): "
                   + ", ".join(f"`{c}`" for c in unallocated), ""]
@@ -106,6 +108,24 @@ def _coverage(model: Model, findings: list[Finding]) -> list[str]:
 
 def _tbd_refs(text: str) -> list[str]:
     return re.findall(r"TBD-\d{3}", str(text))
+
+
+# ── Budgets ─────────────────────────────────────────────────────────────────────
+
+def _budgets(model: Model) -> list[str]:
+    rows = budget.evaluate(model)
+    lines = ["## Budgets", "",
+             "What each host provides vs what is deployed on or supplied by it, per stage "
+             "(`tools/reqs/budget.py`).", ""]
+    if not rows:
+        return lines + ["No budgets declared yet.", ""]
+    lines += ["| Host | Resource | Stages | Need | Have | Status | Needed by |", "|---|---|---|---|---|---|---|"]
+    for b in rows:
+        need = b.need if b.need is not None else "?"
+        status = {"ok": "OK", "over": "**OVER**", "incomplete": "waiting for " + ", ".join(b.tbds)}[b.status]
+        who = ", ".join(f"{cid} ({amount})" for cid, amount in b.consumers)
+        lines.append(f"| {b.host} | {b.resource} | {b.stages} | {need} | {b.have} | {status} | {who} |")
+    return lines + [""]
 
 
 # ── Matrix ──────────────────────────────────────────────────────────────────────
@@ -131,7 +151,7 @@ def _matrix(model: Model) -> list[str]:
                 r = model.reqs[rid]
                 lines.append(f"| {rid} | {r.get('type')} | {r.get('stage')} | {r.get('status')} | "
                              f"{_cell(r.get('text', ''))} | {', '.join(r.get('derives_from') or []) or '—'} | "
-                             f"{r.get('allocated_to', '—')} | {r.get('icd', '—')} | {r.get('verify')} |")
+                             f"{', '.join(allocations(r)) or '—'} | {r.get('icd', '—')} | {r.get('verify')} |")
         lines.append("")
     return lines
 
@@ -152,8 +172,7 @@ def _allocation_diagrams(model: Model) -> list[str]:
             r = model.reqs[rid]
             for parent in r.get("derives_from") or []:
                 lines.append(f"  {_node(parent)}[{parent}] --> {_node(rid)}[{rid}]")
-            comp = r.get("allocated_to")
-            if comp:
+            for comp in allocations(r):
                 lines.append(f"  {_node(rid)} -.-> c_{_node(comp)}([{comp}])")
         lines += ["```", ""]
     if not drawn:

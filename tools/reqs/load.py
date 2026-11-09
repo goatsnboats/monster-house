@@ -17,6 +17,7 @@ import yaml
 REQ_DIR = "docs/requirements"
 SPEC_TREE = "docs/requirements/spec-tree.md"
 TRACE = "docs/requirements/trace.md"
+ARCH_DIR = "docs/architecture"
 COMPONENTS = "docs/architecture/components.yaml"
 ICD_DIR = "docs/interfaces"
 TBD_FILE = "docs/TBD.md"

@@ -44,7 +44,7 @@ PDR per stage before each CDR.
 
 ## SRR package, in this order (owner, 2026-11-09)
 
-1. **Concept of operations** (`docs/conops.md`): a Halloween night from setup to teardown,
+1. **Concept of operations** ([../conops.md](../conops.md)): a Halloween night from setup to teardown,
    what visitors see and hear, and what the owner does on the phone.
 2. **Requirements review:** the owner reviews the 118 proposed subsystem requirements,
    with the ConOps to hand.

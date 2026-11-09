@@ -70,8 +70,15 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
 
 **Done when:** the setup is documented well enough to run the moment the Pi arrives.
 
+## Design reviews (in parallel with the steps above)
+See [reviews/](reviews/README.md) for the entry and exit criteria.
+- [ ] SRR package: concept of operations, owner's review of the subsystem requirements, verification plan, risk register.
+- [ ] **SRR** (December): requirements baseline frozen (tag `srr`).
+- [ ] **PDR + CDR-1 (Eyes)** at Stage 0 exit: design baseline (tag `pdr`), go/no-go for the Stage 1 purchase.
+
 ## Exit criteria for Stage 0 (then buy Stage 1 parts)
 - [ ] The owner likes the eyes in the house preview.
 - [ ] Pretend visits feel right.
 - [ ] Eye layout decided (lopsided or matched; rotation for each window).
 - [ ] Windows measured; projector model chosen (AAXA P400 class, or the fallback).
+- [ ] PDR and CDR-1 passed (see [reviews/](reviews/README.md)).

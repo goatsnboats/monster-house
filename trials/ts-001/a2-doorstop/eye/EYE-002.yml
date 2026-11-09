@@ -1,0 +1,14 @@
+active: true
+allocated_to: eye-renderer
+derived: false
+header: ''
+level: 2.0
+links:
+- SYS-002: olj2s8cnxF0NWpNyOZT8TOlie_nQmE4No4XK6PGvBgE=
+normative: true
+ref: ''
+reviewed: PMrspF2jq3OE6S3LZazPG-n2CboFD4j60grCEau0tIE=
+text: |
+  The eye shall settle on a new look point within 300 ms.
+type: performance
+verify: test

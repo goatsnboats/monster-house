@@ -1,0 +1,14 @@
+active: true
+allocated_to: eye-renderer
+derived: false
+header: ''
+level: 4.0
+links:
+- SYS-003: mRbI4MvoPxZUoto0AVRp1iIZnIFxtbf1yA58gv_Ny-s=
+normative: true
+ref: ''
+reviewed: A4ey5L4sNpFTDHXPLOCmrz-uZe2_AJ_qxW57c3KBx6s=
+text: |
+  Pupils shall be round; slit pupils shall not be drawn.
+type: constraint
+verify: inspection

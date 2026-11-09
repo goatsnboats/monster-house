@@ -1,0 +1,14 @@
+active: true
+allocated_to: eye-renderer
+derived: false
+header: ''
+level: 1.0
+links:
+- SYS-001: R-Z8YfBAgDd3UPR8yc76CiU6xMJpzjHmZRQzb0n7BpE=
+normative: true
+ref: ''
+reviewed: -Vz_S_b7xXpbaOPqoRqvTCv29uNnZbtLkoh9xTSnYAg=
+text: |
+  The eye renderer shall turn the pupil toward the commanded look point, as seen from its own window's position.
+type: functional
+verify: demonstration

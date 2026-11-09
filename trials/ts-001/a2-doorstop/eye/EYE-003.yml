@@ -1,0 +1,15 @@
+active: true
+allocated_to: eye-renderer
+derived: false
+header: ''
+icd: ICD-001
+level: 3.0
+links:
+- SYS-001: R-Z8YfBAgDd3UPR8yc76CiU6xMJpzjHmZRQzb0n7BpE=
+normative: true
+ref: ''
+reviewed: 1wiPBeHMqsv1ZKtpDaQLzn9lh7jGx0W9USFlJM1qNrU=
+text: |
+  The eye renderer shall accept look points as specified in ICD-001 and ignore malformed messages.
+type: interface
+verify: test

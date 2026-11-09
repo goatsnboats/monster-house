@@ -1,0 +1,149 @@
+[DOCUMENT]
+TITLE: Monster House requirements (TS-001 trial)
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: TEXT
+  FIELDS:
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TYPE
+    TYPE: SingleChoice(Functional, Performance, Interface, Constraint)
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: False
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: ALLOCATED_TO
+    TYPE: String
+    REQUIRED: False
+  - TITLE: ICD
+    TYPE: String
+    REQUIRED: False
+  - TITLE: VERIFY
+    TYPE: SingleChoice(Inspection, Analysis, Demonstration, Test)
+    REQUIRED: True
+  - TITLE: RATIONALE
+    TYPE: String
+    REQUIRED: False
+  RELATIONS:
+  - TYPE: Parent
+
+[[SECTION]]
+TITLE: System requirements
+
+[REQUIREMENT]
+UID: SYS-001
+TYPE: Functional
+TITLE: Look at visitors
+STATEMENT: The monster shall look toward visitors who approach the house.
+VERIFY: Demonstration
+RATIONALE: Eye contact that follows people is the core of the effect.
+
+[REQUIREMENT]
+UID: SYS-002
+TYPE: Performance
+TITLE: Reaction time
+STATEMENT: The monster shall begin reacting to a visitor within 1 s of the visitor entering the approach zone.
+VERIFY: Test
+
+[REQUIREMENT]
+UID: SYS-003
+TYPE: Constraint
+TITLE: Friendly tone
+STATEMENT: The monster's appearance and sounds shall be friendly, with no horror imagery or sounds.
+VERIFY: Inspection
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Monster brain
+
+[REQUIREMENT]
+UID: BRN-001
+TYPE: Functional
+STATEMENT: The brain shall choose one focus visitor and compute a look point in house coordinates.
+ALLOCATED_TO: monster-brain
+VERIFY: Test
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-001
+
+[REQUIREMENT]
+UID: BRN-002
+TYPE: Performance
+STATEMENT: The brain shall publish the focus visitor's look point at 10 ± 2 Hz while a visitor is tracked.
+ALLOCATED_TO: monster-brain
+VERIFY: Test
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-001
+- TYPE: Parent
+  VALUE: SYS-002
+
+[REQUIREMENT]
+UID: BRN-003
+TYPE: Interface
+STATEMENT: The brain shall publish look points as specified in ICD-001.
+ALLOCATED_TO: monster-brain
+ICD: ICD-001
+VERIFY: Test
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-001
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Eye renderer
+
+[REQUIREMENT]
+UID: EYE-001
+TYPE: Functional
+STATEMENT: The eye renderer shall turn the pupil toward the commanded look point, as seen from its own window's position.
+ALLOCATED_TO: eye-renderer
+VERIFY: Demonstration
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-001
+
+[REQUIREMENT]
+UID: EYE-002
+TYPE: Performance
+STATEMENT: The eye shall settle on a new look point within 300 ms.
+ALLOCATED_TO: eye-renderer
+VERIFY: Test
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-002
+
+[REQUIREMENT]
+UID: EYE-003
+TYPE: Interface
+STATEMENT: The eye renderer shall accept look points as specified in ICD-001 and ignore malformed messages.
+ALLOCATED_TO: eye-renderer
+ICD: ICD-001
+VERIFY: Test
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-001
+
+[REQUIREMENT]
+UID: EYE-004
+TYPE: Constraint
+STATEMENT: Pupils shall be round; slit pupils shall not be drawn.
+ALLOCATED_TO: eye-renderer
+VERIFY: Inspection
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-003
+
+[[/SECTION]]

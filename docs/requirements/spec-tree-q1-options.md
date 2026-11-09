@@ -1,6 +1,6 @@
 # Spec tree question Q1 — split by function or by physical box?
 
-> **Status:** Decision aid for the owner (open) · **Updated:** 2026-11-09 · **Question:** Q1 in [spec-tree.md](spec-tree.md#open-questions-for-the-owner)
+> **Status:** Decided: option A, by function (owner, 2026-11-09: build stage by stage) · **Updated:** 2026-11-09 · **Question:** Q1 in [spec-tree.md](spec-tree.md#open-questions-for-the-owner)
 
 The same parts and software, grouped two ways. Everything on the house is identical in
 both options; only the subsystem boundaries move, and with them the ID prefixes, the

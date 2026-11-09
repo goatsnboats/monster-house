@@ -1,6 +1,6 @@
 # Spec tree — Monster House
 
-> **Status:** Draft, waiting for owner approval (STOP 0) · **Updated:** 2026-11-08 · **Format rules:** [ADR 0001](../decisions/0001-requirements-and-architecture-format.md)
+> **Status:** Draft, waiting for owner approval (STOP 0; Q1 answered) · **Updated:** 2026-11-09 · **Format rules:** [ADR 0001](../decisions/0001-requirements-and-architecture-format.md)
 
 The spec tree fixes the **subsystem boundaries**. From them come the requirement ID
 prefixes (`EYE-012`), one requirements file per subsystem, and the components that
@@ -271,8 +271,10 @@ Each has a recommendation. None is decided until the owner answers.
 
 **From the planning session**
 
-1. **Split by function or by physical box?**
-   *Recommend: function* (Eyes, Ears, Mouth, Voice), as drafted. It matches the
+1. **Split by function or by physical box?** **Decided 2026-11-09 (owner): by function,**
+   because each build stage then maps to one subsystem. The comparison is in
+   [spec-tree-q1-options.md](spec-tree-q1-options.md). Original recommendation:
+   *function* (Eyes, Ears, Mouth, Voice), as drafted. It matches the
    monster-face idea and how you talk about the project. Physical boxes still appear,
    as `part` components with locations and `deployed_on`. The cost: one box can hold
    parts of two subsystems (the porch Pi runs SHW software and feeds VOC's USB adapter).

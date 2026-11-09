@@ -1,6 +1,6 @@
 # Spec tree — Monster House
 
-> **Status:** Draft, waiting for owner approval (STOP 0; Q1 answered) · **Updated:** 2026-11-09 · **Format rules:** [ADR 0001](../decisions/0001-requirements-and-architecture-format.md)
+> **Status:** Draft, waiting for owner approval (STOP 0; Q1, Q2 and Q14 answered) · **Updated:** 2026-11-09 · **Format rules:** [ADR 0001](../decisions/0001-requirements-and-architecture-format.md)
 
 The spec tree fixes the **subsystem boundaries**. From them come the requirement ID
 prefixes (`EYE-012`), one requirements file per subsystem, and the components that
@@ -13,18 +13,20 @@ with a recommendation, are at the [end of this page](#open-questions-for-the-own
 ## 1. The tree
 
 Subsystems are split by **function** (the parts of the monster's face), not by physical
-box. Hardware nodes and software are **components** inside a subsystem. Software records
-which node it runs on at each stage (`deployed_on`), so a box can host software from more
-than one subsystem.
+box (Q1). Hardware and software are **components** inside a subsystem. The
+general-purpose computers (both eye Pis and the porch Pi) form a **compute platform** in
+Infrastructure (Q14). Software stays in its functional subsystem and records which
+computer it runs on at each stage (`deployed_on`), so one computer can host software
+from more than one subsystem.
 
 ```text
 SYS  Monster House system specification
-├── EYE  Eyes ............. eye pod ×2 (Pi 5, projector, screen, mask, shroud, stand) · eye renderer
-├── SHW  Show control ..... porch Pi · monster brain · phone page · Falcon Player · Mosquitto
+├── EYE  Eyes ............. ×2: projector · screen · mask · shroud · stand · power strip · eye renderer
+├── SHW  Show control ..... (software only) monster brain · phone page · Falcon Player · Mosquitto
 ├── EAR  Ears ............. LD2450 radar · ESP32 · ESPHome config
 ├── MTH  Mouth ............ LED strips + channels · Dig-Quad/WLED · 12 V supply
 ├── VOC  Voice ............ USB audio · amp · speakers · (rumble)
-├── INF  Infrastructure ... Wi-Fi/addresses · power · mounting · weatherproofing
+├── INF  Infrastructure ... compute (eye Pis, porch Pi) · Wi-Fi/addresses · power · mounting · weatherproofing
 └── THM  Themes ........... theme folder format (data: eye art, clips, settings)
 
 ENB  Enabling systems (not on the house)
@@ -43,12 +45,12 @@ flowchart TB
   SYS --> VOC["VOC · Voice"]
   SYS --> INF["INF · Infrastructure"]
   SYS --> THM["THM · Themes"]
-  EYE --> EYEc["eye-pod-left · eye-pod-right<br/>eye-pi · eye-projector · eye-screen<br/>eye-mask · eye-shroud · eye-stand · eye-power-strip<br/><i>sw:</i> eye-renderer"]
-  SHW --> SHWc["porch-pi<br/><i>sw:</i> monster-brain · phone-page<br/>falcon-player · mosquitto"]
+  EYE --> EYEc["×2: eye-projector · eye-screen<br/>eye-mask · eye-shroud · eye-stand · eye-power-strip<br/><i>sw:</i> eye-renderer"]
+  SHW --> SHWc["<i>sw:</i> monster-brain · phone-page<br/>falcon-player · mosquitto"]
   EAR --> EARc["radar-sensor · radar-esp32<br/>radar-psu · radar-box<br/><i>sw:</i> radar-firmware"]
   MTH --> MTHc["lip-upper · lip-lower · mouth-extras<br/>lip-channel · lip-clips<br/>lip-controller · lip-psu · lip-box<br/><i>sw:</i> wled"]
   VOC --> VOCc["usb-audio · amp · amp-psu<br/>speakers · speaker-wire · rumble"]
-  INF --> INFc["home-network · power-distribution<br/>porch-mounting · porch-enclosure"]
+  INF --> INFc["eye-pi-left · eye-pi-right · porch-pi<br/>home-network · power-distribution<br/>porch-mounting · porch-enclosure"]
   THM --> THMc["theme-format · theme-halloween"]
 
   ENB["ENB · Enabling systems"]
@@ -72,26 +74,26 @@ then live in `docs/architecture/components.yaml`. **Kind** follows ADR 0001: `pa
 ### EYE — Eyes
 Draws a big cartoon eye in each upstairs bedroom window that opens, blinks, emotes and
 looks at visitors (architecture §2). Left (from the street) is the smaller window.
+There is one set of the parts below per window; together with that window's Pi (in INF)
+they make an **eye pod**. The Pis themselves are INF's compute platform (Q14).
 
 | Component | Kind | What it is | From |
 |---|---|---|---|
-| `eye-pod-left`, `eye-pod-right` | part | One assembled pod per window; the node that the renderer is deployed on | 1 |
-| `eye-pi` | part | Raspberry Pi 5, 1GB, in each pod | 1 |
 | `eye-projector` | part | Short-throw LED projector (AAXA P400 class; model TBD-012) | 1 |
 | `eye-screen` | part | Rear-projection screen cut to the window glass | 1 |
 | `eye-mask` | part | Black fabric mask with an eye-shaped hole | 1 |
 | `eye-shroud` | part | Blackout shroud on a light frame, projector to window | 1 |
 | `eye-stand` | part | Stand or small cart that sets the projector height | 1 |
-| `eye-power-strip` | part | One plug per pod for the Pi and projector | 1 |
-| `eye-renderer` | software | GPU-drawn eye (Python + moderngl + pygame-ce, ADR 0002); desktop windows in Stage 0, full-screen KMS/DRM on each pod from Stage 1 | 0 |
+| `eye-power-strip` | part | One plug per pod for the Pi and the projector | 1 |
+| `eye-renderer` | software | GPU-drawn eye (Python + moderngl + pygame-ce, ADR 0002); desktop windows in Stage 0, full-screen KMS/DRM on `eye-pi-left` and `eye-pi-right` from Stage 1 | 0 |
 
 ### SHW — Show control
-The one place that decides and coordinates (architecture §3). Runs on the desktop in
-Stages 0–2 and on the porch Pi from Stage 3.
+The one place that decides and coordinates (architecture §3). Software only: it runs on
+the desktop (DEV) in Stages 0–2 and on `porch-pi` (INF) from Stage 3. Falcon Player
+stays here (Q2).
 
 | Component | Kind | What it is | From |
 |---|---|---|---|
-| `porch-pi` | part | Raspberry Pi 5, official supply, case with fan, 32 GB microSD, inside the front door | 3 |
 | `monster-brain` | software | Moods, gaze math, blinks, clip pools, failure handling | 0 |
 | `phone-page` | software | Small web page served by the brain: buttons and current mood | 0 |
 | `falcon-player` | software | Falcon Player: plays voice + lip sequences together, schedule, DDP output. Faked in Stages 0–2 (`fake-fpp`, SIM) | 3 |
@@ -138,12 +140,21 @@ themselves are theme content (THM).
 | `rumble` | part | Optional tactile transducer or small sub under the porch floor | 5 |
 
 ### INF — Infrastructure
-What the other subsystems plug into: the network, mains power, and the shared mounting
-and weatherproofing on the porch (architecture §8). The house itself, its outlets and the
-home Wi-Fi router are **external** (see §3).
+What the other subsystems plug into or run on: the compute platform (the Raspberry Pis),
+the network, mains power, and the shared mounting and weatherproofing on the porch
+(architecture §8). The house itself, its outlets and the home Wi-Fi router are
+**external** (see §3).
+
+**Rule (Q14):** general-purpose computers that host our software and are built by our
+setup scripts belong here. Embedded controllers that come with their own firmware for
+one job stay with that job: the ESP32 (ESPHome) in EAR, the Dig-Quad (WLED) in MTH. The
+desktop is DEV.
 
 | Component | Kind | What it is | From |
 |---|---|---|---|
+| `eye-pi-left` | part | Raspberry Pi 5, 1GB, with supply and microSD, in the left (small) window's pod; hosts `eye-renderer` | 1 |
+| `eye-pi-right` | part | The same, in the right (large) window's pod | 1 |
+| `porch-pi` | part | Raspberry Pi 5, official supply, case with fan, 32 GB microSD, inside the front door; hosts Show control software; `usb-audio` plugs into it | 3 |
 | `home-network` | part | Our setup of the home network: 2.4 GHz coverage on the porch, reserved addresses, the five friendly names, clock sync, nothing exposed to the internet | 1 |
 | `power-distribution` | part | Outdoor-rated cords and outlets, which circuit feeds what | 1 |
 | `porch-mounting` | part | Brackets and cable routes on the house, e.g. porch Pi to amp through the door frame | 2 |
@@ -185,7 +196,9 @@ the subsystem itself. External entities are included because the monster's main 
 
 **Legend:** **D** data (MQTT, HTTP, DDP, files) · **A** audio signal · **P** mains or DC
 power · **N** network service (Wi-Fi, addresses, time) · **M** mechanical (mounting,
-enclosure) · **L** light the audience sees · **S** sound · **R** radar sensing.
+enclosure) · **C** compute hosting (operating system, runtime, GPU, audio and video
+devices, capacity) · **V** video (HDMI) · **L** light the audience sees · **S** sound ·
+**R** radar sensing.
 ICD numbers are proposals, fixed on approval.
 
 | from ↓ / to → | EYE | SHW | EAR | MTH | VOC | INF | THM | House | Owner | Visitors | Neighbors |
@@ -195,7 +208,7 @@ ICD numbers are proposals, fixed on approval.
 | **EAR** | | D ICD-002 | **Ears** | | | | | | | | |
 | **MTH** | | | | **Mouth** | | | | | | L | L |
 | **VOC** | | | | | **Voice** | | | | | S | S |
-| **INF** | P ICD-008 · N ICD-009 | P ICD-008 · N ICD-009 · M ICD-010 | P ICD-008 · N ICD-009 · M ICD-010 | P ICD-008 · N ICD-009 · M ICD-010 | P ICD-008 · M ICD-010 | **Infra** | | | | | |
+| **INF** | C ICD-013 · V ICD-014 · P ICD-008 | C ICD-013 | P ICD-008 · N ICD-009 · M ICD-010 | P ICD-008 · N ICD-009 · M ICD-010 | P ICD-008 · M ICD-010 · USB port ICD-007 | **Infra** ³ | | | | | |
 | **THM** | D ICD-005 | D ICD-005 | | | | | **Themes** | | | | |
 | **House** | M ICD-011 | | | | | P · N · M ² | | *external* | | | |
 | **Owner** | | D ICD-004 | | | | | | | *external* | | |
@@ -209,6 +222,9 @@ Mosquitto links are inside one program or are the MQTT medium itself, so they ge
 
 ² The house's mains outlets, home router and mounting surfaces are what INF builds on.
 They are covered inside ICD-008, ICD-009 and ICD-010 rather than in ICDs of their own.
+
+³ **Inside Infrastructure:** the Pis' own power and network (ICD-008, ICD-009 apply to
+them too) and the porch Pi's shelf and cable route (ICD-010).
 
 **Cells with no ICD (proposal, Q10):** L, S and R cells are the monster's physical
 effect on people (eye light, lip light, voice, radar echo). They are specified by system
@@ -227,12 +243,14 @@ definition (Q11).
 | ICD-004 | Phone buttons and current mood | Owner's phone ↔ SHW `phone-page` | HTTP on the home network | Yes | Full |
 | ICD-005 | Theme folder | THM `theme-format` → SHW `monster-brain`, `falcon-player`; EYE `eye-renderer` | Files | Yes | Full |
 | ICD-006 | Lip light frames | SHW `falcon-player` → MTH `lip-controller` | DDP over Wi-Fi | No | Skeleton |
-| ICD-007 | Voice audio | SHW `porch-pi` → VOC `usb-audio` → `amp` | USB audio, line level | No | Skeleton |
-| ICD-008 | Power | INF `power-distribution` → each subsystem | Mains, DC | No | Skeleton |
+| ICD-007 | Voice audio | SHW `falcon-player` via INF `porch-pi` USB port → VOC `usb-audio` → `amp` | USB audio, line level | No | Skeleton |
+| ICD-008 | Power | INF `power-distribution` → each subsystem's hardware, and INF's own Pis | Mains, DC | No | Skeleton |
 | ICD-009 | Network service | INF `home-network` → each networked node | Wi-Fi, DHCP, DNS names, time | No | Skeleton |
-| ICD-010 | Porch mounting and enclosures | INF `porch-mounting`, `porch-enclosure` ↔ SHW, EAR, MTH, VOC | Mechanical | No | Skeleton |
-| ICD-011 | Eye pod in the window | EYE `eye-pod-*` ↔ house window and bedroom | Mechanical, optical | No | Skeleton |
+| ICD-010 | Porch mounting and enclosures | INF `porch-mounting`, `porch-enclosure` ↔ EAR, MTH, VOC | Mechanical | No | Skeleton |
+| ICD-011 | Eye pod in the window | EYE projector, screen, mask, shroud, stand ↔ house window and bedroom | Mechanical, optical | No | Skeleton |
 | ICD-012 | Sequence and audio upload | DEV `xlights` → SHW `falcon-player` | Wi-Fi, FPP upload | No | Skeleton |
+| ICD-013 | Compute platform | INF `eye-pi-left`, `eye-pi-right`, `porch-pi` (and DEV `desktop` in Stages 0–2) → EYE and SHW software | Operating system, Python, OpenGL ES 3.0, KMS/DRM display, audio device, services; capacities for the budget check | Yes (portability rules apply now) | Partial: Pi details wait for hardware (TBD-013) |
+| ICD-014 | Eye video | INF `eye-pi-left`/`eye-pi-right` → EYE `eye-projector` | HDMI | No | Skeleton |
 
 ### Enabling-system interfaces
 
@@ -242,8 +260,8 @@ definition (Q11).
 | SIM `fake-fpp` | SHW `monster-brain` | The same commands and status as the real FPP | ICD-003 (parity) |
 | SHW `monster-brain` | SIM `house-preview` | Proposal: the preview listens to the same eye commands as a pod and draws both eyes with the eye renderer's code | ICD-001 (a third listener) |
 | DEV `xlights` | SHW `falcon-player` | `.fseq` sequences and audio, before the show | ICD-012 |
-| DEV `desktop` | SHW, EYE software | Hosts them in Stages 0–2 (deployment, not an interface) | — |
-| DEP `pi-setup` | EYE, SHW nodes | Installs software (deployment, not an interface) | — |
+| DEV `desktop` | SHW, EYE software | Hosts them in Stages 0–2, as a stand-in for the Pis | ICD-013 (same platform rules) |
+| DEP `pi-setup` | INF Pis | Builds each Pi and installs EYE or SHW software (deployment, not an interface) | — |
 
 ```mermaid
 flowchart LR
@@ -255,11 +273,11 @@ flowchart LR
   THM["THM Themes"] -- "ICD-005" --> SHW
   THM -- "ICD-005" --> EYE
   PH(["Owner's phone"]) -- "ICD-004" --> SHW
-  INF["INF Infrastructure"] -. "ICD-008/009/010" .-> SHW
-  INF -.-> EYE
-  INF -.-> EAR
+  INF["INF Infrastructure"] -- "ICD-013 compute" --> SHW
+  INF -- "ICD-013 compute · ICD-014 HDMI" --> EYE
+  INF -. "ICD-008/009/010" .-> EAR
   INF -.-> MTH
-  INF -.-> VOC
+  INF -. "ICD-007 USB" .-> VOC
   HOUSE(["House"]) -. "ICD-011" .- EYE
   SIMr(["SIM fake-radar"]) -. "ICD-002" .-> SHW
   DEVx(["DEV xLights"]) -. "ICD-012" .-> SHW
@@ -278,8 +296,8 @@ Each has a recommendation. None is decided until the owner answers.
    monster-face idea and how you talk about the project. Physical boxes still appear,
    as `part` components with locations and `deployed_on`. The cost: one box can hold
    parts of two subsystems (the porch Pi runs SHW software and feeds VOC's USB adapter).
-2. **Where does Falcon Player go?**
-   *Recommend: keep it in Show control*, with the brain ↔ FPP link as its own ICD
+2. **Where does Falcon Player go?** **Decided 2026-11-09 (owner): Show control.**
+   Original recommendation: *keep it in Show control*, with the brain ↔ FPP link as its own ICD
    (ICD-003) even though it is internal. It runs on the same Pi, takes orders only from
    the brain, and would carry only 4–6 requirements on its own. Splitting into Brain
    (`BRN`) and Sequencer (`SEQ`) would make the seam visible in the N² chart, at the cost
@@ -328,7 +346,7 @@ Each has a recommendation. None is decided until the owner answers.
 11. **One ICD per cell, or per interface?** *Recommend: per interface.* Both directions
     of a link share one ICD (ICD-001 carries commands one way and status the other), and
     INF's power, network and mounting each get one ICD covering every subsystem. That is
-    12 ICDs instead of about 25.
+    14 ICDs (after Q14) instead of about 30.
 12. **Turning the eye pods off at bedtime.** Architecture §2 says "the schedule turns
     pods off at bedtime", but no component does it (a smart plug, a Pi command to the
     projector, or FPP's schedule). *Recommend:* add it as a TBD at STOP 1 and decide when
@@ -338,7 +356,7 @@ Each has a recommendation. None is decided until the owner answers.
     step with the ICDs.
 
 14. **Should the Raspberry Pis sit in Infrastructure?** (raised by the owner, 2026-11-09)
-    *Recommend:* yes, as a **compute platform** inside INF: `eye-pi-left`, `eye-pi-right`
+    **Decided 2026-11-09 (owner): yes, all three.** Original recommendation: yes, as a **compute platform** inside INF: `eye-pi-left`, `eye-pi-right`
     and `porch-pi`. The rule would be: general-purpose computers that host our software
     and are built by our setup scripts belong to INF. Embedded controllers that come with
     their own firmware for one job stay with that job: the ESP32 with ESPHome in EAR,
@@ -348,6 +366,10 @@ Each has a recommendation. None is decided until the owner answers.
 
 **Owner answers so far (2026-11-09)**
 - **Q1:** by function (see above).
+- **Q2:** Falcon Player stays in Show control; brain ↔ FPP keeps its own ICD (ICD-003).
+- **Q14:** all three Pis move to INF as the compute platform (rule in §2, INF). Show
+  control becomes software only. New ICDs: ICD-013 (compute platform) and ICD-014 (eye
+  video over HDMI).
 - **Budgets:** yes. Each component declares what it needs (power, memory, ports, space
   in a box), and each host or supply declares what it has, per stage. The checker adds
   them up deterministically and becomes the verification tool for the requirements

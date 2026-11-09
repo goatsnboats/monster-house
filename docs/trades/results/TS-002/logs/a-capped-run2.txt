@@ -1,0 +1,18 @@
+pygame-ce 2.5.8 (SDL 2.32.10, Python 3.11.18)
+GL: OpenGL ES 3.2 Mesa 26.0.8-1ubuntu0.3 | Mesa Intel(R) Graphics (ARL)
+{"frames": 1643, "mean_fps": 61.92, "p99_frame_ms": 16.98, "max_frame_ms": 17.12, "mean_frame_ms": 16.151, "hitches_over_25ms": 0}
+
+{
+  "run": 2,
+  "cpu_pct": 4.15,
+  "peak_rss_mb": 147.4,
+  "summary": {
+    "frames": 1643,
+    "mean_fps": 61.92,
+    "p99_frame_ms": 16.98,
+    "max_frame_ms": 17.12,
+    "mean_frame_ms": 16.151,
+    "hitches_over_25ms": 0
+  },
+  "exited_by_itself": true
+}

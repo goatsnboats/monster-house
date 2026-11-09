@@ -1,0 +1,12 @@
+$ (no override) gl_probe.py desktop 330
+OK    mode=desktop  require=330  context: 4.6 (Compatibility Profile) Mesa 26.0.8-1ubuntu0.3  | GLSL ES 3.00 shader compiled
+$ MESA_GL_VERSION_OVERRIDE=3.1 gl_probe.py desktop 310
+OK    mode=desktop  require=310  context: 3.1 Mesa 26.0.8-1ubuntu0.3  | GLSL ES 3.00 shader compiled
+$ MESA_GL_VERSION_OVERRIDE=3.1 gl_probe.py desktop 330
+FAIL  mode=desktop  require=330  ValueError: Requested OpenGL version 330, got version 310
+$ (no override) gl_probe.py gles30 310
+OK    mode=gles30   require=310  context: OpenGL ES 3.2 Mesa 26.0.8-1ubuntu0.3  | GLSL ES 3.00 shader compiled
+$ readback_probe.py desktop
+desktop  expected [255, 128, 64] | RGB read [255, 128, 64] | RGBA read [255, 128, 64, 255]  -> RGB right
+$ readback_probe.py gles30
+gles30   expected [255, 128, 64] | RGB read [114, 47, 108] | RGBA read [255, 128, 64, 255]  -> RGB wrong

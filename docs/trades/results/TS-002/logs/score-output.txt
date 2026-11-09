@@ -1,0 +1,12 @@
+Weighted totals (max 500): A Python + moderngl + pygame-ce = 425, B Godot 4 = 355
+Leader A by 70.
+
+Single-weight sensitivity (other weights unchanged):
+  C1 Smoothness             weight 20: no effect (equal scores)
+  C2 Path to Pi 5           weight 25: would need weight -45: impossible
+  C3 Look iteration         weight 15: tie at weight 85 (change +70)
+  C4 Readable by the owner  weight 15: would need weight -55: impossible
+  C5 Fits the system        weight 15: would need weight -8: impossible
+  C6 Setup and deploy       weight 10: no effect (equal scores)
+
+Close (a change of 10 points or less flips it): no

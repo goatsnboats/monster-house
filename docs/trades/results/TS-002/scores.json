@@ -1,0 +1,90 @@
+{
+  "weights": {
+    "C1": 20,
+    "C2": 25,
+    "C3": 15,
+    "C4": 15,
+    "C5": 15,
+    "C6": 10
+  },
+  "criteria": {
+    "C1": "Smoothness",
+    "C2": "Path to Pi 5",
+    "C3": "Look iteration",
+    "C4": "Readable by the owner",
+    "C5": "Fits the system",
+    "C6": "Setup and deploy"
+  },
+  "scores": {
+    "A": {
+      "C1": 5,
+      "C2": 4,
+      "C3": 4,
+      "C4": 4,
+      "C5": 5,
+      "C6": 3
+    },
+    "B": {
+      "C1": 5,
+      "C2": 3,
+      "C3": 5,
+      "C4": 3,
+      "C5": 2,
+      "C6": 3
+    }
+  },
+  "names": {
+    "A": "Python + moderngl + pygame-ce",
+    "B": "Godot 4"
+  },
+  "totals": {
+    "A": 425,
+    "B": 355
+  },
+  "gap": 70,
+  "sensitivity": {
+    "C1": {
+      "name": "Smoothness",
+      "weight": 20,
+      "runner_minus_leader": 0,
+      "tie_weight": null,
+      "verdict": "no effect (equal scores)"
+    },
+    "C2": {
+      "name": "Path to Pi 5",
+      "weight": 25,
+      "runner_minus_leader": -1,
+      "tie_weight": -45.0,
+      "verdict": "would need weight -45: impossible"
+    },
+    "C3": {
+      "name": "Look iteration",
+      "weight": 15,
+      "runner_minus_leader": 1,
+      "tie_weight": 85.0,
+      "verdict": "tie at weight 85 (change +70)"
+    },
+    "C4": {
+      "name": "Readable by the owner",
+      "weight": 15,
+      "runner_minus_leader": -1,
+      "tie_weight": -55.0,
+      "verdict": "would need weight -55: impossible"
+    },
+    "C5": {
+      "name": "Fits the system",
+      "weight": 15,
+      "runner_minus_leader": -3,
+      "tie_weight": -8.333333333333332,
+      "verdict": "would need weight -8: impossible"
+    },
+    "C6": {
+      "name": "Setup and deploy",
+      "weight": 10,
+      "runner_minus_leader": 0,
+      "tie_weight": null,
+      "verdict": "no effect (equal scores)"
+    }
+  },
+  "close": false
+}

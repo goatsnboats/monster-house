@@ -337,6 +337,25 @@ Each has a recommendation. None is decided until the owner answers.
     is the ICDs in code form, used by every Python component; the checker will keep it in
     step with the ICDs.
 
+14. **Should the Raspberry Pis sit in Infrastructure?** (raised by the owner, 2026-11-09)
+    *Recommend:* yes, as a **compute platform** inside INF: `eye-pi-left`, `eye-pi-right`
+    and `porch-pi`. The rule would be: general-purpose computers that host our software
+    and are built by our setup scripts belong to INF. Embedded controllers that come with
+    their own firmware for one job stay with that job: the ESP32 with ESPHome in EAR,
+    the Dig-Quad with WLED in MTH. The desktop stays in DEV. Software stays in its
+    functional subsystem and records which computer it runs on (`deployed_on`).
+    The eye pod's other parts (projector, screen, mask, shroud, stand) stay in EYE.
+
+**Owner answers so far (2026-11-09)**
+- **Q1:** by function (see above).
+- **Budgets:** yes. Each component declares what it needs (power, memory, ports, space
+  in a box), and each host or supply declares what it has, per stage. The checker adds
+  them up deterministically and becomes the verification tool for the requirements
+  that set those limits (`verify: analysis`).
+- **Timing:** a system performance requirement for each end-to-end information path at
+  STOP 1, with a TBD wherever the owner hasn't chosen a number; per-hop timing budgets,
+  allocated to subsystems and written into the ICDs' timing sections, at STOP 2.
+
 **Noted for later (allocation, not boundaries):** show hours are set by FPP's scheduler
 in architecture §3a and by the theme's `show_hours` in §3b; who owns the schedule is
 settled at STOP 2. The trial IDs in `trials/ts-001/` (BRN-001 and so on) are not part of

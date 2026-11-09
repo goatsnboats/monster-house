@@ -27,7 +27,7 @@ var next_blink := 2.5
 var blink_start := -1.0
 
 var args := {"bench": 0.0, "eye_size": 0.9, "mirror": false, "rotate90": false,
-	"no_vsync": false, "expression": "neutral", "screenshot": "", "mqtt": false, "fps_cap": 0}
+	"no_vsync": false, "expression": "neutral", "screenshot": "", "mqtt": false, "fps_cap": 0, "frame_log": ""}
 var frame_ms: PackedFloat64Array = []
 var start_us := 0
 var last_us := 0
@@ -66,6 +66,7 @@ func _parse_args() -> void:
 			"--expression": args.expression = a[i + 1]; i += 1
 			"--screenshot": args.screenshot = a[i + 1]; i += 1
 			"--fps-cap": args.fps_cap = int(a[i + 1]); i += 1
+			"--frame-log": args.frame_log = a[i + 1]; i += 1
 			"--mirror": args.mirror = true
 			"--rotate90": args.rotate90 = true
 			"--no-vsync": args.no_vsync = true
@@ -164,6 +165,11 @@ func _finish() -> void:
 		print("screenshot ", args.screenshot, " -> ", error_string(err))
 	if mqtt:
 		mqtt.stop()
+	if args.frame_log != "":
+		var f := FileAccess.open(args.frame_log, FileAccess.WRITE)
+		for v in frame_ms:
+			f.store_line("%.3f" % v)
+		f.close()
 	if args.bench > 0.0:
 		_report()
 	get_tree().quit()

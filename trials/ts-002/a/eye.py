@@ -137,6 +137,7 @@ def main() -> int:
     ap.add_argument("--screenshot", help="save the last frame to this PNG file")
     ap.add_argument("--expression", default="neutral", help="starting expression")
     ap.add_argument("--fps-cap", type=int, default=0, help="limit frames per second in software (0 = off)")
+    ap.add_argument("--frame-log", help="write every frame time (ms) to this file, one per line")
     args = ap.parse_args()
     width, height = (int(v) for v in args.size.split("x"))
 
@@ -213,6 +214,8 @@ def main() -> int:
         vao.render(moderngl.TRIANGLE_STRIP)
         data = ctx.fbo.read(components=4)   # GLES only guarantees RGBA read-back
         pygame.image.save(pygame.transform.flip(pygame.image.frombytes(data, (width, height), "RGBA"), False, True), args.screenshot)
+    if args.frame_log:
+        Path(args.frame_log).write_text("".join(f"{t * 1000:.3f}\n" for t in frame_times))
     if args.bench:
         report(frame_times[30:] if len(frame_times) > 60 else frame_times)  # skip start-up frames
     pygame.quit()

@@ -60,7 +60,17 @@ modeling language takes more work.
 | G5 | Claude Code can write and edit the source directly; no editing only through a graphical tool | Author a sample requirement, component and interface |
 
 ### Weighted criteria
-| ID | Criterion | Proposed weight | How measured | 1 = | 3 = | 5 = |
+The weights in this table are weight set **W1**. The owner asked for the options to be
+scored under all three sets below, locked on 2026-11-08 before any evidence was
+gathered.
+
+| Set | C1 | C2 | C3 | C4 | C5 | C6 | C7 | C8 |
+|---|---|---|---|---|---|---|---|---|
+| **W1 Proposed** | 20 | 20 | 10 | 10 | 15 | 5 | 10 | 10 |
+| **W2 More formality** | 15 | 20 | 20 | 15 | 10 | 5 | 10 | 5 |
+| **W3 Readability first** | 25 | 20 | 5 | 5 | 20 | 5 | 10 | 10 |
+
+| ID | Criterion | W1 weight | How measured | 1 = | 3 = | 5 = |
 |---|---|---|---|---|---|---|
 | C1 | Readable by the owner without tools (GitHub web, phone) | 20 | View the sample on GitHub | Unreadable without the tool | Readable but cluttered by syntax | Reads like a normal document |
 | C2 | Traceability reports: matrix, coverage, impact of a change | 20 | Generate them from the sample | Link checks only | Matrix or coverage, not both | Matrix, coverage and "what does changing X touch" |

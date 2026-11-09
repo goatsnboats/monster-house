@@ -2,6 +2,8 @@
 
 _Version 0.2 · Nov 8, 2026 · Target: Halloween 2027_
 
+> Requirements, components and interface documents (ICDs) now live in [requirements/](requirements/README.md), [architecture/](architecture/components.yaml) and [interfaces/](interfaces/).
+
 A friendly monster face on the house. The two upstairs bedroom windows are **eyes** that open, blink and follow trick-or-treaters. The porch is a **mouth** with LED lips that talk in sync with the monster's voice. A radar sensor tells the monster when someone is coming. Everything is set up and taken down each season (and for other holidays), and the bedroom has to stay livable.
 
 > **Changes in 0.2**

@@ -1,6 +1,6 @@
 # TS-002 — Eye renderer: Python + moderngl, or Godot
 
-> **Status:** Awaiting weights · **Date:** 2026-11-08 · **Decides:** what the eye renderer is built with · **TBD:** TBD-002 · **ADR:** — · **Affects:** Stage 0 Step 2 (and every later step that touches the eyes); TBD-003 (message schemas); TBD-013 (buy a Pi early?); `shared/topics.py`
+> **Status:** Evaluating · **Date:** 2026-11-08 · **Decides:** what the eye renderer is built with · **TBD:** TBD-002 · **ADR:** — · **Affects:** Stage 0 Step 2 (and every later step that touches the eyes); TBD-003 (message schemas); TBD-013 (buy a Pi early?); `shared/topics.py`
 
 Status moves through `Framing` → `Awaiting weights` (Stop 1) → `Evaluating` →
 `Recommended` (Stop 2) → `Decided (owner, YYYY-MM-DD, <where>)`.
@@ -66,16 +66,16 @@ drawing, `pygame-ce` for the window), or in the Godot game engine?
 ### Weighted criteria
 | ID | Criterion | Weight | How measured | 1 = | 3 = | 5 = |
 |---|---|---|---|---|---|---|
-| C1 | **Smoothness** | _proposed 20_ | Trial on the desktop: 60 s run of the minimal eye at 1280×720 with the pupil gliding and lids blinking; mean fps, worst 1% frame time, visible stutter | Visible stutter, or below 55 fps mean | Steady 60 fps with occasional (< 1 per minute) hitches | Locked 60 fps, worst 1% frame under 20 ms, no visible hitches |
-| C2 | **Path to Pi 5** (GLES 3.0, no desktop, 1 GB RAM) | _proposed 25_ | Documented now (GL/GLES version needed vs. the Pi 5 driver; KMS/DRM support; memory use measured on the desktop as a proxy). Measured on a Pi later | Needs workarounds nobody documents, or likely over ~400 MB of RAM | Works through a documented but extra layer (e.g. a kiosk compositor, or a settings change), modest RAM | Documented to run directly on KMS/DRM with GLES 3.0, small RAM use, others report running it on a Pi 5 |
-| C3 | **Ease of iterating on the look** | _proposed 15_ | Trial: time to change a shape, colour or easing and see it; whether shaders/parameters reload while running; how closely the minimal eye matches `eye-sketch.html` for the effort | Edit, rebuild, restart for every tweak; hard to match the sketch | Restart in a few seconds; matching the sketch takes some fiddling | Live reload or live editor; the sketch's shapes carry over directly |
-| C4 | **Readable by the owner** | _proposed 15_ | Trial code read side by side: size, how many concepts, one language or two in the repo (judgment, owner can check) | Two languages plus engine-specific concepts; hard to follow | A second language or an engine editor, but each part is short and clear | Same language as the rest of the repo; short, plain files |
-| C5 | **Fits the rest of the system** | _proposed 15_ | Can it use `shared/topics.py`, YAML config, `paho-mqtt` and `pytest` as they are? (See *Couplings*) | Needs parallel copies of topics, config and tests in another language | Needs one shared neutral file (e.g. topics/schemas in YAML) plus small adapters | Uses the existing shared code, config and tests directly |
-| C6 | **Setup and deploy effort** | _proposed 10_ | Steps and download size to install on the desktop and on a fresh Pi; how it runs as a system service | Manual builds, large downloads, fragile service setup | A few documented steps; one sizeable download | `pip install` from pinned requirements, or one small binary; standard service file |
+| C1 | **Smoothness** | 20 | Trial on the desktop: 60 s run of the minimal eye at 1280×720 with the pupil gliding and lids blinking; mean fps, worst 1% frame time, visible stutter | Visible stutter, or below 55 fps mean | Steady 60 fps with occasional (< 1 per minute) hitches | Locked 60 fps, worst 1% frame under 20 ms, no visible hitches |
+| C2 | **Path to Pi 5** (GLES 3.0, no desktop, 1 GB RAM) | 25 | Documented now (GL/GLES version needed vs. the Pi 5 driver; KMS/DRM support; memory use measured on the desktop as a proxy). Measured on a Pi later | Needs workarounds nobody documents, or likely over ~400 MB of RAM | Works through a documented but extra layer (e.g. a kiosk compositor, or a settings change), modest RAM | Documented to run directly on KMS/DRM with GLES 3.0, small RAM use, others report running it on a Pi 5 |
+| C3 | **Ease of iterating on the look** | 15 | Trial: time to change a shape, colour or easing and see it; whether shaders/parameters reload while running; how closely the minimal eye matches `eye-sketch.html` for the effort | Edit, rebuild, restart for every tweak; hard to match the sketch | Restart in a few seconds; matching the sketch takes some fiddling | Live reload or live editor; the sketch's shapes carry over directly |
+| C4 | **Readable by the owner** | 15 | Trial code read side by side: size, how many concepts, one language or two in the repo (judgment, owner can check) | Two languages plus engine-specific concepts; hard to follow | A second language or an engine editor, but each part is short and clear | Same language as the rest of the repo; short, plain files |
+| C5 | **Fits the rest of the system** | 15 | Can it use `shared/topics.py`, YAML config, `paho-mqtt` and `pytest` as they are? (See *Couplings*) | Needs parallel copies of topics, config and tests in another language | Needs one shared neutral file (e.g. topics/schemas in YAML) plus small adapters | Uses the existing shared code, config and tests directly |
+| C6 | **Setup and deploy effort** | 10 | Steps and download size to install on the desktop and on a fresh Pi; how it runs as a system service | Manual builds, large downloads, fragile service setup | A few documented steps; one sizeable download | `pip install` from pinned requirements, or one small binary; standard service file |
 
-Weights total 100. The owner sets them at Stop 1.
+Weights total 100. **Set by the owner on 2026-11-08, in session (Stop 1): the proposed weights were accepted unchanged.**
 
-**Why these weights (proposed):**
+**Why these weights:**
 - **C2 Path to Pi (25):** the whole point of Stage 0 is code that's ready for the Pi. A
   renderer that can't run well on a 1 GB Pi without a desktop is wasted work, and it's the
   part we can't measure yet.

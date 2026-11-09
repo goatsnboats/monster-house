@@ -10,6 +10,9 @@
   type: functional
   derives_from: [SYS-002, SYS-003, SYS-007, SYS-008]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
   verify: test
   source: architecture.md §3b "Moods"
   stage: 0
@@ -22,6 +25,9 @@
   type: functional
   derives_from: [SYS-001]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
   verify: demonstration
   source: architecture.md §3b, Moods table (Asleep)
   stage: 0
@@ -35,6 +41,8 @@
   type: functional
   derives_from: [SYS-002, SYS-020]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision (brain), and the brain's hop in path P2.
   verify: test
   source: architecture.md §3b, Moods table (Waking)
   stage: 0
@@ -47,6 +55,9 @@
   type: functional
   derives_from: [SYS-003]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
   verify: test
   source: architecture.md §3b, Moods table (Greeting)
   stage: 0
@@ -59,6 +70,9 @@
   type: functional
   derives_from: [SYS-006]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
   verify: test
   source: architecture.md §3b, Moods table (Watching)
   stage: 0
@@ -74,6 +88,9 @@
   type: functional
   derives_from: [SYS-004]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    Gaze math lives in the brain (architecture §3b); the radar only reports raw
+    positions.
   verify: test
   source: architecture.md §3b "Turning radar data into a gaze" steps 1-2
   stage: 0
@@ -86,6 +103,9 @@
   type: functional
   derives_from: [SYS-004, SYS-019]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    Filtering goes with the gaze math in the brain, so the radar stays a simple limb;
+    the brain's hop in path P1.
   verify: test
   source: architecture.md §3b step 3
   stage: 0
@@ -98,6 +118,9 @@
   type: functional
   derives_from: [SYS-005]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
   verify: test
   source: architecture.md §3b step 4
   stage: 0
@@ -110,6 +133,8 @@
   type: performance
   derives_from: [SYS-028, SYS-019]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is the only publisher of look points; this is its hop rate in path P1.
   verify: test
   source: architecture.md §3b step 5
   stage: 0
@@ -122,6 +147,9 @@
   type: functional
   derives_from: [SYS-008, SYS-049, SYS-050]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    Who is who and which way they're heading is a decision built from raw radar slots
+    (brain).
   verify: test
   notes: >-
     The LD2450 reports three target slots, not people; the brain matches slots to
@@ -139,6 +167,9 @@
   type: functional
   derives_from: [SYS-047, SYS-007]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
   verify: test
   source: owner 2026-11-09 (door hold)
   stage: 0
@@ -151,6 +182,9 @@
   type: functional
   derives_from: [SYS-048]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
   verify: demonstration
   source: owner 2026-11-09
   stage: 0
@@ -163,6 +197,9 @@
   type: functional
   derives_from: [SYS-049]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
   verify: test
   source: owner 2026-11-09
   stage: 0
@@ -176,6 +213,9 @@
   type: functional
   derives_from: [SYS-050, SYS-005]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
   verify: test
   source: owner 2026-11-09
   stage: 0
@@ -190,6 +230,8 @@
   type: functional
   derives_from: [SYS-009]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain owns blinks so that both eyes blink together (architecture §2).
   verify: test
   source: architecture.md §2 "Blinks"
   stage: 0
@@ -202,6 +244,9 @@
   type: functional
   derives_from: [SYS-015]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple
+    limbs).
   verify: test
   source: architecture.md §3b "Variety and politeness rules"
   stage: 0
@@ -214,6 +259,8 @@
   type: performance
   derives_from: [SYS-027]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    When clips play is a decision (brain); FPP only plays what it is told.
   verify: test
   source: architecture.md §3b "Variety and politeness rules"
   stage: 0
@@ -228,6 +275,8 @@
   type: functional
   derives_from: [SYS-017, SYS-029]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    Only the brain sees every component's status, so it decides the fallback.
   verify: test
   source: architecture.md §3b "What happens when something fails"
   stage: 0
@@ -240,6 +289,8 @@
   type: functional
   derives_from: [SYS-014]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    One schedule, in the brain, so moods and voice follow it together.
   verify: test
   notes: Architecture §3a also mentions FPP's scheduler; the brain owning show hours keeps one schedule.
   source: architecture.md §3a "Schedule"
@@ -252,6 +303,8 @@
   type: functional
   derives_from: [SYS-013]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is the only thing that triggers clips, so muting means not triggering.
   verify: test
   source: architecture.md §3b (mute)
   stage: 0
@@ -264,6 +317,8 @@
   type: functional
   derives_from: [SYS-016]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain holds the pools and publishes the theme to the eyes.
   verify: test
   source: architecture.md §9 "Switching themes"
   stage: 0
@@ -275,6 +330,8 @@
   type: functional
   derives_from: [SYS-012]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    Only the brain knows the mood.
   verify: test
   source: architecture.md §3b "Outputs"
   stage: 0
@@ -286,6 +343,8 @@
   type: performance
   derives_from: [SYS-023]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain's hop in path P4: turning a button into a command.
   verify: test
   source: timing-budgets.md, path P4
   stage: 0
@@ -301,6 +360,8 @@
   icd: ICD-001
   derives_from: [SYS-042]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is the sending end of ICD-001.
   verify: test
   source: architecture.md §2, §3c
   stage: 0
@@ -313,6 +374,8 @@
   icd: ICD-002
   derives_from: [SYS-042, SYS-028]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is the receiving end of ICD-002.
   verify: test
   source: architecture.md §3b "Inputs"
   stage: 0
@@ -326,6 +389,8 @@
   icd: ICD-003
   derives_from: [SYS-042, SYS-043]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is the commanding end of ICD-003.
   verify: test
   source: architecture.md §3a "Being told what to play"
   stage: 0
@@ -339,6 +404,8 @@
   icd: ICD-005
   derives_from: [SYS-041]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain reads the timings and pools it uses.
   verify: inspection
   source: CLAUDE.md "Themes are data"
   stage: 0
@@ -352,6 +419,8 @@
   icd: ICD-015
   derives_from: [SYS-004, SYS-047]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain needs the radar mount, positions and zones for gaze and door hold.
   verify: test
   source: spec tree Q6 (site config)
   stage: 0
@@ -365,6 +434,8 @@
   icd: ICD-013
   derives_from: [SYS-039]
   allocated_to: monster-brain
+  allocation_rationale: >-
+    The brain is software that must fit the platform; the porch Pi's side is INF-002.
   verify: test
   source: architecture.md §3 "Where it runs, by stage"
   stage: 0
@@ -379,6 +450,9 @@
   type: functional
   derives_from: [SYS-012, SYS-016]
   allocated_to: phone-page
+  allocation_rationale: >-
+    The phone page is the brain's user interface, kept as its own component so the web
+    page stays apart from the decisions.
   verify: demonstration
   source: architecture.md §3b "Inputs"; stage-0-plan.md Step 6
   stage: 0
@@ -392,6 +466,8 @@
   icd: ICD-004
   derives_from: [SYS-032, SYS-038]
   allocated_to: phone-page
+  allocation_rationale: >-
+    The phone page is the HTTP end of ICD-004.
   verify: demonstration
   source: architecture.md §3b, §8
   stage: 0
@@ -406,6 +482,9 @@
   type: functional
   derives_from: [SYS-011, SYS-022]
   allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP plays the audio and the lip sequence from one playlist, which is what keeps
+    them in step (architecture §1, principle 3).
   verify: test
   source: architecture.md §3a "What it plays", "Playlists"
   stage: 3
@@ -417,6 +496,8 @@
   type: performance
   derives_from: [SYS-021]
   allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP's start-up is a hop in path P3.
   verify: test
   source: timing-budgets.md, path P3
   stage: 3
@@ -429,6 +510,9 @@
   type: performance
   derives_from: [SYS-030]
   allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP sets the playback volume; the OS cap and the amp's gain (VOC-002) complete the
+    chain.
   verify: test
   source: architecture.md §3a "Audio output", §6 "Neighbor-friendly"
   stage: 3
@@ -442,6 +526,8 @@
   icd: ICD-003
   derives_from: [SYS-042]
   allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP is the player end of ICD-003.
   verify: test
   source: architecture.md §3a; topics TBD-015
   stage: 3
@@ -454,6 +540,8 @@
   icd: ICD-006
   derives_from: [SYS-011]
   allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP generates the lip frames (the DDP sender).
   verify: test
   source: architecture.md §3a "Light output"
   stage: 4
@@ -466,6 +554,8 @@
   icd: ICD-007
   derives_from: [SYS-021]
   allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP is the source of the voice audio.
   verify: test
   source: architecture.md §3a "Audio output"
   stage: 3
@@ -479,6 +569,8 @@
   icd: ICD-012
   derives_from: [SYS-011]
   allocated_to: falcon-player
+  allocation_rationale: >-
+    FPP stores the sequences it plays.
   verify: demonstration
   source: architecture.md §1 connections table, §7
   stage: 3
@@ -493,8 +585,25 @@
   type: functional
   derives_from: [SYS-042, SYS-038, SYS-017]
   allocated_to: mosquitto
+  allocation_rationale: >-
+    Every MQTT message passes through the broker, so retained messages, last-wills and
+    who may connect are set there.
   verify: test
   notes: Architecture §3c asks for a username and password; for the prototype the owner accepted none (deploy/mosquitto/).
   source: architecture.md §3c
+  stage: 0
+  status: proposed
+
+- id: SHW-040
+  text: >-
+    The phone page shall hand a button press to the brain within its share of SYS-023's
+    0.5 s (TBD-034).
+  type: performance
+  derives_from: [SYS-023]
+  allocated_to: phone-page
+  allocation_rationale: >-
+    The phone page's hop in path P4: taking the press and handing it to the brain.
+  verify: test
+  source: timing-budgets.md, path P4
   stage: 0
   status: proposed

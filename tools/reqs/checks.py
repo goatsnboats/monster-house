@@ -24,8 +24,10 @@ STATUSES = {"proposed", "approved", "deleted"}
 STAGES = range(0, 6)
 REQ_FIELDS_REQUIRED = ["id", "text", "type", "verify", "source", "stage", "status"]
 REQ_FIELDS_KNOWN = set(REQ_FIELDS_REQUIRED) | {
-    "derives_from", "allocated_to", "allocation_note", "icd", "verified_by", "rationale", "notes", "_file",
+    "derives_from", "allocated_to", "allocation_rationale", "allocation_note", "decomposition", "basis",
+    "icd", "verified_by", "rationale", "notes", "_file",
 }
+BASIS_METHODS = {"model", "estimate", "measurement"}
 COMP_KINDS = {"part", "software"}
 COMP_FIELDS_KNOWN = {
     "id", "kind", "subsystem", "name", "stage", "location", "functions", "ports", "deployed_on", "notes",
@@ -109,6 +111,18 @@ def check_requirements(model: Model) -> list[Finding]:
         if not isinstance(parents, list):
             err("derives_from must be a list, e.g. [SYS-001]")
             parents = []
+        live = r.get("status") != "deleted"
+        if prefix == "SYS" and live and not r.get("decomposition"):
+            err("missing decomposition: one line on how it splits into its children")
+        if prefix != "SYS" and live and not r.get("allocation_rationale"):
+            err("missing allocation_rationale: one line on why this component")
+        basis = r.get("basis")
+        if basis is not None:
+            if not isinstance(basis, dict) or basis.get("method") not in BASIS_METHODS or not basis.get("ref"):
+                err(f"basis must be {{method: {'|'.join(sorted(BASIS_METHODS))}, ref: <where the numbers are>}}")
+            elif "/" in str(basis["ref"]) and not (model.root / str(basis["ref"]).split("#")[0]).exists():
+                err(f"basis ref {basis['ref']} does not exist")
+
         if prefix == "SYS":
             if parents:
                 err("a system requirement has no parent (remove derives_from)")
@@ -364,6 +378,10 @@ def check_coverage(model: Model) -> list[Finding]:
     for rid in sorted(live):
         if rid.startswith("SYS-") and not children_of(model, rid):
             out.append(Finding("gap", rid, "system requirement has no children yet (not decomposed)"))
+    for rid in sorted(live):
+        if live[rid].get("type") == "performance" and not live[rid].get("basis"):
+            what = "decomposition" if rid.startswith("SYS-") else "allocation"
+            out.append(Finding("gap", rid, f"performance {what} not yet backed by a model, estimate or measurement (basis)"))
     for iid, icd in sorted(model.icds.items()):
         for side, comps in icd_sides(model, icd).items():
             if not any(r.get("icd") == iid and set(allocations(r)) & comps and r.get("type") == "interface"

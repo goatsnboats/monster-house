@@ -8,6 +8,8 @@
   icd: ICD-005
   derives_from: [SYS-041, SYS-016]
   allocated_to: theme-format
+  allocation_rationale: >-
+    The format is defined once, for every theme.
   verify: inspection
   source: architecture.md §9
   stage: 0
@@ -20,6 +22,8 @@
   type: functional
   derives_from: [SYS-041]
   allocated_to: theme-format
+  allocation_rationale: >-
+    The format is defined once, for every theme.
   verify: inspection
   source: CLAUDE.md "Themes are data"; architecture.md §3b settings file
   stage: 0
@@ -31,6 +35,8 @@
   type: functional
   derives_from: [SYS-015]
   allocated_to: theme-halloween
+  allocation_rationale: >-
+    Pool sizes are content of one theme.
   verify: inspection
   source: architecture.md §3b "Variety and politeness rules"
   stage: 3
@@ -42,6 +48,8 @@
   type: constraint
   derives_from: [SYS-030]
   allocated_to: theme-halloween
+  allocation_rationale: >-
+    Audio files are theme content.
   verify: analysis
   rationale: So no clip jumps out above the volume cap.
   source: architecture.md §6 "Audio content"
@@ -54,6 +62,8 @@
   type: constraint
   derives_from: [SYS-036]
   allocated_to: theme-halloween
+  allocation_rationale: >-
+    Clips and images are theme content.
   verify: inspection
   source: CLAUDE.md "Tone"
   stage: 0
@@ -65,6 +75,8 @@
   type: constraint
   derives_from: [SYS-011]
   allocated_to: theme-halloween
+  allocation_rationale: >-
+    Names are set when the content is made.
   verify: inspection
   source: architecture.md §3a "Playlists as the building blocks"
   stage: 3
@@ -77,6 +89,8 @@
   type: functional
   derives_from: [SYS-050, SYS-048]
   allocated_to: theme-halloween
+  allocation_rationale: >-
+    What a pool holds is theme content.
   verify: inspection
   source: owner 2026-11-09
   stage: 0

@@ -5,8 +5,10 @@
     While Falcon Player is streaming, the lips shall show its frames; when it stops, WLED
     shall fall back on its own to a slow breathe effect (color per theme: TBD-035).
   type: functional
-  derives_from: [SYS-001, SYS-011]
+  derives_from: [SYS-001, SYS-011, SYS-013]
   allocated_to: wled
+  allocation_rationale: >-
+    Only WLED sees both FPP's stream and its own effect, so it does the switching.
   verify: demonstration
   rationale: The asleep "breathing" lips then need no extra work.
   source: architecture.md §5 "Software"
@@ -19,6 +21,8 @@
   type: performance
   derives_from: [SYS-031]
   allocated_to: wled
+  allocation_rationale: >-
+    WLED's limiter caps the brightness whatever the source.
   verify: test
   source: architecture.md §5 "Risks" (neighbors and brightness)
   stage: 4
@@ -31,6 +35,8 @@
   type: functional
   derives_from: [SYS-011]
   allocated_to: wled
+  allocation_rationale: >-
+    Segments are a WLED setting.
   verify: inspection
   source: architecture.md §5 "Software"
   stage: 4
@@ -43,6 +49,8 @@
   type: constraint
   derives_from: [SYS-046]
   allocated_to: lip-lower
+  allocation_rationale: >-
+    The lower lip on the railing gets the most weather (architecture §5).
   verify: inspection
   source: architecture.md §5 "Risks" (rain and snow)
   stage: 4
@@ -55,6 +63,8 @@
   icd: ICD-006
   derives_from: [SYS-011]
   allocated_to: lip-controller
+  allocation_rationale: >-
+    The controller is the DDP receiver.
   verify: test
   source: architecture.md §5
   stage: 4
@@ -68,6 +78,8 @@
   icd: ICD-009
   derives_from: [SYS-033]
   allocated_to: lip-controller
+  allocation_rationale: >-
+    The controller holds the lips' Wi-Fi connection.
   verify: inspection
   source: architecture.md §8
   stage: 4
@@ -80,6 +92,8 @@
   icd: ICD-008
   derives_from: [SYS-034]
   allocated_to: lip-psu
+  allocation_rationale: >-
+    The 12 V supply is the lips' one connection to the mains.
   verify: inspection
   source: architecture.md §5 "Hardware"
   stage: 4
@@ -93,6 +107,8 @@
   icd: ICD-010
   derives_from: [SYS-045]
   allocated_to: lip-clips
+  allocation_rationale: >-
+    The clips are the only lip part that stays up all year.
   verify: demonstration
   source: architecture.md §5 "Hardware"
   stage: 4
@@ -105,8 +121,25 @@
   type: performance
   derives_from: [SYS-031]
   allocated_to: lip-psu
+  allocation_rationale: >-
+    The supply must cover the summed draw of everything it feeds (budget model).
   verify: analysis
+  basis: {method: model, ref: tools/reqs/budget.py}
   verified_by: [tools/reqs/budget.py]
   source: architecture.md §5 "Hardware" (350 W, with WLED's limiter)
+  stage: 4
+  status: proposed
+
+- id: MTH-010
+  text: >-
+    WLED shall show each lip frame within the lip path's share of SYS-022's limits
+    (TBD-034).
+  type: performance
+  derives_from: [SYS-022]
+  allocated_to: wled
+  allocation_rationale: >-
+    WLED's display delay is the lip path's hop in path P5.
+  verify: test
+  source: timing-budgets.md, path P5
   stage: 4
   status: proposed

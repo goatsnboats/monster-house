@@ -7,6 +7,8 @@
   type: functional
   derives_from: [SYS-043]
   allocated_to: fake-radar
+  allocation_rationale: >-
+    The fake radar stands in for the radar until Stage 2.
   verify: demonstration
   source: stage-0-plan.md Step 3
   stage: 0
@@ -20,6 +22,8 @@
   icd: ICD-002
   derives_from: [SYS-043, SYS-028]
   allocated_to: fake-radar
+  allocation_rationale: >-
+    The fake radar must send what the radar sends (simulator parity).
   verify: test
   source: CLAUDE.md "Simulator parity"; stage-0-plan.md Step 3
   stage: 0
@@ -32,6 +36,8 @@
   type: functional
   derives_from: [SYS-043, SYS-047]
   allocated_to: fake-radar
+  allocation_rationale: >-
+    The blind spot is part of behaving like the real radar.
   verify: demonstration
   source: owner 2026-11-09 (visitors lost at the door)
   stage: 0
@@ -45,6 +51,8 @@
   icd: ICD-003
   derives_from: [SYS-043]
   allocated_to: fake-fpp
+  allocation_rationale: >-
+    The fake FPP stands in for Falcon Player until Stage 3.
   verify: test
   source: stage-0-plan.md Step 4
   stage: 0
@@ -58,6 +66,8 @@
   type: functional
   derives_from: [SYS-043]
   allocated_to: house-preview
+  allocation_rationale: >-
+    The preview is the tool for judging the look on the house.
   verify: demonstration
   rationale: The owner decides lopsided vs matched eyes, size and colors from it (TBD-004).
   source: stage-0-plan.md Step 5
@@ -72,6 +82,8 @@
   icd: ICD-001
   derives_from: [SYS-043]
   allocated_to: house-preview
+  allocation_rationale: >-
+    Listening to ICD-001 keeps the preview the same as the real eyes.
   verify: test
   source: spec tree (enabling-system interfaces)
   stage: 0

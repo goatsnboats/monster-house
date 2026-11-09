@@ -38,6 +38,13 @@ def _cell(text) -> str:
     return " ".join(str(text).split()).replace("|", "\\|")
 
 
+def _basis(r: dict) -> str:
+    b = r.get("basis")
+    if isinstance(b, dict):
+        return f"{b.get('method')}: {b.get('ref')}"
+    return "needed" if r.get("type") == "performance" else "—"
+
+
 def _node(name: str) -> str:
     return name.replace("-", "_")
 
@@ -81,6 +88,9 @@ def _coverage(model: Model, findings: list[Finding]) -> list[str]:
     side_gaps = [f for f in findings if f.level == "gap" and f.where.startswith("ICD-")]
     sides = sum(len(icd_sides(model, i)) for i in model.icds.values())
     lines.append(f"| ICD sides with an interface requirement | {sides - len(side_gaps)} of {sides} |")
+    perf = [rid for rid in reqs if reqs[rid].get("type") == "performance"]
+    based = [rid for rid in perf if reqs[rid].get("basis")]
+    lines.append(f"| Performance requirements with a quantitative basis | {len(based)} of {len(perf)} |")
     errors = [f for f in findings if f.level == "error"]
     lines.append(f"| Checker errors | {len(errors)} |")
     lines.append("")
@@ -138,20 +148,24 @@ def _matrix(model: Model) -> list[str]:
             continue
         lines += [f"### {prefix} — {info['name']}", ""]
         if prefix == "SYS":
-            lines += ["| ID | Type | Stage | Status | Requirement | Children | Verify |", "|---|---|---|---|---|---|---|"]
+            lines += ["| ID | Type | Stage | Status | Requirement | Children | Decomposition | Basis | Verify |",
+                      "|---|---|---|---|---|---|---|---|---|"]
             for rid in ids:
                 r = model.reqs[rid]
                 kids = ", ".join(children_of(model, rid)) or "—"
                 lines.append(f"| {rid} | {r.get('type')} | {r.get('stage')} | {r.get('status')} | "
-                             f"{_cell(r.get('text', ''))} | {kids} | {r.get('verify')} |")
+                             f"{_cell(r.get('text', ''))} | {kids} | {_cell(r.get('decomposition', '—'))} | "
+                             f"{_basis(r)} | {r.get('verify')} |")
         else:
-            lines += ["| ID | Type | Stage | Status | Requirement | Parents | Allocated to | ICD | Verify |",
-                      "|---|---|---|---|---|---|---|---|---|"]
+            lines += ["| ID | Type | Stage | Status | Requirement | Parents | Allocated to | Allocation rationale "
+                      "| ICD | Basis | Verify |",
+                      "|---|---|---|---|---|---|---|---|---|---|---|"]
             for rid in ids:
                 r = model.reqs[rid]
                 lines.append(f"| {rid} | {r.get('type')} | {r.get('stage')} | {r.get('status')} | "
                              f"{_cell(r.get('text', ''))} | {', '.join(r.get('derives_from') or []) or '—'} | "
-                             f"{', '.join(allocations(r)) or '—'} | {r.get('icd', '—')} | {r.get('verify')} |")
+                             f"{', '.join(allocations(r)) or '—'} | {_cell(r.get('allocation_rationale', '—'))} | "
+                             f"{r.get('icd', '—')} | {_basis(r)} | {r.get('verify')} |")
         lines.append("")
     return lines
 

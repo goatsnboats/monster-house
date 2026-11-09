@@ -40,7 +40,7 @@ The checker reports three levels:
 | Level | Means | Fails the check? |
 |---|---|---|
 | **error** | Something is wrong: a broken link, a missing or misspelled field, a TBD-NNN that isn't in the register | Yes |
-| **gap** | Something isn't done yet: a system requirement with no children, an ICD side with no interface requirement, a budget still waiting for a TBD-NNN | Only with `--strict` |
+| **gap** | Something isn't done yet: a system requirement with no children, an ICD side with no interface requirement, a budget still waiting for a TBD-NNN, a performance requirement without a quantitative `basis` | Only with `--strict` |
 | **warning** | The ICDs and `shared/topics.py` disagree about a topic name. The checker never changes either; a topic change is a message-format change, so ask the owner | Only with `--strict` |
 
 ## A requirement
@@ -51,6 +51,7 @@ The checker reports three levels:
   type: constraint
   derives_from: [SYS-036]
   allocated_to: eye-renderer
+  allocation_rationale: Pupil and lid shapes are drawn by the renderer.
   verify: inspection
   rationale: Friendly, never scary.
   source: CLAUDE.md "Tone"
@@ -65,7 +66,10 @@ The checker reports three levels:
 | `type` | yes | `functional` (what it does), `performance` (how fast, how often, how much, how loud), `interface` (how it meets another part or the outside world), `constraint` (a limit on how it may be built) |
 | `derives_from` | subsystem requirements | The parent requirement(s) this one helps meet. System requirements have none |
 | `allocated_to` | subsystem requirements | The component that meets it, from `components.yaml`, or a list of identical twins that each meet it (`[eye-pi-left, eye-pi-right]`). It must belong to the same subsystem as the prefix, unless `allocation_note` says why not; for an interface requirement it must be one of the ICD's ends |
+| `allocation_rationale` | subsystem requirements | One line: why this component meets it (for example "a decision, and all decisions live in the brain"). Required |
 | `allocation_note` | no | Why a requirement is allocated outside its own subsystem |
+| `decomposition` | system requirements | One line: how it splits into its children, and why that way. Required |
+| `basis` | performance requirements | The quantitative backing for how a performance requirement is decomposed or allocated: `{method: model, estimate or measurement, ref: <where the numbers are>}`. Until present it is a gap |
 | `icd` | interface requirements | The ICD that specifies the interface, e.g. `ICD-001` |
 | `verify` | yes | How it will be shown to be met: `inspection` (look at it), `analysis` (calculate, including the budget check), `demonstration` (run it and watch), `test` (run it and measure) |
 | `verified_by` | no | Where the evidence is, e.g. `tests/test_gaze.py::test_parallax`. Paths are checked to exist |
@@ -78,6 +82,12 @@ The checker reports three levels:
 ## Rules
 
 - **One requirement per statement.** Two "shall"s make two requirements.
+- **Every link says why.** Each system requirement has a `decomposition` line and each
+  subsystem requirement an `allocation_rationale` line.
+- **Performance allocations rest on numbers.** Every performance requirement, at either
+  level, eventually gets a `basis`: a quantitative model (for example the budget check or
+  the timing budgets), an estimate (with its source) or a measurement (owner,
+  2026-11-09).
 - **No invented numbers.** A value that isn't in the docs or decided by the owner becomes a
   `TBD-NNN` row in [TBD.md](../TBD.md), cited in the text.
 - **One owner per component.** Each component belongs to exactly one subsystem
@@ -95,9 +105,11 @@ Errors:
 - every required field is present and spelled right; `type`, `verify`, `status` and
   `stage` have allowed values
 - the prefix is a subsystem in the spec tree, and the requirement is in its prefix's file
-- system requirements have no parent and no allocation; subsystem requirements have at
-  least one existing parent, no loops, and an allocation to a component of their own
-  subsystem (or an `allocation_note`)
+- system requirements have no parent and no allocation, and have a `decomposition`;
+  subsystem requirements have at least one existing parent, no loops, an
+  `allocation_rationale`, and an allocation to a component of their own subsystem (or an
+  `allocation_note`)
+- a `basis`, where given, names a method and a reference that exists
 - interface requirements name an ICD that exists, and are allocated to one of its ends
 - `verified_by` paths exist
 - components: allowed `kind`, a subsystem from the spec tree, named in the spec tree,
@@ -110,7 +122,7 @@ Errors:
   and none appears without its number
 
 Gaps: system requirements with no children; ICD sides with no interface requirement;
-budgets waiting for a TBD-NNN.
+budgets waiting for a TBD-NNN; performance requirements without a `basis`.
 
 Warnings: topics in an ICD but not in `shared/topics.py`, and the other way round.
 

@@ -8,6 +8,8 @@
   type: functional
   derives_from: [SYS-039, SYS-045]
   allocated_to: pi-setup
+  allocation_rationale: >-
+    Building a node from a fresh install is deployment's job.
   verify: demonstration
   source: stage-0-plan.md Step 8
   stage: 1
@@ -20,6 +22,8 @@
   type: functional
   derives_from: [SYS-017, SYS-045]
   allocated_to: service-units
+  allocation_rationale: >-
+    Starting and restarting at boot is a system service's job.
   verify: test
   source: architecture.md §2 "On the Pi"; §3
   stage: 1
@@ -32,6 +36,8 @@
   type: functional
   derives_from: [SYS-045]
   allocated_to: install-checklists
+  allocation_rationale: >-
+    Checklists are deployment documents.
   verify: inspection
   source: stage-0-plan.md Step 8; architecture.md §2 "Setup and teardown"
   stage: 1

@@ -39,20 +39,21 @@ spec_tree:
 
 SYSTEM = [
     {"id": "SYS-001", "text": "The monster shall look at visitors.", "type": "functional",
-     "verify": "demonstration", "source": "test", "stage": 0, "status": "proposed"},
+     "verify": "demonstration", "decomposition": "Brain sends a point; eye aims.", "source": "test",
+     "stage": 0, "status": "proposed"},
 ]
 EYE = [
     {"id": "EYE-001", "text": "The eye shall turn toward the look point.", "type": "functional",
-     "derives_from": ["SYS-001"], "allocated_to": "eye-renderer", "verify": "test",
-     "source": "test", "stage": 0, "status": "proposed"},
+     "derives_from": ["SYS-001"], "allocated_to": "eye-renderer", "allocation_rationale": "Draws the eye.",
+     "verify": "test", "source": "test", "stage": 0, "status": "proposed"},
     {"id": "EYE-002", "text": "The eye shall accept look points per ICD-001.", "type": "interface",
-     "derives_from": ["SYS-001"], "allocated_to": "eye-renderer", "icd": "ICD-001", "verify": "test",
-     "source": "test", "stage": 0, "status": "proposed"},
+     "derives_from": ["SYS-001"], "allocated_to": "eye-renderer", "allocation_rationale": "Eye end of ICD-001.",
+     "icd": "ICD-001", "verify": "test", "source": "test", "stage": 0, "status": "proposed"},
 ]
 SHW = [
     {"id": "SHW-001", "text": "The brain shall publish look points per ICD-001.", "type": "interface",
-     "derives_from": ["SYS-001"], "allocated_to": "monster-brain", "icd": "ICD-001", "verify": "test",
-     "source": "test", "stage": 0, "status": "proposed"},
+     "derives_from": ["SYS-001"], "allocated_to": "monster-brain", "allocation_rationale": "Brain end of ICD-001.",
+     "icd": "ICD-001", "verify": "test", "source": "test", "stage": 0, "status": "proposed"},
 ]
 COMPONENTS = [
     {"id": "monster-brain", "kind": "software", "subsystem": "SHW", "name": "Brain", "stage": 0,
@@ -282,6 +283,39 @@ def test_undecomposed_system_requirement_is_a_gap(tmp_path):
 def test_icd_side_without_interface_requirement_is_a_gap(tmp_path):
     root = write_baseline(tmp_path, shw=changed(SHW, "SHW-001", type="functional", icd=None))
     assert any("ICD-001" in g and "SHW side" in g for g in findings(root, "gap"))
+
+
+def test_allocation_rationale_is_required(tmp_path):
+    root = write_baseline(tmp_path, eye=changed(EYE, "EYE-001", allocation_rationale=None))
+    assert any("EYE-001" in e and "missing allocation_rationale" in e for e in findings(root))
+
+
+def test_decomposition_is_required(tmp_path):
+    root = write_baseline(tmp_path, system=changed(SYSTEM, "SYS-001", decomposition=None))
+    assert any("SYS-001" in e and "missing decomposition" in e for e in findings(root))
+
+
+def test_deleted_requirement_needs_no_rationale(tmp_path):
+    deleted = dict(EYE[0], id="EYE-003", status="deleted")
+    deleted.pop("allocation_rationale")
+    root = write_baseline(tmp_path, eye=EYE + [deleted])
+    assert findings(root) == []
+
+
+def test_performance_without_basis_is_a_gap(tmp_path):
+    root = write_baseline(tmp_path, eye=changed(EYE, "EYE-001", type="performance"))
+    assert any("EYE-001" in g and "not yet backed" in g for g in findings(root, "gap"))
+    assert findings(root) == []
+    based = changed(EYE, "EYE-001", type="performance", basis={"method": "estimate", "ref": "vendor data"})
+    root2 = write_baseline(tmp_path / "b", eye=based)
+    assert not any("EYE-001" in g for g in findings(root2, "gap"))
+
+
+def test_basis_must_be_well_formed(tmp_path):
+    root = write_baseline(tmp_path, eye=changed(EYE, "EYE-001", basis={"method": "guess", "ref": "x"}))
+    assert any("basis must be" in e for e in findings(root))
+    root2 = write_baseline(tmp_path / "b", eye=changed(EYE, "EYE-001", basis={"method": "model", "ref": "tools/none.py"}))
+    assert any("basis ref tools/none.py does not exist" in e for e in findings(root2))
 
 
 def test_interface_requirement_must_be_on_an_icd_end(tmp_path):

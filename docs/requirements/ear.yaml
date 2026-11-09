@@ -6,7 +6,10 @@
   type: performance
   derives_from: [SYS-025]
   allocated_to: radar-sensor
+  allocation_rationale: >-
+    Tracking capacity is a property of the sensor (LD2450: up to 3 targets).
   verify: test
+  basis: {method: estimate, ref: docs/interfaces/ICD-002-radar-targets.md}
   source: architecture.md §4; ESPHome LD2450 page (checked 2026-11-09)
   stage: 2
   status: proposed
@@ -17,6 +20,8 @@
   type: constraint
   derives_from: [SYS-025]
   allocated_to: radar-sensor
+  allocation_rationale: >-
+    The firmware version is a property of the sensor module.
   verify: inspection
   rationale: ESPHome's LD2450 component requires it.
   source: architecture.md §4 "Software"; ESPHome LD2450 page
@@ -30,6 +35,8 @@
   type: performance
   derives_from: [SYS-026]
   allocated_to: radar-sensor
+  allocation_rationale: >-
+    Coverage comes from the sensor's range (about 6 m) and where it is mounted.
   verify: test
   source: architecture.md §4 "Placement"
   stage: 2
@@ -40,8 +47,10 @@
     The radar firmware shall publish each target's x, y and speed and the target count at
     about 10 times per second, overriding ESPHome's default one-per-second throttle.
   type: performance
-  derives_from: [SYS-028, SYS-019]
+  derives_from: [SYS-028, SYS-019, SYS-020]
   allocated_to: radar-firmware
+  allocation_rationale: >-
+    The publish rate is set in our ESPHome config: the radar's hop in paths P1 and P2.
   verify: test
   rationale: ESPHome's LD2450 sensors default to throttle_with_priority 1000 ms (ESPHome page, 2026-11-09).
   source: architecture.md §4 "Software"
@@ -55,6 +64,8 @@
   type: functional
   derives_from: [SYS-026]
   allocated_to: radar-firmware
+  allocation_rationale: >-
+    Zones are set in the firmware, which configures the sensor.
   verify: test
   notes: The approach and door zones are decided by the brain from x and y, using the site config (ICD-015), so all decisions stay in the brain.
   source: architecture.md §4 "Placement", "Calibration"
@@ -69,6 +80,8 @@
   icd: ICD-002
   derives_from: [SYS-042, SYS-028]
   allocated_to: radar-firmware
+  allocation_rationale: >-
+    The firmware is the publishing end of ICD-002.
   verify: test
   source: architecture.md §4 "Software"
   stage: 2
@@ -82,6 +95,8 @@
   icd: ICD-009
   derives_from: [SYS-033]
   allocated_to: radar-esp32
+  allocation_rationale: >-
+    The ESP32 holds the radar node's Wi-Fi connection.
   verify: inspection
   source: architecture.md §8
   stage: 2
@@ -95,6 +110,8 @@
   icd: ICD-010
   derives_from: [SYS-046, SYS-045]
   allocated_to: radar-box
+  allocation_rationale: >-
+    The box is the part that mounts and shelters the radar.
   verify: inspection
   source: architecture.md §4 "Placement" (the module is meant for indoor use)
   stage: 2
@@ -107,6 +124,8 @@
   icd: ICD-008
   derives_from: [SYS-034]
   allocated_to: radar-psu
+  allocation_rationale: >-
+    The 5 V supply is the radar node's one connection to the mains.
   verify: inspection
   source: architecture.md §4 "Hardware"
   stage: 2

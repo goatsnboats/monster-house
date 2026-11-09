@@ -12,6 +12,9 @@
   icd: ICD-013
   derives_from: [SYS-039, SYS-040]
   allocated_to: [eye-pi-left, eye-pi-right]
+  allocation_rationale: >-
+    The eye Pis are the computers the renderer runs on; computers belong to INF (spec
+    tree Q14).
   verify: test
   source: CLAUDE.md "Current stage", Eye renderer constraints; ADR 0002 (open risk TBD-013)
   stage: 1
@@ -25,6 +28,8 @@
   icd: ICD-013
   derives_from: [SYS-039]
   allocated_to: porch-pi
+  allocation_rationale: >-
+    The porch Pi is the computer Show control runs on from Stage 3 (Q14).
   verify: test
   source: architecture.md §3 "Where it runs, by stage"
   stage: 3
@@ -36,7 +41,10 @@
   type: performance
   derives_from: [SYS-024, SYS-039]
   allocated_to: [eye-pi-left, eye-pi-right]
+  allocation_rationale: >-
+    Memory is the eye Pi's resource; the budget model adds up what runs on it.
   verify: analysis
+  basis: {method: model, ref: tools/reqs/budget.py}
   verified_by: [tools/reqs/budget.py]
   source: owner 2026-11-09 (budget check); architecture.md §2 (1GB)
   stage: 1
@@ -49,7 +57,10 @@
   type: performance
   derives_from: [SYS-039]
   allocated_to: porch-pi
+  allocation_rationale: >-
+    Memory is the porch Pi's resource; the budget model adds up what runs on it.
   verify: analysis
+  basis: {method: model, ref: tools/reqs/budget.py}
   verified_by: [tools/reqs/budget.py]
   source: owner 2026-11-09 (budget check)
   stage: 3
@@ -63,6 +74,8 @@
   icd: ICD-007
   derives_from: [SYS-021]
   allocated_to: porch-pi
+  allocation_rationale: >-
+    The USB port is on the porch Pi; the budget model counts ports.
   verify: analysis
   verified_by: [tools/reqs/budget.py]
   source: architecture.md §3a "Audio output"
@@ -76,6 +89,8 @@
   icd: ICD-014
   derives_from: [SYS-024]
   allocated_to: [eye-pi-left, eye-pi-right]
+  allocation_rationale: >-
+    The Pi's HDMI output feeds the projector.
   verify: test
   source: architecture.md §2
   stage: 1
@@ -92,6 +107,8 @@
   icd: ICD-015
   derives_from: [SYS-004, SYS-035, SYS-047]
   allocated_to: site-config
+  allocation_rationale: >-
+    House-specific settings belong in INF's site config, not in the themes (Q6).
   verify: inspection
   source: spec tree Q6; positions measured at install (TBD-018), door zone TBD-029
   stage: 0
@@ -108,6 +125,8 @@
   icd: ICD-009
   derives_from: [SYS-033, SYS-014]
   allocated_to: home-network
+  allocation_rationale: >-
+    Addresses, names and clock sync are network services.
   verify: inspection
   rationale: Clocks must be right for show hours.
   source: architecture.md §8
@@ -121,6 +140,8 @@
   type: performance
   derives_from: [SYS-033]
   allocated_to: home-network
+  allocation_rationale: >-
+    Coverage is a property of how the home network is set up.
   verify: test
   source: architecture.md §4 "Risks", §8
   stage: 2
@@ -132,6 +153,8 @@
   type: constraint
   derives_from: [SYS-038]
   allocated_to: home-network
+  allocation_rationale: >-
+    Only the network decides what reaches in from the internet.
   verify: inspection
   source: architecture.md §8
   stage: 1
@@ -147,6 +170,8 @@
   icd: ICD-008
   derives_from: [SYS-034, SYS-046]
   allocated_to: power-distribution
+  allocation_rationale: >-
+    Outlets and cords are shared by several subsystems, so they belong to INF (Q8).
   verify: inspection
   source: architecture.md §1 design principle 2
   stage: 1
@@ -159,6 +184,9 @@
   type: functional
   derives_from: [SYS-018]
   allocated_to: power-distribution
+  allocation_rationale: >-
+    Assumes the pods are switched off at the power (Q12); moves if TBD-025 decides
+    otherwise.
   verify: demonstration
   notes: Allocated here on the assumption that it ends up as switched power (spec tree Q12); move it if TBD-025 decides otherwise.
   source: architecture.md §2 "Risks" (fan noise); spec tree Q12
@@ -173,6 +201,8 @@
   icd: ICD-010
   derives_from: [SYS-045, SYS-046]
   allocated_to: porch-mounting
+  allocation_rationale: >-
+    Shared mounting and cable routes belong to INF (Q8).
   verify: inspection
   source: architecture.md §3 "Show-brain hardware" (cable through the door frame); TBD-010
   stage: 2

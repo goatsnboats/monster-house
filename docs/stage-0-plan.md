@@ -21,7 +21,8 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
 **Done when:** a test message published by one program arrives in another through Mosquitto, using the shared schemas, and `pytest` runs green.
 
 ## Step 2 — Eye renderer, first version (November)
-- [ ] **Renderer trial (about a day):** Build the same minimal eye (sclera, iris, pupil, lids) two ways, as Python + OpenGL shaders (`moderngl` + `pygame-ce` window) and as Godot. Compare smoothness, ease of iterating on the look, and the path to Pi 5 (GLES 3.0, no desktop environment, low memory). Write up the recommendation, and the owner picks one.
+- [x] **Renderer trial (about a day):** Build the same minimal eye (sclera, iris, pupil, lids) two ways, as Python + OpenGL shaders (`moderngl` + `pygame-ce` window) and as Godot. Compare smoothness, ease of iterating on the look, and the path to Pi 5 (GLES 3.0, no desktop environment, low memory). Write up the recommendation, and the owner picks one.
+  _Done 2026-11-08: [TS-002](trades/TS-002-eye-renderer.md) ([results](trades/results/TS-002/README.md)). The owner chose Python + moderngl + pygame-ce ([ADR 0002](decisions/0002-eye-renderer.md))._
 - [ ] Full eye matching `docs/reference/eye-sketch.html`: layers, bold outline, catchlight, sparkle, lids with the lower-lid smile.
 - [ ] Expressions from the table in architecture §2, eased smoothly. Blinks on command, plus a fallback timer.
 - [ ] Per-eye config: window size, eye placement, rotation 0/90°, mirroring, brightness.

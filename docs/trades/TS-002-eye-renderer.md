@@ -1,6 +1,6 @@
 # TS-002 — Eye renderer: Python + moderngl, or Godot
 
-> **Status:** Recommended · **Date:** 2026-11-08 · **Decides:** what the eye renderer is built with · **TBD:** TBD-002 · **ADR:** [0002](../decisions/0002-eye-renderer.md) (Proposed) · **Affects:** Stage 0 Step 2 (and every later step that touches the eyes); TBD-003 (message schemas); TBD-013 (buy a Pi early?); `shared/topics.py`
+> **Status:** Decided (owner, 2026-11-08, in session) · **Date:** 2026-11-08 · **Decides:** what the eye renderer is built with · **TBD:** [TBD-002](../TBD.md) (closed) · **ADR:** [0002](../decisions/0002-eye-renderer.md) (Accepted) · **Results:** [report](results/TS-002/README.md) · **Affects:** Stage 0 Step 2 (and every later step that touches the eyes); TBD-003 (message schemas); TBD-013 (buy a Pi early?); `shared/topics.py`
 
 Status moves through `Framing` → `Awaiting weights` (Stop 1) → `Evaluating` →
 `Recommended` (Stop 2) → `Decided (owner, YYYY-MM-DD, <where>)`.
@@ -59,7 +59,7 @@ drawing, `pygame-ce` for the window), or in the Godot game engine?
 |---|---|---|---|
 | G1 | Draws on the GPU, with shaders that compile as GLSL ES 3.00 | Trial shaders compiled with a GLSL ES 3.00 validator; documentation for the engine's own shaders | `CLAUDE.md` renderer constraints; arch §2 |
 | G2 | A documented way to run full-screen on Raspberry Pi OS Lite (64-bit, Bookworm) on a Pi 5 **without a desktop environment** | Documentation now; measured once a Pi exists (TBD-013). A single-app kiosk compositor (e.g. `cage`) passes this gate but scores lower on C2 | `CLAUDE.md`; arch §2 |
-| G3 | Runs in a window on the Ubuntu 24.04 desktop | Measured in the trial | `CLAUDE.md` |
+| G3 | Runs in a window on the Ubuntu desktop (26.04.1 LTS, measured; the framing wrongly said 24.04) | Measured in the trial | `CLAUDE.md` |
 | G4 | Can subscribe and publish MQTT, including a last-will status message | Documentation, then the trial | `CLAUDE.md` architecture rules; arch §2–3c |
 | G5 | Free and open source, with no per-device licence | Documentation | Stage 0 cost: $0 |
 
@@ -125,8 +125,10 @@ control. Both versions use the **same shader math**: the Godot shader is a line-
 copy, and only the entry point and output names differ. The screenshots match
 ([`results/compare-a-top-b-bottom.png`](../../trials/ts-002/results/compare-a-top-b-bottom.png)).
 
-**Machine:** the Ubuntu 24.04 desktop (Intel Arrow Lake graphics, Mesa 26.0.8, 24 cores),
+**Machine:** the owner's desktop, Ubuntu 26.04.1 LTS (Intel Arrow Lake graphics, Mesa 26.0.8, 24 cores),
 Python 3.11.18, moderngl 5.13.0, pygame-ce 2.5.8 (SDL 2.32.10), Godot 4.7.2.
+
+**Full results report** with every figure, log and the scripts that regenerate them: [results/TS-002](results/TS-002/README.md). The numbers below combine the first, hand-run session with the scripted re-run (`trials/ts-002/run_trials.py`) the same day.
 
 **Limit on the smoothness tests:** Claude runs in the `dev` account, whose desktop
 session isn't on a monitor. The compositor slows down windows nobody can see (with vsync
@@ -141,18 +143,18 @@ commands in the trial README.
 | E2 | B | C1 | Same test: 60.0 fps, worst 1% frame 16.9 ms, **0 frames over 25 ms** in 2 × 27 s runs | measured | `measure.sh` + Godot `--rendering-driver opengl3_es -- --bench 27 --no-vsync --fps-cap 60` |
 | E3 | A | C1, C2 | Uncapped: **0.25 ms per frame** on average (about 3,900 fps), 0 hitches | measured | `eye.py --bench 8 --no-vsync`, Wayland |
 | E4 | B | C1, C2 | Uncapped: **3.0–3.2 ms per frame** (about 320 fps on OpenGL ES), worst frame about 7 ms every run. This includes Godot's engine loop and compositor pacing, not only drawing | measured | Godot `-- --bench 8 --no-vsync`, 3 runs |
-| E5 | A, B | C2 | At 60 fps: **CPU A 4.0–4.4 % vs B 5.0–5.9 %** of one core; **memory A 147–153 MB vs B 217 MB**. Desktop memory includes the Intel driver, so Pi figures will differ; the comparison is fair | measured | `measure.sh`, 20 s samples from `/proc` |
+| E5 | A, B | C2 | At 60 fps, over 4 runs each in two sessions: **CPU A 4.0–5.2 % vs B 4.7–5.9 %** of one core (similar; A a little lower on average); **memory A 147–153 MB vs B 217–218 MB** (consistent). Desktop memory includes the Intel driver, so Pi figures will differ; the comparison is fair | measured | `measure.sh` and `run_trials.py`, 20 s samples from `/proc`; [report](results/TS-002/README.md) |
 | E6 | — | C2 | The Pi 5 GPU (Mesa V3D) offers **OpenGL ES 3.1** (conformant) and **desktop OpenGL 3.1** (not conformant); no plans for 3.2 | documented | [Mesa V3D docs](https://docs.mesa3d.org/drivers/v3d.html); [Phoronix Pi 5 review](https://Phoronix.com/review/raspberry-pi-5-graphics); [FOSDEM 2025 talk](https://fosdem.org/schedule/event/BMFQSE-raspberry-pi-gpu-drivers-from-bookworm-to-trixie); checked 2026-11-08 |
 | E7 | A | C2, G1 | `moderngl` asks for OpenGL 3.3 by default, but **runs with `require=310`** on a context capped at OpenGL 3.1 and on an **OpenGL ES 3.x context through EGL**, compiling `#version 300 es` shaders. Imitated on the desktop (`MESA_GL_VERSION_OVERRIDE=3.1`; SDL ES profile), **not on a Pi** | measured + documented | Probe scripts (2026-11-08); [moderngl context docs](https://moderngl.readthedocs.io/en/latest/reference/context.html) |
 | E8 | A | C2 | On OpenGL ES, reading pixels back as RGB returns garbage; RGBA works. Matters only for screenshots | measured | Read-back probe, 2026-11-08 |
 | E9 | A | C2, G2 | pygame-ce's bundled SDL 2.32.10 **includes the KMS/DRM driver** (it can't start here because the desktop owns the screen). Others run pygame-ce with `SDL_VIDEODRIVER=kmsdrm` on Pi OS Lite; older reports needed EGL driver overrides | measured + documented | SDL library symbols; [photobooth project](https://git.autonomic.zone/trav/nissaphotobooth/commit/f51f204a9deb96fcab959aa5fe159af6bbced1b3); [SDL Pi notes](https://wiki.libsdl.org/SDL3/README/raspberrypi); checked 2026-11-08 |
 | E10 | B | C2, G2 | Godot 4.7.2 display drivers: **x11, wayland, headless only. No KMS/DRM.** On Pi OS Lite it needs a compositor (e.g. `cage`) or X. No source found showing Godot under `cage` on a Pi 5; one forum user reports Godot 4.6 running well on Pi OS **with** its desktop | measured + documented | `Godot --help`; [Godot Wayland/X11 docs](https://docs.godotengine.org/en/4.7/tutorials/platform/linux/wayland_x11.html); [Godot forum: Pi](https://forum.godotengine.org/t/godot-4-x-on-the-raspberry-pi/34417); checked 2026-11-08 |
-| E11 | B | C2 | Godot **didn't exit after `quit()`** in 2 of about 12 launches (it finished its work, then hung). Seen in the off-screen session; cause not investigated | measured | Trial runs, 2026-11-08 |
+| E11 | B | C2 | Godot **didn't exit after `quit()`** in 2 of about 12 launches in the first, hand-run session (it finished its work, then hung). In the scripted re-run it exited normally in all 15 launches. Seen only in the off-screen session; cause not investigated | measured | Trial runs, 2026-11-08; `run_trials.py` |
 | E12 | A | C6 | **No Linux ARM64 wheels** for `moderngl` 5.13.0 or `glcontext` 3.1.0, so a Pi compiles them, which needs build tools and X11/GL headers (a source build here stopped at a missing `X11/Xlib.h`). `pygame-ce` 2.5.8 has a Pi wheel. Bookworm packages `python3-moderngl` 5.7.4 | measured + documented | [PyPI moderngl files](https://pypi.org/project/moderngl/5.13.0/#files); [Debian python-moderngl](https://sources.debian.org/src/python-moderngl/); checked 2026-11-08 |
 | E13 | B | C6 | Godot is **one 146 MB program** (78 MB zip); an official `linux.arm64` build of 4.7.2 exists. On the Pi it also needs a compositor installed and configured | measured + documented | Download, 2026-11-08; [godotengine.org/download](https://godotengine.org/download/linux) |
 | E14 | A, B | G1 | Both draw entirely on the GPU in a fragment shader. A's shader is plain `#version 300 es`; B's ran on Godot's `opengl3_es` driver | measured | Trial runs |
 | E15 | A, B | G4, C5 | Both obey `blink` and `expression`, ignore a malformed message, publish `online`/`offline`, and the broker sends the **last will when the process is killed**. A uses `paho-mqtt` and `shared/topics.py`. B needed a hand-written MQTT client (82 lines) with the **topic names copied by hand**; an MIT add-on (godot-mqtt) exists. Godot reads `180` as `180.0` and logs an engine error for bad JSON | measured + documented | Trial runs with the Step 1 debug tool; [godot-mqtt](https://github.com/goatchurchprime/godot-mqtt) |
-| E16 | A, B | C3 | Start-to-quit: **A 0.29–0.32 s, B 0.49 s**, so both restart quickly after an edit. Godot's editor shows shader settings as live sliders (from tutorials; not tried here, because the editor needs a visible screen). A has no editor; shader reload while running could be added (judgment) | measured + documented | 3 timed runs each; [Godot shader tutorial](https://www.generalistprogrammer.com/tutorials/godot-4-shaders-tutorial) |
+| E16 | A, B | C3 | Start-to-quit: **A 0.28–0.32 s, B 0.43–0.49 s** (6 runs each, two sessions), so both restart quickly after an edit. Godot's editor shows shader settings as live sliders (from tutorials; not tried here, because the editor needs a visible screen). A has no editor; shader reload while running could be added (judgment) | measured + documented | 3 timed runs each; [Godot shader tutorial](https://www.generalistprogrammer.com/tutorials/godot-4-shaders-tutorial) |
 | E17 | A, B | C4 | Code size (non-blank, non-comment lines): A **204 Python + 69 shader**. B **164 GDScript + 82 MQTT + 68 shader + 24 scene/project**. A is in the repo's language; B adds GDScript, Godot's scene and node ideas, and its editor | measured + judgment | Line counts |
 | E18 | B | C5 | Needs a neutral topic file (or generated code), its own test setup for gaze math, and an add-on or JSON for config (no built-in YAML) | judgment | See §2 *Couplings* |
 | E19 | A, B | G5 | moderngl MIT, pygame-ce LGPL-2.1, Godot MIT: all open source, with no per-device fee | documented | Project licences, checked 2026-11-08 |
@@ -181,7 +183,7 @@ Score notes:
   only under a software cap with the window off screen. Provisional until checked on a
   visible screen. It doesn't separate the options either way.
 - **C2:** A gets 4, not 5, because nothing has run on a real Pi 5 yet. B gets 3: it
-  needs a compositor layer, uses more memory and CPU, and has the exit hang.
+  needs a compositor layer, uses about 70 MB more memory, and has the exit hang.
 - **C4:** the shader math is the hardest part to read in both, so neither gets 5.
 
 ## 7. Sensitivity
@@ -202,7 +204,7 @@ C1 is re-scored after a visible-screen check, since both options would move toge
 ## 8. Recommendation
 **Option A: Python + `moderngl` + `pygame-ce`.**
 
-- **Why:** it does the same job with less CPU and memory, stays in the repo's one
+- **Why:** it does the same job with a third less memory and similar CPU, stays in the repo's one
   language, and uses `shared/topics.py`, `paho-mqtt`, YAML and `pytest` directly. It
   also has a no-desktop path (SDL's KMS/DRM driver) that needs no extra compositor.
 - **Main risks:**
@@ -225,12 +227,23 @@ C1 is re-scored after a visible-screen check, since both options would move toge
   1 for about $45 before Step 2 builds on it.
 
 ## 9. Decision
-*Open.* Awaiting the owner (Stop 2). Proposed ADR:
-[0002](../decisions/0002-eye-renderer.md).
+**Decided by the owner on 2026-11-08, in the Claude Code session, after reading the Stop 2
+recommendation: option A, Python + `moderngl` + `pygame-ce`.** Recorded in
+[ADR 0002](../decisions/0002-eye-renderer.md) (Accepted).
+
+- **Requirement allocations:** none yet (no `EYE-` requirements exist). When they're
+  written, the eye renderer component is Python on `moderngl`/`pygame-ce`, deployed on
+  the eye-pod Pi.
+- **TBD register:** TBD-002 closed. TBD-003 no longer needs a language-neutral schema
+  format for the renderer's sake. TBD-013 (buy a Pi 5 early) reopened, as the way to
+  retire this decision's main risk.
+- **Full results report**, with figures, logs and how to reproduce:
+  [results/TS-002](results/TS-002/README.md).
 
 ## Links
 - Stage 0 plan, Step 2: [`../stage-0-plan.md`](../stage-0-plan.md)
 - Architecture §2 (eye pods): [`../architecture.md`](../architecture.md)
 - Visual reference: [`../reference/eye-sketch.html`](../reference/eye-sketch.html)
-- TBD register row: TBD-002 (the register lives on the `process/trade-study` branch until it merges)
+- TBD register: [TBD-002](../TBD.md) (closed), TBD-003, TBD-013
+- Results report: [results/TS-002](results/TS-002/README.md); ADR: [0002](../decisions/0002-eye-renderer.md)
 - Related: TS-001 and ADR 0001 (requirements format), TBD-003 (message schemas), TBD-013 (early Pi)

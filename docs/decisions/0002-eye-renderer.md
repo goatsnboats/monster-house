@@ -1,6 +1,6 @@
 # 0002 — Eye renderer: Python + moderngl + pygame-ce
 
-> **Status:** Proposed · **Date:** 2026-11-08 · **Deciders:** owner · **Supersedes:** — · **Trade study:** [TS-002](../trades/TS-002-eye-renderer.md)
+> **Status:** Accepted (owner, 2026-11-08, in session) · **Date:** 2026-11-08 · **Deciders:** owner · **Supersedes:** — · **Trade study:** [TS-002](../trades/TS-002-eye-renderer.md)
 
 ## Context
 Each eye is drawn live on the GPU and must run in a desktop window now and full-screen
@@ -9,8 +9,8 @@ and desktop OpenGL 3.1. The rest of the system is Python talking MQTT, with topi
 in `shared/topics.py`, configuration in YAML and tests in `pytest`.
 
 A one-day trial built the same minimal eye both ways. Both held 60 fps with no hitches
-on the desktop. Python + moderngl used less CPU (about 4 % vs 5–6 % of one core) and
-memory (about 150 MB vs 217 MB), and could use the shared Python code directly. Godot
+on the desktop. Python + moderngl used about a third less memory (about 150 MB vs 217 MB) and
+similar CPU (4.0–5.2 % vs 4.7–5.9 % of one core), and could use the shared Python code directly. Godot
 has no direct KMS/DRM output, so on the Pi it would need a compositor such as `cage`.
 Neither option has run on a real Pi 5 yet.
 
@@ -41,11 +41,11 @@ driver with no desktop or compositor.
 
 ## Alternatives considered
 - **Godot 4 (GDScript, Compatibility renderer):** has the best live editing for the look,
-  but needs a compositor on the Pi, uses more CPU and memory, and duplicates topic names,
+  but needs a compositor on the Pi, uses more memory, and duplicates topic names,
   config handling and tests outside Python. It sometimes failed to exit in the trial.
 - **Screened out earlier:** CPU drawing with pygame, C/C++, Python + raylib (kept as a
   fallback), a browser kiosk (kept as a fallback), other engines, and `pi3d`.
 
 ## Links
-- Trade study: [TS-002](../trades/TS-002-eye-renderer.md); trial code in `trials/ts-002/`
-- Owner's decision: *pending*
+- Trade study: [TS-002](../trades/TS-002-eye-renderer.md); results report: [results/TS-002](../trades/results/TS-002/README.md); trial code in `trials/ts-002/`
+- Owner's decision: 2026-11-08, in the Claude Code session, after reviewing the Stop 2 recommendation ("Option a sounds good"). Recorded in the commit that marks this ADR Accepted.

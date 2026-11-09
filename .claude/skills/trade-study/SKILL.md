@@ -80,6 +80,10 @@ the turn.
 ## Rules
 
 - **Recommend; don't decide.** Choosing between options is always the owner's call.
+- **The owner may decide at any point,** even before scoring. Record the decision and
+  the owner's reasoning, mark the sections that weren't run as "Not run", and say
+  plainly in §9 that no scores back the choice. Never fill in scores afterwards to
+  justify it. Example: TS-001.
 - **Find the couplings.** Say so explicitly when this decision constrains another
   (e.g. a non-Python renderer means the message schemas need a definition in a neutral
   language).

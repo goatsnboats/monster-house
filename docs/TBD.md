@@ -23,9 +23,8 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 
 | ID | What is undecided | Resolved by | Blocks | Needed by | Status |
 |---|---|---|---|---|---|
-| TBD-001 | How requirements, architecture and ICDs are documented (format, tooling, SysML or not) | Trade study: [TS-001](trades/TS-001-requirements-approach.md) | The requirements baseline, ICDs, TBD-003 | Before system requirements are written | Awaiting weights |
 | TBD-002 | Eye renderer: Python + moderngl + pygame-ce, or Godot | Trade study (not started) | Stage 0 Step 2, TBD-003 | Stage 0 Step 2 (Nov) | Open |
-| TBD-003 | How our MQTT message schemas are defined and validated (dataclasses, pydantic, msgspec, JSON Schema) | Trade study (not started). Depends on TBD-001 and TBD-002 | The `shared/` schemas; Stage 0 Step 1 "done when" | Stage 0 Step 1 | Open |
+| TBD-003 | How our MQTT message schemas are defined and validated (dataclasses, pydantic, msgspec, JSON Schema) | Trade study (not started). Depends on TBD-002 and on the ICD format from [ADR 0001](decisions/0001-requirements-and-architecture-format.md) | The `shared/` schemas; Stage 0 Step 1 "done when" | Stage 0 Step 1 | Open |
 | TBD-004 | Lopsided eyes (one big, one small) or matched eyes | Owner decision, using the house preview | Eye art, per-eye config | Stage 0 exit | Open |
 | TBD-005 | Each projector on its side (tall eye) or flat | Owner decision, after TBD-006 and TBD-017 | Per-eye `rotate_deg`, stands | Stage 0 exit | Open |
 | TBD-006 | Glass width × height of both windows, fixed dividers, floor space behind each | Measurement | Screen size, projector distance, TBD-005 | Stage 0 exit | Open |
@@ -41,9 +40,10 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-016 | Whether the radar's ~6 m range reaches the sidewalk | Measurement | Approach zone, greeting timing | Stage 2 | Open |
 | TBD-017 | Whether the projector may run on its side (venting, manufacturer approval) | Verify with the manufacturer | TBD-005 | Stage 0 exit | Open |
 | TBD-018 | Mount positions of the radar and both windows in house coordinates | Measurement at install | Gaze math settings | Stage 2 | Open |
+| TBD-019 | When to move the architecture (not the requirements) to SysML v2 text notation, i.e. TS-001 option D | New trade study, once a command-line SysML v2 validator runs on Ubuntu and its views are readable. Check tool status at each stage boundary | Nothing yet; [ADR 0001](decisions/0001-requirements-and-architecture-format.md) keeps the content SysML-ready | Not before Stage 1 | Deferred |
 
 ## Closed
 
 | ID | What was undecided | Closed by | Date |
 |---|---|---|---|
-| — | | | |
+| TBD-001 | How requirements, architecture and ICDs are documented | [ADR 0001](decisions/0001-requirements-and-architecture-format.md): Markdown + YAML with our own checker, SysML-ready (owner; [TS-001](trades/TS-001-requirements-approach.md)) | 2026-11-08 |

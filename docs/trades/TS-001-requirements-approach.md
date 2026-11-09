@@ -1,6 +1,6 @@
 # TS-001 — How we document requirements, architecture and interfaces
 
-> **Status:** Awaiting weights · **Date:** 2026-11-08 · **Decides:** the format and tooling for requirements, architecture and ICDs · **TBD:** [TBD-001](../TBD.md) · **ADR:** — · **Affects:** every requirement and ICD written from now on; the message-format study (TBD-003); the Stage 0 plan
+> **Status:** Decided (owner, 2026-11-08, in session; scored evaluation not run, see §9) · **Date:** 2026-11-08 · **Decides:** the format and tooling for requirements, architecture and ICDs · **TBD:** [TBD-001](../TBD.md) (closed) · **ADR:** [0001](../decisions/0001-requirements-and-architecture-format.md) · **Affects:** every requirement and ICD written from now on; the message-format study (TBD-003); the Stage 0 plan
 
 ## 1. Question
 In what form, and with what tooling, should we keep the system requirements, their
@@ -118,22 +118,47 @@ Syside's license, whether a validator runs from the command line); and the statu
 OMG SysML v2 specification.
 
 ## 5. Evidence
-*Not started. Waiting for weights.* Plan: author the same small sample in each option
-(three system requirements, six subsystem requirements across the brain and eye, two
-components, and an ICD for `monster/eyes/look`) under `trials/ts-001/`, then run the
-checks for G2, C2, C4, C5 and C7.
+*Not run.* The owner decided after framing (§9). The planned sample (three system
+requirements, six subsystem requirements, two components, and an ICD for
+`monster/eyes/look`) becomes the first content written in option A instead.
+
+**Conversion cost, discussed 2026-11-08 (judgment):** with stable IDs, YAML ↔ StrictDoc
+is under one scripted session. YAML requirements → SysML v2 is about one scripted
+session. Markdown architecture → SysML v2 is one or two sessions by hand for a system
+this size (about 15 components and 8 interfaces). The lasting cost of a format change is
+the references to the files, not the files themselves, so stable IDs are what keep this
+reversible.
 
 ## 6. Scores
-*Not started.*
+*Not run.*
 
 ## 7. Sensitivity
-*Not started.*
+*Not run.*
 
 ## 8. Recommendation
-*Not started.*
+*Not made.* Before the owner's decision, the discussion covered:
+- the four options;
+- the concern that SysML v2 would be **too restrictive**: everything must fit its type
+  system, one syntax error breaks validation, and staged deployment is fiddly to model;
+- the **unverified state of the open SysML v2 tooling** (a command-line validator and
+  readable views).
+
+D was the owner's first lean.
 
 ## 9. Decision
-*Open.*
+**A: Markdown + YAML with our own checker, with a planned move to SysML v2 for the
+architecture (option D) once SysML v2 tooling and viewing are established.**
+Owner, 2026-11-08, in session.
+
+**Owner's reasoning:** start with what is readable and cheap to change. Adopt SysML's
+formality when the tools make it usable rather than restrictive.
+
+**Weighted scoring was not run.** The owner chose on judgment after the framing and the
+discussion of conversion cost. B (StrictDoc) and C (SysML v2 throughout) were set aside
+on that basis, not on scores. The revisit is tracked as TBD-019.
+
+**To keep the later move to SysML cheap**, A is written SysML-ready (see ADR 0001,
+Consequences).
 
 ## Links
 - Owner direction: session of 2026-11-08

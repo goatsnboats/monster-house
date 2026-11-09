@@ -13,6 +13,12 @@
 #   ports       its connection points: name and protocol or medium
 #   deployed_on software only: {first stage: the part(s) it runs on or is stored on}.
 #               An entry holds until a later stage replaces it.
+#   provides    hosts: resources they have, e.g. {memory_mb: 1024, usb_ports: 4}
+#   needs       resources used, e.g. {memory_mb: 153}; a number or a TBD-NNN.
+#               Software draws from where it is deployed_on; a part from supplied_by;
+#               a host's own needs (its operating system) from itself.
+#   supplied_by parts with needs: the host that supplies them
+#   Budgets are added up by tools/reqs/budget.py.
 #
 # Checked by tools/reqs/check.py.
 
@@ -77,6 +83,7 @@
   subsystem: EYE
   name: Eye renderer (Python + moderngl + pygame-ce, ADR 0002)
   stage: 0
+  needs: {memory_mb: 153}   # TS-002 peak at 60 fps on the desktop; Pi figure after TBD-013
   functions:
     - draw the layered eye on the GPU (OpenGL ES 3.0 / GLSL ES 3.00)
     - ease between expressions
@@ -93,6 +100,7 @@
   subsystem: SHW
   name: Monster brain (Python service)
   stage: 0
+  needs: {memory_mb: TBD-032}
   functions:
     - run the mood state machine (Asleep, Waking, Greeting, Watching, Goodbye)
     - turn radar positions into a look point and choose the focus visitor
@@ -107,6 +115,7 @@
   subsystem: SHW
   name: Phone page served by the brain on the home network
   stage: 0
+  needs: {memory_mb: 0}     # runs inside the brain's process
   functions: [show buttons (great costume, burp, sing, mute voice, sleep now, wake now), show the current mood, choose a theme]
   ports: [{name: http, protocol: HTTP}]
   deployed_on: {0: desktop, 3: porch-pi}
@@ -116,6 +125,7 @@
   subsystem: SHW
   name: Falcon Player (FPP), third-party; faked by fake-fpp in Stages 0-2
   stage: 3
+  needs: {memory_mb: TBD-032}
   functions: [play a voice clip and its lip sequence together, run the show schedule, send lip frames over DDP, report clip status]
   ports: [{name: mqtt, protocol: MQTT}, {name: http, protocol: HTTP}, {name: ddp, protocol: DDP}, {name: audio, protocol: USB audio device}]
   deployed_on: {3: porch-pi}
@@ -125,6 +135,7 @@
   subsystem: SHW
   name: Mosquitto MQTT broker, third-party, with our config (deploy/mosquitto/)
   stage: 0
+  needs: {memory_mb: TBD-032}
   functions: [pass every MQTT message between components, hold retained messages, deliver last-will messages]
   ports: [{name: mqtt, protocol: MQTT}]
   deployed_on: {0: desktop, 3: porch-pi}
@@ -181,6 +192,8 @@
   subsystem: MTH
   name: Upper lip, WS2815 12 V strip, 60 LEDs/m, IP65
   stage: 4
+  needs: {power_w: TBD-033}
+  supplied_by: lip-psu
   location: under the porch roof edge
   functions: [show the upper lip]
   ports: [{name: power-data-in, protocol: 12 V + LED data}]
@@ -190,6 +203,8 @@
   subsystem: MTH
   name: Lower lip, WS2815 12 V strip, 60 LEDs/m, IP65
   stage: 4
+  needs: {power_w: TBD-033}
+  supplied_by: lip-psu
   location: along the porch railing
   functions: [show the lower lip]
   ports: [{name: power-data-in, protocol: 12 V + LED data}]
@@ -199,6 +214,8 @@
   subsystem: MTH
   name: Extras on the controller's spare outputs (teeth uplight, throat glow, tongue)
   stage: 4
+  needs: {power_w: TBD-033}
+  supplied_by: lip-psu
   location: porch
   functions: [add teeth, throat and tongue effects]
   ports: [{name: power-data-in, protocol: 12 V + LED data}]
@@ -226,6 +243,8 @@
   subsystem: MTH
   name: QuinLED Dig-Quad with WLED, network name monster-lips
   stage: 4
+  needs: {power_w: TBD-033}
+  supplied_by: lip-psu
   location: lip-box on the porch
   functions: [drive up to 4 LED outputs, receive DDP frames over Wi-Fi]
   ports: [{name: wifi, protocol: Wi-Fi 2.4 GHz}, {name: outputs, protocol: 12 V + LED data}, {name: power-in, protocol: 12 V}]
@@ -235,6 +254,7 @@
   subsystem: MTH
   name: 12 V ~350 W power supply for the lips
   stage: 4
+  provides: {power_w: 350}   # architecture §5: 12 V ~350 W
   location: lip-box on the porch
   functions: [power the lip controller and strips]
   ports: [{name: mains, protocol: power}, {name: dc-out, protocol: 12 V}]
@@ -263,6 +283,8 @@
   subsystem: VOC
   name: USB audio adapter (the Pi 5 has no headphone jack)
   stage: 3
+  needs: {usb_ports: 1}
+  supplied_by: porch-pi
   location: plugged into porch-pi, inside the front door
   functions: [turn the porch Pi's audio into a line-level signal]
   ports: [{name: usb, protocol: USB audio}, {name: line-out, protocol: analog line level}]
@@ -318,6 +340,8 @@
   subsystem: INF
   name: Raspberry Pi 5 (1GB) with supply and microSD, left (small) window's eye pod
   stage: 1
+  provides: {memory_mb: 1024, usb_ports: 4}   # Pi 5 1GB (architecture §2); 2 USB 3 + 2 USB 2
+  needs: {memory_mb: TBD-032}                 # the operating system's own share
   location: bedroom, left eye pod
   functions: [host eye-renderer full-screen on KMS/DRM, output video to the projector]
   ports: [{name: hdmi, protocol: HDMI}, {name: wifi, protocol: Wi-Fi}, {name: power-in, protocol: USB-C power}]
@@ -327,6 +351,8 @@
   subsystem: INF
   name: Raspberry Pi 5 (1GB) with supply and microSD, right (large) window's eye pod
   stage: 1
+  provides: {memory_mb: 1024, usb_ports: 4}
+  needs: {memory_mb: TBD-032}
   location: bedroom, right eye pod
   functions: [host eye-renderer full-screen on KMS/DRM, output video to the projector]
   ports: [{name: hdmi, protocol: HDMI}, {name: wifi, protocol: Wi-Fi}, {name: power-in, protocol: USB-C power}]
@@ -336,6 +362,8 @@
   subsystem: INF
   name: Raspberry Pi 5 with official supply, case with fan and 32 GB microSD
   stage: 3
+  provides: {memory_mb: TBD-031, usb_ports: 4}
+  needs: {memory_mb: TBD-032}
   location: shelf just inside the front door (TBD-010)
   functions: [host the Show control software, provide the USB audio port]
   ports: [{name: usb, protocol: USB}, {name: wifi, protocol: Wi-Fi}, {name: power-in, protocol: USB-C power}]

@@ -1,0 +1,15 @@
+$ godot --help | grep -- --display-driver
+--display-driver <driver>         R  Display driver (and rendering driver) ["x11" ("vulkan", "opengl3", "opengl3_es", "dummy"), "wayland" ("vulkan", "opengl3", "opengl3_es", "dummy"), "headless" ("dummy")].
+
+$ SDL_VIDEODRIVER=kmsdrm python -c 'import pygame; pygame.display.init()'
+kmsdrm: kmsdrm not available
+
+$ strings pygame_ce.libs/libSDL2-2-*.so | grep KMSDRM_
+KMSDRM_DEVICE
+KMSDRM_REQUIRE
+KMSDRM_VideoInit
+
+$ PyPI: Linux ARM64 (aarch64) wheels for Python 3.11
+moderngl 5.13.0: NONE - pip must compile it on a Pi
+glcontext 3.1.0: NONE - pip must compile it on a Pi
+pygame-ce 2.5.8: pygame_ce-2.5.8-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.whl

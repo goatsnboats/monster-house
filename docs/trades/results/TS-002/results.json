@@ -1,0 +1,239 @@
+{
+  "date": "2026-11-08",
+  "display": "wayland",
+  "environment": {
+    "python": "3.11.18",
+    "packages": [
+      "moderngl==5.13.0",
+      "glcontext==3.1.0",
+      "pygame-ce==2.5.8",
+      "paho-mqtt==2.2.0"
+    ],
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "gpu": "00:02.0 VGA compatible controller: Intel Corporation Arrow Lake-S [Intel Graphics] (rev 06)\n80:14.5 Non-VGA unclassified device: Intel Corporation Device 7f2f (rev 10)",
+    "os": "Ubuntu 26.04.1 LTS"
+  },
+  "gl_probes": "$ (no override) gl_probe.py desktop 330\nOK    mode=desktop  require=330  context: 4.6 (Compatibility Profile) Mesa 26.0.8-1ubuntu0.3  | GLSL ES 3.00 shader compiled\n$ MESA_GL_VERSION_OVERRIDE=3.1 gl_probe.py desktop 310\nOK    mode=desktop  require=310  context: 3.1 Mesa 26.0.8-1ubuntu0.3  | GLSL ES 3.00 shader compiled\n$ MESA_GL_VERSION_OVERRIDE=3.1 gl_probe.py desktop 330\nFAIL  mode=desktop  require=330  ValueError: Requested OpenGL version 330, got version 310\n$ (no override) gl_probe.py gles30 310\nOK    mode=gles30   require=310  context: OpenGL ES 3.2 Mesa 26.0.8-1ubuntu0.3  | GLSL ES 3.00 shader compiled\n$ readback_probe.py desktop\ndesktop  expected [255, 128, 64] | RGB read [255, 128, 64] | RGBA read [255, 128, 64, 255]  -> RGB right\n$ readback_probe.py gles30\ngles30   expected [255, 128, 64] | RGB read [114, 47, 108] | RGBA read [255, 128, 64, 255]  -> RGB wrong",
+  "platform": {
+    "godot_display_drivers": "--display-driver <driver>         R  Display driver (and rendering driver) [\"x11\" (\"vulkan\", \"opengl3\", \"opengl3_es\", \"dummy\"), \"wayland\" (\"vulkan\", \"opengl3\", \"opengl3_es\", \"dummy\"), \"headless\" (\"dummy\")].",
+    "arm64_wheels": {
+      "moderngl": [],
+      "glcontext": [],
+      "pygame-ce": [
+        "pygame_ce-2.5.8-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.whl"
+      ]
+    }
+  },
+  "capped_60fps": {
+    "A": [
+      {
+        "run": 1,
+        "cpu_pct": 5.2,
+        "peak_rss_mb": 147.8,
+        "summary": {
+          "frames": 1641,
+          "mean_fps": 61.82,
+          "p99_frame_ms": 16.95,
+          "max_frame_ms": 17.18,
+          "mean_frame_ms": 16.175,
+          "hitches_over_25ms": 0
+        },
+        "exited_by_itself": true
+      },
+      {
+        "run": 2,
+        "cpu_pct": 4.15,
+        "peak_rss_mb": 147.4,
+        "summary": {
+          "frames": 1643,
+          "mean_fps": 61.92,
+          "p99_frame_ms": 16.98,
+          "max_frame_ms": 17.12,
+          "mean_frame_ms": 16.151,
+          "hitches_over_25ms": 0
+        },
+        "exited_by_itself": true
+      }
+    ],
+    "B": [
+      {
+        "run": 1,
+        "cpu_pct": 5.45,
+        "peak_rss_mb": 217.5,
+        "summary": {
+          "frames": 1593,
+          "hitches_over_25ms": 0,
+          "max_frame_ms": 16.94,
+          "mean_fps": 60.0,
+          "mean_frame_ms": 16.666,
+          "p99_frame_ms": 16.85
+        },
+        "exited_by_itself": true
+      },
+      {
+        "run": 2,
+        "cpu_pct": 4.74,
+        "peak_rss_mb": 217.3,
+        "summary": {
+          "frames": 1593,
+          "hitches_over_25ms": 0,
+          "max_frame_ms": 17.08,
+          "mean_fps": 60.0,
+          "mean_frame_ms": 16.666,
+          "p99_frame_ms": 16.95
+        },
+        "exited_by_itself": true
+      }
+    ]
+  },
+  "uncapped": {
+    "A": [
+      {
+        "run": 1,
+        "summary": {
+          "frames": 31602,
+          "mean_fps": 3963.03,
+          "p99_frame_ms": 0.42,
+          "max_frame_ms": 8.24,
+          "mean_frame_ms": 0.252,
+          "hitches_over_25ms": 0
+        },
+        "exited_by_itself": true
+      },
+      {
+        "run": 2,
+        "summary": {
+          "frames": 31212,
+          "mean_fps": 3914.22,
+          "p99_frame_ms": 0.4,
+          "max_frame_ms": 2.27,
+          "mean_frame_ms": 0.255,
+          "hitches_over_25ms": 0
+        },
+        "exited_by_itself": true
+      },
+      {
+        "run": 3,
+        "summary": {
+          "frames": 31770,
+          "mean_fps": 3983.73,
+          "p99_frame_ms": 0.41,
+          "max_frame_ms": 8.5,
+          "mean_frame_ms": 0.251,
+          "hitches_over_25ms": 0
+        },
+        "exited_by_itself": true
+      }
+    ],
+    "B": [
+      {
+        "run": 1,
+        "summary": {
+          "frames": 2613,
+          "hitches_over_25ms": 0,
+          "max_frame_ms": 7.18,
+          "mean_fps": 327.24,
+          "mean_frame_ms": 3.056,
+          "p99_frame_ms": 7.09
+        },
+        "exited_by_itself": true
+      },
+      {
+        "run": 2,
+        "summary": {
+          "frames": 2653,
+          "hitches_over_25ms": 0,
+          "max_frame_ms": 7.17,
+          "mean_fps": 332.13,
+          "mean_frame_ms": 3.011,
+          "p99_frame_ms": 7.05
+        },
+        "exited_by_itself": true
+      },
+      {
+        "run": 3,
+        "summary": {
+          "frames": 2620,
+          "hitches_over_25ms": 0,
+          "max_frame_ms": 7.27,
+          "mean_fps": 328.02,
+          "mean_frame_ms": 3.049,
+          "p99_frame_ms": 7.1
+        },
+        "exited_by_itself": true
+      }
+    ],
+    "B_desktop_gl": [
+      {
+        "run": 1,
+        "summary": {
+          "frames": 2656,
+          "hitches_over_25ms": 0,
+          "max_frame_ms": 7.2,
+          "mean_fps": 333.37,
+          "mean_frame_ms": 3.0,
+          "p99_frame_ms": 7.03
+        },
+        "exited_by_itself": true
+      }
+    ]
+  },
+  "screenshots": {
+    "neutral": {
+      "A": true,
+      "B": true,
+      "B_exited": true
+    },
+    "happy": {
+      "A": true,
+      "B": true,
+      "B_exited": true
+    },
+    "sparkle": {
+      "A": true,
+      "B": true,
+      "B_exited": true
+    },
+    "sleepy": {
+      "A": true,
+      "B": true,
+      "B_exited": true
+    },
+    "happy-rot-mirror": {
+      "A": true,
+      "B": true,
+      "B_exited": true
+    }
+  },
+  "startup_s": {
+    "A": [
+      0.295,
+      0.294,
+      0.28
+    ],
+    "B": [
+      0.482,
+      0.427,
+      0.475
+    ]
+  },
+  "mqtt": {
+    "A": {
+      "eye_lines": [
+        "mqtt: blink {'ms': 180}",
+        "mqtt: expression {'name': 'happy', 'ms': 300}"
+      ],
+      "clean_exit": true,
+      "will_after_kill": "offline"
+    },
+    "B": {
+      "eye_lines": [
+        "mqtt: blink { \"ms\": 180.0 }",
+        "mqtt: expression { \"name\": \"happy\", \"ms\": 300.0 }",
+        "ERROR: Parse JSON failed. Error at line 0: Expected 'true', 'false', or 'null', got 'not'"
+      ],
+      "clean_exit": true,
+      "will_after_kill": "offline"
+    }
+  }
+}

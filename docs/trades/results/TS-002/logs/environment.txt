@@ -1,0 +1,12 @@
+{
+  "python": "3.11.18",
+  "packages": [
+    "moderngl==5.13.0",
+    "glcontext==3.1.0",
+    "pygame-ce==2.5.8",
+    "paho-mqtt==2.2.0"
+  ],
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "gpu": "00:02.0 VGA compatible controller: Intel Corporation Arrow Lake-S [Intel Graphics] (rev 06)\n80:14.5 Non-VGA unclassified device: Intel Corporation Device 7f2f (rev 10)",
+  "os": "Ubuntu 26.04.1 LTS"
+}

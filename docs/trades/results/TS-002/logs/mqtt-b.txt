@@ -1,0 +1,16 @@
+== B: commands over MQTT
+sent  monster/eyes/blink  {"ms": 180}
+sent  monster/eyes/expression  {"name": "happy", "ms": 300}
+sent  monster/eyes/expression  not json
+-- the eye printed:
+mqtt: blink { "ms": 180.0 }
+mqtt: expression { "name": "happy", "ms": 300.0 }
+ERROR: Parse JSON failed. Error at line 0: Expected 'true', 'false', or 'null', got 'not'
+-- status messages seen (first run, then the second run starting):
+monster/eyes/left/status offline (retained)
+monster/eyes/left/status online
+monster/eyes/left/status offline
+monster/eyes/left/status online
+-- crash test: status while running: monster/eyes/left/status online
+   kill -9 the eye ...
+   status after the crash: monster/eyes/left/status offline

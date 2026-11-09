@@ -1,0 +1,8 @@
+# Throwaway trial environments and downloads
+.venv/
+__pycache__/
+*.pyc
+godot/
+*.zip
+results/raw/
+.godot/

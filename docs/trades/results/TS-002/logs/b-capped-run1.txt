@@ -1,0 +1,24 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Can't obtain the XDG decoration manager. Libdecor will be used for drawing CSDs, if available.
+     at: init (platform/linuxbsd/wayland/wayland_thread.cpp:5635)
+WARNING: xdg-toplevel-icon protocol not found! Cannot set window icon.
+     at: init (platform/linuxbsd/wayland/wayland_thread.cpp:5642)
+OpenGL API OpenGL ES 3.2 Mesa 26.0.8-1ubuntu0.3 - Compatibility - Using Device: Intel - Mesa Intel(R) Graphics (ARL)
+
+GL: Mesa Intel(R) Graphics (ARL) | ["", ""] | opengl3_es
+{"frames":1593,"hitches_over_25ms":0,"max_frame_ms":16.94,"mean_fps":60.0,"mean_frame_ms":16.666,"p99_frame_ms":16.85}
+
+{
+  "run": 1,
+  "cpu_pct": 5.45,
+  "peak_rss_mb": 217.5,
+  "summary": {
+    "frames": 1593,
+    "hitches_over_25ms": 0,
+    "max_frame_ms": 16.94,
+    "mean_fps": 60.0,
+    "mean_frame_ms": 16.666,
+    "p99_frame_ms": 16.85
+  },
+  "exited_by_itself": true
+}

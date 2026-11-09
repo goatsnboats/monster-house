@@ -2,7 +2,7 @@
 
 > **Status:** Decided: option A, by function (owner, 2026-11-09: build stage by stage) · **Updated:** 2026-11-09
 >
-> Later the same day the owner moved the Raspberry Pis into INF as a compute platform (Q14 in [spec-tree.md](spec-tree.md)); the diagrams below predate that. · **Question:** Q1 in [spec-tree.md](spec-tree.md#open-questions-for-the-owner)
+> Later the same day the owner moved the Raspberry Pis into INF as a compute platform (Q14 in [spec-tree.md](spec-tree.md)); the diagrams below predate that. · **Question:** Q1 in [spec-tree.md](spec-tree.md#boundary-questions-and-decisions)
 
 The same parts and software, grouped two ways. Everything on the house is identical in
 both options; only the subsystem boundaries move, and with them the ID prefixes, the

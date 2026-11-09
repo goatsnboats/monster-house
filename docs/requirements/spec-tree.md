@@ -1,14 +1,16 @@
 # Spec tree — Monster House
 
-> **Status:** Draft, waiting for owner approval (STOP 0; Q1, Q2 and Q14 answered) · **Updated:** 2026-11-09 · **Format rules:** [ADR 0001](../decisions/0001-requirements-and-architecture-format.md)
+> **Status:** Approved (owner, 2026-11-09) · **Updated:** 2026-11-09 · **Format rules:** [ADR 0001](../decisions/0001-requirements-and-architecture-format.md)
 
 The spec tree fixes the **subsystem boundaries**. From them come the requirement ID
 prefixes (`EYE-012`), one requirements file per subsystem, and the components that
 requirements are allocated to. IDs are permanent, so this page is approved before any
 requirement is written.
 
-Nothing here is decided until the owner approves it. The open boundary questions, each
-with a recommendation, are at the [end of this page](#open-questions-for-the-owner).
+The owner approved this tree on 2026-11-09, so the prefixes, component IDs and ICD
+numbers below are fixed. The boundary questions and their answers are at the
+[end of this page](#boundary-questions-and-decisions). A change to a boundary needs the
+owner's approval and a note there.
 
 ## 1. The tree
 
@@ -65,10 +67,29 @@ flowchart TB
 > If the diagram shows as code, the text tree above and the tables below hold the same
 > information.
 
+The requirements checker (`tools/reqs/check.py`) reads the prefixes from this block. Each
+component's subsystem is in `docs/architecture/components.yaml`.
+
+```yaml
+spec_tree:
+  system: {prefix: SYS, name: Monster House system specification}
+  subsystems:
+    - {prefix: EYE, name: Eyes, group: delivered}
+    - {prefix: SHW, name: Show control, group: delivered}
+    - {prefix: EAR, name: Ears, group: delivered}
+    - {prefix: MTH, name: Mouth, group: delivered}
+    - {prefix: VOC, name: Voice, group: delivered}
+    - {prefix: INF, name: Infrastructure, group: delivered}
+    - {prefix: THM, name: Themes, group: delivered}
+    - {prefix: SIM, name: Simulators, group: enabling}
+    - {prefix: DEV, name: Desktop tooling, group: enabling}
+    - {prefix: DEP, name: Deployment, group: enabling}
+```
+
 ## 2. Subsystems and their components
 
-Component IDs below are proposals. They become permanent with this page's approval and
-then live in `docs/architecture/components.yaml`. **Kind** follows ADR 0001: `part`
+Component IDs are fixed (approved 2026-11-09); their details live in
+`docs/architecture/components.yaml`. **Kind** follows ADR 0001: `part`
 (hardware) or `software`. **From** is the stage in which the component first exists.
 
 ### EYE — Eyes
@@ -155,6 +176,7 @@ desktop is DEV.
 | `eye-pi-left` | part | Raspberry Pi 5, 1GB, with supply and microSD, in the left (small) window's pod; hosts `eye-renderer` | 1 |
 | `eye-pi-right` | part | The same, in the right (large) window's pod | 1 |
 | `porch-pi` | part | Raspberry Pi 5, official supply, case with fan, 32 GB microSD, inside the front door; hosts Show control software; `usb-audio` plugs into it | 3 |
+| `site-config` | software (data) | The house's own settings, the same for every theme: eye and radar positions in house coordinates, each eye's window settings (size, placement, rotation, mirroring, brightness), network names (Q6) | 0 |
 | `home-network` | part | Our setup of the home network: 2.4 GHz coverage on the porch, reserved addresses, the five friendly names, clock sync, nothing exposed to the internet | 1 |
 | `power-distribution` | part | Outdoor-rated cords and outlets, which circuit feeds what | 1 |
 | `porch-mounting` | part | Brackets and cable routes on the house, e.g. porch Pi to amp through the door frame | 2 |
@@ -199,7 +221,7 @@ power · **N** network service (Wi-Fi, addresses, time) · **M** mechanical (mou
 enclosure) · **C** compute hosting (operating system, runtime, GPU, audio and video
 devices, capacity) · **V** video (HDMI) · **L** light the audience sees · **S** sound ·
 **R** radar sensing.
-ICD numbers are proposals, fixed on approval.
+ICD numbers are fixed.
 
 | from ↓ / to → | EYE | SHW | EAR | MTH | VOC | INF | THM | House | Owner | Visitors | Neighbors |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -208,7 +230,7 @@ ICD numbers are proposals, fixed on approval.
 | **EAR** | | D ICD-002 | **Ears** | | | | | | | | |
 | **MTH** | | | | **Mouth** | | | | | | L | L |
 | **VOC** | | | | | **Voice** | | | | | S | S |
-| **INF** | C ICD-013 · V ICD-014 · P ICD-008 | C ICD-013 | P ICD-008 · N ICD-009 · M ICD-010 | P ICD-008 · N ICD-009 · M ICD-010 | P ICD-008 · M ICD-010 · USB port ICD-007 | **Infra** ³ | | | | | |
+| **INF** | C ICD-013 · V ICD-014 · D ICD-015 · P ICD-008 | C ICD-013 · D ICD-015 | P ICD-008 · N ICD-009 · M ICD-010 | P ICD-008 · N ICD-009 · M ICD-010 | P ICD-008 · M ICD-010 · USB port ICD-007 | **Infra** ³ | | | | | |
 | **THM** | D ICD-005 | D ICD-005 | | | | | **Themes** | | | | |
 | **House** | M ICD-011 | | | | | P · N · M ² | | *external* | | | |
 | **Owner** | | D ICD-004 | | | | | | | *external* | | |
@@ -226,11 +248,11 @@ They are covered inside ICD-008, ICD-009 and ICD-010 rather than in ICDs of thei
 ³ **Inside Infrastructure:** the Pis' own power and network (ICD-008, ICD-009 apply to
 them too) and the porch Pi's shelf and cable route (ICD-010).
 
-**Cells with no ICD (proposal, Q10):** L, S and R cells are the monster's physical
+**Cells with no ICD (Q10):** L, S and R cells are the monster's physical
 effect on people (eye light, lip light, voice, radar echo). They are specified by system
 requirements (brightness, volume, show hours, tone), not by ICDs.
 
-### Proposed ICD list
+### ICD list
 
 One ICD per interface, covering both directions and every cell that shares the same
 definition (Q11).
@@ -251,6 +273,7 @@ definition (Q11).
 | ICD-012 | Sequence and audio upload | DEV `xlights` → SHW `falcon-player` | Wi-Fi, FPP upload | No | Skeleton |
 | ICD-013 | Compute platform | INF `eye-pi-left`, `eye-pi-right`, `porch-pi` (and DEV `desktop` in Stages 0–2) → EYE and SHW software | Operating system, Python, OpenGL ES 3.0, KMS/DRM display, audio device, services; capacities for the budget check | Yes (portability rules apply now) | Partial: Pi details wait for hardware (TBD-013) |
 | ICD-014 | Eye video | INF `eye-pi-left`/`eye-pi-right` → EYE `eye-projector` | HDMI | No | Skeleton |
+| ICD-015 | Site config | INF `site-config` → SHW `monster-brain`, EYE `eye-renderer` (also SIM `fake-radar`, `house-preview`) | Files | Yes | Full |
 
 ### Enabling-system interfaces
 
@@ -258,7 +281,7 @@ definition (Q11).
 |---|---|---|---|
 | SIM `fake-radar` | SHW `monster-brain` | The same topics and units as the real radar | ICD-002 (parity) |
 | SIM `fake-fpp` | SHW `monster-brain` | The same commands and status as the real FPP | ICD-003 (parity) |
-| SHW `monster-brain` | SIM `house-preview` | Proposal: the preview listens to the same eye commands as a pod and draws both eyes with the eye renderer's code | ICD-001 (a third listener) |
+| SHW `monster-brain` | SIM `house-preview` | Plan: the preview listens to the same eye commands as a pod and draws both eyes with the eye renderer's code | ICD-001 (a third listener) |
 | DEV `xlights` | SHW `falcon-player` | `.fseq` sequences and audio, before the show | ICD-012 |
 | DEV `desktop` | SHW, EYE software | Hosts them in Stages 0–2, as a stand-in for the Pis | ICD-013 (same platform rules) |
 | DEP `pi-setup` | INF Pis | Builds each Pi and installs EYE or SHW software (deployment, not an interface) | — |
@@ -283,9 +306,10 @@ flowchart LR
   DEVx(["DEV xLights"]) -. "ICD-012" .-> SHW
 ```
 
-## Open questions for the owner
+## Boundary questions and decisions
 
-Each has a recommendation. None is decided until the owner answers.
+All decided by the owner on 2026-11-09: Q1, Q2 and Q14 after discussion; Q3–Q13 as
+recommended.
 
 **From the planning session**
 
@@ -346,7 +370,7 @@ Each has a recommendation. None is decided until the owner answers.
 11. **One ICD per cell, or per interface?** *Recommend: per interface.* Both directions
     of a link share one ICD (ICD-001 carries commands one way and status the other), and
     INF's power, network and mounting each get one ICD covering every subsystem. That is
-    14 ICDs (after Q14) instead of about 30.
+    15 ICDs (after Q6 and Q14) instead of about 30.
 12. **Turning the eye pods off at bedtime.** Architecture §2 says "the schedule turns
     pods off at bedtime", but no component does it (a smart plug, a Pi command to the
     projector, or FPP's schedule). *Recommend:* add it as a TBD at STOP 1 and decide when
@@ -364,8 +388,12 @@ Each has a recommendation. None is decided until the owner answers.
     functional subsystem and records which computer it runs on (`deployed_on`).
     The eye pod's other parts (projector, screen, mask, shroud, stand) stay in EYE.
 
-**Owner answers so far (2026-11-09)**
+**Owner answers (2026-11-09)**
 - **Q1:** by function (see above).
+- **Q3–Q13:** as recommended. In particular: Mosquitto in SHW (Q3); THM is a subsystem
+  and theme folders are `software` components (Q4); SIM and DEP get requirements, DEV
+  only a place (Q5); a separate site config owned by INF, `site-config`, with its own
+  ICD-015 (Q6); the desktop is a DEV node (Q7); one ICD per interface (Q11).
 - **Q2:** Falcon Player stays in Show control; brain ↔ FPP keeps its own ICD (ICD-003).
 - **Q14:** all three Pis move to INF as the compute platform (rule in §2, INF). Show
   control becomes software only. New ICDs: ICD-013 (compute platform) and ICD-014 (eye

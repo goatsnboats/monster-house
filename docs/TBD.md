@@ -1,6 +1,6 @@
 # TBD register
 
-> **Status:** Current · **Updated:** 2026-11-08 · Every open question in the project, with what will settle it.
+> **Status:** Current · **Updated:** 2026-11-09 · Every open question in the project, with what will settle it.
 
 TBDs are allowed in any document, but each one gets an ID here so none is lost.
 
@@ -40,6 +40,14 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-017 | Whether the projector may run on its side (venting, manufacturer approval) | Verify with the manufacturer | TBD-005 | Stage 0 exit | Open |
 | TBD-018 | Mount positions of the radar and both windows in house coordinates | Measurement at install | Gaze math settings | Stage 2 | Open |
 | TBD-019 | When to move the architecture (not the requirements) to SysML v2 text notation, i.e. TS-001 option D | New trade study, once a command-line SysML v2 validator runs on Ubuntu and its views are readable. Check tool status at each stage boundary | Nothing yet; [ADR 0001](decisions/0001-requirements-and-architecture-format.md) keeps the content SysML-ready | Not before Stage 1 | Deferred |
+| TBD-020 | Longest acceptable delay from a visitor moving to the eyes following (SYS-019) | Owner decision, trying values in the Stage 0 simulator | Per-hop timing budget: radar rate, brain smoothing, eye glide | Stage 0 Step 4 | Open |
+| TBD-021 | Longest acceptable delay from a visitor entering the approach zone to the monster starting to wake (SYS-020) | Owner decision, in the Stage 0 simulator | Approach-zone size, brain wake logic | Stage 0 Step 4 | Open |
+| TBD-022 | Longest acceptable delay from the brain deciding to speak to the voice starting (SYS-021) | Owner decision; then a Test with the real FPP | Fake FPP timing, FPP trigger method (with TBD-015) | Stage 3 (fake FPP uses a placeholder in Stage 0) | Open |
+| TBD-023 | How quickly each failure (eye pod, brain, radar, FPP) must be noticed and the fallback begin (SYS-029) | Owner decision | MQTT keep-alive and last-will settings, eye fallback timer | Stage 0 Step 2 (eye fallback timer) | Open |
+| TBD-024 | Show hours (architecture §3a gives 5:30–9:30 pm as an example) (SYS-014) | Owner decision | Schedule settings, FPP schedule | Stage 3 | Open |
+| TBD-025 | Bedtime for the eye pods: when they switch off, and how (smart plug, Pi command to the projector, or FPP's schedule) (SYS-018; spec tree Q12) | Owner decision, then a Test with a real pod | Eye pod power design, INF power | Stage 1 | Open |
+| TBD-026 | Loudest acceptable sound level at the sidewalk, and how to measure it (SYS-030) | Owner decision, then a Measurement | Amp gain, FPP and operating-system volume caps | Stage 3 | Open |
+| TBD-027 | Brightness cap for the lips (SYS-031) | Owner decision, then a Test at the house | WLED brightness limit, power supply sizing | Stage 4 | Open |
 
 ## Closed
 

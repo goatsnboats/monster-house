@@ -1,0 +1,15 @@
+active: true
+allocated_to: monster-brain
+derived: false
+header: ''
+icd: ICD-001
+level: 3.0
+links:
+- SYS-001: R-Z8YfBAgDd3UPR8yc76CiU6xMJpzjHmZRQzb0n7BpE=
+normative: true
+ref: ''
+reviewed: nLliyBQNcLKC6h4s9vl-f10wpMCRb2BI5-jI4FHeZmw=
+text: |
+  The brain shall publish look points as specified in ICD-001.
+type: interface
+verify: test

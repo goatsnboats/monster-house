@@ -1,0 +1,25 @@
+# System requirements (Monster House). Field meanings: docs/decisions/0001.
+- id: SYS-001
+  text: The monster shall look toward visitors who approach the house.
+  type: functional
+  verify: demonstration
+  rationale: Eye contact that follows people is the core of the effect.
+  source: architecture.md §2, "Looking at a visitor"
+  stage: 2
+
+- id: SYS-002
+  text: >-
+    The monster shall begin reacting to a visitor within 1 s of the visitor
+    entering the approach zone.
+  type: performance
+  verify: test
+  rationale: A slow reaction reads as broken, not alive.
+  source: owner (draft value)
+  stage: 2
+
+- id: SYS-003
+  text: The monster's appearance and sounds shall be friendly, with no horror imagery or sounds.
+  type: constraint
+  verify: inspection
+  source: CLAUDE.md, "Tone"
+  stage: 0

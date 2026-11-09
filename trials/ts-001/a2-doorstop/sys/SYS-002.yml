@@ -1,0 +1,13 @@
+active: true
+derived: false
+header: ''
+level: 2.0
+links: []
+normative: true
+rationale: A slow reaction reads as broken, not alive.
+ref: ''
+reviewed: olj2s8cnxF0NWpNyOZT8TOlie_nQmE4No4XK6PGvBgE=
+text: |
+  The monster shall begin reacting to a visitor within 1 s of the visitor entering the approach zone.
+type: performance
+verify: test

@@ -1,0 +1,16 @@
+$ strictdoc export . (exit 0)
+search index' start.
+Build search index .......................................... 0.00s
+Serialize search index to JS ................................ 0.00s
+Serialize lookup map {MID => node} to JS .................... 0.00s
+Step 'Export static HTML search index' took: 0.01 sec.
+Skip: 1 tasks
+Export to HTML: 1 tasks
+.
+Export completed. Documentation tree can be found at:
+<scratch>/ts001-run/html/strictdoc/html
+Step 'Export SDoc' took: 0.27 sec.
+Total execution time ........................................ 0.61s
+
+$ strictdoc export . --formats reqif-sdoc (exit 0)
+ReqIF file: output.reqif (43570 bytes)

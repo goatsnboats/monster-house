@@ -36,6 +36,10 @@ requirements, and tests named in `verified_by` show requirements being met.
 CDR-1 is held together with PDR because the Stage 1 purchase follows straight after
 Stage 0. The stage months are architecture §11's.
 
+**Considered and not chosen** (owner, 2026-11-09): a separate PDR a month before CDR-1,
+and a PDR per stage before each CDR. One system PDR covers the whole design at a
+preliminary level; each stage's detail is reviewed once, at its CDR.
+
 ## SRR package, in this order (owner, 2026-11-09)
 
 1. **Concept of operations** (`docs/conops.md`): a Halloween night from setup to teardown,

@@ -1,0 +1,27 @@
+# Components. kind: part (hardware node) | software.
+# deployed_on: {first stage it applies from: node or list of nodes}
+- id: monster-brain
+  kind: software
+  name: Monster brain
+  functions: [choose a focus visitor, compute look points, own blinks, choose moods]
+  ports: [{name: mqtt, protocol: MQTT}]
+  deployed_on: {0: desktop, 3: porch-pi}
+
+- id: eye-renderer
+  kind: software
+  name: Eye renderer
+  functions: [draw the eye on the GPU, ease expressions, glide the pupil to a look point]
+  ports: [{name: mqtt, protocol: MQTT}]
+  deployed_on: {0: desktop, 1: [eye-pod-left]}
+
+- id: desktop
+  kind: part
+  name: Development desktop (Ubuntu 24.04)
+
+- id: porch-pi
+  kind: part
+  name: Show brain Pi (Raspberry Pi 5, inside the front door)
+
+- id: eye-pod-left
+  kind: part
+  name: Left eye pod (Pi 5 1GB + projector + screen), the smaller window

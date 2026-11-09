@@ -1,0 +1,14 @@
+active: true
+allocated_to: monster-brain
+derived: false
+header: ''
+level: 1.0
+links:
+- SYS-001: R-Z8YfBAgDd3UPR8yc76CiU6xMJpzjHmZRQzb0n7BpE=
+normative: true
+ref: ''
+reviewed: OBeF4DsVrFY8nRJyhCLexhLu0PthHS1xnaYPmoCQsaM=
+text: |
+  The brain shall choose one focus visitor and compute a look point in house coordinates.
+type: functional
+verify: test

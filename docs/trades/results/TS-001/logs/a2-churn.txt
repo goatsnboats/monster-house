@@ -1,0 +1,67 @@
+$ doorstop            # validate only
+building tree...
+loading documents...
+validating items...
+
+SYS
+│   
+├── BRN
+│   
+└── EYE
+
+exit 0
+
+$ git status --short  # 'M ' in column 1 = staged by doorstop itself
+M  brn/BRN-001.yml
+M  brn/BRN-002.yml
+M  brn/BRN-003.yml
+M  eye/EYE-001.yml
+M  eye/EYE-002.yml
+M  eye/EYE-003.yml
+M  eye/EYE-004.yml
+M  sys/SYS-001.yml
+M  sys/SYS-002.yml
+M  sys/SYS-003.yml
+
+$ git diff HEAD --stat
+ brn/BRN-001.yml | 12 +++++-------
+ brn/BRN-002.yml | 14 ++++++--------
+ brn/BRN-003.yml | 13 ++++++-------
+ eye/EYE-001.yml | 12 +++++-------
+ eye/EYE-002.yml | 11 +++++------
+ eye/EYE-003.yml | 14 ++++++--------
+ eye/EYE-004.yml | 11 +++++------
+ sys/SYS-001.yml |  9 ++++-----
+ sys/SYS-002.yml | 10 ++++------
+ sys/SYS-003.yml |  8 +++-----
+ 10 files changed, 49 insertions(+), 65 deletions(-)
+
+$ git diff HEAD -- brn/BRN-002.yml
+diff --git a/brn/BRN-002.yml b/brn/BRN-002.yml
+index 7cfd561..e09ba8d 100644
+--- a/brn/BRN-002.yml
++++ b/brn/BRN-002.yml
+@@ -1,17 +1,15 @@
+ active: true
++allocated_to: monster-brain
+ derived: false
+ header: ''
+ level: 2.0
+ links:
+-- SYS-001: null
+-- SYS-002: null
++- SYS-001: R-Z8YfBAgDd3UPR8yc76CiU6xMJpzjHmZRQzb0n7BpE=
++- SYS-002: olj2s8cnxF0NWpNyOZT8TOlie_nQmE4No4XK6PGvBgE=
+ normative: true
+ ref: ''
+-reviewed: null
+-text: 'The brain shall publish the focus visitor''s look point at 10 ± 2 Hz while
+-  a visitor is tracked.
+-
+-  '
++reviewed: bHsRAa4fAWMy5kUPz9-aRE0I92x7WjlflwMkFh-HJrY=
++text: |
++  The brain shall publish the focus visitor's look point at 10 ± 2 Hz while a visitor is tracked.
+ type: performance
+ verify: test
+-allocated_to: monster-brain

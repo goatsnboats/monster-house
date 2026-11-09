@@ -1,0 +1,20 @@
+--- seeded: A parent that doesn't exist ---
+exit 1  →  CAUGHT
+ERROR: no item with UID: SYS-009
+
+--- seeded: A subsystem requirement with no parent ---
+exit 1  →  CAUGHT
+ERROR: BRN: BRN-001: no links to parent document: SYS
+
+--- seeded: A misspelled requirement type ---
+exit 0  →  MISSED
+
+--- seeded: A subsystem requirement allocated to no component ---
+exit 0  →  MISSED
+
+--- seeded: An interface requirement with no ICD ---
+exit 0  →  MISSED
+
+--- seeded: A TBD ID that isn't in the register ---
+exit 1  →  MISSED (flagged only as an unreviewed text edit)
+ERROR: EYE: EYE-002: unreviewed changes

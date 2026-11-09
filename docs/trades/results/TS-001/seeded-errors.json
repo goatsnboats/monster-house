@@ -1,0 +1,164 @@
+{
+  "errors": {
+    "parent_missing": "A parent that doesn't exist",
+    "orphan": "A subsystem requirement with no parent",
+    "bad_type": "A misspelled requirement type",
+    "unallocated": "A subsystem requirement allocated to no component",
+    "interface_no_icd": "An interface requirement with no ICD",
+    "unknown_tbd": "A TBD ID that isn't in the register"
+  },
+  "results": {
+    "A": {
+      "parent_missing": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR eyes.yaml: EYE-002: parent SYS-009 does not exist"
+      },
+      "orphan": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR brain.yaml: BRN-001: subsystem requirement has no derives_from (orphan)"
+      },
+      "bad_type": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR eyes.yaml: EYE-004: type must be one of ['constraint', 'functional', 'interface', 'performance']"
+      },
+      "unallocated": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR brain.yaml: BRN-001: not allocated to a component"
+      },
+      "interface_no_icd": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR brain.yaml: BRN-003: interface requirement needs an existing icd (got None)"
+      },
+      "unknown_tbd": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR requirements/eyes.yaml: TBD-999 is not in the TBD register"
+      }
+    },
+    "A′ Doorstop": {
+      "parent_missing": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR: no item with UID: SYS-009"
+      },
+      "orphan": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR: BRN: BRN-001: no links to parent document: SYS"
+      },
+      "bad_type": {
+        "caught": false,
+        "incidental": false,
+        "exit": 0,
+        "message": ""
+      },
+      "unallocated": {
+        "caught": false,
+        "incidental": false,
+        "exit": 0,
+        "message": ""
+      },
+      "interface_no_icd": {
+        "caught": false,
+        "incidental": false,
+        "exit": 0,
+        "message": ""
+      },
+      "unknown_tbd": {
+        "caught": false,
+        "incidental": true,
+        "exit": 1,
+        "message": "ERROR: EYE: EYE-002: unreviewed changes"
+      }
+    },
+    "B StrictDoc": {
+      "parent_missing": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "error: [DocumentIndex.create] Requirement BRN-002 references parent requirement which doesn't exist: SYS-009."
+      },
+      "orphan": {
+        "caught": false,
+        "incidental": false,
+        "exit": 0,
+        "message": ""
+      },
+      "bad_type": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "error: could not parse file: requirements.sdoc."
+      },
+      "unallocated": {
+        "caught": false,
+        "incidental": false,
+        "exit": 0,
+        "message": ""
+      },
+      "interface_no_icd": {
+        "caught": false,
+        "incidental": false,
+        "exit": 0,
+        "message": ""
+      },
+      "unknown_tbd": {
+        "caught": false,
+        "incidental": false,
+        "exit": 0,
+        "message": ""
+      }
+    },
+    "D glue": {
+      "parent_missing": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR eyes.yaml: EYE-002: parent SYS-009 does not exist"
+      },
+      "orphan": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR brain.yaml: BRN-001: subsystem requirement has no derives_from (orphan)"
+      },
+      "bad_type": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR eyes.yaml: EYE-004: type must be one of ['constraint', 'functional', 'interface', 'performance']"
+      },
+      "unallocated": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR brain.yaml: BRN-001: not allocated to a component"
+      },
+      "interface_no_icd": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR brain.yaml: BRN-003: interface requirement needs an existing icd (got None)"
+      },
+      "unknown_tbd": {
+        "caught": true,
+        "incidental": false,
+        "exit": 1,
+        "message": "ERROR requirements/eyes.yaml: TBD-999 is not in the TBD register"
+      }
+    }
+  }
+}

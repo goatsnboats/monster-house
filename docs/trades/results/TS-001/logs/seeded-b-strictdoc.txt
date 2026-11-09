@@ -1,0 +1,19 @@
+--- seeded: A parent that doesn't exist ---
+exit 1  →  CAUGHT
+error: [DocumentIndex.create] Requirement BRN-002 references parent requirement which doesn't exist: SYS-009.
+
+--- seeded: A subsystem requirement with no parent ---
+exit 0  →  MISSED
+
+--- seeded: A misspelled requirement type ---
+exit 1  →  CAUGHT
+error: could not parse file: requirements.sdoc.
+
+--- seeded: A subsystem requirement allocated to no component ---
+exit 0  →  MISSED
+
+--- seeded: An interface requirement with no ICD ---
+exit 0  →  MISSED
+
+--- seeded: A TBD ID that isn't in the register ---
+exit 0  →  MISSED

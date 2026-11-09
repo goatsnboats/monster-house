@@ -1,0 +1,29 @@
+# Eye renderer subsystem requirements.
+- id: EYE-001
+  text: The eye renderer shall turn the pupil toward the commanded look point, as seen from its own window's position.
+  type: functional
+  derives_from: [SYS-001]
+  allocated_to: eye-renderer
+  verify: demonstration
+
+- id: EYE-002
+  text: The eye shall settle on a new look point within 300 ms.
+  type: performance
+  derives_from: [SYS-002]
+  allocated_to: eye-renderer
+  verify: test
+
+- id: EYE-003
+  text: The eye renderer shall accept look points as specified in ICD-001 and ignore malformed messages.
+  type: interface
+  derives_from: [SYS-001]
+  allocated_to: eye-renderer
+  icd: ICD-001
+  verify: test
+
+- id: EYE-004
+  text: Pupils shall be round; slit pupils shall not be drawn.
+  type: constraint
+  derives_from: [SYS-003]
+  allocated_to: eye-renderer
+  verify: inspection

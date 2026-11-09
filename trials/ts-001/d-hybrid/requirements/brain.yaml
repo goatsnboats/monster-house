@@ -1,0 +1,22 @@
+# Monster brain subsystem requirements.
+- id: BRN-001
+  text: The brain shall choose one focus visitor and compute a look point in house coordinates.
+  type: functional
+  derives_from: [SYS-001]
+  allocated_to: monster-brain
+  verify: test
+
+- id: BRN-002
+  text: The brain shall publish the focus visitor's look point at 10 ± 2 Hz while a visitor is tracked.
+  type: performance
+  derives_from: [SYS-001, SYS-002]
+  allocated_to: monster-brain
+  verify: test
+
+- id: BRN-003
+  text: The brain shall publish look points as specified in ICD-001.
+  type: interface
+  derives_from: [SYS-001]
+  allocated_to: monster-brain
+  icd: ICD-001
+  verify: test

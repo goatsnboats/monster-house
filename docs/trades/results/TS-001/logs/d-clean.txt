@@ -1,0 +1,3 @@
+$ python d-hybrid/glue_check.py d-hybrid --tbd docs/TBD.md
+10 requirements, 5 SysML parts, 1 SysML interfaces: OK
+exit 0

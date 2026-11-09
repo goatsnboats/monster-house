@@ -1,0 +1,10 @@
+$ python a/check.py a --tbd docs/TBD.md --report a-report
+10 requirements, 5 components, 1 ICDs: OK
+exit 0
+
+$ python a/check.py a --impact SYS-001
+BRN-001 (child of SYS-001) → monster-brain
+BRN-002 (child of SYS-001) → monster-brain
+BRN-003 (child of SYS-001) → monster-brain, ICD-001
+EYE-001 (child of SYS-001) → eye-renderer
+EYE-003 (child of SYS-001) → eye-renderer, ICD-001

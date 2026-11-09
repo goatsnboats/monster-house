@@ -22,6 +22,7 @@ already has a clear precedent. Make those calls yourself and mention them.
 |---|---|---|
 | `docs/trades/TS-NNN-<slug>.md` | `docs/templates/trade-study.md` | The evidence: question, criteria, options, scores, sensitivity, recommendation |
 | `docs/decisions/NNNN-<slug>.md` | `docs/templates/adr.md` | The decision itself, in one page. It stays **Proposed** until the owner decides |
+| `docs/trades/results/TS-NNN/` | TS-001's report as the model | The full results report when evidence was gathered: a `README.md` with screenshots in `figures/`, raw logs in `logs/`, and how to reproduce it. Strip scratch paths from the logs |
 
 Number each in order, from the highest existing number in its folder. Studies and ADRs
 are numbered separately.

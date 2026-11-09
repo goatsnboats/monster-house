@@ -1,0 +1,23 @@
+--- seeded: A parent that doesn't exist ---
+exit 1  →  CAUGHT
+ERROR eyes.yaml: EYE-002: parent SYS-009 does not exist
+
+--- seeded: A subsystem requirement with no parent ---
+exit 1  →  CAUGHT
+ERROR brain.yaml: BRN-001: subsystem requirement has no derives_from (orphan)
+
+--- seeded: A misspelled requirement type ---
+exit 1  →  CAUGHT
+ERROR eyes.yaml: EYE-004: type must be one of ['constraint', 'functional', 'interface', 'performance']
+
+--- seeded: A subsystem requirement allocated to no component ---
+exit 1  →  CAUGHT
+ERROR brain.yaml: BRN-001: not allocated to a component
+
+--- seeded: An interface requirement with no ICD ---
+exit 1  →  CAUGHT
+ERROR brain.yaml: BRN-003: interface requirement needs an existing icd (got None)
+
+--- seeded: A TBD ID that isn't in the register ---
+exit 1  →  CAUGHT
+ERROR requirements/eyes.yaml: TBD-999 is not in the TBD register

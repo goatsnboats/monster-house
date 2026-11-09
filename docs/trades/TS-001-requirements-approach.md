@@ -153,8 +153,8 @@ requirement with no ICD, and (6) a `TBD-NNN` that isn't in the register.
 | E1 | A | G2 | The checker (`a/check.py`, 150 lines) caught **6/6** seeded errors, with exit code 1 on any problem | measured | `trials/ts-001/a/check.py` |
 | E2 | A | C2, C4 | Generates a matrix (requirement → parents, component, ICD, verification method) plus Mermaid allocation and interface diagrams as Markdown that GitHub renders; `--impact SYS-001` lists its 5 descendants with their components and ICDs | measured | `check.py --report`, `--impact` |
 | E3 | A, A′, B, D | C7 | The ICD's YAML block holds a JSON-Schema payload plus examples; the checker validates the examples against the schema. The same block could drive `shared/` code or tests | measured | `a/interfaces/ICD-001.md` |
-| E4 | A′ (Doorstop 3.2) | G2 | With `--error-all` it caught **2/6**: a missing parent and a requirement with no parent. Custom fields (type, allocation, ICD) and TBD references aren't checked without a plugin we'd write | measured | `doorstop --error-all` |
-| E5 | A′ | G1, C5 | **Doorstop rewrites item files when it validates** (it stamps a hash on each link), so routine checks change files in git. One file per requirement (10 files, 139 lines for the sample, against A's 66); adding a requirement needs `doorstop add` and then an edit | measured | trial run |
+| E4 | A′ (Doorstop 3.2) | G2 | With `--error-all` it caught **2/6**: a missing parent and a requirement with no parent. Custom fields (type, allocation, ICD) and TBD references aren't checked without a plugin we'd write. It also flags any text edit as "unreviewed changes", which isn't a TBD check. `doorstop publish` produces a parent/child matrix page, with no coverage or impact report | measured | `doorstop --error-all` |
+| E5 | A′ | G1, C5 | **Doorstop rewrites item files when it validates, and stages them in git itself** (it stamps a hash on each link and a `reviewed` field; one run changed all 10 items), so routine checks change files in git. One file per requirement (10 files, 139 lines for the sample, against A's 66); adding a requirement needs `doorstop add` and then an edit | measured | trial run |
 | E6 | A→A′ | conversion | A's YAML was converted to Doorstop items by a 20-line script, written and run in minutes. This supports the §9 conversion-cost estimates | measured | `a2-doorstop/a_to_doorstop.py` |
 | E7 | B (StrictDoc 0.30.4) | G2 | Caught **2/6**: a missing parent and a bad type (choice fields are enforced). It missed a requirement with no parent, an unallocated requirement, an interface requirement with no ICD, and an unknown TBD. Required-field checks could catch more if system and subsystem requirements were split into separate grammar elements (not tested) | measured | `strictdoc export`, one error at a time |
 | E8 | B | C1, C5 | 132 lines for the sample, including a 36-line grammar header. A blank line inside a requirement is a syntax error, which bit once during the trial. GitHub shows `.sdoc` as plain text, so the readable form is StrictDoc's HTML, which needs a local server or a hosted site | measured | trial run |
@@ -245,6 +245,7 @@ Consequences). The trial's SysML short-name convention (`part <'monster-brain'> 
 the intended bridge from the YAML component IDs.
 
 ## Links
+- **Results report, with screenshots:** [results/TS-001](results/TS-001/README.md)
 - Trials and scoring script: [`trials/ts-001/`](../../trials/ts-001/README.md)
 - Owner direction: session of 2026-11-08
 - Skill: `.claude/skills/trade-study/SKILL.md`

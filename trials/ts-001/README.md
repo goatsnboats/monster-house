@@ -18,5 +18,11 @@ Nothing outside this folder may import from it.
 | `c-sysml/` | C: SysML v2 text notation for everything |
 | `d-hybrid/` | D: SysML v2 architecture + A's YAML requirements |
 
-`run_checks.sh` repeats every check, including the seeded-error tests. The tools live in a
-scratch virtual environment and are not part of the repo (see the script's header).
+- `run_checks.py` repeats every check, including the seeded-error tests, and writes logs.
+- `make_figures.py` makes the report's screenshots.
+- `score.py` computes the weighted totals.
+- `sysml_check.sh` safely wraps the SysML v2 pilot validator.
+
+The tools live in a scratch virtual environment and aren't part of the repo (see each
+script's header). The report built from these is in
+[docs/trades/results/TS-001](../../docs/trades/results/TS-001/README.md).

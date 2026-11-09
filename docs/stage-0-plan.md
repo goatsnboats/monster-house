@@ -74,7 +74,8 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
 See [reviews/](reviews/README.md) for the entry and exit criteria.
 - [ ] SRR package: concept of operations, owner's review of the subsystem requirements, verification plan, risk register.
 - [ ] **SRR** (December): requirements baseline frozen (tag `srr`).
-- [ ] **PDR + CDR-1 (Eyes)** at Stage 0 exit: design baseline (tag `pdr`), go/no-go for the Stage 1 purchase.
+- [ ] **PDR** (late January, once Steps 2-6 run): design baseline (tag `pdr`).
+- [ ] **CDR-1 (Eyes)** at Stage 0 exit (late February): go/no-go for the Stage 1 purchase.
 
 ## Exit criteria for Stage 0 (then buy Stage 1 parts)
 - [ ] The owner likes the eyes in the house preview.

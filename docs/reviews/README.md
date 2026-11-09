@@ -26,19 +26,21 @@ requirements, and tests named in `verified_by` show requirements being met.
 | Review | Question | When | Gates |
 |---|---|---|---|
 | **SRR** System Requirements Review | Are we building the right thing, and are the requirements complete and checkable? | December 2026, during Stage 0 Steps 2-4 | Freezing the requirements baseline |
-| **PDR** Preliminary Design Review | Will this design meet the requirements, backed by trades, budgets and prototype evidence? | Stage 0 exit, late February 2027 | All later stages' design work |
-| **CDR-1** Eyes | Is the eye pod ready to buy and build? | With PDR, late February 2027 | Stage 1 purchase (Pis, projectors) |
+| **PDR** Preliminary Design Review | Will this design meet the requirements, backed by trades, budgets and prototype evidence? | Late January 2027, once Stage 0 Steps 2-6 run | The detailed design of every stage, starting with the eye pod |
+| **CDR-1** Eyes | Is the eye pod ready to buy and build? | Stage 0 exit, late February 2027 | Stage 1 purchase (Pis, projectors) |
 | **CDR-2** Ears | Is the radar ready? | Late April 2027 | Stage 2 purchase |
 | **CDR-3** Voice | Are the porch Pi, FPP and sound ready? | Late May 2027 | Stage 3 purchase |
 | **CDR-4** Mouth | Are the lips ready? | Late July 2027 | Stage 4 purchase |
 | **CDR-5** Extras | Are fog and rumble ready? | Late August 2027 | Stage 5 purchase |
 
-CDR-1 is held together with PDR because the Stage 1 purchase follows straight after
-Stage 0. The stage months are architecture §11's.
+PDR comes a month before CDR-1 so that its findings can still change the eye pod before
+anything is bought (owner chose this, 2026-11-09). One system PDR covers the whole design
+at a preliminary level, Voice and Mouth included; each stage's detail is reviewed once, at
+its CDR, which also reviews what changed since PDR. The stage months are architecture
+§11's.
 
-**Considered and not chosen** (owner, 2026-11-09): a separate PDR a month before CDR-1,
-and a PDR per stage before each CDR. One system PDR covers the whole design at a
-preliminary level; each stage's detail is reviewed once, at its CDR.
+**Considered and not chosen** (owner, 2026-11-09): PDR held together with CDR-1, and a
+PDR per stage before each CDR.
 
 ## SRR package, in this order (owner, 2026-11-09)
 
@@ -78,12 +80,12 @@ preliminary level; each stage's detail is reviewed once, at its CDR.
 6. Every review item is closed or assigned to a later gate.
 7. The requirements baseline is tagged `srr`.
 
-## PDR — Preliminary Design Review (system)
+## PDR — Preliminary Design Review (system, late January 2027)
 
 **Entry criteria**
 1. SRR's review items are closed or deferred with the owner's OK.
 2. The Stage 0 prototype runs end to end on the desktop (eyes, brain, fake radar, fake
-   FPP, house preview), and the Stage 0 exit criteria are met or on track.
+   FPP, house preview, phone page: Steps 2-6), and the rest of Stage 0 is on track.
 3. The trade studies that PDR depends on are decided with ADRs: message schemas
    (TBD-003) and projector (TBD-012); the eye layout (TBD-004) is decided.
 4. Every ICD is at least a draft; ICDs 001-005 and 015 are implemented in code and tested.
@@ -113,6 +115,8 @@ preliminary level; each stage's detail is reviewed once, at its CDR.
 7. A parts list with costs, compared with architecture §11's estimate for the stage.
 8. Install, setup and teardown checklists for stage *n* are drafted.
 9. The stage *n* risks are retired, or their mitigation is in place.
+10. A "design delta since PDR" section: what changed in stage *n*'s design since PDR,
+    and why (for Voice and Mouth, which are thinnest at PDR, this is most of the review).
 
 **Exit criteria (every CDR)**
 1. The owner gives go or no-go for the purchase and the build.

@@ -82,8 +82,10 @@ spec_tree:
     - {prefix: INF, name: Infrastructure, group: delivered}
     - {prefix: THM, name: Themes, group: delivered}
     - {prefix: SIM, name: Simulators, group: enabling}
-    - {prefix: DEV, name: Desktop tooling, group: enabling}
+    - {prefix: DEV, name: Desktop tooling, group: enabling, requirements: none}  # Q5: a place only
     - {prefix: DEP, name: Deployment, group: enabling}
+  # Outside the system; ICD ends may name these instead of a component.
+  externals: [house, owner-phone, visitors, neighbors]
 ```
 
 ## 2. Subsystems and their components
@@ -373,7 +375,7 @@ recommended.
     15 ICDs (after Q6 and Q14) instead of about 30.
 12. **Turning the eye pods off at bedtime.** Architecture §2 says "the schedule turns
     pods off at bedtime", but no component does it (a smart plug, a Pi command to the
-    projector, or FPP's schedule). *Recommend:* add it as a TBD at STOP 1 and decide when
+    projector, or FPP's schedule). *Recommend:* add it to the TBD register at STOP 1 and decide when
     the pods are built; if it ends up as switched power, it lands in INF.
 13. **`shared/` (topic names, MQTT helper).** *Recommend:* not a component of its own. It
     is the ICDs in code form, used by every Python component; the checker will keep it in
@@ -403,7 +405,7 @@ recommended.
   them up deterministically and becomes the verification tool for the requirements
   that set those limits (`verify: analysis`).
 - **Timing:** a system performance requirement for each end-to-end information path at
-  STOP 1, with a TBD wherever the owner hasn't chosen a number; per-hop timing budgets,
+  STOP 1, citing a TBD-NNN wherever the owner hasn't chosen a number; per-hop timing budgets,
   allocated to subsystems and written into the ICDs' timing sections, at STOP 2.
 
 **Noted for later (allocation, not boundaries):** show hours are set by FPP's scheduler

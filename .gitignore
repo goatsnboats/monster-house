@@ -9,6 +9,9 @@ __pycache__/
 *.db
 mosquitto.log
 
+# Claude Code personal settings (not shared)
+.claude/settings.local.json
+
 # Editors / OS
 .vscode/
 .idea/

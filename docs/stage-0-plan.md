@@ -11,10 +11,12 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
 - [ ] Create a private GitHub repository `monster-house`, and add this starter kit.
 
 ## Step 1 — Project setup (November)
-- [ ] Folder layout per `docs/architecture.md` §10. One Python virtual environment and a dependency file.
+- [x] Folder layout per `docs/architecture.md` §10. One Python virtual environment and a dependency file.
 - [ ] `shared/`: MQTT topic names and payload schemas (dataclasses or pydantic) for everything in architecture §2–3c.
+  _Topic names done (`shared/topics.py`). Payload schemas wait for TBD-003._
 - [ ] Mosquitto running locally, with a config file in `deploy/`.
-- [ ] A tiny helper to publish and subscribe from the command line, for debugging.
+  _Config and run script done (`deploy/mosquitto/`) and tested with Mosquitto 2.0.22. Tick once Mosquitto is installed on the desktop (owner: needs sudo)._
+- [x] A tiny helper to publish and subscribe from the command line, for debugging.
 
 **Done when:** a test message published by one program arrives in another through Mosquitto, using the shared schemas, and `pytest` runs green.
 

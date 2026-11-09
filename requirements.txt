@@ -1,0 +1,16 @@
+# Monster House — pinned Python dependencies.
+# Target: Python 3.11 (Raspberry Pi OS Bookworm). Install into .venv; see README.md.
+# To upgrade: change a pin, reinstall, run pytest, commit.
+
+# MQTT client (2.x API: CallbackAPIVersion.VERSION2)
+paho-mqtt==2.2.0
+# YAML config files
+PyYAML==6.0.3
+
+# Tests
+pytest==9.2.0
+# (pytest's own dependencies, pinned too)
+iniconfig==2.3.1
+packaging==26.3
+pluggy==1.7.0
+pygments==2.21.0

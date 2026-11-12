@@ -31,6 +31,9 @@ the comments are exported into the repo as that review's record.
 - **Private.** Reachable only from the owner's devices (Tailscale); nothing public.
 - **Phone first:** usable with a thumb, without selecting text.
 - **Light on the NAS** (a DS218j: small, low memory; what it can run is to be checked).
+- **No new dependence on GitHub** (owner, 2026-11-11: the long-term plan is to move away
+  from GitHub). No GitHub issues, pull requests or Actions in this tool; the docs site
+  pulls from wherever the git repository lives, which can change.
 - **Claude is not always running.** A comment can't reach Claude instantly; it is picked
   up on request or by a scheduled check (see X6).
 
@@ -116,7 +119,7 @@ If a heading is renamed or removed, its comments move to the top of the page as
 
 | # | Question | Options | Recommendation | Decision |
 |---|---|---|---|---|
-| X1 | Where comments are stored | A GitHub issues · B own service, SQLite · C files in the repo | **B**: no tokens on devices, statuses and review items as we need them, data in the house | *open* |
+| X1 | Where comments are stored | A GitHub issues · B own service, SQLite · C files in the repo | **B**: no tokens on devices, statuses and review items as we need them, data in the house | **B** — owner, 2026-11-11 (move away from GitHub) |
 | X2 | Where the service runs | A `zobar` · B another always-on computer · C the desktop | **A** if the NAS can run it (checks below); else **B** | Owner prefers A, 2026-11-11 |
 | X3 | Who may comment, and how they're identified | A Tailscale only, identity from Tailscale · B a password per device | **A**: nothing to type or store | *open* |
 | X4 | Who resolves | A owner only · B Claude resolves, owner reopens | **A**: the owner stays in control; Claude marks answered | *open* |
@@ -150,6 +153,22 @@ Claude only acts when a session takes a turn. A comment can't wake a session dir
 the inbound wake-up link available to sessions only accepts deliveries signed by
 Anthropic's own service. So the options are on request, or a scheduled check
 (hourly at most often), which fires a turn in a chosen session.
+
+## Until the comment service exists: a triage session
+
+The owner gives feedback in a Claude session (phone or desktop), naming the document and
+the place: a heading, a scenario step (`S3.5`), a requirement (`EYE-012`), an ICD
+(`ICD-004`) or a quoted phrase. The session records each item as a file in the repo,
+with the same fields as a comment (see "What a comment holds"), so the comment service
+can import them later.
+
+- **Where:** `docs/feedback/FB-<date>-<n>.yaml`, one file per item, so sessions working in
+  parallel never edit the same file.
+- **Statuses:** the same as comments: `open`, `answered`, `deferred`, `resolved`. Claude
+  marks `answered` with what changed (commit) or a question; the owner resolves.
+- **A `/feedback` skill** records items (with a read-back for the owner to confirm), lists
+  open and answered ones, and works them.
+- **Review record:** at each review, the items for that review are listed in its package.
 
 ## Checks before building
 

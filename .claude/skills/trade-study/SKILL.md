@@ -10,8 +10,15 @@ but only under `trials/<study-slug>/`, and nothing outside that folder may impor
 
 ## When to run one
 
-Run one when a decision has **two or more defensible options** and the choice **changes
-what gets built**, adds a dependency, costs money, or is costly to reverse.
+Run one when a decision about **the design of the system** (the monster itself: its
+hardware, the software it runs, how its parts work together) has **two or more defensible
+options** and the choice **changes what gets built**, adds a dependency, costs money, or
+is costly to reverse.
+
+**General infrastructure is not studied formally** (owner, 2026-11-11): the docs site,
+the requirements checker, dev tooling, CI and workflow. For those, list the realistic
+alternatives briefly in the conversation or the PR, recommend one, and let the owner
+choose.
 
 Don't run one for naming, formatting, test layout, or anything where the project
 already has a clear precedent. Make those calls yourself and mention them.

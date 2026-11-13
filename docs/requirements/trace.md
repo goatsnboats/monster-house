@@ -32,7 +32,7 @@
 | ICD sides with an interface requirement | 39 of 39 |
 | Performance requirements with a quantitative basis | 7 of 33 |
 | Requirements with a verification event | 168 of 168 |
-| Checker errors | 1 |
+| Checker errors | 0 |
 
 **Components with no requirement yet** (12): `content-tools`, `desktop`, `dev-env`, `eye-mask`, `lip-box`, `lip-channel`, `lip-upper`, `mouth-extras`, `porch-enclosure`, `rumble`, `speaker-wire`, `xlights`
 

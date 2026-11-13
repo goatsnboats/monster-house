@@ -11,7 +11,7 @@ rated low, medium or high; the owner adjusts them.
 - **Every risk rated high** (likelihood or impact) has a plan and a gate it must be
   retired by: SRR, PDR or a CDR. The checker enforces it (SRR exit criterion 5).
 - **Retiring** a risk usually means running a verification event (`VE-…`) or closing a
-  TBD; the risk names them, and the checker makes sure they exist.
+  TBD-NNN item; the risk names them, and the checker makes sure they exist.
 - **Status:** `open`, `retired` (with how, in `notes`), or `accepted` (the owner chooses to
   live with it).
 - **At each review** the register is updated: new risks added, ratings revised, retired

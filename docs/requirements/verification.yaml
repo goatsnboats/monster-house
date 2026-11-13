@@ -1,0 +1,275 @@
+# Verification plan: the events that show each requirement is met (SRR package, item 3).
+# Approach and field meanings: verification-plan.md in this folder.
+# Every requirement must be covered by at least one event whose method matches its
+# `verify`; tools/reqs/check.py enforces it. Procedures are written before each stage's CDR.
+
+# ── Stage 0: the simulator on the desktop ───────────────────────────────────────
+
+- id: VE-001
+  name: Brain tests
+  stage: 0
+  method: test
+  where: desktop, automated (pytest)
+  how: >-
+    Unit tests of the brain with fake time and fake inputs: mood transitions, coming and
+    going, door hold, focus choice, clip pools, minimum gap, show hours, mute, failures,
+    the messages it sends.
+  pass: Every test passes on Python 3.11, on the desktop and later on the porch Pi.
+  covers: [SHW-001, SHW-003, SHW-004, SHW-005, SHW-006, SHW-007, SHW-008, SHW-009, SHW-010,
+           SHW-011, SHW-013, SHW-014, SHW-015, SHW-016, SHW-017, SHW-018, SHW-019, SHW-020,
+           SHW-021, SHW-022, SHW-023, SHW-024, SHW-025, SHW-026, SHW-028, SHW-029]
+
+- id: VE-002
+  name: Eye renderer tests
+  stage: 0
+  method: test
+  where: desktop, automated (pytest, offscreen rendering)
+  how: >-
+    Expression easing values, gaze angles from each window, blinks, the fallback timer,
+    window settings (rotation, mirroring, placement), theme loading, malformed messages,
+    frame-time measurement at 60 fps.
+  pass: Every test passes; frame time stays under 16.7 ms on the desktop.
+  covers: [EYE-002, EYE-003, EYE-005, EYE-006, EYE-008, EYE-009, EYE-012, EYE-013, EYE-015,
+           EYE-016, EYE-017, EYE-018, EYE-024]
+
+- id: VE-003
+  name: Simulator and broker tests
+  stage: 0
+  method: test
+  where: desktop, automated (pytest with Mosquitto running)
+  how: >-
+    The fake radar's and fake FPP's messages checked against ICD-002 and ICD-003; the
+    house preview receives ICD-001; retained and last-will messages through Mosquitto; the
+    phone page's response time.
+  pass: Every message matches its ICD schema; every test passes.
+  covers: [SIM-002, SIM-004, SIM-006, SHW-039, SHW-040]
+
+- id: VE-004
+  name: Scripted pretend visits
+  stage: 0
+  method: test
+  where: desktop, automated (brain, eyes, fake radar, fake FPP together)
+  how: >-
+    Scripted visits from the concept of operations (S3 to S10) run end to end, recording
+    every message with its time: who the eyes look at, which clips play, when, and how
+    long each step takes. Includes failures (radar, an eye, FPP, the brain dropping out).
+  pass: >-
+    Each scenario produces the expected sequence; the measured times meet SYS-019, SYS-020,
+    SYS-023 and SYS-029 once their values are set (TBD-020, TBD-021, TBD-023).
+  covers: [SYS-004, SYS-006, SYS-007, SYS-008, SYS-014, SYS-015, SYS-017, SYS-019, SYS-020,
+           SYS-023, SYS-024, SYS-027, SYS-028, SYS-029, SYS-037, SYS-039, SYS-043, SYS-047,
+           SYS-049]
+
+- id: VE-005
+  name: Pretend-visit demonstration with the owner
+  stage: 0
+  method: demonstration
+  where: desktop, the owner watching the house preview
+  how: >-
+    The owner drags pretend visitors on the fake radar through the concept of operations
+    scenarios, presses the phone buttons, switches theme, and watches the eyes, the lip
+    line and the logged clips.
+  pass: The owner agrees each scenario looks and feels right (stage-0-plan Step 4).
+  covers: [SYS-001, SYS-002, SYS-003, SYS-005, SYS-009, SYS-010, SYS-012, SYS-013, SYS-016,
+           SYS-032, SYS-048, SYS-050, SHW-002, SHW-012, SHW-030, SHW-031, EYE-004, EYE-007,
+           EYE-014, SIM-001, SIM-003, SIM-005]
+
+- id: VE-006
+  name: Design inspection
+  stage: 0
+  method: inspection
+  where: desktop, code and content review
+  how: >-
+    Review of the code and theme against the constraints: shaders are GLSL ES 3.00, no
+    per-frame CPU drawing, round pupils and lower-lid smiles, no timings or topics in code,
+    one broker, nothing listening beyond the home network, friendly content.
+  pass: No finding left open.
+  covers: [EYE-001, EYE-010, EYE-011, SHW-027, INF-007, THM-001, THM-002, THM-005, THM-007,
+           SYS-036, SYS-038, SYS-040, SYS-041, SYS-042]
+
+- id: VE-007
+  name: Budget analysis
+  stage: 1
+  method: analysis
+  where: desktop, tools/reqs/budget.py, repeated before each CDR
+  how: >-
+    Memory, USB ports and power: what each host or supply provides against what runs on or
+    draws from it, per stage, with measured figures replacing TBDs as they come in.
+  pass: No budget over; none still waiting for an open TBD-NNN at the CDR that needs it.
+  covers: [INF-003, INF-004, INF-005, MTH-009]
+
+# ── Stage 1: the eye pods ───────────────────────────────────────────────────────
+
+- id: VE-101
+  name: Eye pod bench test
+  stage: 1
+  method: test
+  where: an eye Pi and projector on a desk
+  how: >-
+    Boot from the setup script's image; the eye appears full-screen with no desktop; frame
+    rate and memory measured on the Pi; a service killed restarts; the projector shows the
+    HDMI picture on power-up without a remote.
+  pass: 60 fps on the Pi, memory within budget, restart and power-up behave as required.
+  covers: [INF-001, INF-006, EYE-019, DEP-002, SYS-024]
+
+- id: VE-102
+  name: Pi setup demonstration
+  stage: 1
+  method: demonstration
+  where: a fresh Raspberry Pi OS Lite card
+  how: The setup script turns a fresh install into an eye pod, start to finish.
+  pass: The pod works with no step outside the script.
+  covers: [DEP-001]
+
+- id: VE-103
+  name: First window install inspection
+  stage: 1
+  method: inspection
+  where: the small (left) window, at night
+  how: >-
+    The one-eye install from the checklist: screen, mask, shroud, stand, power strip.
+    Then the bedroom is checked in the dark for light, and after removal for marks.
+  pass: No projector light in the room; nothing left behind; one plug per pod.
+  covers: [EYE-020, EYE-021, EYE-022, EYE-023, INF-011, DEP-003, SYS-034, SYS-035, SYS-044]
+
+- id: VE-104
+  name: Network inspection
+  stage: 1
+  method: inspection
+  where: the home router and each node
+  how: Reserved addresses and names checked; no port forwarding to any monster part.
+  pass: Every node answers to its name; nothing reachable from the internet.
+  covers: [INF-008, INF-010, SYS-033]
+
+- id: VE-105
+  name: Bedtime demonstration
+  stage: 1
+  method: demonstration
+  where: an installed eye pod, overnight
+  how: The pods switch off at bedtime and on for the next show day (method TBD-025).
+  pass: Off at bedtime and on again with no one touching them.
+  covers: [INF-012, SYS-018]
+
+- id: VE-106
+  name: Setup and teardown demonstration
+  stage: 1
+  method: demonstration
+  where: the house, repeated as each stage is installed
+  how: The season's setup and teardown from the checklists, timed.
+  pass: Everything goes up and comes down by the checklist; only the lip clips stay.
+  covers: [SYS-045]
+
+# ── Stage 2: the radar ──────────────────────────────────────────────────────────
+
+- id: VE-201
+  name: Radar walk test
+  stage: 2
+  method: test
+  where: the house, people walking the path
+  how: >-
+    One, two and three people walk the path, the steps and the sidewalk; cars and branches
+    are watched for. Coverage, update rate, the zones, the published topics and where the
+    radar loses people near the door (TBD-029) are recorded.
+  pass: The approach zone is covered, 3 people tracked, about 10 updates per second, nothing reported from the street.
+  covers: [EAR-001, EAR-003, EAR-004, EAR-005, EAR-006, INF-009, SYS-025, SYS-026]
+
+- id: VE-202
+  name: Radar install inspection
+  stage: 2
+  method: inspection
+  where: the porch
+  how: Firmware version, the box under the roof, the mounting, Wi-Fi join, the supply.
+  pass: Everything as specified in ICD-008, ICD-009 and ICD-010.
+  covers: [EAR-002, EAR-007, EAR-008, EAR-009, INF-013, SYS-046]
+
+# ── Stage 3: the voice ──────────────────────────────────────────────────────────
+
+- id: VE-301
+  name: Voice bench test on the porch Pi
+  stage: 3
+  method: test
+  where: the porch Pi with FPP, the USB adapter and the amp
+  how: >-
+    Clips started by the brain: start delay measured, status topics checked against
+    ICD-003, the volume cap tried, audio out through the USB adapter.
+  pass: Clips start within their share of SYS-021; the cap holds; status matches the ICD.
+  covers: [SHW-032, SHW-033, SHW-034, SHW-035, SHW-037, INF-002, VOC-001, SYS-021]
+
+- id: VE-302
+  name: Sound level at the sidewalk
+  stage: 3
+  method: test
+  where: the sidewalk, at night
+  how: The loudest clip played at the capped volume, measured at the sidewalk.
+  pass: Never above the limit TBD-026.
+  covers: [VOC-002, SYS-030]
+
+- id: VE-303
+  name: Clip loudness analysis
+  stage: 3
+  method: analysis
+  where: desktop, the theme's audio files
+  how: Every clip's sample rate and loudness measured.
+  pass: All 48 kHz, all within the same loudness.
+  covers: [THM-004]
+
+- id: VE-304
+  name: Content and voice install inspection
+  stage: 3
+  method: inspection
+  where: the theme folder, FPP and the porch
+  how: Pool sizes, names shared by clip, sequence and playlist; speakers and amp supply installed.
+  pass: Every pool has 5-10 clips; every name matches; speakers sheltered and removable.
+  covers: [THM-003, THM-006, VOC-003, VOC-004, VOC-005]
+
+- id: VE-305
+  name: Sequence upload demonstration
+  stage: 3
+  method: demonstration
+  where: desktop and porch Pi
+  how: A lip sequence and its clip are uploaded from xLights and played.
+  pass: The clip plays from FPP with no manual copying.
+  covers: [SHW-038]
+
+# ── Stage 4: the mouth ──────────────────────────────────────────────────────────
+
+- id: VE-401
+  name: Lip bench test
+  stage: 4
+  method: test
+  where: the lip controller and a strip, with FPP and the audio chain
+  how: >-
+    DDP frames from FPP shown on the segments; brightness capped; the delay between each
+    lip shape and its sound measured with a camera and a microphone.
+  pass: Lips within 45 ms after and 125 ms before the sound (SYS-022); brightness never above TBD-027.
+  covers: [MTH-002, MTH-005, MTH-010, SHW-036, VOC-006, SYS-022, SYS-031]
+
+- id: VE-402
+  name: Lip demonstration
+  stage: 4
+  method: demonstration
+  where: the porch, at night
+  how: The monster talks with lips; FPP stops and the lips fall back to breathing; channels snapped on and off the clips.
+  pass: Lips move with the voice; breathing returns on its own; channels come off cleanly.
+  covers: [MTH-001, MTH-008, SYS-011]
+
+- id: VE-403
+  name: Lip install inspection
+  stage: 4
+  method: inspection
+  where: the porch
+  how: Segments, the railing strip's sealing, Wi-Fi join, the supply's plug.
+  pass: Everything as specified in ICD-006, ICD-008, ICD-009 and ICD-010.
+  covers: [MTH-003, MTH-004, MTH-006, MTH-007]
+
+# ── Stage 5: before the show ────────────────────────────────────────────────────
+
+- id: VE-501
+  name: Dress rehearsal
+  stage: 5
+  method: demonstration
+  where: the house, at night, with helpers as visitors
+  how: Every concept of operations scenario at the real house, from setup to teardown.
+  pass: The owner is happy to open for Halloween.
+  covers: [SYS-001, SYS-002, SYS-003, SYS-005, SYS-009, SYS-011, SYS-012, SYS-013, SYS-045,
+           SYS-048, SYS-050]

@@ -16,7 +16,7 @@ from dataclasses import dataclass
 
 from tools.reqs import schema, shared_topics
 from tools.reqs import budget
-from tools.reqs.load import ARCH_DIR, COMPONENTS, ICD_DIR, REQ_DIR, SPEC_TREE, TOPICS_FILE, Model
+from tools.reqs.load import ARCH_DIR, COMPONENTS, ICD_DIR, REQ_DIR, SPEC_TREE, TOPICS_FILE, VERIFICATION, Model
 
 TYPES = {"functional", "performance", "interface", "constraint"}
 VERIFY = {"inspection", "analysis", "demonstration", "test"}
@@ -37,6 +37,9 @@ ICD_STATUSES = {"stub", "skeleton", "draft", "approved"}
 
 REQ_ID = re.compile(r"^([A-Z]{3})-(\d{3})$")
 ICD_ID = re.compile(r"^ICD-\d{3}$")
+EVENT_ID = re.compile(r"^VE-\d{3}$")
+EVENT_FIELDS_REQUIRED = ["id", "name", "stage", "method", "covers"]
+EVENT_FIELDS_KNOWN = set(EVENT_FIELDS_REQUIRED) | {"where", "how", "pass", "status", "notes"}
 COMP_ID = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 TBD_REF = re.compile(r"TBD-\d{3}")
 # "TBD" on its own: not "TBD-019", the file name "TBD.md" or the phrase "TBD register".
@@ -63,6 +66,7 @@ def check_all(model: Model) -> list[Finding]:
     findings += check_icds(model)
     findings += check_tbds(model)
     findings += check_coverage(model)
+    findings += check_verification(model)
     findings += check_topics(model)
     findings += [Finding(level, where, msg) for level, where, msg in budget.findings(model)]
     return findings
@@ -387,6 +391,50 @@ def check_coverage(model: Model) -> list[Finding]:
             if not any(r.get("icd") == iid and set(allocations(r)) & comps and r.get("type") == "interface"
                        for r in live.values()):
                 out.append(Finding("gap", iid, f"no interface requirement on the {side} side"))
+    return out
+
+
+# ── Verification plan ───────────────────────────────────────────────────────────
+
+def events_for(model: Model, rid: str) -> list[str]:
+    """The verification events that cover a requirement."""
+    return sorted(eid for eid, e in model.events.items() if rid in (e.get("covers") or []))
+
+
+def check_verification(model: Model) -> list[Finding]:
+    """Each event is well formed; each requirement is covered by an event of its own method.
+
+    Skipped until docs/requirements/verification.yaml exists.
+    """
+    if not model.events:
+        return []
+    out = []
+    for eid, e in model.events.items():
+        def err(msg: str) -> None:
+            out.append(Finding("error", f"{VERIFICATION}: {eid}", msg))
+
+        if not EVENT_ID.match(eid):
+            err("ID must look like VE-001")
+        for name in EVENT_FIELDS_REQUIRED:
+            if e.get(name) in (None, "", []):
+                err(f"missing field {name!r}")
+        for name in sorted(set(e) - EVENT_FIELDS_KNOWN):
+            err(f"unknown field {name!r}")
+        if e.get("method") not in VERIFY:
+            err(f"method must be one of {sorted(VERIFY)}, not {e.get('method')!r}")
+        if e.get("stage") not in STAGES:
+            err(f"stage must be a whole number 0-5, not {e.get('stage')!r}")
+        for rid in e.get("covers") or []:
+            r = model.reqs.get(rid)
+            if r is None:
+                err(f"covers {rid}, which does not exist")
+            elif r.get("verify") != e.get("method"):
+                err(f"covers {rid}, which is verified by {r.get('verify')}, but this event is a {e.get('method')}")
+    for rid, r in sorted(model.reqs.items()):
+        if r.get("status") == "deleted":
+            continue
+        if not any(model.events[eid].get("method") == r.get("verify") for eid in events_for(model, rid)):
+            out.append(Finding("gap", rid, f"no verification event by {r.get('verify')} ({VERIFICATION})"))
     return out
 
 

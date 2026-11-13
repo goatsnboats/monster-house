@@ -389,6 +389,54 @@ def test_icd_file_examples_are_checked_too(tmp_path):
     assert any("settings: example" in e and "missing required key 'a'" in e for e in findings(root))
 
 
+def _events(root, events):
+    (root / "docs/requirements/verification.yaml").write_text(yaml.safe_dump(events, sort_keys=False))
+
+
+GOOD_EVENTS = [
+    {"id": "VE-001", "name": "Demo", "stage": 0, "method": "demonstration", "covers": ["SYS-001"]},
+    {"id": "VE-002", "name": "Tests", "stage": 0, "method": "test", "covers": ["EYE-001", "EYE-002", "SHW-001"]},
+]
+
+
+def test_verification_plan_covering_everything_is_clean(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS)
+    assert [str(f) for f in check_all(load(root))] == []
+    assert "## Verification plan" in render(load(root), [])
+
+
+def test_verification_file_is_not_read_as_requirements(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS)
+    assert sorted(load(root).reqs) == ["EYE-001", "EYE-002", "SHW-001", "SYS-001"]
+
+
+def test_requirement_without_an_event_is_a_gap(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS[:1])
+    gaps = findings(root, "gap")
+    assert any("EYE-001" in g and "no verification event by test" in g for g in gaps)
+    assert findings(root) == []
+
+
+def test_event_method_must_match_the_requirement(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, [dict(GOOD_EVENTS[0], covers=["SYS-001", "EYE-001"]), GOOD_EVENTS[1]])
+    assert any("covers EYE-001, which is verified by test, but this event is a demonstration" in e
+               for e in findings(root))
+
+
+def test_event_errors(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS + [{"id": "VE-9", "name": "x", "stage": 7, "method": "guess",
+                                  "covers": ["SYS-404"], "colour": "red"}])
+    errors = findings(root)
+    for expected in ("must look like VE-001", "stage must be", "method must be", "SYS-404, which does not exist",
+                     "unknown field 'colour'"):
+        assert any(expected in e for e in errors), expected
+
+
 def test_schema_subset():
     s = {"type": "object", "required": ["name"], "additionalProperties": False,
          "properties": {"name": {"enum": ["happy", "sleepy"]}, "ms": {"type": "integer", "minimum": 0}}}

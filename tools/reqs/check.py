@@ -41,6 +41,19 @@ def impact(model: Model, rid: str) -> list[str]:
     return out
 
 
+def write_pages(root: Path, model: Model) -> None:
+    """Rewrite docs/requirements/pages/ to match the requirements, removing stale pages."""
+    from tools.reqs.pages import PAGES_DIR, render_all
+    folder = root / PAGES_DIR
+    folder.mkdir(parents=True, exist_ok=True)
+    pages = render_all(model)
+    for old in folder.glob("*.md"):
+        if old.name not in pages:
+            old.unlink()
+    for name, text in pages.items():
+        (folder / name).write_text(text)
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--root", type=Path, default=REPO_ROOT, help="repository root (default: this repo)")
@@ -67,6 +80,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if not args.no_write:
         (args.root / TRACE).write_text(render(model, findings))
+        write_pages(args.root, model)
 
     if args.review:
         from tools.reqs import review

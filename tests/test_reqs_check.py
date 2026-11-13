@@ -493,6 +493,24 @@ def test_repository_baseline_has_no_errors():
     assert errors == []
 
 
+def test_requirement_pages_are_up_to_date():
+    from tools.reqs.pages import PAGES_DIR, render_all
+    model = load(REPO_ROOT)
+    for name, text in render_all(model).items():
+        assert (REPO_ROOT / PAGES_DIR / name).read_text() == text, f"{name} is stale: run tools.reqs.check"
+
+
+def test_requirement_pages_have_a_heading_per_requirement(tmp_path):
+    from tools.reqs.pages import render_all
+    root = write_baseline(tmp_path)
+    pages = render_all(load(root))
+    assert set(pages) == {"README.md", "sys.md", "eye.md", "shw.md"}
+    assert "## EYE-001" in pages["eye.md"] and "| Derives from | [SYS-001](sys.md) |" in pages["eye.md"]
+    assert "| Children | [EYE-001](eye.md), [EYE-002](eye.md), [SHW-001](shw.md) |" in pages["sys.md"]
+    assert main(["--root", str(root)]) == 0
+    assert (root / "docs/requirements/pages/eye.md").exists()
+
+
 def test_trace_md_is_up_to_date():
     model = load(REPO_ROOT)
     expected = render(model, check_all(model))

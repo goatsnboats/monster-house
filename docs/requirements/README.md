@@ -14,6 +14,7 @@ that do it, with a check that every link holds.
 | `eye.yaml`, `shw.yaml`, `ear.yaml`, `mth.yaml`, `voc.yaml`, `inf.yaml`, `thm.yaml` | Subsystem requirements, one file per subsystem, named after its prefix |
 | `sim.yaml`, `dep.yaml`, `dev.yaml` | Enabling-system requirements (DEV has none for now) |
 | [trace.md](trace.md) | **Generated, do not edit:** traceability matrix, coverage, budgets, diagrams |
+| [pages/](pages/README.md) | **Generated, do not edit:** the requirements as readable pages, one per subsystem, a heading per requirement (for reading on a phone and commenting with gloss) |
 | [timing-budgets.md](timing-budgets.md) | The end-to-end information paths, hop by hop |
 | [verification-plan.md](verification-plan.md), [verification.yaml](verification.yaml) | How each requirement will be verified: events by stage, each covering requirements of its own method |
 | [risk-register.md](risk-register.md), [risks.yaml](risks.yaml) | What could go wrong, rated, with the gate and the event that retires each risk |

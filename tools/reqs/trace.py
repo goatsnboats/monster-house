@@ -29,6 +29,7 @@ def render(model: Model, findings: list[Finding]) -> str:
     lines += _coverage(model, findings)
     lines += _budgets(model)
     lines += _verification(model)
+    lines += _risks(model)
     lines += _matrix(model)
     lines += _allocation_diagrams(model)
     lines += _interface_diagram(model)
@@ -154,6 +155,30 @@ def _verification(model: Model) -> list[str]:
         covers = e.get("covers") or []
         lines.append(f"| {eid} | {e.get('stage')} | {e.get('method')} | {_cell(e.get('name', ''))} | "
                      f"{_cell(e.get('where', ''))} | {len(covers)}: {', '.join(covers)} |")
+    return lines + [""]
+
+
+# ── Risks ───────────────────────────────────────────────────────────────────────
+
+def _risks(model: Model) -> list[str]:
+    if not model.risks:
+        return []
+    levels = ["low", "medium", "high"]
+    live = {rid: r for rid, r in model.risks.items() if r.get("status") == "open"}
+    lines = ["## Risks", "", f"Open risks from `docs/requirements/risks.yaml` ({len(live)} of {len(model.risks)}).", "",
+             "| Likelihood ↓ / impact → | low | medium | high |", "|---|---|---|---|"]
+    for lik in reversed(levels):
+        cells = [", ".join(sorted(rid for rid, r in live.items()
+                                  if r.get("likelihood") == lik and r.get("impact") == imp)) or "—"
+                 for imp in levels]
+        lines.append(f"| **{lik}** | " + " | ".join(cells) + " |")
+    def score(r: dict) -> int:  # tolerant of bad values: the checker reports those
+        return sum(levels.index(r.get(k)) if r.get(k) in levels else 0 for k in ("likelihood", "impact"))
+    lines += ["", "| Risk | Likelihood | Impact | Retire by | Plan | Events | TBDs |", "|---|---|---|---|---|---|---|"]
+    for rid, r in sorted(live.items(), key=lambda kv: (-score(kv[1]), kv[0])):
+        lines.append(f"| {rid}: {_cell(r.get('title', ''))} | {r.get('likelihood')} | {r.get('impact')} | "
+                     f"{r.get('retire_by', '—')} | {_cell(r.get('plan', ''))} | {', '.join(r.get('events') or []) or '—'} | "
+                     f"{', '.join(r.get('tbds') or []) or '—'} |")
     return lines + [""]
 
 

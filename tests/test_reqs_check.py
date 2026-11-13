@@ -437,6 +437,25 @@ def test_event_errors(tmp_path):
         assert any(expected in e for e in errors), expected
 
 
+def test_risk_register(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS)
+    risks = [
+        {"id": "RSK-001", "title": "Fine", "likelihood": "high", "impact": "low", "retire_by": "PDR",
+         "plan": "Test it", "events": ["VE-001"], "tbds": ["TBD-001"], "reqs": ["SYS-001"], "source": "t", "status": "open"},
+        {"id": "RSK-002", "title": "No plan", "likelihood": "low", "impact": "high", "source": "t", "status": "open"},
+        {"id": "RSK-003", "title": "Bad refs", "likelihood": "huge", "impact": "low", "retire_by": "CDR-9",
+         "events": ["VE-404"], "tbds": ["TBD-404"], "reqs": ["SYS-404"], "source": "t", "status": "open"},
+    ]
+    (root / "docs/requirements/risks.yaml").write_text(yaml.safe_dump(risks, sort_keys=False))
+    errors = findings(root)
+    assert not any("RSK-001" in e for e in errors)
+    assert any("RSK-002" in e and "needs a plan and a retire_by" in e for e in errors)
+    for expected in ("likelihood must be", "retire_by must be", "event VE-404", "TBD-404", "SYS-404 does not exist"):
+        assert any("RSK-003" in e and expected in e for e in errors), expected
+    assert "## Risks" in render(load(root), [])
+
+
 def test_schema_subset():
     s = {"type": "object", "required": ["name"], "additionalProperties": False,
          "properties": {"name": {"enum": ["happy", "sleepy"]}, "ms": {"type": "integer", "minimum": 0}}}

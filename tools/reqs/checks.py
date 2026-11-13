@@ -16,7 +16,7 @@ from dataclasses import dataclass
 
 from tools.reqs import schema, shared_topics
 from tools.reqs import budget
-from tools.reqs.load import ARCH_DIR, COMPONENTS, ICD_DIR, REQ_DIR, SPEC_TREE, TOPICS_FILE, VERIFICATION, Model
+from tools.reqs.load import ARCH_DIR, COMPONENTS, ICD_DIR, REQ_DIR, RISKS, SPEC_TREE, TOPICS_FILE, VERIFICATION, Model
 
 TYPES = {"functional", "performance", "interface", "constraint"}
 VERIFY = {"inspection", "analysis", "demonstration", "test"}
@@ -40,6 +40,12 @@ ICD_ID = re.compile(r"^ICD-\d{3}$")
 EVENT_ID = re.compile(r"^VE-\d{3}$")
 EVENT_FIELDS_REQUIRED = ["id", "name", "stage", "method", "covers"]
 EVENT_FIELDS_KNOWN = set(EVENT_FIELDS_REQUIRED) | {"where", "how", "pass", "status", "notes"}
+RISK_ID = re.compile(r"^RSK-\d{3}$")
+LEVELS = ["low", "medium", "high"]
+GATES = ["SRR", "PDR", "CDR-1", "CDR-2", "CDR-3", "CDR-4", "CDR-5"]  # docs/reviews/README.md
+RISK_STATUSES = {"open", "retired", "accepted"}
+RISK_FIELDS_REQUIRED = ["id", "title", "likelihood", "impact", "status", "source"]
+RISK_FIELDS_KNOWN = set(RISK_FIELDS_REQUIRED) | {"retire_by", "plan", "events", "tbds", "reqs", "notes"}
 COMP_ID = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 TBD_REF = re.compile(r"TBD-\d{3}")
 # "TBD" on its own: not "TBD-019", the file name "TBD.md" or the phrase "TBD register".
@@ -67,6 +73,7 @@ def check_all(model: Model) -> list[Finding]:
     findings += check_tbds(model)
     findings += check_coverage(model)
     findings += check_verification(model)
+    findings += check_risks(model)
     findings += check_topics(model)
     findings += [Finding(level, where, msg) for level, where, msg in budget.findings(model)]
     return findings
@@ -435,6 +442,43 @@ def check_verification(model: Model) -> list[Finding]:
             continue
         if not any(model.events[eid].get("method") == r.get("verify") for eid in events_for(model, rid)):
             out.append(Finding("gap", rid, f"no verification event by {r.get('verify')} ({VERIFICATION})"))
+    return out
+
+
+# ── Risk register ───────────────────────────────────────────────────────────────
+
+def check_risks(model: Model) -> list[Finding]:
+    out = []
+    for rid, r in model.risks.items():
+        def err(msg: str) -> None:
+            out.append(Finding("error", f"{RISKS}: {rid}", msg))
+
+        if not RISK_ID.match(rid):
+            err("ID must look like RSK-001")
+        for name in RISK_FIELDS_REQUIRED:
+            if r.get(name) in (None, ""):
+                err(f"missing field {name!r}")
+        for name in sorted(set(r) - RISK_FIELDS_KNOWN):
+            err(f"unknown field {name!r}")
+        for name in ("likelihood", "impact"):
+            if r.get(name) not in LEVELS:
+                err(f"{name} must be one of {LEVELS}, not {r.get(name)!r}")
+        if r.get("status") not in RISK_STATUSES:
+            err(f"status must be one of {sorted(RISK_STATUSES)}, not {r.get('status')!r}")
+        if r.get("retire_by") and r["retire_by"] not in GATES:
+            err(f"retire_by must be one of {GATES}, not {r['retire_by']!r}")
+        if r.get("status") == "open" and "high" in (r.get("likelihood"), r.get("impact")):
+            if not r.get("plan") or not r.get("retire_by"):
+                err("a high risk needs a plan and a retire_by gate")
+        for eid in r.get("events") or []:
+            if eid not in model.events:
+                err(f"event {eid} is not in {VERIFICATION}")
+        for req in r.get("reqs") or []:
+            if req not in model.reqs:
+                err(f"requirement {req} does not exist")
+        for tbd in r.get("tbds") or []:
+            if tbd not in model.tbds:
+                err(f"{tbd} is not in the TBD register")
     return out
 
 

@@ -32,7 +32,7 @@
 | ICD sides with an interface requirement | 39 of 39 |
 | Performance requirements with a quantitative basis | 7 of 33 |
 | Requirements with a verification event | 168 of 168 |
-| Checker errors | 0 |
+| Checker errors | 1 |
 
 **Components with no requirement yet** (12): `content-tools`, `desktop`, `dev-env`, `eye-mask`, `lip-box`, `lip-channel`, `lip-upper`, `mouth-extras`, `porch-enclosure`, `rumble`, `speaker-wire`, `xlights`
 
@@ -138,6 +138,38 @@ Events from `docs/requirements/verification.yaml`, by stage.
 | VE-402 | 4 | demonstration | Lip demonstration | the porch, at night | 3: MTH-001, MTH-008, SYS-011 |
 | VE-403 | 4 | inspection | Lip install inspection | the porch | 4: MTH-003, MTH-004, MTH-006, MTH-007 |
 | VE-501 | 5 | demonstration | Dress rehearsal | the house, at night, with helpers as visitors | 11: SYS-001, SYS-002, SYS-003, SYS-005, SYS-009, SYS-011, SYS-012, SYS-013, SYS-045, SYS-048, SYS-050 |
+
+## Risks
+
+Open risks from `docs/requirements/risks.yaml` (19 of 19).
+
+| Likelihood ↓ / impact → | low | medium | high |
+|---|---|---|---|
+| **high** | — | RSK-003, RSK-008, RSK-010 | — |
+| **medium** | — | RSK-005, RSK-009, RSK-012, RSK-015, RSK-017, RSK-018 | RSK-001, RSK-002, RSK-004, RSK-006, RSK-007, RSK-011, RSK-013 |
+| **low** | — | RSK-016, RSK-019 | RSK-014 |
+
+| Risk | Likelihood | Impact | Retire by | Plan | Events | TBDs |
+|---|---|---|---|---|---|---|
+| RSK-001: The eye renderer may not reach 60 fps, or run full-screen, on a real Pi 5 | medium | high | CDR-1 | Run the bench test on a real Pi before buying both pods; ADR 0002's fallback is Godot. | VE-101 | TBD-013 |
+| RSK-002: The eyes may be too dim to read at dusk against street lights | medium | high | CDR-1 | Test one projector in the real window at dusk before buying two; no requirement sets a brightness yet. | VE-103 | TBD-012 |
+| RSK-003: The window grids may show as dark lines across the eye | high | medium | CDR-1 | Try it in the real window; either embrace the grid in the eye art or remove the grids for the season. | VE-103 | TBD-009 |
+| RSK-004: The windows or the floor behind them may not fit the projector's throw distance | medium | high | CDR-1 | Measure both windows and the floor space, then choose the projector and its orientation. | VE-103 | TBD-006, TBD-005, TBD-017 |
+| RSK-006: The monster may not feel right (timing, personality, coming and going) | medium | high | PDR | Tune in the simulator with the owner; the owner signs off the pretend visits before PDR. | VE-005, VE-004 | TBD-020, TBD-021, TBD-028 |
+| RSK-007: Porch Wi-Fi may be too weak at 2.4 GHz for the radar and the lips | medium | high | CDR-2 | Measure the signal where the boxes will go before mounting; add an access point if needed. | VE-201 | TBD-008 |
+| RSK-008: The radar may report railings, inflatables, cars or branches as visitors | high | medium | CDR-2 | Filter zones set during the walk test; check with decorations up. | VE-201 | TBD-018 |
+| RSK-010: Visitors lost at the door may be mistaken for new arrivals or leavers | high | medium | CDR-2 | Door hold and coming/going logic tuned in the simulator with a blind spot, then checked on the real radar. | VE-004, VE-201 | TBD-028, TBD-029, TBD-030 |
+| RSK-011: Falcon Player may not share the porch Pi 5 with the brain and Mosquitto | medium | high | CDR-3 | Check FPP's support for the Pi 5 and running other services; fall back to a second small computer for FPP. | VE-301 | TBD-036, TBD-031 |
+| RSK-013: The voice content may not be ready in time (name, voice, clips) | medium | high | CDR-3 | Rough clips recorded on a phone during Stage 0; final recordings before the Stage 3 purchase. | VE-304 | TBD-011 |
+| RSK-005: Projector fan noise may disturb whoever sleeps in the bedroom | medium | medium | CDR-1 | The pods switch off at bedtime; check the noise during the first window install. | VE-105, VE-103 | TBD-025 |
+| RSK-009: The radar may not reach far enough for the monster to wake in time | medium | medium | CDR-2 | Walk test from the sidewalk; move or angle the radar if it falls short. | VE-201 | TBD-016 |
+| RSK-012: The real Falcon Player may not behave like the fake one | medium | medium | CDR-3 | Check FPP's topics and status against ICD-003 on the installed version; change the ICD and the fake together. | VE-301 | TBD-015 |
+| RSK-014: The porch Pi is a single point of failure for the brain, the broker and the voice | low | high | CDR-3 | Services restart themselves and the eyes fall back to idle; tested in the failure scenarios; a spare SD card image kept. | VE-004, VE-101 | — |
+| RSK-015: The lips may drift out of step with the voice | medium | medium | CDR-4 | Measure the skew on the bench; shift the sequences in xLights if one path is always slower. | VE-401 | TBD-034 |
+| RSK-017: Rain and snow may damage the outdoor parts | medium | medium | CDR-4 | Radar under the roof, IP65 strips with sealed ends, weatherproof boxes; inspected at each install. | VE-202, VE-403 | — |
+| RSK-018: Stage costs may run over the estimates | medium | medium | CDR-1 | A parts list with prices at each CDR, compared with architecture §11. | — | TBD-012, TBD-014 |
+| RSK-016: The monster may be too loud or too bright for the neighbors | low | medium | CDR-3 | Caps in FPP, the operating system, the amp and WLED; measured at the sidewalk. | VE-302, VE-401 | TBD-026, TBD-027 |
+| RSK-019: A 1GB eye Pi may run short of memory | low | medium | CDR-1 | Measure on the Pi; the budget check shows the margin. | VE-007, VE-101 | TBD-032 |
 
 ## Requirements
 

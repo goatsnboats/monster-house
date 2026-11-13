@@ -16,6 +16,7 @@ that do it, with a check that every link holds.
 | [trace.md](trace.md) | **Generated, do not edit:** traceability matrix, coverage, budgets, diagrams |
 | [timing-budgets.md](timing-budgets.md) | The end-to-end information paths, hop by hop |
 | [verification-plan.md](verification-plan.md), [verification.yaml](verification.yaml) | How each requirement will be verified: events by stage, each covering requirements of its own method |
+| [risk-register.md](risk-register.md), [risks.yaml](risks.yaml) | What could go wrong, rated, with the gate and the event that retires each risk |
 | [../architecture/components.yaml](../architecture/components.yaml) | Every component that requirements are allocated to, with its budget figures |
 | `../architecture/nodes/`, `../architecture/software/` | One page per computer or controller, and per software item |
 | [../interfaces/](../interfaces/) | One ICD per interface, `ICD-NNN-<slug>.md` |
@@ -125,6 +126,9 @@ Errors:
 Gaps: system requirements with no children; ICD sides with no interface requirement;
 budgets waiting for a TBD-NNN; performance requirements without a `basis`; requirements
 with no verification event of their own method.
+
+The risk register is checked too: its fields, that every high risk has a plan and a
+gate, and that the events, TBDs and requirements it names exist.
 
 The verification plan is checked too: each event's fields, that what it covers exists,
 and that its method matches each covered requirement's `verify`.

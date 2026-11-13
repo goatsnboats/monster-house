@@ -456,6 +456,26 @@ def test_risk_register(tmp_path):
     assert "## Risks" in render(load(root), [])
 
 
+def test_srr_readiness_report(tmp_path):
+    from tools.reqs import review
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS)
+    model = load(root)
+    rows = {name.split(" ")[0]: result for name, result, _ in review.srr(model, check_all(model))}
+    assert rows["E2"] == "fail"          # SYS-001 is only proposed
+    assert rows["E5"] == "pass"          # every requirement has an event
+    assert rows["E7"] == "fail"          # the test register has no Gate column
+    (root / "docs/TBD.md").write_text(
+        "| ID | What | Resolved by | Blocks | Needed by | Gate | Status |\n|---|---|---|---|---|---|---|\n"
+        "| TBD-001 | Something open | Owner decision | — | — | PDR | Open |\n")
+    model = load(root)
+    rows = {name.split(" ")[0]: result for name, result, _ in review.srr(model, check_all(model))}
+    assert rows["E7"] == "pass"
+    assert main(["--root", str(root), "--review", "srr"]) == 0
+    report = (root / "docs/reviews/srr/readiness.md").read_text()
+    assert "| PDR | 1: TBD-001 |" in report
+
+
 def test_schema_subset():
     s = {"type": "object", "required": ["name"], "additionalProperties": False,
          "properties": {"name": {"enum": ["happy", "sleepy"]}, "ms": {"type": "integer", "minimum": 0}}}

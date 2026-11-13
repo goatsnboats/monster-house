@@ -31,6 +31,7 @@ From the repository root:
 .venv/bin/python -m tools.reqs.check --no-write   # check only
 .venv/bin/python -m tools.reqs.check --strict     # gaps and warnings fail too
 .venv/bin/python -m tools.reqs.check --impact SYS-004   # what sits below SYS-004?
+.venv/bin/python -m tools.reqs.check --review srr       # SRR readiness: docs/reviews/srr/readiness.md
 .venv/bin/python -m pytest tests/test_reqs_check.py      # the checker's own tests
 ```
 

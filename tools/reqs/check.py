@@ -6,6 +6,7 @@ Run from the repository root:
     .venv/bin/python -m tools.reqs.check --no-write      # check only
     .venv/bin/python -m tools.reqs.check --strict        # gaps and warnings fail too
     .venv/bin/python -m tools.reqs.check --impact SYS-004   # what sits below SYS-004?
+    .venv/bin/python -m tools.reqs.check --review srr       # readiness for a design review
 
 Exit status: 0 if there are no errors (or, with --strict, no findings at all), else 1.
 What each check means: docs/requirements/README.md.
@@ -46,6 +47,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--no-write", action="store_true", help="don't rewrite docs/requirements/trace.md")
     ap.add_argument("--strict", action="store_true", help="fail on gaps and warnings, not only errors")
     ap.add_argument("--impact", metavar="ID", help="list what sits below a requirement, then stop")
+    ap.add_argument("--review", metavar="NAME", choices=["srr"],
+                    help="print readiness for a design review and write docs/reviews/<name>/readiness.md")
     args = ap.parse_args(argv)
 
     model = load(args.root)
@@ -64,6 +67,18 @@ def main(argv: list[str] | None = None) -> int:
 
     if not args.no_write:
         (args.root / TRACE).write_text(render(model, findings))
+
+    if args.review:
+        from tools.reqs import review
+        rows = review.srr(model, findings)
+        report = review.render(args.review, rows, review.open_tbds(model))
+        print()
+        for name, result, detail in rows:
+            print(f"{result:7} {name}: {detail}")
+        if not args.no_write:
+            out = args.root / "docs" / "reviews" / args.review / "readiness.md"
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_text(report)
 
     n = {level: sum(f.level == level for f in findings) for level in ("error", "gap", "warning")}
     failed = n["error"] > 0 or (args.strict and (n["gap"] or n["warning"]))

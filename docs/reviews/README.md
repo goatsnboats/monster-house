@@ -15,9 +15,10 @@ requirements, and tests named in `verified_by` show requirements being met.
   decisions, and the review items.
 - **Review items** (`RI-<review>-NN`, for example `RI-SRR-03`) are the findings: each has
   an owner, a due gate and a status. Closed items stay, as history.
-- **Readiness is checked by the tools where possible.** `tools/reqs/check.py` will gain a
-  `--review <name>` mode that prints the entry criteria below as pass, fail or accepted gap
-  (to be built while preparing SRR).
+- **Readiness is checked by the tools where possible.** `tools/reqs/check.py --review srr`
+  prints the criteria below as pass, not yet, or judged at the review, and writes
+  [srr/readiness.md](srr/readiness.md). The TBD register's **Gate** column is the burndown
+  plan: the report lists the TBDs due at each gate.
 - **After a review, its baseline is frozen** with a git tag (`srr`, `pdr`, `cdr-1`, ...).
   Later changes to frozen items need a short change note and the owner's OK.
 

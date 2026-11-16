@@ -1,6 +1,6 @@
 # TBD register
 
-> **Status:** Current · **Updated:** 2026-11-15 · Every open question in the project, with what will settle it.
+> **Status:** Current · **Updated:** 2026-11-16 · Every open question in the project, with what will settle it.
 
 TBDs are allowed in any document, but each one gets an ID here so none is lost.
 
@@ -28,7 +28,7 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-005 | Each projector on its side (tall eye) or flat | Owner decision, after TBD-006 and TBD-017 | Per-eye `rotate_deg`, stands | Stage 0 exit | Open |
 | TBD-006 | Glass width × height of both windows, fixed dividers, floor space behind each. **Measured 2026-11-15** ([ICD-011](interfaces/ICD-011-eye-window.md)): glass, sills, right-window divider position, right floor space. **Still open:** the right window's divider width, and the floor space behind the left window | Measurement | Screen size, projector distance, TBD-005 | Stage 0 exit | Open (partly measured) |
 | TBD-007 | Porch roofline and railing length | Measurement | LED quantity, power supply | Stage 4 purchase | Open |
-| TBD-008 | Wi-Fi signal strength on the porch (2.4 GHz) | Measurement | Radar and lip-controller placement | Stage 2 | Open |
+| TBD-008 | Wi-Fi signal strength on the porch (2.4 GHz). Owner reports good Wi-Fi on the porch (2026-11-16); confirm with the ESP32's own signal reading at the radar's final spot (TBD-037) | Measurement | Radar and lip-controller placement | Stage 2 | Open |
 | TBD-009 | Window grids: embrace them, or remove them for the season. The right window has a large center divider that looks fixed (2026-11-15) | Test in the real window | Eye art, screen mounting | Stage 1 | Open |
 | TBD-010 | Where the show brain sits inside the front door, and the cable route to the amp | Owner decision | Stage 3 install | Stage 3 | Open |
 | TBD-011 | The monster's name, and who voices it | Owner decision | Voice lines, theme content | Stage 0 Step 7 | Open |
@@ -57,6 +57,7 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-034 | How each end-to-end time (SYS-019 to SYS-023, SYS-029) is shared between the hops on its path | Analysis with a latency model (each hop's estimated or measured delay, added up per path like `tools/reqs/budget.py`), built while burning down TBD-020 to TBD-023 (owner, 2026-11-09); then a Measurement in the Stage 0 simulator and again on hardware. It gives the timing requirements their `basis` | Per-hop budgets in the ICDs' timing sections ([timing-budgets.md](requirements/timing-budgets.md)) | Stage 0 Step 4 | Open |
 | TBD-035 | How the lips' idle "breathe" color follows the theme (a WLED preset per theme, chosen by the brain or by FPP) | Owner decision, then a Test with WLED | MTH-001, theme format (ICD-005) | Stage 4 | Open |
 | TBD-036 | Whether Falcon Player can run on the porch Pi 5 next to the brain and Mosquitto (FPP's own OS image vs Raspberry Pi OS) | Verify against FPP's documentation, then a Test | Porch Pi software setup (ICD-013), SYS-039 | Before the Stage 3 purchase | Open |
+| TBD-037 | Where the radar goes and what box it needs: on a porch column under the roof (EAR-003, EAR-008 as written), or on a small stand in the front garden for a clearer view (needs a rain-proof box, a cord across the garden, and maybe a yaw setting in the site config if it is aimed at an angle) | Test: try both spots with the bare radar and ESP32 (range, ghost targets from plants and decorations, door blind spot), then a trade study if both work | Radar box and mount (ICD-010), EAR-003/EAR-008 wording, site config (ICD-015) | Stage 2 | Open |
 
 ## Closed
 

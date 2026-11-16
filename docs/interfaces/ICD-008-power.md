@@ -1,6 +1,6 @@
 # ICD-008 — Power
 
-> **Status:** Skeleton · **Updated:** 2026-11-09 · **Requirements:** INF-011, EYE-020, EAR-009, MTH-007, VOC-005 · **Spec tree:** [N² chart](../requirements/spec-tree.md)
+> **Status:** Skeleton · **Updated:** 2026-11-16 · **Requirements:** INF-011, EYE-020, EAR-009, MTH-007, VOC-005 · **Spec tree:** [N² chart](../requirements/spec-tree.md)
 
 How each box gets mains power: one plug per box (SYS-034).
 
@@ -23,7 +23,7 @@ medium: Mains, then each box's own supply
 |---|---|---|
 | Each eye pod (power strip: Pi + projector) | Bedroom, by each window | Bedroom outlet |
 | Porch Pi | Inside the front door (TBD-010) | Indoor outlet |
-| Radar 5 V supply | Porch | Outdoor-rated outlet or cord |
+| Radar 5 V supply | Porch (or garden stand, TBD-037) | Porch outlet (owner, 2026-11-16); outdoor-rated cord if the radar goes in the garden |
 | Lip 12 V supply (~350 W) | Porch, lip box | Outdoor-rated outlet or cord |
 | Amp 24 V supply | Porch box or inside the door (TBD-010) | Outdoor or indoor outlet |
 

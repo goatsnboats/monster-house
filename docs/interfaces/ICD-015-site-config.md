@@ -83,7 +83,7 @@ files:
         eyes:
           left:
             position_m: {x: -1.6, y: -0.5, z: 5.0}
-            window_m: {w: 0.0, h: 0.0}
+            window_m: {w: 0.686, h: 1.219}
             rotate_deg: 90
             mirror: true
             eye_center: [0.5, 0.5]
@@ -91,7 +91,7 @@ files:
             brightness: 1.0
           right:
             position_m: {x: 1.6, y: -0.5, z: 5.0}
-            window_m: {w: 0.0, h: 0.0}
+            window_m: {w: 0.914, h: 1.219}
             rotate_deg: 0
             mirror: true
             eye_center: [0.5, 0.5]
@@ -109,7 +109,7 @@ files:
 | `door_point` | Where the eyes look while a visitor is at the door (SHW-012) | Measured at install; optional until then |
 | `head_height_m` | Assumed head height of a visitor | Architecture §3b gives 1.0 (kids), adjustable |
 | `eyes.<side>.position_m` | Window center in house coordinates | TBD-018 |
-| `eyes.<side>.window_m` | Glass width and height | TBD-006 |
+| `eyes.<side>.window_m` | Usable glass width and height (below the blinds) | Measured 2026-11-15: left 0.686 × 1.219, right 0.914 × 1.219 ([ICD-011](ICD-011-eye-window.md)) |
 | `eyes.<side>.rotate_deg` | 0, or 90 with the projector on its side | TBD-005 |
 | `eyes.<side>.mirror` | Mirror horizontally for rear projection (here *or* in the projector, not both) | Architecture §2 |
 | `eyes.<side>.eye_center`, `eye_size` | Where the eye sits in the window (0–1) and how big | Owner, from the house preview (TBD-004) |

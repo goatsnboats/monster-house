@@ -1,6 +1,6 @@
 # TBD register
 
-> **Status:** Current · **Updated:** 2026-11-09 · Every open question in the project, with what will settle it.
+> **Status:** Current · **Updated:** 2026-11-15 · Every open question in the project, with what will settle it.
 
 TBDs are allowed in any document, but each one gets an ID here so none is lost.
 
@@ -26,10 +26,10 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-003 | How our MQTT message schemas are defined and validated (dataclasses, pydantic, msgspec, JSON Schema) | Trade study (not started). TBD-002 is closed (Python renderer, [ADR 0002](decisions/0002-eye-renderer.md)), so every component is Python; still depends on the ICD format from [ADR 0001](decisions/0001-requirements-and-architecture-format.md) | The `shared/` schemas; Stage 0 Step 1 "done when" | Stage 0 Step 1 | Open |
 | TBD-004 | Lopsided eyes (one big, one small) or matched eyes | Owner decision, using the house preview | Eye art, per-eye config | Stage 0 exit | Open |
 | TBD-005 | Each projector on its side (tall eye) or flat | Owner decision, after TBD-006 and TBD-017 | Per-eye `rotate_deg`, stands | Stage 0 exit | Open |
-| TBD-006 | Glass width × height of both windows, fixed dividers, floor space behind each | Measurement | Screen size, projector distance, TBD-005 | Stage 0 exit | Open |
+| TBD-006 | Glass width × height of both windows, fixed dividers, floor space behind each. **Measured 2026-11-15** ([ICD-011](interfaces/ICD-011-eye-window.md)): glass, sills, right-window divider position, right floor space. **Still open:** the right window's divider width, and the floor space behind the left window | Measurement | Screen size, projector distance, TBD-005 | Stage 0 exit | Open (partly measured) |
 | TBD-007 | Porch roofline and railing length | Measurement | LED quantity, power supply | Stage 4 purchase | Open |
 | TBD-008 | Wi-Fi signal strength on the porch (2.4 GHz) | Measurement | Radar and lip-controller placement | Stage 2 | Open |
-| TBD-009 | Window grids: embrace them, or remove them for the season | Test in the real window | Eye art, screen mounting | Stage 1 | Open |
+| TBD-009 | Window grids: embrace them, or remove them for the season. The right window has a large center divider that looks fixed (2026-11-15) | Test in the real window | Eye art, screen mounting | Stage 1 | Open |
 | TBD-010 | Where the show brain sits inside the front door, and the cable route to the amp | Owner decision | Stage 3 install | Stage 3 | Open |
 | TBD-011 | The monster's name, and who voices it | Owner decision | Voice lines, theme content | Stage 0 Step 7 | Open |
 | TBD-012 | Projector model (AAXA P400 class, or the budget fallback) | Trade study (not started) | Stage 1 purchase, Stage 1 cost | Stage 0 exit | Open |

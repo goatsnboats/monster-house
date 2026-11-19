@@ -27,10 +27,15 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
 ## Step 2 — Eye renderer, first version (November)
 - [x] **Renderer trial (about a day):** Build the same minimal eye (sclera, iris, pupil, lids) two ways, as Python + OpenGL shaders (`moderngl` + `pygame-ce` window) and as Godot. Compare smoothness, ease of iterating on the look, and the path to Pi 5 (GLES 3.0, no desktop environment, low memory). Write up the recommendation, and the owner picks one.
   _Done 2026-11-08: [TS-002](trades/TS-002-eye-renderer.md) ([results](trades/results/TS-002/README.md)). The owner chose Python + moderngl + pygame-ce ([ADR 0002](decisions/0002-eye-renderer.md))._
-- [ ] Full eye matching `docs/reference/eye-sketch.html`: layers, bold outline, catchlight, sparkle, lids with the lower-lid smile.
-- [ ] Expressions from the table in architecture §2, eased smoothly. Blinks on command, plus a fallback timer.
-- [ ] Per-eye config: window size, eye placement, rotation 0/90°, mirroring, brightness.
+- [x] Full eye matching `docs/reference/eye-sketch.html`: layers, bold outline, catchlight, sparkle, lids with the lower-lid smile.
+  _Done 2026-11-18 (`eyes/`, `python -m eyes --side left`)._
+- [x] Expressions from the table in architecture §2, eased smoothly. Blinks on command, plus a fallback timer.
+  _Commands come from the keyboard until the MQTT listener exists. The fallback starts after 5 s of silence until TBD-023 sets it._
+- [x] Per-eye config: window size, eye placement, rotation 0/90°, mirroring, brightness.
+  _From `config/site.yaml` (ICD-015) and the theme's colors (ICD-005)._
 - [ ] Listens to `monster/eyes/*` and `monster/theme`; publishes its online/offline status.
+  _Waits for [TS-003](trades/TS-003-message-schemas.md) (how messages are defined in code)._
+- [ ] 60 fps measured on the desktop's GPU. _Not yet: the `dev` account has no GPU access while its desktop session is off (2026-11-18)._
 
 **Done when:** two eye windows open on the desktop, each shaped like its real window. They blink, change expression on command, and glide to look-at points sent over MQTT, at a steady 60 fps.
 

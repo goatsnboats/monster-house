@@ -1,0 +1,27 @@
+# Site config: where things are on this house (ICD-015). Read by the brain and the eyes.
+# House coordinates, meters: origin on the ground below the radar; x to the right as
+# seen from the street, y from the house toward the street, z up.
+# Positions are guesses until measured at install (TBD-018). Window sizes are the usable
+# glass measured 2026-11-15 (ICD-011). Rotation waits for TBD-005.
+
+radar:
+  mount: {x: 0.0, y: 0.0, z: 1.2}          # TBD-018
+  approach_range_m: 5.0
+head_height_m: 1.0
+eyes:
+  left:                                     # as seen from the street: the smaller window
+    position_m: {x: -1.6, y: -0.5, z: 5.0}  # TBD-018
+    window_m: {w: 0.686, h: 1.219}          # 27 x 48 in
+    rotate_deg: 90                          # TBD-005
+    mirror: true
+    eye_center: [0.5, 0.5]
+    eye_size: 0.9
+    brightness: 1.0
+  right:
+    position_m: {x: 1.6, y: -0.5, z: 5.0}   # TBD-018
+    window_m: {w: 0.914, h: 1.219}          # 36 x 48 in
+    rotate_deg: 0                           # TBD-005
+    mirror: true
+    eye_center: [0.5, 0.5]
+    eye_size: 0.9
+    brightness: 1.0

@@ -1,0 +1,27 @@
+# Halloween theme settings (ICD-005). Read by the brain and the eye renderer.
+# Values are architecture §3a's examples until tuned; show hours wait for TBD-024.
+
+theme: halloween
+show_hours: ["17:30", "21:30"]              # TBD-024
+volume_cap: 70
+timing:
+  goodbye_after_s: 5
+  sleep_after_s: 20
+  comment_every_s: [10, 20]
+  min_gap_s: 10
+  snore_every_s: 30
+  blink_every_s: [2.5, 6.0]
+  blink_ms: 200
+  focus_hold_s: [3, 6]
+clips:
+  wake: [yawn_01]
+  greet: [greet_01, greet_02, greet_03, greet_04, greet_05]
+  comment: [comment_01, comment_02, comment_03, giggle_01]
+  bye: [bye_01, bye_02]
+  costume: [costume_01, costume_02]
+  burp: [burp_01]
+  sing: []
+  snore: [snore]
+  door: []
+  arrival: []
+eyes: {iris_color: "#7a55e0", sclera_color: "#f6f2e6"}

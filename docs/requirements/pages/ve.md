@@ -157,7 +157,7 @@
 | Stage, method | 1, demonstration |
 | Where | the house, repeated as each stage is installed |
 | How | The season's setup and teardown from the checklists, timed. |
-| Pass | Everything goes up and comes down by the checklist; only the lip clips stay; the packed boxes fit the storage limit (TBD-037). |
+| Pass | Everything goes up and comes down by the checklist; only the lip clips stay; the packed boxes fit the storage limit (TBD-038). |
 | Covers | [SYS-045](sys.md#sys-045), [SYS-051](sys.md#sys-051), [DEP-004](dep.md#dep-004) |
 
 ## VE-201

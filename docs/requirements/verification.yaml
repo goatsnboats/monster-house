@@ -158,7 +158,7 @@
   how: The season's setup and teardown from the checklists, timed.
   pass: >-
     Everything goes up and comes down by the checklist; only the lip clips stay; the
-    packed boxes fit the storage limit (TBD-037).
+    packed boxes fit the storage limit (TBD-038).
   covers: [SYS-045, SYS-051, DEP-004]
 
 # ── Stage 2: the radar ──────────────────────────────────────────────────────────

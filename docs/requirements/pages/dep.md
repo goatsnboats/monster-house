@@ -45,7 +45,7 @@ The install checklists shall cover each season's setup and teardown, and the fir
 
 ## DEP-004
 
-The teardown checklist shall say how each part is packed and list the packed size of each box, so the total can be checked against the storage limit (TBD-037).
+The teardown checklist shall say how each part is packed and list the packed size of each box, so the total can be checked against the storage limit (TBD-038).
 
 | | |
 |---|---|

@@ -631,7 +631,7 @@ When a new visitor comes toward the house while the monster is awake, the eyes s
 
 ## SYS-051
 
-Everything taken down at the end of the season shall pack for storage into no more than TBD-037.
+Everything taken down at the end of the season shall pack for storage into no more than TBD-038.
 
 | | |
 |---|---|

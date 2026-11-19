@@ -46,7 +46,7 @@
 - id: DEP-004
   text: >-
     The teardown checklist shall say how each part is packed and list the packed size of
-    each box, so the total can be checked against the storage limit (TBD-037).
+    each box, so the total can be checked against the storage limit (TBD-038).
   type: functional
   derives_from: [SYS-051]
   allocated_to: install-checklists

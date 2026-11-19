@@ -95,7 +95,7 @@
 - TBD-034: EYE-009, EYE-024, MTH-010, SHW-003, SHW-007, SHW-023, SHW-033, SHW-040, VOC-006
 - TBD-035: MTH-001
 - TBD-036: INF-002
-- TBD-037: DEP-004, SYS-051
+- TBD-038: DEP-004, SYS-051
 
 ## Budgets
 
@@ -228,7 +228,7 @@ Open risks from `docs/requirements/risks.yaml` (19 of 19).
 | SYS-048 | functional | 0 | approved | While a visitor is at the door, the eyes shall look toward the door, and the monster may say lines from the theme's door pool (an empty pool means no door talk). | SHW-012, THM-007 | The brain looks at the door and may talk (SHW-012); the theme holds the door lines (THM-007). | — | demonstration | VE-005, VE-501 |
 | SYS-049 | functional | 0 | approved | When a visitor walks away from the house while the monster is awake, the eyes shall follow that visitor and the monster shall say a goodbye line to them, even if other visitors remain, keeping the minimum gap between lines (SYS-027). | SHW-010, SHW-013 | The brain marks visitors as going (SHW-010) and says goodbye to them (SHW-013). | — | test | VE-004 |
 | SYS-050 | functional | 0 | approved | When a new visitor comes toward the house while the monster is awake, the eyes shall glance at them with a happy or surprised look, and the monster may say a line from the theme's arrival pool, keeping the minimum gap between lines (SYS-027). | SHW-010, SHW-014, THM-007 | The brain marks visitors as coming (SHW-010) and glances or greets (SHW-014); the theme's arrival pool starts empty (THM-007). | — | demonstration | VE-005, VE-501 |
-| SYS-051 | constraint | 1 | proposed | Everything taken down at the end of the season shall pack for storage into no more than TBD-037. | DEP-004 | The teardown checklist packs every part and records the packed size (DEP-004). | — | demonstration | VE-106 |
+| SYS-051 | constraint | 1 | proposed | Everything taken down at the end of the season shall pack for storage into no more than TBD-038. | DEP-004 | The teardown checklist packs every part and records the packed size (DEP-004). | — | demonstration | VE-106 |
 
 ### EYE — Eyes
 
@@ -392,7 +392,7 @@ Open risks from `docs/requirements/risks.yaml` (19 of 19).
 | DEP-001 | functional | 1 | proposed | One setup script shall turn a fresh Raspberry Pi OS Lite (64-bit) install on a Pi 5 (1GB) into an eye pod: dependencies installed, the renderer as a service, full-screen on KMS/DRM, cursor hidden, starting at boot. | SYS-039, SYS-045 | pi-setup | Building a node from a fresh install is deployment's job. | — | — | demonstration | VE-102 |
 | DEP-002 | functional | 1 | proposed | The system services shall start the renderer, brain and broker at boot and restart any of them that stops. | SYS-017, SYS-045 | service-units | Starting and restarting at boot is a system service's job. | — | — | test | VE-101 |
 | DEP-003 | functional | 1 | proposed | The install checklists shall cover each season's setup and teardown, and the first one-eye test (projector, screen, mask, shroud, mirroring, rotation). | SYS-045 | install-checklists | Checklists are deployment documents. | — | — | inspection | VE-103 |
-| DEP-004 | functional | 1 | proposed | The teardown checklist shall say how each part is packed and list the packed size of each box, so the total can be checked against the storage limit (TBD-037). | SYS-051 | install-checklists | Packing is the last step of teardown, which the checklists already cover (DEP-003). | — | — | demonstration | VE-106 |
+| DEP-004 | functional | 1 | proposed | The teardown checklist shall say how each part is packed and list the packed size of each box, so the total can be checked against the storage limit (TBD-038). | SYS-051 | install-checklists | Packing is the last step of teardown, which the checklists already cover (DEP-003). | — | — | demonstration | VE-106 |
 
 ## Allocation
 

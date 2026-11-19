@@ -195,7 +195,7 @@ sequenceDiagram
 | Step | What happens | Requirements |
 |---|---|---|
 | S13.1 | The owner unplugs everything, takes down the screens, shrouds, stands, channels and boxes; nothing stays in the bedroom, only the lip clips stay on the house | SYS-045 |
-| S13.2 | Everything packs into a small, set amount of storage space (TBD-037), following the teardown checklist | SYS-051 |
+| S13.2 | Everything packs into a small, set amount of storage space (TBD-038), following the teardown checklist | SYS-051 |
 
 ### S14 — Winter tuning on the desktop (enabling)
 

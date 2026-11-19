@@ -6,9 +6,12 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
 
 ## Prep (owner)
 - [ ] Measure both windows: glass width × height, any fixed dividers, and the floor space behind each.
-- [ ] Note the desktop's operating system.
+- [x] Note the desktop's operating system.
+  _Ubuntu 26.04.1 LTS (read from `/etc/os-release` on 2026-11-18; the owner remembered 24)._
 - [ ] Install Git, Python 3.11+, Mosquitto and Claude Code on the desktop.
-- [ ] Create a private GitHub repository `monster-house`, and add this starter kit.
+  _Git, Python and Claude Code are installed (the project's virtual environment pins Python 3.11). Mosquitto is not installed yet (checked 2026-11-18): `sudo apt install mosquitto mosquitto-clients`, then tick this and Step 1's Mosquitto box._
+- [x] Create a private GitHub repository `monster-house`, and add this starter kit.
+  _Done; the repository is also on the NAS (`zobar`), which the gloss review site builds from._
 
 ## Step 1 — Project setup (November)
 - [x] Folder layout per `docs/architecture.md` §10. One Python virtual environment and a dependency file.

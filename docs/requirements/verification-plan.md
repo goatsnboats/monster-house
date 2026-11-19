@@ -1,6 +1,6 @@
 # Verification plan
 
-> **Status:** Draft for the owner (SRR package, item 3) · **Updated:** 2026-11-12 · **Events:** [verification.yaml](verification.yaml) · **Table:** [trace.md](trace.md#verification-plan)
+> **Status:** Draft for the owner (SRR package, item 3) · **Updated:** 2026-11-18 · **Events:** [verification.yaml](verification.yaml) · **Table:** [trace.md](trace.md#verification-plan)
 
 How each requirement will be shown to be met. Every requirement names its method
 (`verify`); each **verification event** below is one occasion when requirements are
@@ -20,15 +20,16 @@ by at least one event of its own method (today: 168 of 168).
 
 | Stage | Events |
 |---|---|
-| 0, simulator | VE-001 brain tests · VE-002 eye renderer tests · VE-003 simulator and broker tests · VE-004 scripted pretend visits · VE-005 pretend-visit demonstration with the owner · VE-006 design inspection · VE-007 budget analysis (from Stage 1, before each CDR) |
-| 1, eyes | VE-101 eye pod bench test · VE-102 Pi setup demonstration · VE-103 first window install inspection · VE-104 network inspection · VE-105 bedtime demonstration · VE-106 setup and teardown demonstration (each stage) |
-| 2, ears | VE-201 radar walk test · VE-202 radar install inspection |
-| 3, voice | VE-301 voice bench test · VE-302 sound level at the sidewalk · VE-303 clip loudness analysis · VE-304 content and voice install inspection · VE-305 sequence upload demonstration |
-| 4, mouth | VE-401 lip bench test · VE-402 lip demonstration · VE-403 lip install inspection |
-| 5, show | VE-501 dress rehearsal |
+| 0, simulator | [VE-001](pages/ve.md#ve-001) brain tests · [VE-002](pages/ve.md#ve-002) eye renderer tests · [VE-003](pages/ve.md#ve-003) simulator and broker tests · [VE-004](pages/ve.md#ve-004) scripted pretend visits · [VE-005](pages/ve.md#ve-005) pretend-visit demonstration with the owner · [VE-006](pages/ve.md#ve-006) design inspection · [VE-007](pages/ve.md#ve-007) budget analysis (from Stage 1, before each CDR) |
+| 1, eyes | [VE-101](pages/ve.md#ve-101) eye pod bench test · [VE-102](pages/ve.md#ve-102) Pi setup demonstration · [VE-103](pages/ve.md#ve-103) first window install inspection · [VE-104](pages/ve.md#ve-104) network inspection · [VE-105](pages/ve.md#ve-105) bedtime demonstration · [VE-106](pages/ve.md#ve-106) setup and teardown demonstration (each stage) |
+| 2, ears | [VE-201](pages/ve.md#ve-201) radar walk test · [VE-202](pages/ve.md#ve-202) radar install inspection |
+| 3, voice | [VE-301](pages/ve.md#ve-301) voice bench test · [VE-302](pages/ve.md#ve-302) sound level at the sidewalk · [VE-303](pages/ve.md#ve-303) clip loudness analysis · [VE-304](pages/ve.md#ve-304) content and voice install inspection · [VE-305](pages/ve.md#ve-305) sequence upload demonstration |
+| 4, mouth | [VE-401](pages/ve.md#ve-401) lip bench test · [VE-402](pages/ve.md#ve-402) lip demonstration · [VE-403](pages/ve.md#ve-403) lip install inspection |
+| 5, show | [VE-501](pages/ve.md#ve-501) dress rehearsal |
 
-Each event's setup, method and pass criteria are in `verification.yaml`; which
-requirements each covers is listed there and in `trace.md`.
+Each event's setup, method, pass criteria and the requirements it covers are on the
+[verification events page](pages/ve.md), made from `verification.yaml`; the matrix is
+in `trace.md`.
 
 ## How it is used
 

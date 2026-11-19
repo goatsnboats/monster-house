@@ -11,10 +11,10 @@ The brain shall run the mood state machine Asleep → Waking → Greeting → Wa
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-002](sys.md), [SYS-003](sys.md), [SYS-007](sys.md), [SYS-008](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-002](sys.md#sys-002), [SYS-003](sys.md#sys-003), [SYS-007](sys.md#sys-007), [SYS-008](sys.md#sys-008) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b "Moods" |
 
 ## SHW-002
@@ -24,10 +24,10 @@ While Asleep, the brain shall keep the eyes in the asleep expression with an occ
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-001](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-001](sys.md#sys-001) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | architecture.md §3b, Moods table (Asleep) |
 
 ## SHW-003
@@ -37,10 +37,10 @@ When a visitor coming toward the house enters the approach zone, the brain shall
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-002](sys.md), [SYS-020](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-002](sys.md#sys-002), [SYS-020](sys.md#sys-020) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision (brain), and the brain's hop in path P2. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b, Moods table (Waking) |
 
 ## SHW-004
@@ -50,10 +50,10 @@ When the wake clip finishes and a visitor is still present, the brain shall comm
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-003](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-003](sys.md#sys-003) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b, Moods table (Greeting) |
 
 ## SHW-005
@@ -63,10 +63,10 @@ While Watching, the brain shall trigger a clip from the comment pool at a random
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-006](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-006](sys.md#sys-006) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b, Moods table (Watching) |
 
 ## SHW-006
@@ -76,10 +76,10 @@ The brain shall convert each radar position (mm, radar-relative) to house coordi
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-004](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-004](sys.md#sys-004) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | Gaze math lives in the brain (architecture §3b); the radar only reports raw positions. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b "Turning radar data into a gaze" steps 1-2 |
 
 ## SHW-007
@@ -89,10 +89,10 @@ The brain shall smooth each visitor's position to remove radar jitter, adding no
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-004](sys.md), [SYS-019](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-004](sys.md#sys-004), [SYS-019](sys.md#sys-019) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | Filtering goes with the gaze math in the brain, so the radar stays a simple limb; the brain's hop in path P1. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b step 3 |
 
 ## SHW-008
@@ -102,10 +102,10 @@ The brain shall choose one focus visitor: a new arrival wins; otherwise it holds
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-005](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-005](sys.md#sys-005) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b step 4 |
 
 ## SHW-009
@@ -115,10 +115,10 @@ While a visitor is tracked, the brain shall publish the focus visitor's look poi
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, proposed |
-| Derives from | [SYS-028](sys.md), [SYS-019](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-028](sys.md#sys-028), [SYS-019](sys.md#sys-019) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain is the only publisher of look points; this is its hop rate in path P1. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b step 5 |
 
 ## SHW-010
@@ -128,10 +128,10 @@ The brain shall follow each visitor across radar updates as the same visitor, an
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-008](sys.md), [SYS-049](sys.md), [SYS-050](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-008](sys.md#sys-008), [SYS-049](sys.md#sys-049), [SYS-050](sys.md#sys-050) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | Who is who and which way they're heading is a decision built from raw radar slots (brain). |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Notes | The LD2450 reports three target slots, not people; the brain matches slots to visitors. Coming vs going comes from the radar's direction or from position change (TBD-030). |
 | Source | owner 2026-11-09 (coming vs going) |
 
@@ -142,10 +142,10 @@ When a visitor is lost inside the door zone (site config), the brain shall keep 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-047](sys.md), [SYS-007](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-047](sys.md#sys-047), [SYS-007](sys.md#sys-007) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | owner 2026-11-09 (door hold) |
 
 ## SHW-012
@@ -155,10 +155,10 @@ While a visitor is at the door, the brain shall aim the eyes at the door point f
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-048](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-048](sys.md#sys-048) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | owner 2026-11-09 |
 
 ## SHW-013
@@ -168,10 +168,10 @@ When a visitor is marked as going, the brain shall make that visitor the focus u
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-049](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-049](sys.md#sys-049) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | owner 2026-11-09 |
 
 ## SHW-014
@@ -181,10 +181,10 @@ When a visitor is marked as coming while the monster is awake, the brain shall g
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-050](sys.md), [SYS-005](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-050](sys.md#sys-050), [SYS-005](sys.md#sys-005) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | owner 2026-11-09 |
 
 ## SHW-015
@@ -194,10 +194,10 @@ While awake, the brain shall command blinks for both eyes with one message at a 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-009](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-009](sys.md#sys-009) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain owns blinks so that both eyes blink together (architecture §2). |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §2 "Blinks" |
 
 ## SHW-016
@@ -207,10 +207,10 @@ The brain shall pick clips from each pool in a shuffled order and not repeat a c
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-015](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-015](sys.md#sys-015) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b "Variety and politeness rules" |
 
 ## SHW-017
@@ -220,10 +220,10 @@ The brain shall not start a clip until the theme's minimum gap has passed since 
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, proposed |
-| Derives from | [SYS-027](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-027](sys.md#sys-027) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | When clips play is a decision (brain); FPP only plays what it is told. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b "Variety and politeness rules" |
 
 ## SHW-018
@@ -233,10 +233,10 @@ The brain shall handle failures as in architecture §3b: with the radar offline 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-017](sys.md), [SYS-029](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-017](sys.md#sys-017), [SYS-029](sys.md#sys-029) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | Only the brain sees every component's status, so it decides the fallback. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b "What happens when something fails" |
 
 ## SHW-019
@@ -246,10 +246,10 @@ Outside the theme's show hours (TBD-024), the brain shall stay Asleep and trigge
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-014](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-014](sys.md#sys-014) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | One schedule, in the brain, so moods and voice follow it together. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Notes | Architecture §3a also mentions FPP's scheduler; the brain owning show hours keeps one schedule. |
 | Source | architecture.md §3a "Schedule" |
 
@@ -260,10 +260,10 @@ While muted, the brain shall trigger no voice clips and shall keep commanding th
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-013](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-013](sys.md#sys-013) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain is the only thing that triggers clips, so muting means not triggering. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b (mute) |
 
 ## SHW-021
@@ -273,10 +273,10 @@ When a theme is chosen, the brain shall load its settings and clip pools and pub
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-016](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-016](sys.md#sys-016) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain holds the pools and publishes the theme to the eyes. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §9 "Switching themes" |
 
 ## SHW-022
@@ -286,10 +286,10 @@ The brain shall publish its current mood whenever it changes, retained.
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-012](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-012](sys.md#sys-012) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | Only the brain knows the mood. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b "Outputs" |
 
 ## SHW-023
@@ -299,10 +299,10 @@ The brain shall act on a phone button within its share of SYS-023's 0.5 s (TBD-0
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, proposed |
-| Derives from | [SYS-023](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-023](sys.md#sys-023) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain's hop in path P4: turning a button into a command. |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | timing-budgets.md, path P4 |
 
 ## SHW-024
@@ -312,11 +312,11 @@ The brain shall send look, expression, blink and theme messages and watch the ey
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-042](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-042](sys.md#sys-042) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain is the sending end of ICD-001. |
 | Interface | ICD-001 |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §2, §3c |
 
 ## SHW-025
@@ -326,11 +326,11 @@ The brain shall read visitor positions and the radar's status as specified in IC
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-042](sys.md), [SYS-028](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-042](sys.md#sys-042), [SYS-028](sys.md#sys-028) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain is the receiving end of ICD-002. |
 | Interface | ICD-002 |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3b "Inputs" |
 
 ## SHW-026
@@ -340,11 +340,11 @@ The brain shall start clips by name and learn when they finish as specified in I
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-042](sys.md), [SYS-043](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-042](sys.md#sys-042), [SYS-043](sys.md#sys-043) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain is the commanding end of ICD-003. |
 | Interface | ICD-003 |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3a "Being told what to play" |
 
 ## SHW-027
@@ -354,11 +354,11 @@ The brain shall read its timings, clip pools and show hours from the theme folde
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-041](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-041](sys.md#sys-041) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain reads the timings and pools it uses. |
 | Interface | ICD-005 |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | CLAUDE.md "Themes are data" |
 
 ## SHW-028
@@ -368,11 +368,11 @@ The brain shall read the radar mount, eye positions, head height and zones from 
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-004](sys.md), [SYS-047](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-004](sys.md#sys-004), [SYS-047](sys.md#sys-047) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain needs the radar mount, positions and zones for gaze and door hold. |
 | Interface | ICD-015 |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | spec tree Q6 (site config) |
 
 ## SHW-029
@@ -382,11 +382,11 @@ The brain shall run on the compute platform specified in ICD-013 (the desktop in
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-039](sys.md) |
-| Allocated to | `monster-brain` |
+| Derives from | [SYS-039](sys.md#sys-039) |
+| Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | The brain is software that must fit the platform; the porch Pi's side is INF-002. |
 | Interface | ICD-013 |
-| Verified by | test (VE-001) |
+| Verified by | test ([VE-001](ve.md#ve-001)) |
 | Source | architecture.md §3 "Where it runs, by stage" |
 
 ## SHW-030
@@ -396,10 +396,10 @@ The phone page shall offer great costume, burp, sing, mute and unmute, sleep now
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-012](sys.md), [SYS-016](sys.md) |
-| Allocated to | `phone-page` |
+| Derives from | [SYS-012](sys.md#sys-012), [SYS-016](sys.md#sys-016) |
+| Allocated to | [`phone-page`](../../architecture/components.md#phone-page) |
 | Why there | The phone page is the brain's user interface, kept as its own component so the web page stays apart from the decisions. |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | architecture.md §3b "Inputs"; stage-0-plan.md Step 6 |
 
 ## SHW-031
@@ -409,11 +409,11 @@ The phone page shall work in an ordinary phone browser and answer only on the ho
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-032](sys.md), [SYS-038](sys.md) |
-| Allocated to | `phone-page` |
+| Derives from | [SYS-032](sys.md#sys-032), [SYS-038](sys.md#sys-038) |
+| Allocated to | [`phone-page`](../../architecture/components.md#phone-page) |
 | Why there | The phone page is the HTTP end of ICD-004. |
 | Interface | ICD-004 |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | architecture.md §3b, §8 |
 
 ## SHW-032
@@ -423,10 +423,10 @@ Falcon Player shall play each clip's audio and lip sequence together, from one p
 | | |
 |---|---|
 | Type, stage, status | functional, stage 3, proposed |
-| Derives from | [SYS-011](sys.md), [SYS-022](sys.md) |
-| Allocated to | `falcon-player` |
+| Derives from | [SYS-011](sys.md#sys-011), [SYS-022](sys.md#sys-022) |
+| Allocated to | [`falcon-player`](../../architecture/components.md#falcon-player) |
 | Why there | FPP plays the audio and the lip sequence from one playlist, which is what keeps them in step (architecture §1, principle 3). |
-| Verified by | test (VE-301) |
+| Verified by | test ([VE-301](ve.md#ve-301)) |
 | Source | architecture.md §3a "What it plays", "Playlists" |
 
 ## SHW-033
@@ -436,10 +436,10 @@ Falcon Player shall start a clip within its share of SYS-021 (TBD-034, TBD-022).
 | | |
 |---|---|
 | Type, stage, status | performance, stage 3, proposed |
-| Derives from | [SYS-021](sys.md) |
-| Allocated to | `falcon-player` |
+| Derives from | [SYS-021](sys.md#sys-021) |
+| Allocated to | [`falcon-player`](../../architecture/components.md#falcon-player) |
 | Why there | FPP's start-up is a hop in path P3. |
-| Verified by | test (VE-301) |
+| Verified by | test ([VE-301](ve.md#ve-301)) |
 | Source | timing-budgets.md, path P3 |
 
 ## SHW-034
@@ -449,10 +449,10 @@ Falcon Player's volume shall be capped at the theme's volume_cap, below the oper
 | | |
 |---|---|
 | Type, stage, status | performance, stage 3, proposed |
-| Derives from | [SYS-030](sys.md) |
-| Allocated to | `falcon-player` |
+| Derives from | [SYS-030](sys.md#sys-030) |
+| Allocated to | [`falcon-player`](../../architecture/components.md#falcon-player) |
 | Why there | FPP sets the playback volume; the OS cap and the amp's gain (VOC-002) complete the chain. |
-| Verified by | test (VE-301) |
+| Verified by | test ([VE-301](ve.md#ve-301)) |
 | Source | architecture.md §3a "Audio output", §6 "Neighbor-friendly" |
 
 ## SHW-035
@@ -462,11 +462,11 @@ Falcon Player shall accept clip commands and report clip status as specified in 
 | | |
 |---|---|
 | Type, stage, status | interface, stage 3, proposed |
-| Derives from | [SYS-042](sys.md) |
-| Allocated to | `falcon-player` |
+| Derives from | [SYS-042](sys.md#sys-042) |
+| Allocated to | [`falcon-player`](../../architecture/components.md#falcon-player) |
 | Why there | FPP is the player end of ICD-003. |
 | Interface | ICD-003 |
-| Verified by | test (VE-301) |
+| Verified by | test ([VE-301](ve.md#ve-301)) |
 | Source | architecture.md §3a; topics TBD-015 |
 
 ## SHW-036
@@ -476,11 +476,11 @@ Falcon Player shall send the lip frames to the lip controller as specified in IC
 | | |
 |---|---|
 | Type, stage, status | interface, stage 4, proposed |
-| Derives from | [SYS-011](sys.md) |
-| Allocated to | `falcon-player` |
+| Derives from | [SYS-011](sys.md#sys-011) |
+| Allocated to | [`falcon-player`](../../architecture/components.md#falcon-player) |
 | Why there | FPP generates the lip frames (the DDP sender). |
 | Interface | ICD-006 |
-| Verified by | test (VE-401) |
+| Verified by | test ([VE-401](ve.md#ve-401)) |
 | Source | architecture.md §3a "Light output" |
 
 ## SHW-037
@@ -490,11 +490,11 @@ Falcon Player shall send the voice to the USB audio adapter as specified in ICD-
 | | |
 |---|---|
 | Type, stage, status | interface, stage 3, proposed |
-| Derives from | [SYS-021](sys.md) |
-| Allocated to | `falcon-player` |
+| Derives from | [SYS-021](sys.md#sys-021) |
+| Allocated to | [`falcon-player`](../../architecture/components.md#falcon-player) |
 | Why there | FPP is the source of the voice audio. |
 | Interface | ICD-007 |
-| Verified by | test (VE-301) |
+| Verified by | test ([VE-301](ve.md#ve-301)) |
 | Source | architecture.md §3a "Audio output" |
 
 ## SHW-038
@@ -504,11 +504,11 @@ Falcon Player shall accept sequences and audio uploaded from xLights as specifie
 | | |
 |---|---|
 | Type, stage, status | interface, stage 3, proposed |
-| Derives from | [SYS-011](sys.md) |
-| Allocated to | `falcon-player` |
+| Derives from | [SYS-011](sys.md#sys-011) |
+| Allocated to | [`falcon-player`](../../architecture/components.md#falcon-player) |
 | Why there | FPP stores the sequences it plays. |
 | Interface | ICD-012 |
-| Verified by | demonstration (VE-305) |
+| Verified by | demonstration ([VE-305](ve.md#ve-305)) |
 | Source | architecture.md §1 connections table, §7 |
 
 ## SHW-039
@@ -518,10 +518,10 @@ Mosquitto shall be the single MQTT broker for the monster, keep retained message
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-042](sys.md), [SYS-038](sys.md), [SYS-017](sys.md) |
-| Allocated to | `mosquitto` |
+| Derives from | [SYS-042](sys.md#sys-042), [SYS-038](sys.md#sys-038), [SYS-017](sys.md#sys-017) |
+| Allocated to | [`mosquitto`](../../architecture/components.md#mosquitto) |
 | Why there | Every MQTT message passes through the broker, so retained messages, last-wills and who may connect are set there. |
-| Verified by | test (VE-003) |
+| Verified by | test ([VE-003](ve.md#ve-003)) |
 | Notes | Architecture §3c asks for a username and password; for the prototype the owner accepted none (deploy/mosquitto/). |
 | Source | architecture.md §3c |
 
@@ -532,8 +532,8 @@ The phone page shall hand a button press to the brain within its share of SYS-02
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, proposed |
-| Derives from | [SYS-023](sys.md) |
-| Allocated to | `phone-page` |
+| Derives from | [SYS-023](sys.md#sys-023) |
+| Allocated to | [`phone-page`](../../architecture/components.md#phone-page) |
 | Why there | The phone page's hop in path P4: taking the press and handing it to the brain. |
-| Verified by | test (VE-003) |
+| Verified by | test ([VE-003](ve.md#ve-003)) |
 | Source | timing-budgets.md, path P4 |

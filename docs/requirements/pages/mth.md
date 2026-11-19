@@ -11,10 +11,10 @@ While Falcon Player is streaming, the lips shall show its frames; when it stops,
 | | |
 |---|---|
 | Type, stage, status | functional, stage 4, proposed |
-| Derives from | [SYS-001](sys.md), [SYS-011](sys.md), [SYS-013](sys.md) |
-| Allocated to | `wled` |
+| Derives from | [SYS-001](sys.md#sys-001), [SYS-011](sys.md#sys-011), [SYS-013](sys.md#sys-013) |
+| Allocated to | [`wled`](../../architecture/components.md#wled) |
 | Why there | Only WLED sees both FPP's stream and its own effect, so it does the switching. |
-| Verified by | demonstration (VE-402) |
+| Verified by | demonstration ([VE-402](ve.md#ve-402)) |
 | Rationale | The asleep "breathing" lips then need no extra work. |
 | Source | architecture.md §5 "Software" |
 
@@ -25,10 +25,10 @@ WLED shall limit the lips' brightness to the cap TBD-027.
 | | |
 |---|---|
 | Type, stage, status | performance, stage 4, proposed |
-| Derives from | [SYS-031](sys.md) |
-| Allocated to | `wled` |
+| Derives from | [SYS-031](sys.md#sys-031) |
+| Allocated to | [`wled`](../../architecture/components.md#wled) |
 | Why there | WLED's limiter caps the brightness whatever the source. |
-| Verified by | test (VE-401) |
+| Verified by | test ([VE-401](ve.md#ve-401)) |
 | Source | architecture.md §5 "Risks" (neighbors and brightness) |
 
 ## MTH-003
@@ -38,10 +38,10 @@ WLED shall map segment 1 to the upper lip, segment 2 to the lower lip, and segme
 | | |
 |---|---|
 | Type, stage, status | functional, stage 4, proposed |
-| Derives from | [SYS-011](sys.md) |
-| Allocated to | `wled` |
+| Derives from | [SYS-011](sys.md#sys-011) |
+| Allocated to | [`wled`](../../architecture/components.md#wled) |
 | Why there | Segments are a WLED setting. |
-| Verified by | inspection (VE-403) |
+| Verified by | inspection ([VE-403](ve.md#ve-403)) |
 | Source | architecture.md §5 "Software" |
 
 ## MTH-004
@@ -51,10 +51,10 @@ The lower lip (on the railing) shall be IP65 strip in a closed channel, with sea
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 4, proposed |
-| Derives from | [SYS-046](sys.md) |
-| Allocated to | `lip-lower` |
+| Derives from | [SYS-046](sys.md#sys-046) |
+| Allocated to | [`lip-lower`](../../architecture/components.md#lip-lower) |
 | Why there | The lower lip on the railing gets the most weather (architecture §5). |
-| Verified by | inspection (VE-403) |
+| Verified by | inspection ([VE-403](ve.md#ve-403)) |
 | Source | architecture.md §5 "Risks" (rain and snow) |
 
 ## MTH-005
@@ -64,11 +64,11 @@ The lip controller shall take lip frames from Falcon Player as specified in ICD-
 | | |
 |---|---|
 | Type, stage, status | interface, stage 4, proposed |
-| Derives from | [SYS-011](sys.md) |
-| Allocated to | `lip-controller` |
+| Derives from | [SYS-011](sys.md#sys-011) |
+| Allocated to | [`lip-controller`](../../architecture/components.md#lip-controller) |
 | Why there | The controller is the DDP receiver. |
 | Interface | ICD-006 |
-| Verified by | test (VE-401) |
+| Verified by | test ([VE-401](ve.md#ve-401)) |
 | Source | architecture.md §5 |
 
 ## MTH-006
@@ -78,11 +78,11 @@ The lip controller shall join the home Wi-Fi (2.4 GHz) with the name monster-lip
 | | |
 |---|---|
 | Type, stage, status | interface, stage 4, proposed |
-| Derives from | [SYS-033](sys.md) |
-| Allocated to | `lip-controller` |
+| Derives from | [SYS-033](sys.md#sys-033) |
+| Allocated to | [`lip-controller`](../../architecture/components.md#lip-controller) |
 | Why there | The controller holds the lips' Wi-Fi connection. |
 | Interface | ICD-009 |
-| Verified by | inspection (VE-403) |
+| Verified by | inspection ([VE-403](ve.md#ve-403)) |
 | Source | architecture.md §8 |
 
 ## MTH-007
@@ -92,11 +92,11 @@ The lip supply shall plug into one household outlet as specified in ICD-008.
 | | |
 |---|---|
 | Type, stage, status | interface, stage 4, proposed |
-| Derives from | [SYS-034](sys.md) |
-| Allocated to | `lip-psu` |
+| Derives from | [SYS-034](sys.md#sys-034) |
+| Allocated to | [`lip-psu`](../../architecture/components.md#lip-psu) |
 | Why there | The 12 V supply is the lips' one connection to the mains. |
 | Interface | ICD-008 |
-| Verified by | inspection (VE-403) |
+| Verified by | inspection ([VE-403](ve.md#ve-403)) |
 | Source | architecture.md §5 "Hardware" |
 
 ## MTH-008
@@ -106,11 +106,11 @@ The lip clips shall stay up all year, with the channels snapping on and off each
 | | |
 |---|---|
 | Type, stage, status | interface, stage 4, proposed |
-| Derives from | [SYS-045](sys.md) |
-| Allocated to | `lip-clips` |
+| Derives from | [SYS-045](sys.md#sys-045) |
+| Allocated to | [`lip-clips`](../../architecture/components.md#lip-clips) |
 | Why there | The clips are the only lip part that stays up all year. |
 | Interface | ICD-010 |
-| Verified by | demonstration (VE-402) |
+| Verified by | demonstration ([VE-402](ve.md#ve-402)) |
 | Source | architecture.md §5 "Hardware" |
 
 ## MTH-009
@@ -120,10 +120,10 @@ The lip supply shall provide at least the power the strips, extras and controlle
 | | |
 |---|---|
 | Type, stage, status | performance, stage 4, proposed |
-| Derives from | [SYS-031](sys.md) |
-| Allocated to | `lip-psu` |
+| Derives from | [SYS-031](sys.md#sys-031) |
+| Allocated to | [`lip-psu`](../../architecture/components.md#lip-psu) |
 | Why there | The supply must cover the summed draw of everything it feeds (budget model). |
-| Verified by | analysis (VE-007) |
+| Verified by | analysis ([VE-007](ve.md#ve-007)) |
 | Basis | model: tools/reqs/budget.py |
 | Source | architecture.md §5 "Hardware" (350 W, with WLED's limiter) |
 
@@ -134,8 +134,8 @@ WLED shall show each lip frame within the lip path's share of SYS-022's limits (
 | | |
 |---|---|
 | Type, stage, status | performance, stage 4, proposed |
-| Derives from | [SYS-022](sys.md) |
-| Allocated to | `wled` |
+| Derives from | [SYS-022](sys.md#sys-022) |
+| Allocated to | [`wled`](../../architecture/components.md#wled) |
 | Why there | WLED's display delay is the lip path's hop in path P5. |
-| Verified by | test (VE-401) |
+| Verified by | test ([VE-401](ve.md#ve-401)) |
 | Source | timing-budgets.md, path P5 |

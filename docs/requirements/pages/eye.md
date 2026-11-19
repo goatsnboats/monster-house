@@ -11,10 +11,10 @@ The eye renderer shall draw the eye in layers, back to front: sclera, iris and p
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-010](sys.md), [SYS-036](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-010](sys.md#sys-010), [SYS-036](sys.md#sys-036) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The renderer is the only component that draws the eye. |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | architecture.md §2 "How an eye is drawn"; stage-0-plan.md Step 2 |
 
 ## EYE-002
@@ -24,10 +24,10 @@ The eye renderer shall show each named expression with the open, low, curve, pup
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-010](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-010](sys.md#sys-010) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | Easing happens frame by frame, so it belongs where frames are drawn; the brain only names the expression. |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Source | architecture.md §2 expression table; ICD-001 (expression message) |
 
 ## EYE-003
@@ -37,10 +37,10 @@ The eye renderer shall aim its pupil from its own window's position (site config
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-004](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-004](sys.md#sys-004) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | Each eye knows its own window position, so each works out its own angle from the one point the brain sends (architecture §2). |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Rationale | Each eye doing its own angle math is what gives the parallax. |
 | Source | architecture.md §2 "Looking at a visitor" |
 
@@ -51,10 +51,10 @@ The pupil shall glide to each new target with an ease-out curve, with small rand
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-004](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-004](sys.md#sys-004) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | Gliding and micro-movements are frame-by-frame motion, drawn by the renderer. |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | architecture.md §2 "Looking at a visitor"; CLAUDE.md, Eye renderer constraints |
 
 ## EYE-005
@@ -64,10 +64,10 @@ The eye renderer shall start a blink when commanded, closing and opening the lid
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-009](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-009](sys.md#sys-009) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The brain decides when; the renderer draws the blink. |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Source | architecture.md §2 "Blinks"; ICD-001 (blink message) |
 
 ## EYE-006
@@ -77,10 +77,10 @@ If the eye renderer hears nothing from the brain for TBD-023, it shall wander an
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-017](sys.md), [SYS-029](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-017](sys.md#sys-017), [SYS-029](sys.md#sys-029) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | Only the eye can tell it has stopped hearing from the brain, so the fallback timer has to live in the eye. |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Source | architecture.md §3b "What happens when something fails" (Wi-Fi blip) |
 
 ## EYE-007
@@ -90,10 +90,10 @@ On an idle look command, the eye renderer shall wander and look around on its ow
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-017](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-017](sys.md#sys-017) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | Wandering is frame-by-frame motion; the brain only asks for it. |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | architecture.md §2 messages table ({"mode": "idle"}) |
 
 ## EYE-008
@@ -103,10 +103,10 @@ The eye renderer shall draw a steady 60 frames per second at its output resoluti
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, proposed |
-| Derives from | [SYS-024](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-024](sys.md#sys-024) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The renderer produces every frame; the eye Pi's capacity is covered by INF-003. |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Basis | measurement: docs/trades/results/TS-002/README.md |
 | Source | architecture.md §2 (60 fps target) |
 
@@ -117,10 +117,10 @@ The eye renderer shall start moving the pupil toward a new look point within its
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, proposed |
-| Derives from | [SYS-019](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-019](sys.md#sys-019) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The renderer is the hop that turns a received look point into motion (path P1). |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Source | timing-budgets.md, path P1 |
 
 ## EYE-010
@@ -130,10 +130,10 @@ The eye renderer shall draw on the GPU with shaders written for OpenGL ES 3.0 (G
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, proposed |
-| Derives from | [SYS-040](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-040](sys.md#sys-040) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The shaders are part of the renderer; OpenGL ES 3.0 is what the Pi 5's GPU offers (ADR 0002). |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | CLAUDE.md, Eye renderer constraints; ADR 0002 |
 
 ## EYE-011
@@ -143,10 +143,10 @@ The eye renderer shall draw only round pupils and make smiles with the lower lid
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, proposed |
-| Derives from | [SYS-036](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-036](sys.md#sys-036) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | Pupil and lid shapes are drawn by the renderer. |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | CLAUDE.md "Tone" |
 
 ## EYE-012
@@ -156,10 +156,10 @@ The eye renderer shall never draw text or an error, and shall hide the mouse cur
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, proposed |
-| Derives from | [SYS-037](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-037](sys.md#sys-037) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The renderer owns the screen, so only it can guarantee nothing but an eye appears. |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Source | CLAUDE.md "Fail friendly"; architecture.md §2 (cursor hidden) |
 
 ## EYE-013
@@ -169,10 +169,10 @@ The eye renderer shall apply its eye's window settings from the site config: win
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-035](sys.md), [SYS-024](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-035](sys.md#sys-035), [SYS-024](sys.md#sys-024) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | Window settings change what is drawn and where, which only the renderer controls. |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Rationale | The two windows are different sizes, and a projector may lie on its side. |
 | Source | architecture.md §2 "Per-eye configuration"; CLAUDE.md "Configuration in YAML files" |
 
@@ -183,10 +183,10 @@ When told to load a theme, the eye renderer shall switch to that theme's eye art
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-016](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-016](sys.md#sys-016) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The renderer loads and draws the art; the brain only names the theme. |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | architecture.md §9 "Switching themes" |
 
 ## EYE-015
@@ -196,11 +196,11 @@ The eye renderer shall obey the look, expression, blink and theme messages and p
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-042](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-042](sys.md#sys-042) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The renderer is the eye end of ICD-001. |
 | Interface | ICD-001 |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Source | architecture.md §2 "Messages it listens to" |
 
 ## EYE-016
@@ -210,11 +210,11 @@ The eye renderer shall read its eye art and colors from the theme folder as spec
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-041](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-041](sys.md#sys-041) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The renderer is the only reader of eye art. |
 | Interface | ICD-005 |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Source | architecture.md §9 |
 
 ## EYE-017
@@ -224,11 +224,11 @@ The eye renderer shall read its window position and window settings from the sit
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-004](sys.md), [SYS-035](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-004](sys.md#sys-004), [SYS-035](sys.md#sys-035) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The renderer needs its own window position and settings for EYE-003 and EYE-013. |
 | Interface | ICD-015 |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Source | spec tree Q6 (site config) |
 
 ## EYE-018
@@ -238,11 +238,11 @@ The eye renderer shall run on the compute platform specified in ICD-013: in a de
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-039](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-039](sys.md#sys-039) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The renderer is the software that must fit the eye Pi; the Pi's side is INF-001. |
 | Interface | ICD-013 |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Source | CLAUDE.md, Eye renderer constraints; ADR 0002 |
 
 ## EYE-019
@@ -252,11 +252,11 @@ Each projector shall show the eye Pi's HDMI picture as specified in ICD-014, and
 | | |
 |---|---|
 | Type, stage, status | interface, stage 1, proposed |
-| Derives from | [SYS-024](sys.md), [SYS-045](sys.md) |
-| Allocated to | `eye-projector` |
+| Derives from | [SYS-024](sys.md#sys-024), [SYS-045](sys.md#sys-045) |
+| Allocated to | [`eye-projector`](../../architecture/components.md#eye-projector) |
 | Why there | The projector turns HDMI into light; starting without a remote is a projector feature to check before buying (TBD-012). |
 | Interface | ICD-014 |
-| Verified by | test (VE-101) |
+| Verified by | test ([VE-101](ve.md#ve-101)) |
 | Rationale | Setup is "power on and the eye appears" (architecture §2, step 3). |
 | Source | architecture.md §2 "Setup and teardown"; projector model TBD-012 |
 
@@ -267,11 +267,11 @@ Each eye pod's power strip shall feed its Pi and projector from one household ou
 | | |
 |---|---|
 | Type, stage, status | interface, stage 1, proposed |
-| Derives from | [SYS-034](sys.md) |
-| Allocated to | `eye-power-strip` |
+| Derives from | [SYS-034](sys.md#sys-034) |
+| Allocated to | [`eye-power-strip`](../../architecture/components.md#eye-power-strip) |
 | Why there | The power strip is the eye pod's one connection to the mains. |
 | Interface | ICD-008 |
-| Verified by | inspection (VE-103) |
+| Verified by | inspection ([VE-103](ve.md#ve-103)) |
 | Source | architecture.md §2 hardware (one power strip) |
 
 ## EYE-021
@@ -281,11 +281,11 @@ Each screen shall hang in its window from a tension rod or removable hooks, with
 | | |
 |---|---|
 | Type, stage, status | interface, stage 1, proposed |
-| Derives from | [SYS-035](sys.md), [SYS-045](sys.md) |
-| Allocated to | `eye-screen` |
+| Derives from | [SYS-035](sys.md#sys-035), [SYS-045](sys.md#sys-045) |
+| Allocated to | [`eye-screen`](../../architecture/components.md#eye-screen) |
 | Why there | The screen is the part that touches the window; the mask rides on it. |
 | Interface | ICD-011 |
-| Verified by | inspection (VE-103) |
+| Verified by | inspection ([VE-103](ve.md#ve-103)) |
 | Source | architecture.md §2 "Setup and teardown"; window sizes TBD-006 |
 
 ## EYE-022
@@ -295,10 +295,10 @@ Each shroud shall enclose the projector's light path from projector to window fr
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 1, proposed |
-| Derives from | [SYS-044](sys.md) |
-| Allocated to | `eye-shroud` |
+| Derives from | [SYS-044](sys.md#sys-044) |
+| Allocated to | [`eye-shroud`](../../architecture/components.md#eye-shroud) |
 | Why there | The shroud is the only part between the projector's beam and the room. |
-| Verified by | inspection (VE-103) |
+| Verified by | inspection ([VE-103](ve.md#ve-103)) |
 | Source | architecture.md §2 hardware (light shroud) |
 
 ## EYE-023
@@ -308,10 +308,10 @@ Each stand shall hold its projector at the height and angle that puts the image 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 1, proposed |
-| Derives from | [SYS-035](sys.md) |
-| Allocated to | `eye-stand` |
+| Derives from | [SYS-035](sys.md#sys-035) |
+| Allocated to | [`eye-stand`](../../architecture/components.md#eye-stand) |
 | Why there | The stand sets the projector's height and angle. |
-| Verified by | inspection (VE-103) |
+| Verified by | inspection ([VE-103](ve.md#ve-103)) |
 | Source | architecture.md §2 hardware (stand or small cart) |
 
 ## EYE-024
@@ -321,8 +321,8 @@ The eye renderer shall start easing toward a newly commanded expression within i
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, proposed |
-| Derives from | [SYS-020](sys.md), [SYS-023](sys.md) |
-| Allocated to | `eye-renderer` |
+| Derives from | [SYS-020](sys.md#sys-020), [SYS-023](sys.md#sys-023) |
+| Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | The renderer is the hop that turns a received expression into motion (paths P2 and P4). |
-| Verified by | test (VE-002) |
+| Verified by | test ([VE-002](ve.md#ve-002)) |
 | Source | timing-budgets.md, paths P2 and P4 |

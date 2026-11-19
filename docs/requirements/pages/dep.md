@@ -11,10 +11,10 @@ One setup script shall turn a fresh Raspberry Pi OS Lite (64-bit) install on a P
 | | |
 |---|---|
 | Type, stage, status | functional, stage 1, proposed |
-| Derives from | [SYS-039](sys.md), [SYS-045](sys.md) |
-| Allocated to | `pi-setup` |
+| Derives from | [SYS-039](sys.md#sys-039), [SYS-045](sys.md#sys-045) |
+| Allocated to | [`pi-setup`](../../architecture/components.md#pi-setup) |
 | Why there | Building a node from a fresh install is deployment's job. |
-| Verified by | demonstration (VE-102) |
+| Verified by | demonstration ([VE-102](ve.md#ve-102)) |
 | Source | stage-0-plan.md Step 8 |
 
 ## DEP-002
@@ -24,10 +24,10 @@ The system services shall start the renderer, brain and broker at boot and resta
 | | |
 |---|---|
 | Type, stage, status | functional, stage 1, proposed |
-| Derives from | [SYS-017](sys.md), [SYS-045](sys.md) |
-| Allocated to | `service-units` |
+| Derives from | [SYS-017](sys.md#sys-017), [SYS-045](sys.md#sys-045) |
+| Allocated to | [`service-units`](../../architecture/components.md#service-units) |
 | Why there | Starting and restarting at boot is a system service's job. |
-| Verified by | test (VE-101) |
+| Verified by | test ([VE-101](ve.md#ve-101)) |
 | Source | architecture.md §2 "On the Pi"; §3 |
 
 ## DEP-003
@@ -37,10 +37,10 @@ The install checklists shall cover each season's setup and teardown, and the fir
 | | |
 |---|---|
 | Type, stage, status | functional, stage 1, proposed |
-| Derives from | [SYS-045](sys.md) |
-| Allocated to | `install-checklists` |
+| Derives from | [SYS-045](sys.md#sys-045) |
+| Allocated to | [`install-checklists`](../../architecture/components.md#install-checklists) |
 | Why there | Checklists are deployment documents. |
-| Verified by | inspection (VE-103) |
+| Verified by | inspection ([VE-103](ve.md#ve-103)) |
 | Source | stage-0-plan.md Step 8; architecture.md §2 "Setup and teardown" |
 
 ## DEP-004
@@ -50,8 +50,8 @@ The teardown checklist shall say how each part is packed and list the packed siz
 | | |
 |---|---|
 | Type, stage, status | functional, stage 1, proposed |
-| Derives from | [SYS-051](sys.md) |
-| Allocated to | `install-checklists` |
+| Derives from | [SYS-051](sys.md#sys-051) |
+| Allocated to | [`install-checklists`](../../architecture/components.md#install-checklists) |
 | Why there | Packing is the last step of teardown, which the checklists already cover (DEP-003). |
-| Verified by | demonstration (VE-106) |
+| Verified by | demonstration ([VE-106](ve.md#ve-106)) |
 | Source | owner 2026-11-17 (gloss comment on ConOps S13) |

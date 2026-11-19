@@ -14,3 +14,5 @@
 | [THM — Themes](thm.md) | 7 |
 | [SIM — Simulators](sim.md) | 6 |
 | [DEP — Deployment](dep.md) | 4 |
+
+Verification events: [VE](ve.md) (24).

@@ -42,7 +42,7 @@ def impact(model: Model, rid: str) -> list[str]:
 
 
 def write_pages(root: Path, model: Model) -> None:
-    """Rewrite docs/requirements/pages/ to match the requirements, removing stale pages."""
+    """Rewrite the generated pages (requirements, events, components) and the docs menu."""
     from tools.reqs.pages import PAGES_DIR, render_all
     folder = root / PAGES_DIR
     folder.mkdir(parents=True, exist_ok=True)
@@ -52,6 +52,10 @@ def write_pages(root: Path, model: Model) -> None:
             old.unlink()
     for name, text in pages.items():
         (folder / name).write_text(text)
+    from tools.reqs.pages import COMPONENTS_PAGE, components_page
+    from tools.reqs.sidebar import SIDEBAR, render as sidebar
+    (root / COMPONENTS_PAGE).write_text(components_page(model))
+    (root / SIDEBAR).write_text(sidebar(root / "docs"))
 
 
 def main(argv: list[str] | None = None) -> int:

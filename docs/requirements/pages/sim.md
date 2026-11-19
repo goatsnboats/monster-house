@@ -11,10 +11,10 @@ The fake radar shall show a top-down view of the walk, steps and sidewalk, and l
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-043](sys.md) |
-| Allocated to | `fake-radar` |
+| Derives from | [SYS-043](sys.md#sys-043) |
+| Allocated to | [`fake-radar`](../../architecture/components.md#fake-radar) |
 | Why there | The fake radar stands in for the radar until Stage 2. |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | stage-0-plan.md Step 3 |
 
 ## SIM-002
@@ -24,11 +24,11 @@ The fake radar shall publish exactly the topics, units (mm, radar-relative) and 
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-043](sys.md), [SYS-028](sys.md) |
-| Allocated to | `fake-radar` |
+| Derives from | [SYS-043](sys.md#sys-043), [SYS-028](sys.md#sys-028) |
+| Allocated to | [`fake-radar`](../../architecture/components.md#fake-radar) |
 | Why there | The fake radar must send what the radar sends (simulator parity). |
 | Interface | ICD-002 |
-| Verified by | test (VE-003) |
+| Verified by | test ([VE-003](ve.md#ve-003)) |
 | Source | CLAUDE.md "Simulator parity"; stage-0-plan.md Step 3 |
 
 ## SIM-003
@@ -38,10 +38,10 @@ The fake radar shall have an adjustable blind spot by the door where it stops re
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-043](sys.md), [SYS-047](sys.md) |
-| Allocated to | `fake-radar` |
+| Derives from | [SYS-043](sys.md#sys-043), [SYS-047](sys.md#sys-047) |
+| Allocated to | [`fake-radar`](../../architecture/components.md#fake-radar) |
 | Why there | The blind spot is part of behaving like the real radar. |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | owner 2026-11-09 (visitors lost at the door) |
 
 ## SIM-004
@@ -51,11 +51,11 @@ The fake FPP shall accept clip commands and report clip status exactly as specif
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-043](sys.md) |
-| Allocated to | `fake-fpp` |
+| Derives from | [SYS-043](sys.md#sys-043) |
+| Allocated to | [`fake-fpp`](../../architecture/components.md#fake-fpp) |
 | Why there | The fake FPP stands in for Falcon Player until Stage 3. |
 | Interface | ICD-003 |
-| Verified by | test (VE-003) |
+| Verified by | test ([VE-003](ve.md#ve-003)) |
 | Source | stage-0-plan.md Step 4 |
 
 ## SIM-005
@@ -65,10 +65,10 @@ The house preview shall show the live eyes on docs/reference/house-front.jpg at 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-043](sys.md) |
-| Allocated to | `house-preview` |
+| Derives from | [SYS-043](sys.md#sys-043) |
+| Allocated to | [`house-preview`](../../architecture/components.md#house-preview) |
 | Why there | The preview is the tool for judging the look on the house. |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Rationale | The owner decides lopsided vs matched eyes, size and colors from it (TBD-004). |
 | Source | stage-0-plan.md Step 5 |
 
@@ -79,9 +79,9 @@ The house preview shall listen to the same eye messages as an eye pod, as specif
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-043](sys.md) |
-| Allocated to | `house-preview` |
+| Derives from | [SYS-043](sys.md#sys-043) |
+| Allocated to | [`house-preview`](../../architecture/components.md#house-preview) |
 | Why there | Listening to ICD-001 keeps the preview the same as the real eyes. |
 | Interface | ICD-001 |
-| Verified by | test (VE-003) |
+| Verified by | test ([VE-003](ve.md#ve-003)) |
 | Source | spec tree (enabling-system interfaces) |

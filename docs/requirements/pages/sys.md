@@ -11,9 +11,9 @@ When no visitor is in range, the monster shall show its asleep behavior: eyes cl
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [MTH-001](mth.md), [SHW-002](shw.md) |
+| Children | [MTH-001](mth.md#mth-001), [SHW-002](shw.md#shw-002) |
 | How it splits | By face part: the brain chooses the asleep look and the snores (SHW-002); the lips breathe on WLED's own fallback, with no command needed (MTH-001). |
-| Verified by | demonstration (VE-005, VE-501) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005), [VE-501](ve.md#ve-501)) |
 | Rationale | A sleeping monster is still part of the show and tells visitors it can wake up. |
 | Source | architecture.md §3b, Moods table (Asleep) |
 
@@ -24,9 +24,9 @@ When a visitor enters the approach zone heading toward the house, the monster sh
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-001](shw.md), [SHW-003](shw.md) |
+| Children | [SHW-001](shw.md#shw-001), [SHW-003](shw.md#shw-003) |
 | How it splits | Behavior decided in one place: the brain's mood machine (SHW-001) and its wake logic (SHW-003). The eyes and voice only carry out its commands, under their general requirements (EYE-002, SHW-032). |
-| Verified by | demonstration (VE-005, VE-501) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005), [VE-501](ve.md#ve-501)) |
 | Source | architecture.md §3b, Moods table (Waking) |
 
 ## SYS-003
@@ -36,9 +36,9 @@ When the wake clip ends with a visitor still in range, the monster shall greet t
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-001](shw.md), [SHW-004](shw.md) |
+| Children | [SHW-001](shw.md#shw-001), [SHW-004](shw.md#shw-004) |
 | How it splits | Decided by the brain: the Greeting mood (SHW-001) and its expression and clip choice (SHW-004). |
-| Verified by | demonstration (VE-005, VE-501) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005), [VE-501](ve.md#ve-501)) |
 | Source | architecture.md §3b, Moods table (Greeting) |
 
 ## SYS-004
@@ -48,9 +48,9 @@ While visitors are in range, both eyes shall look toward the focus visitor's hea
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [EYE-003](eye.md), [EYE-004](eye.md), [EYE-017](eye.md), [INF-007](inf.md), [SHW-006](shw.md), [SHW-007](shw.md), [SHW-028](shw.md) |
+| Children | [EYE-003](eye.md#eye-003), [EYE-004](eye.md#eye-004), [EYE-017](eye.md#eye-017), [INF-007](inf.md#inf-007), [SHW-006](shw.md#shw-006), [SHW-007](shw.md#shw-007), [SHW-028](shw.md#shw-028) |
 | How it splits | Split along the gaze path: the site config holds the positions (INF-007); the brain converts and smooths radar data (SHW-006, SHW-007, SHW-028); each eye aims from its own window (EYE-003, EYE-017) and glides (EYE-004). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Rationale | The small parallax between two windows is what makes the eyes look like they are focusing. |
 | Source | architecture.md §2, "Looking at a visitor" |
 
@@ -61,9 +61,9 @@ When more than one visitor is in range, the monster shall move its gaze between 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-008](shw.md), [SHW-014](shw.md) |
+| Children | [SHW-008](shw.md#shw-008), [SHW-014](shw.md#shw-014) |
 | How it splits | Decided by the brain: focus choice (SHW-008) and the glance at newcomers (SHW-014). |
-| Verified by | demonstration (VE-005, VE-501) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005), [VE-501](ve.md#ve-501)) |
 | Rationale | Kids come up the walk; grown-ups mostly wait on the sidewalk. The radar reports only position and speed, not height, so coming toward the house stands in for "kid" (owner, ConOps Q3, 2026-11-15). |
 | Source | architecture.md §3b, Moods table (Watching) and "Turning radar data into a gaze" step 4 |
 
@@ -74,9 +74,9 @@ While watching visitors, the monster shall say a comment or giggle at intervals 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-005](shw.md) |
+| Children | [SHW-005](shw.md#shw-005) |
 | How it splits | One owner: the brain decides when to comment (SHW-005). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Source | architecture.md §3b, Moods table (Watching); settings example comment_every_s |
 
 ## SYS-007
@@ -86,9 +86,9 @@ When no visitor has been in range for the time set in the theme (default 5 s), n
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-001](shw.md), [SHW-011](shw.md) |
+| Children | [SHW-001](shw.md#shw-001), [SHW-011](shw.md#shw-011) |
 | How it splits | Decided by the brain: the Goodbye mood (SHW-001), with door-held visitors not counted as gone (SHW-011). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Source | architecture.md §3b, Moods table (Goodbye); settings example goodbye_after_s; owner 2026-11-09 (door hold) |
 
 ## SYS-008
@@ -98,9 +98,9 @@ After a goodbye, the monster shall go back to sleep when no visitor has arrived 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-001](shw.md), [SHW-010](shw.md) |
+| Children | [SHW-001](shw.md#shw-001), [SHW-010](shw.md#shw-010) |
 | How it splits | Decided by the brain: the mood transitions (SHW-001), using its coming/going marks (SHW-010). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Source | architecture.md §3b, Moods state diagram (Goodbye → Asleep, Goodbye → Greeting); owner 2026-11-09 (coming vs going) |
 
 ## SYS-009
@@ -110,9 +110,9 @@ While awake, the monster shall blink both eyes together, at intervals set in the
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [EYE-005](eye.md), [SHW-015](shw.md) |
+| Children | [EYE-005](eye.md#eye-005), [SHW-015](shw.md#shw-015) |
 | How it splits | Decide vs draw: the brain sends one blink to both eyes (SHW-015); each eye draws it (EYE-005). |
-| Verified by | demonstration (VE-005, VE-501) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005), [VE-501](ve.md#ve-501)) |
 | Rationale | Simultaneous blinks are why the brain, not each eye, owns blinking. |
 | Source | architecture.md §2, "Blinks"; CLAUDE.md, Eye renderer constraints |
 
@@ -123,9 +123,9 @@ The eyes shall be able to show at least the expressions neutral, happy, sparkle,
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [EYE-001](eye.md), [EYE-002](eye.md) |
+| Children | [EYE-001](eye.md#eye-001), [EYE-002](eye.md#eye-002) |
 | How it splits | Drawing only, so all in the eye renderer: the layered look (EYE-001) and the eased expression values (EYE-002). |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | architecture.md §2, expression table; docs/reference/eye-sketch.html |
 
 ## SYS-011
@@ -135,9 +135,9 @@ Whenever the monster speaks, its lips shall move in time with its voice.
 | | |
 |---|---|
 | Type, stage, status | functional, stage 4, approved |
-| Children | [MTH-001](mth.md), [MTH-003](mth.md), [MTH-005](mth.md), [SHW-032](shw.md), [SHW-036](shw.md), [SHW-038](shw.md), [THM-006](thm.md) |
+| Children | [MTH-001](mth.md#mth-001), [MTH-003](mth.md#mth-003), [MTH-005](mth.md#mth-005), [SHW-032](shw.md#shw-032), [SHW-036](shw.md#shw-036), [SHW-038](shw.md#shw-038), [THM-006](thm.md#thm-006) |
 | How it splits | Along the voice-and-lips chain: theme content shares names (THM-006); FPP plays audio and sequence together (SHW-032) and streams frames (SHW-036, SHW-038); the lip controller and WLED show them (MTH-005, MTH-001, MTH-003). |
-| Verified by | demonstration (VE-402, VE-501) |
+| Verified by | demonstration ([VE-402](ve.md#ve-402), [VE-501](ve.md#ve-501)) |
 | Source | architecture.md §1 design principle 3, §3a, §5 |
 
 ## SYS-012
@@ -147,9 +147,9 @@ The owner shall be able to trigger great costume (sparkle eyes and a compliment)
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-022](shw.md), [SHW-030](shw.md) |
+| Children | [SHW-022](shw.md#shw-022), [SHW-030](shw.md#shw-030) |
 | How it splits | The brain publishes the mood (SHW-022); the phone page shows it and offers the buttons (SHW-030). |
-| Verified by | demonstration (VE-005, VE-501) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005), [VE-501](ve.md#ve-501)) |
 | Rationale | These cover what the radar can't know, like costumes or when candy was handed out. |
 | Source | architecture.md §3b, Inputs (phone buttons); stage-0-plan.md Step 6 |
 
@@ -160,9 +160,9 @@ While muted, the monster shall make no voice sound and shall keep its eyes and l
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [MTH-001](mth.md), [SHW-020](shw.md) |
+| Children | [MTH-001](mth.md#mth-001), [SHW-020](shw.md#shw-020) |
 | How it splits | The brain stops triggering clips (SHW-020); the lips keep breathing on WLED's fallback (MTH-001). |
-| Verified by | demonstration (VE-005, VE-501) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005), [VE-501](ve.md#ve-501)) |
 | Source | architecture.md §3b, "Variety and politeness rules" (mute) |
 
 ## SYS-014
@@ -172,9 +172,9 @@ Outside show hours (TBD-024), the monster shall stay asleep and make no voice so
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [INF-008](inf.md), [SHW-019](shw.md) |
+| Children | [INF-008](inf.md#inf-008), [SHW-019](shw.md#shw-019) |
 | How it splits | The brain keeps the schedule (SHW-019), using the network's clock sync (INF-008). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Rationale | Neighbor-friendly; also keeps the bedroom quiet late at night. The phone overrides the schedule for testing and demos (owner, ConOps Q5, 2026-11-15). |
 | Source | architecture.md §3a (Schedule), §6 "Neighbor-friendly" |
 
@@ -185,9 +185,9 @@ Within each clip pool (greetings, comments, goodbyes, and so on), the monster sh
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-016](shw.md), [THM-003](thm.md) |
+| Children | [SHW-016](shw.md#shw-016), [THM-003](thm.md#thm-003) |
 | How it splits | The brain shuffles without repeats (SHW-016); the theme supplies enough clips per pool (THM-003). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Source | architecture.md §3b, "Variety and politeness rules" (clip pools) |
 
 ## SYS-016
@@ -197,9 +197,9 @@ When the owner chooses a theme, the monster shall change to that theme's eye art
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [EYE-014](eye.md), [SHW-021](shw.md), [SHW-030](shw.md), [THM-001](thm.md) |
+| Children | [EYE-014](eye.md#eye-014), [SHW-021](shw.md#shw-021), [SHW-030](shw.md#shw-030), [THM-001](thm.md#thm-001) |
 | How it splits | Chosen on the phone page (SHW-030); the brain loads it and tells the eyes (SHW-021); the eyes swap their art (EYE-014); the format makes themes swappable (THM-001). |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | architecture.md §9 (switching themes); CLAUDE.md "Themes are data" |
 
 ## SYS-017
@@ -209,9 +209,9 @@ If any one component stops working (an eye pod, the radar, Falcon Player, the br
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [DEP-002](dep.md), [EYE-006](eye.md), [EYE-007](eye.md), [SHW-018](shw.md), [SHW-039](shw.md) |
+| Children | [DEP-002](dep.md#dep-002), [EYE-006](eye.md#eye-006), [EYE-007](eye.md#eye-007), [SHW-018](shw.md#shw-018), [SHW-039](shw.md#shw-039) |
 | How it splits | Each part keeps going on its own: the brain handles lost parts (SHW-018), the eyes fall back without the brain (EYE-006, EYE-007), the broker reports drop-outs by last-will (SHW-039), and services restart crashed programs (DEP-002). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Rationale | Fail friendly. A broken piece should look sleepy, never broken. |
 | Source | CLAUDE.md "Fail friendly"; architecture.md §3b "What happens when something fails" |
 
@@ -222,9 +222,9 @@ The eye pods shall switch off at bedtime (time and method TBD-025) and stay off 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 1, approved |
-| Children | [INF-012](inf.md) |
+| Children | [INF-012](inf.md#inf-012) |
 | How it splits | One owner for now: power distribution (INF-012), assuming switched power; revisit when TBD-025 is decided. |
-| Verified by | demonstration (VE-105) |
+| Verified by | demonstration ([VE-105](ve.md#ve-105)) |
 | Rationale | Projector fan noise and light must not disturb whoever sleeps in the bedroom. |
 | Source | architecture.md §2 "Risks and open questions" (fan noise); spec tree Q12 |
 
@@ -235,9 +235,9 @@ The eyes shall begin turning toward a visitor's new position within TBD-020 of t
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, approved |
-| Children | [EAR-004](ear.md), [EYE-009](eye.md), [SHW-007](shw.md), [SHW-009](shw.md) |
+| Children | [EAR-004](ear.md#ear-004), [EYE-009](eye.md#eye-009), [SHW-007](shw.md#shw-007), [SHW-009](shw.md#shw-009) |
 | How it splits | Timing path P1, one share per hop: radar publish rate (EAR-004), brain smoothing and publish rate (SHW-007, SHW-009), eye start on the next frame (EYE-009). Shares: TBD-034. |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Rationale | End-to-end information path radar → brain → eyes; split into per-hop budgets at STOP 2. |
 | Source | owner (timing process agreed 2026-11-09); value TBD-020 |
 
@@ -248,9 +248,9 @@ The monster shall begin to wake within TBD-021 of a visitor entering the approac
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, approved |
-| Children | [EAR-004](ear.md), [EYE-024](eye.md), [SHW-003](shw.md) |
+| Children | [EAR-004](ear.md#ear-004), [EYE-024](eye.md#eye-024), [SHW-003](shw.md#shw-003) |
 | How it splits | Timing path P2: radar publish rate (EAR-004), brain wake decision (SHW-003), eye expression start (EYE-024). Shares: TBD-034. |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Source | owner (timing process agreed 2026-11-09); value TBD-021 |
 
 ## SYS-021
@@ -260,9 +260,9 @@ The voice shall begin within TBD-022 of the brain deciding to say a line.
 | | |
 |---|---|
 | Type, stage, status | performance, stage 3, approved |
-| Children | [INF-005](inf.md), [SHW-033](shw.md), [SHW-037](shw.md), [VOC-001](voc.md) |
+| Children | [INF-005](inf.md#inf-005), [SHW-033](shw.md#shw-033), [SHW-037](shw.md#shw-037), [VOC-001](voc.md#voc-001) |
 | How it splits | Timing path P3: FPP start-up (SHW-033), audio out of FPP and the porch Pi's USB port (SHW-037, INF-005), USB adapter (VOC-001). Shares: TBD-034. |
-| Verified by | test (VE-301) |
+| Verified by | test ([VE-301](ve.md#ve-301)) |
 | Source | owner (timing process agreed 2026-11-09); value TBD-022 |
 
 ## SYS-022
@@ -272,9 +272,9 @@ Each lip shape shall appear no more than 45 ms after, and no more than 125 ms be
 | | |
 |---|---|
 | Type, stage, status | performance, stage 4, approved |
-| Children | [MTH-010](mth.md), [SHW-032](shw.md), [VOC-006](voc.md) |
+| Children | [MTH-010](mth.md#mth-010), [SHW-032](shw.md#shw-032), [VOC-006](voc.md#voc-006) |
 | How it splits | Timing path P5: both start from one FPP playlist (SHW-032); the skew is the lip path (MTH-010) against the audio path (VOC-006). Shares: TBD-034. |
-| Verified by | test (VE-401) |
+| Verified by | test ([VE-401](ve.md#ve-401)) |
 | Rationale | ITU-R BT.1359's detectability thresholds for sound vs picture (sound ahead by 45 ms, or behind by 125 ms). Proposed starting values; the owner may relax them after a test. |
 | Source | ITU-R BT.1359-1; owner (timing process agreed 2026-11-09) |
 
@@ -285,9 +285,9 @@ A button pressed on the phone page shall visibly change the monster within 0.5 s
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, approved |
-| Children | [EYE-024](eye.md), [SHW-023](shw.md), [SHW-040](shw.md) |
+| Children | [EYE-024](eye.md#eye-024), [SHW-023](shw.md#shw-023), [SHW-040](shw.md#shw-040) |
 | How it splits | Timing path P4: phone page (SHW-040), brain (SHW-023), eye expression start (EYE-024). Shares of 0.5 s: TBD-034. |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Source | stage-0-plan.md Step 6, "Done when" |
 
 ## SYS-024
@@ -297,9 +297,9 @@ Each eye shall be drawn at a steady 60 frames per second, at its projector's nat
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, approved |
-| Children | [EYE-008](eye.md), [EYE-013](eye.md), [EYE-019](eye.md), [INF-003](inf.md), [INF-006](inf.md) |
+| Children | [EYE-008](eye.md#eye-008), [EYE-013](eye.md#eye-013), [EYE-019](eye.md#eye-019), [INF-003](inf.md#inf-003), [INF-006](inf.md#inf-006) |
 | How it splits | The renderer draws 60 fps (EYE-008) to the window settings (EYE-013); the eye Pi has the memory (INF-003) and the HDMI output (INF-006); the projector shows it (EYE-019). |
-| Verified by | test (VE-004, VE-101) |
+| Verified by | test ([VE-004](ve.md#ve-004), [VE-101](ve.md#ve-101)) |
 | Basis | measurement: docs/trades/results/TS-002/README.md |
 | Source | architecture.md §2 (target 60 fps); CLAUDE.md, Eye renderer constraints |
 
@@ -310,9 +310,9 @@ The monster shall track up to 3 visitors at the same time.
 | | |
 |---|---|
 | Type, stage, status | performance, stage 2, approved |
-| Children | [EAR-001](ear.md), [EAR-002](ear.md) |
+| Children | [EAR-001](ear.md#ear-001), [EAR-002](ear.md#ear-002) |
 | How it splits | A property of the sensor: 3 targets (EAR-001), with the firmware ESPHome needs (EAR-002). |
-| Verified by | test (VE-201) |
+| Verified by | test ([VE-201](ve.md#ve-201)) |
 | Basis | estimate: docs/interfaces/ICD-002-radar-targets.md |
 | Source | architecture.md §4 (LD2450 reports up to 3 people) |
 
@@ -323,9 +323,9 @@ The monster shall detect visitors anywhere in the approach zone, which covers th
 | | |
 |---|---|
 | Type, stage, status | performance, stage 2, approved |
-| Children | [EAR-003](ear.md), [EAR-005](ear.md) |
+| Children | [EAR-003](ear.md#ear-003), [EAR-005](ear.md#ear-005) |
 | How it splits | Coverage comes from the sensor's range and mounting (EAR-003); filter zones remove the street (EAR-005). |
-| Verified by | test (VE-201) |
+| Verified by | test ([VE-201](ve.md#ve-201)) |
 | Source | architecture.md §4, Placement and Calibration |
 
 ## SYS-027
@@ -335,9 +335,9 @@ The monster shall leave at least 10 s (theme setting) between the end of one spo
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, approved |
-| Children | [SHW-017](shw.md) |
+| Children | [SHW-017](shw.md#shw-017) |
 | How it splits | One owner: the brain times the clips (SHW-017). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Rationale | So the monster doesn't chatter. |
 | Source | architecture.md §3b, "Variety and politeness rules" (minimum gap) |
 
@@ -348,9 +348,9 @@ While a visitor is tracked, the visitor's position shall be updated at about 10 
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, approved |
-| Children | [EAR-004](ear.md), [EAR-006](ear.md), [SHW-009](shw.md), [SHW-025](shw.md), [SIM-002](sim.md) |
+| Children | [EAR-004](ear.md#ear-004), [EAR-006](ear.md#ear-006), [SHW-009](shw.md#shw-009), [SHW-025](shw.md#shw-025), [SIM-002](sim.md#sim-002) |
 | How it splits | The ~10/s rate must hold on every hop: radar firmware (EAR-004, EAR-006), fake radar (SIM-002), brain in and out (SHW-025, SHW-009). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Source | architecture.md §1 (connections table), §3b step 5, §4 Software |
 
 ## SYS-029
@@ -360,9 +360,9 @@ Each fallback in SYS-017 shall begin within TBD-023 of the failure.
 | | |
 |---|---|
 | Type, stage, status | performance, stage 0, approved |
-| Children | [EYE-006](eye.md), [SHW-018](shw.md) |
+| Children | [EYE-006](eye.md#eye-006), [SHW-018](shw.md#shw-018) |
 | How it splits | Each loss is noticed where it can be seen: the eye notices a silent brain (EYE-006); the brain notices everything else (SHW-018). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Source | owner (timing process agreed 2026-11-09); value TBD-023 |
 
 ## SYS-030
@@ -372,9 +372,9 @@ The monster's sound shall never exceed TBD-026 at the sidewalk.
 | | |
 |---|---|
 | Type, stage, status | performance, stage 3, approved |
-| Children | [SHW-034](shw.md), [THM-004](thm.md), [VOC-002](voc.md) |
+| Children | [SHW-034](shw.md#shw-034), [THM-004](thm.md#thm-004), [VOC-002](voc.md#voc-002) |
 | How it splits | The volume chain: FPP's cap (SHW-034), the amp's gain (VOC-002), and clips normalized so none jumps out (THM-004). |
-| Verified by | test (VE-302) |
+| Verified by | test ([VE-302](ve.md#ve-302)) |
 | Rationale | Neighbor-friendly volume. |
 | Source | architecture.md §3a (volume cap), §6 "Neighbor-friendly" |
 
@@ -385,9 +385,9 @@ The lip lights shall never exceed the brightness cap TBD-027.
 | | |
 |---|---|
 | Type, stage, status | performance, stage 4, approved |
-| Children | [MTH-002](mth.md), [MTH-009](mth.md) |
+| Children | [MTH-002](mth.md#mth-002), [MTH-009](mth.md#mth-009) |
 | How it splits | WLED caps the brightness (MTH-002); the lip supply must cover the draw at that cap (MTH-009). |
-| Verified by | test (VE-401) |
+| Verified by | test ([VE-401](ve.md#ve-401)) |
 | Rationale | Lips don't need to be blinding to read; neighbors. |
 | Source | architecture.md §5, Risks ("Neighbors and brightness") |
 
@@ -398,10 +398,10 @@ The owner's controls (SYS-012) shall work in an ordinary phone web browser on th
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, approved |
-| Children | [SHW-031](shw.md) |
+| Children | [SHW-031](shw.md#shw-031) |
 | How it splits | One owner: the phone page is the only part the phone talks to (SHW-031). |
 | Interface | ICD-004 |
-| Verified by | demonstration (VE-005) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005)) |
 | Source | architecture.md §3b, Inputs (phone buttons) |
 
 ## SYS-033
@@ -411,10 +411,10 @@ Every networked part of the monster shall use the home Wi-Fi, with a reserved ad
 | | |
 |---|---|
 | Type, stage, status | interface, stage 1, approved |
-| Children | [EAR-007](ear.md), [INF-008](inf.md), [INF-009](inf.md), [MTH-006](mth.md) |
+| Children | [EAR-007](ear.md#ear-007), [INF-008](inf.md#inf-008), [INF-009](inf.md#inf-009), [MTH-006](mth.md#mth-006) |
 | How it splits | The network gives names, addresses and coverage (INF-008, INF-009); each Wi-Fi node joins it (EAR-007, MTH-006). |
 | Interface | ICD-009 |
-| Verified by | inspection (VE-104) |
+| Verified by | inspection ([VE-104](ve.md#ve-104)) |
 | Source | architecture.md §8 Network |
 
 ## SYS-034
@@ -424,10 +424,10 @@ Each box on the house shall need only one plug in an ordinary household outlet, 
 | | |
 |---|---|
 | Type, stage, status | interface, stage 1, approved |
-| Children | [EAR-009](ear.md), [EYE-020](eye.md), [INF-011](inf.md), [MTH-007](mth.md), [VOC-005](voc.md) |
+| Children | [EAR-009](ear.md#ear-009), [EYE-020](eye.md#eye-020), [INF-011](inf.md#inf-011), [MTH-007](mth.md#mth-007), [VOC-005](voc.md#voc-005) |
 | How it splits | INF provides the outlets (INF-011); each box has one supply or strip that plugs in (EYE-020, EAR-009, MTH-007, VOC-005). |
 | Interface | ICD-008 |
-| Verified by | inspection (VE-103) |
+| Verified by | inspection ([VE-103](ve.md#ve-103)) |
 | Source | architecture.md §1 design principle 2 ("Wi-Fi everywhere except audio"); §2 hardware (one power strip) |
 
 ## SYS-035
@@ -437,10 +437,10 @@ Each eye pod shall fit its bedroom window and floor space using only removable f
 | | |
 |---|---|
 | Type, stage, status | interface, stage 1, approved |
-| Children | [EYE-013](eye.md), [EYE-017](eye.md), [EYE-021](eye.md), [EYE-023](eye.md), [INF-007](inf.md) |
+| Children | [EYE-013](eye.md#eye-013), [EYE-017](eye.md#eye-017), [EYE-021](eye.md#eye-021), [EYE-023](eye.md#eye-023), [INF-007](inf.md#inf-007) |
 | How it splits | The screen and stand fit the window and floor (EYE-021, EYE-023); the renderer draws to that window's settings (EYE-013, EYE-017), held in the site config (INF-007). |
 | Interface | ICD-011 |
-| Verified by | inspection (VE-103) |
+| Verified by | inspection ([VE-103](ve.md#ve-103)) |
 | Source | architecture.md §2 "Setup and teardown"; window sizes TBD-006 |
 
 ## SYS-036
@@ -450,9 +450,9 @@ Everything the monster shows and says shall be friendly and goofy: big round pup
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, approved |
-| Children | [EYE-001](eye.md), [EYE-011](eye.md), [THM-005](thm.md) |
+| Children | [EYE-001](eye.md#eye-001), [EYE-011](eye.md#eye-011), [THM-005](thm.md#thm-005) |
 | How it splits | What is drawn (EYE-001, EYE-011) and what is played or shown from the theme (THM-005). |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | CLAUDE.md "Tone"; architecture.md §2 design rules |
 
 ## SYS-037
@@ -462,9 +462,9 @@ The eye screens shall never show an error message, text, a desktop or a cursor.
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, approved |
-| Children | [EYE-012](eye.md) |
+| Children | [EYE-012](eye.md#eye-012) |
 | How it splits | One owner: the renderer owns the eye screen (EYE-012). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Source | CLAUDE.md "Fail friendly"; architecture.md §2 (cursor hidden) |
 
 ## SYS-038
@@ -474,9 +474,9 @@ No part of the monster shall be reachable from the internet; the phone page shal
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, approved |
-| Children | [INF-010](inf.md), [SHW-031](shw.md), [SHW-039](shw.md) |
+| Children | [INF-010](inf.md#inf-010), [SHW-031](shw.md#shw-031), [SHW-039](shw.md#shw-039) |
 | How it splits | The network forwards nothing in (INF-010); the phone page and the broker answer only on the home network (SHW-031, SHW-039). |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | architecture.md §8 Network |
 
 ## SYS-039
@@ -486,9 +486,9 @@ All monster software that runs on the house shall run on Raspberry Pi OS (64-bit
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, approved |
-| Children | [DEP-001](dep.md), [EYE-018](eye.md), [INF-001](inf.md), [INF-002](inf.md), [INF-003](inf.md), [INF-004](inf.md), [SHW-029](shw.md) |
+| Children | [DEP-001](dep.md#dep-001), [EYE-018](eye.md#eye-018), [INF-001](inf.md#inf-001), [INF-002](inf.md#inf-002), [INF-003](inf.md#inf-003), [INF-004](inf.md#inf-004), [SHW-029](shw.md#shw-029) |
 | How it splits | Platform vs software: the Pis provide Pi OS and Python (INF-001, INF-002) and enough memory (INF-003, INF-004); the programs fit it (EYE-018, SHW-029); the setup script builds it (DEP-001). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Source | CLAUDE.md "Current stage" and Coding conventions; architecture.md §3 |
 
 ## SYS-040
@@ -498,9 +498,9 @@ The eyes shall be drawn on the GPU, with shaders that are compatible with OpenGL
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, approved |
-| Children | [EYE-010](eye.md), [INF-001](inf.md) |
+| Children | [EYE-010](eye.md#eye-010), [INF-001](inf.md#inf-001) |
 | How it splits | The renderer's shaders (EYE-010) and the eye Pi's GPU (INF-001). |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | CLAUDE.md, Eye renderer constraints; ADR 0002 |
 
 ## SYS-041
@@ -510,9 +510,9 @@ Timings, clip pools, colors and eye art shall come from the theme folder, not fr
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, approved |
-| Children | [EYE-016](eye.md), [SHW-027](shw.md), [THM-001](thm.md), [THM-002](thm.md) |
+| Children | [EYE-016](eye.md#eye-016), [SHW-027](shw.md#shw-027), [THM-001](thm.md#thm-001), [THM-002](thm.md#thm-002) |
 | How it splits | The format holds every setting (THM-001, THM-002); the brain and eyes read them instead of code (SHW-027, EYE-016). |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | CLAUDE.md "Themes are data"; architecture.md §9 |
 
 ## SYS-042
@@ -522,9 +522,9 @@ All messages between the monster's parts, except lip light data and audio, shall
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, approved |
-| Children | [EAR-006](ear.md), [EYE-015](eye.md), [SHW-024](shw.md), [SHW-025](shw.md), [SHW-026](shw.md), [SHW-035](shw.md), [SHW-039](shw.md) |
+| Children | [EAR-006](ear.md#ear-006), [EYE-015](eye.md#eye-015), [SHW-024](shw.md#shw-024), [SHW-025](shw.md#shw-025), [SHW-026](shw.md#shw-026), [SHW-035](shw.md#shw-035), [SHW-039](shw.md#shw-039) |
 | How it splits | Every MQTT user follows its ICD: radar (EAR-006), eyes (EYE-015), brain (SHW-024 to SHW-026), FPP (SHW-035); one broker (SHW-039). |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | CLAUDE.md "Everything talks over MQTT" |
 
 ## SYS-043
@@ -534,9 +534,9 @@ Every hardware part that sends or receives messages shall have a desktop simulat
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, approved |
-| Children | [SHW-026](shw.md), [SIM-001](sim.md), [SIM-002](sim.md), [SIM-003](sim.md), [SIM-004](sim.md), [SIM-005](sim.md), [SIM-006](sim.md) |
+| Children | [SHW-026](shw.md#shw-026), [SIM-001](sim.md#sim-001), [SIM-002](sim.md#sim-002), [SIM-003](sim.md#sim-003), [SIM-004](sim.md#sim-004), [SIM-005](sim.md#sim-005), [SIM-006](sim.md#sim-006) |
 | How it splits | One simulator per hardware part that talks: fake radar (SIM-001 to SIM-003), fake FPP (SIM-004), house preview for the eye pods (SIM-005, SIM-006); the brain works the same with either (SHW-026). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Rationale | Lets the monster be built and tuned in winter, and swapped to real hardware later without code changes. |
 | Source | CLAUDE.md "Simulator parity"; architecture.md §10 |
 
@@ -547,9 +547,9 @@ With an eye pod running, no projector light shall reach the bedroom outside the 
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 1, approved |
-| Children | [EYE-022](eye.md) |
+| Children | [EYE-022](eye.md#eye-022) |
 | How it splits | One owner: the shroud is the only part between the beam and the room (EYE-022). |
-| Verified by | inspection (VE-103) |
+| Verified by | inspection ([VE-103](ve.md#ve-103)) |
 | Rationale | The bedroom has to stay livable. |
 | Source | architecture.md §2 hardware (light shroud); overview ("the bedroom has to stay livable") |
 
@@ -560,9 +560,9 @@ The monster shall be installed and removed each season with nothing left in the 
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 1, approved |
-| Children | [DEP-001](dep.md), [DEP-002](dep.md), [DEP-003](dep.md), [EAR-008](ear.md), [EYE-019](eye.md), [EYE-021](eye.md), [INF-013](inf.md), [MTH-008](mth.md), [VOC-004](voc.md) |
+| Children | [DEP-001](dep.md#dep-001), [DEP-002](dep.md#dep-002), [DEP-003](dep.md#dep-003), [EAR-008](ear.md#ear-008), [EYE-019](eye.md#eye-019), [EYE-021](eye.md#eye-021), [INF-013](inf.md#inf-013), [MTH-008](mth.md#mth-008), [VOC-004](voc.md#voc-004) |
 | How it splits | Every part that touches the house mounts removably (EYE-021, EAR-008, MTH-008, VOC-004, INF-013), powers up on its own (EYE-019, DEP-002), and is set up and taken down by script and checklist (DEP-001, DEP-003). |
-| Verified by | demonstration (VE-106, VE-501) |
+| Verified by | demonstration ([VE-106](ve.md#ve-106), [VE-501](ve.md#ve-501)) |
 | Source | architecture.md overview, §2 "Setup and teardown", §5 (year-round clips) |
 
 ## SYS-046
@@ -572,9 +572,9 @@ Every outdoor part shall be rated for outdoor use or sheltered from rain and sno
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 2, approved |
-| Children | [EAR-008](ear.md), [INF-011](inf.md), [INF-013](inf.md), [MTH-004](mth.md), [VOC-003](voc.md) |
+| Children | [EAR-008](ear.md#ear-008), [INF-011](inf.md#inf-011), [INF-013](inf.md#inf-013), [MTH-004](mth.md#mth-004), [VOC-003](voc.md#voc-003) |
 | How it splits | Each outdoor part is rated or sheltered: radar box, lower lip, speakers, cords, mounting (EAR-008, MTH-004, VOC-003, INF-011, INF-013). |
-| Verified by | inspection (VE-202) |
+| Verified by | inspection ([VE-202](ve.md#ve-202)) |
 | Source | architecture.md §4 Placement, §5 hardware and Risks, §6 hardware |
 
 ## SYS-047
@@ -584,9 +584,9 @@ When the radar loses a visitor inside the door zone, the monster shall keep trea
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [INF-007](inf.md), [SHW-011](shw.md), [SHW-028](shw.md), [SIM-003](sim.md) |
+| Children | [INF-007](inf.md#inf-007), [SHW-011](shw.md#shw-011), [SHW-028](shw.md#shw-028), [SIM-003](sim.md#sim-003) |
 | How it splits | The site config holds the door zone (INF-007); the brain holds visitors there (SHW-011, SHW-028); the fake radar has the same blind spot (SIM-003). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Rationale | Without it the monster says goodbye while the kids are getting candy, and greets them as they leave. |
 | Notes | The door zone is set at radar calibration, from where the real radar loses people (TBD-029). |
 | Source | owner 2026-11-09 |
@@ -598,9 +598,9 @@ While a visitor is at the door, the eyes shall look toward the door, and the mon
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-012](shw.md), [THM-007](thm.md) |
+| Children | [SHW-012](shw.md#shw-012), [THM-007](thm.md#thm-007) |
 | How it splits | The brain looks at the door and may talk (SHW-012); the theme holds the door lines (THM-007). |
-| Verified by | demonstration (VE-005, VE-501) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005), [VE-501](ve.md#ve-501)) |
 | Source | owner 2026-11-09 |
 
 ## SYS-049
@@ -610,9 +610,9 @@ When a visitor walks away from the house while the monster is awake, the eyes sh
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-010](shw.md), [SHW-013](shw.md) |
+| Children | [SHW-010](shw.md#shw-010), [SHW-013](shw.md#shw-013) |
 | How it splits | The brain marks visitors as going (SHW-010) and says goodbye to them (SHW-013). |
-| Verified by | test (VE-004) |
+| Verified by | test ([VE-004](ve.md#ve-004)) |
 | Notes | Coming vs going is told from the radar's speed sign if it carries direction (TBD-030), otherwise from the change in position. |
 | Source | owner 2026-11-09 |
 
@@ -623,9 +623,9 @@ When a new visitor comes toward the house while the monster is awake, the eyes s
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, approved |
-| Children | [SHW-010](shw.md), [SHW-014](shw.md), [THM-007](thm.md) |
+| Children | [SHW-010](shw.md#shw-010), [SHW-014](shw.md#shw-014), [THM-007](thm.md#thm-007) |
 | How it splits | The brain marks visitors as coming (SHW-010) and glances or greets (SHW-014); the theme's arrival pool starts empty (THM-007). |
-| Verified by | demonstration (VE-005, VE-501) |
+| Verified by | demonstration ([VE-005](ve.md#ve-005), [VE-501](ve.md#ve-501)) |
 | Rationale | Eyes only by default (the Halloween theme's arrival pool starts empty); a theme can add short hello lines. |
 | Source | owner 2026-11-09 |
 
@@ -636,8 +636,8 @@ Everything taken down at the end of the season shall pack for storage into no mo
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 1, proposed |
-| Children | [DEP-004](dep.md) |
+| Children | [DEP-004](dep.md#dep-004) |
 | How it splits | The teardown checklist packs every part and records the packed size (DEP-004). |
-| Verified by | demonstration (VE-106) |
+| Verified by | demonstration ([VE-106](ve.md#ve-106)) |
 | Rationale | The household has little storage space. |
 | Source | owner 2026-11-17 (gloss comment on ConOps S13) |

@@ -505,10 +505,50 @@ def test_requirement_pages_have_a_heading_per_requirement(tmp_path):
     root = write_baseline(tmp_path)
     pages = render_all(load(root))
     assert set(pages) == {"README.md", "sys.md", "eye.md", "shw.md"}
-    assert "## EYE-001" in pages["eye.md"] and "| Derives from | [SYS-001](sys.md) |" in pages["eye.md"]
-    assert "| Children | [EYE-001](eye.md), [EYE-002](eye.md), [SHW-001](shw.md) |" in pages["sys.md"]
+    assert "## EYE-001" in pages["eye.md"] and "| Derives from | [SYS-001](sys.md#sys-001) |" in pages["eye.md"]
+    assert "| Children | [EYE-001](eye.md#eye-001), [EYE-002](eye.md#eye-002), [SHW-001](shw.md#shw-001) |" in pages["sys.md"]
     assert main(["--root", str(root)]) == 0
     assert (root / "docs/requirements/pages/eye.md").exists()
+
+
+def test_components_page_and_sidebar_are_up_to_date():
+    from tools.reqs.pages import COMPONENTS_PAGE, components_page
+    from tools.reqs.sidebar import SIDEBAR, render as sidebar
+    model = load(REPO_ROOT)
+    assert (REPO_ROOT / COMPONENTS_PAGE).read_text() == components_page(model), "components.md is stale: run tools.reqs.check"
+    assert (REPO_ROOT / SIDEBAR).read_text() == sidebar(REPO_ROOT / "docs"), "_sidebar.md is stale: run tools.reqs.check"
+
+
+def test_pages_link_to_events_and_components(tmp_path):
+    from tools.reqs.pages import components_page, render_all
+    root = write_baseline(tmp_path)
+    _events(root, [{"id": "VE-001", "name": "Everything", "stage": 0, "method": "test",
+                    "where": "desk", "how": "run it", "pass": "it works",
+                    "covers": ["SYS-001", "EYE-001"]}])
+    model = load(root)
+    pages = render_all(model)
+    assert "ve.md" in pages and "## VE-001" in pages["ve.md"]
+    assert "[VE-001](ve.md#ve-001)" in pages["sys.md"]
+    assert "[EYE-001](eye.md#eye-001)" in pages["ve.md"]
+    assert "](../../architecture/components.md#" in pages["eye.md"]
+    comps = components_page(model)
+    for cid in model.comps:
+        assert f"## {cid}" in comps
+
+
+def test_sidebar_puts_the_system_spec_first_and_lists_every_page(tmp_path):
+    from tools.reqs.sidebar import render as sidebar
+    docs = tmp_path / "docs"
+    for rel, title in [("conops.md", "ConOps"), ("requirements/pages/sys.md", "SYS"),
+                       ("requirements/pages/eye.md", "EYE"), ("zeta/new-page.md", "New <page>"),
+                       ("aaa.md", "Top page")]:
+        (docs / rel).parent.mkdir(parents=True, exist_ok=True)
+        (docs / rel).write_text(f"# {title}\n")
+    menu = sidebar(docs)
+    assert menu.index("/conops.md") < menu.index("/requirements/pages/sys.md") < menu.index("/aaa.md")
+    assert menu.count("/requirements/pages/sys.md") == 1
+    assert "- By subsystem" in menu and "[EYE](/requirements/pages/eye.md)" in menu
+    assert "- Zeta" in menu and "New &lt;page&gt;" in menu
 
 
 def test_trace_md_is_up_to_date():

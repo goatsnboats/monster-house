@@ -11,10 +11,10 @@ The radar shall report the position (x, y in mm) and speed of up to 3 people at 
 | | |
 |---|---|
 | Type, stage, status | performance, stage 2, proposed |
-| Derives from | [SYS-025](sys.md) |
-| Allocated to | `radar-sensor` |
+| Derives from | [SYS-025](sys.md#sys-025) |
+| Allocated to | [`radar-sensor`](../../architecture/components.md#radar-sensor) |
 | Why there | Tracking capacity is a property of the sensor (LD2450: up to 3 targets). |
-| Verified by | test (VE-201) |
+| Verified by | test ([VE-201](ve.md#ve-201)) |
 | Basis | estimate: docs/interfaces/ICD-002-radar-targets.md |
 | Source | architecture.md §4; ESPHome LD2450 page (checked 2026-11-09) |
 
@@ -25,10 +25,10 @@ The radar's firmware shall be V2.02.23090617 or later.
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 2, proposed |
-| Derives from | [SYS-025](sys.md) |
-| Allocated to | `radar-sensor` |
+| Derives from | [SYS-025](sys.md#sys-025) |
+| Allocated to | [`radar-sensor`](../../architecture/components.md#radar-sensor) |
 | Why there | The firmware version is a property of the sensor module. |
-| Verified by | inspection (VE-202) |
+| Verified by | inspection ([VE-202](ve.md#ve-202)) |
 | Rationale | ESPHome's LD2450 component requires it. |
 | Source | architecture.md §4 "Software"; ESPHome LD2450 page |
 
@@ -39,10 +39,10 @@ Mounted under the porch roof, about 1-1.5 m high and aimed down the walkway, the
 | | |
 |---|---|
 | Type, stage, status | performance, stage 2, proposed |
-| Derives from | [SYS-026](sys.md) |
-| Allocated to | `radar-sensor` |
+| Derives from | [SYS-026](sys.md#sys-026) |
+| Allocated to | [`radar-sensor`](../../architecture/components.md#radar-sensor) |
 | Why there | Coverage comes from the sensor's range (about 6 m) and where it is mounted. |
-| Verified by | test (VE-201) |
+| Verified by | test ([VE-201](ve.md#ve-201)) |
 | Source | architecture.md §4 "Placement" |
 
 ## EAR-004
@@ -52,10 +52,10 @@ The radar firmware shall publish each target's x, y and speed and the target cou
 | | |
 |---|---|
 | Type, stage, status | performance, stage 2, proposed |
-| Derives from | [SYS-028](sys.md), [SYS-019](sys.md), [SYS-020](sys.md) |
-| Allocated to | `radar-firmware` |
+| Derives from | [SYS-028](sys.md#sys-028), [SYS-019](sys.md#sys-019), [SYS-020](sys.md#sys-020) |
+| Allocated to | [`radar-firmware`](../../architecture/components.md#radar-firmware) |
 | Why there | The publish rate is set in our ESPHome config: the radar's hop in paths P1 and P2. |
-| Verified by | test (VE-201) |
+| Verified by | test ([VE-201](ve.md#ve-201)) |
 | Rationale | ESPHome's LD2450 sensors default to throttle_with_priority 1000 ms (ESPHome page, 2026-11-09). |
 | Source | architecture.md §4 "Software" |
 
@@ -66,10 +66,10 @@ The radar firmware shall use filter zones so that passing cars, the street and m
 | | |
 |---|---|
 | Type, stage, status | functional, stage 2, proposed |
-| Derives from | [SYS-026](sys.md) |
-| Allocated to | `radar-firmware` |
+| Derives from | [SYS-026](sys.md#sys-026) |
+| Allocated to | [`radar-firmware`](../../architecture/components.md#radar-firmware) |
 | Why there | Zones are set in the firmware, which configures the sensor. |
-| Verified by | test (VE-201) |
+| Verified by | test ([VE-201](ve.md#ve-201)) |
 | Notes | The approach and door zones are decided by the brain from x and y, using the site config (ICD-015), so all decisions stay in the brain. |
 | Source | architecture.md §4 "Placement", "Calibration" |
 
@@ -80,11 +80,11 @@ The radar firmware shall publish to MQTT (not Home Assistant's API) as specified
 | | |
 |---|---|
 | Type, stage, status | interface, stage 2, proposed |
-| Derives from | [SYS-042](sys.md), [SYS-028](sys.md) |
-| Allocated to | `radar-firmware` |
+| Derives from | [SYS-042](sys.md#sys-042), [SYS-028](sys.md#sys-028) |
+| Allocated to | [`radar-firmware`](../../architecture/components.md#radar-firmware) |
 | Why there | The firmware is the publishing end of ICD-002. |
 | Interface | ICD-002 |
-| Verified by | test (VE-201) |
+| Verified by | test ([VE-201](ve.md#ve-201)) |
 | Source | architecture.md §4 "Software" |
 
 ## EAR-007
@@ -94,11 +94,11 @@ The radar node shall join the home Wi-Fi (2.4 GHz) with the name monster-radar, 
 | | |
 |---|---|
 | Type, stage, status | interface, stage 2, proposed |
-| Derives from | [SYS-033](sys.md) |
-| Allocated to | `radar-esp32` |
+| Derives from | [SYS-033](sys.md#sys-033) |
+| Allocated to | [`radar-esp32`](../../architecture/components.md#radar-esp32) |
 | Why there | The ESP32 holds the radar node's Wi-Fi connection. |
 | Interface | ICD-009 |
-| Verified by | inspection (VE-202) |
+| Verified by | inspection ([VE-202](ve.md#ve-202)) |
 | Source | architecture.md §8 |
 
 ## EAR-008
@@ -108,11 +108,11 @@ The radar's box shall mount under the porch roof, sheltered from rain, as specif
 | | |
 |---|---|
 | Type, stage, status | interface, stage 2, proposed |
-| Derives from | [SYS-046](sys.md), [SYS-045](sys.md) |
-| Allocated to | `radar-box` |
+| Derives from | [SYS-046](sys.md#sys-046), [SYS-045](sys.md#sys-045) |
+| Allocated to | [`radar-box`](../../architecture/components.md#radar-box) |
 | Why there | The box is the part that mounts and shelters the radar. |
 | Interface | ICD-010 |
-| Verified by | inspection (VE-202) |
+| Verified by | inspection ([VE-202](ve.md#ve-202)) |
 | Source | architecture.md §4 "Placement" (the module is meant for indoor use) |
 
 ## EAR-009
@@ -122,9 +122,9 @@ The radar's 5 V supply shall plug into one household outlet as specified in ICD-
 | | |
 |---|---|
 | Type, stage, status | interface, stage 2, proposed |
-| Derives from | [SYS-034](sys.md) |
-| Allocated to | `radar-psu` |
+| Derives from | [SYS-034](sys.md#sys-034) |
+| Allocated to | [`radar-psu`](../../architecture/components.md#radar-psu) |
 | Why there | The 5 V supply is the radar node's one connection to the mains. |
 | Interface | ICD-008 |
-| Verified by | inspection (VE-202) |
+| Verified by | inspection ([VE-202](ve.md#ve-202)) |
 | Source | architecture.md §4 "Hardware" |

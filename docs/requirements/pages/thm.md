@@ -11,11 +11,11 @@ Every theme shall be a folder with settings.yaml, eyes/, audio/ and sequences/ a
 | | |
 |---|---|
 | Type, stage, status | interface, stage 0, proposed |
-| Derives from | [SYS-041](sys.md), [SYS-016](sys.md) |
-| Allocated to | `theme-format` |
+| Derives from | [SYS-041](sys.md#sys-041), [SYS-016](sys.md#sys-016) |
+| Allocated to | [`theme-format`](../../architecture/components.md#theme-format) |
 | Why there | The format is defined once, for every theme. |
 | Interface | ICD-005 |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | architecture.md §9 |
 
 ## THM-002
@@ -25,10 +25,10 @@ A theme's settings.yaml shall hold every timing, clip pool, color and show-hour 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-041](sys.md) |
-| Allocated to | `theme-format` |
+| Derives from | [SYS-041](sys.md#sys-041) |
+| Allocated to | [`theme-format`](../../architecture/components.md#theme-format) |
 | Why there | The format is defined once, for every theme. |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | CLAUDE.md "Themes are data"; architecture.md §3b settings file |
 
 ## THM-003
@@ -38,10 +38,10 @@ The Halloween theme shall have 5-10 clips in each of its greet, comment and bye 
 | | |
 |---|---|
 | Type, stage, status | functional, stage 3, proposed |
-| Derives from | [SYS-015](sys.md) |
-| Allocated to | `theme-halloween` |
+| Derives from | [SYS-015](sys.md#sys-015) |
+| Allocated to | [`theme-halloween`](../../architecture/components.md#theme-halloween) |
 | Why there | Pool sizes are content of one theme. |
-| Verified by | inspection (VE-304) |
+| Verified by | inspection ([VE-304](ve.md#ve-304)) |
 | Source | architecture.md §3b "Variety and politeness rules" |
 
 ## THM-004
@@ -51,10 +51,10 @@ Every audio clip shall be 48 kHz and normalized to the same loudness as the othe
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 3, proposed |
-| Derives from | [SYS-030](sys.md) |
-| Allocated to | `theme-halloween` |
+| Derives from | [SYS-030](sys.md#sys-030) |
+| Allocated to | [`theme-halloween`](../../architecture/components.md#theme-halloween) |
 | Why there | Audio files are theme content. |
-| Verified by | analysis (VE-303) |
+| Verified by | analysis ([VE-303](ve.md#ve-303)) |
 | Rationale | So no clip jumps out above the volume cap. |
 | Source | architecture.md §6 "Audio content" |
 
@@ -65,10 +65,10 @@ Every clip and image in the theme shall be friendly: no horror sounds or imagery
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, proposed |
-| Derives from | [SYS-036](sys.md) |
-| Allocated to | `theme-halloween` |
+| Derives from | [SYS-036](sys.md#sys-036) |
+| Allocated to | [`theme-halloween`](../../architecture/components.md#theme-halloween) |
 | Why there | Clips and images are theme content. |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | CLAUDE.md "Tone" |
 
 ## THM-006
@@ -78,10 +78,10 @@ Each clip's audio file, lip sequence and Falcon Player playlist shall share one 
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 3, proposed |
-| Derives from | [SYS-011](sys.md) |
-| Allocated to | `theme-halloween` |
+| Derives from | [SYS-011](sys.md#sys-011) |
+| Allocated to | [`theme-halloween`](../../architecture/components.md#theme-halloween) |
 | Why there | Names are set when the content is made. |
-| Verified by | inspection (VE-304) |
+| Verified by | inspection ([VE-304](ve.md#ve-304)) |
 | Source | architecture.md §3a "Playlists as the building blocks" |
 
 ## THM-007
@@ -91,8 +91,8 @@ The Halloween theme's arrival pool shall start empty (eyes only when someone new
 | | |
 |---|---|
 | Type, stage, status | functional, stage 0, proposed |
-| Derives from | [SYS-050](sys.md), [SYS-048](sys.md) |
-| Allocated to | `theme-halloween` |
+| Derives from | [SYS-050](sys.md#sys-050), [SYS-048](sys.md#sys-048) |
+| Allocated to | [`theme-halloween`](../../architecture/components.md#theme-halloween) |
 | Why there | What a pool holds is theme content. |
-| Verified by | inspection (VE-006) |
+| Verified by | inspection ([VE-006](ve.md#ve-006)) |
 | Source | owner 2026-11-09 |

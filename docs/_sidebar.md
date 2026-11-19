@@ -83,6 +83,7 @@
 - Trade studies
   - [TS-001 — How we document requirements, architecture and interfaces](/trades/TS-001-requirements-approach.md)
   - [TS-002 — Eye renderer: Python + moderngl, or Godot](/trades/TS-002-eye-renderer.md)
+  - [TS-003 — Message schemas in code: how payloads are defined and checked](/trades/TS-003-message-schemas.md)
   - Results
     - TS-001
       - [TS-001 results report — requirements, architecture and ICD format](/trades/results/TS-001/README.md)

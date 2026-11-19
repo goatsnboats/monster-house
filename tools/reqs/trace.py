@@ -10,7 +10,7 @@ import re
 from collections import Counter
 
 from tools.reqs import budget
-from tools.reqs.checks import Finding, allocations, children_of, icd_end_names, icd_sides
+from tools.reqs.checks import Finding, allocations, children_of, events_for, icd_end_names, icd_sides
 from tools.reqs.load import Model
 
 TYPE_ORDER = ["functional", "performance", "interface", "constraint"]
@@ -28,6 +28,8 @@ def render(model: Model, findings: list[Finding]) -> str:
     lines += _summary(model)
     lines += _coverage(model, findings)
     lines += _budgets(model)
+    lines += _verification(model)
+    lines += _risks(model)
     lines += _matrix(model)
     lines += _allocation_diagrams(model)
     lines += _interface_diagram(model)
@@ -91,6 +93,9 @@ def _coverage(model: Model, findings: list[Finding]) -> list[str]:
     perf = [rid for rid in reqs if reqs[rid].get("type") == "performance"]
     based = [rid for rid in perf if reqs[rid].get("basis")]
     lines.append(f"| Performance requirements with a quantitative basis | {len(based)} of {len(perf)} |")
+    if model.events:
+        verified = [rid for rid in reqs if events_for(model, rid)]
+        lines.append(f"| Requirements with a verification event | {len(verified)} of {len(reqs)} |")
     errors = [f for f in findings if f.level == "error"]
     lines.append(f"| Checker errors | {len(errors)} |")
     lines.append("")
@@ -138,6 +143,45 @@ def _budgets(model: Model) -> list[str]:
     return lines + [""]
 
 
+# ── Verification ────────────────────────────────────────────────────────────────
+
+def _verification(model: Model) -> list[str]:
+    if not model.events:
+        return []
+    lines = ["## Verification plan", "",
+             "Events from `docs/requirements/verification.yaml`, by stage.", "",
+             "| Event | Stage | Method | Name | Where | Requirements |", "|---|---|---|---|---|---|"]
+    for eid, e in sorted(model.events.items(), key=lambda kv: (kv[1].get("stage", 9), kv[0])):
+        covers = e.get("covers") or []
+        lines.append(f"| {eid} | {e.get('stage')} | {e.get('method')} | {_cell(e.get('name', ''))} | "
+                     f"{_cell(e.get('where', ''))} | {len(covers)}: {', '.join(covers)} |")
+    return lines + [""]
+
+
+# ── Risks ───────────────────────────────────────────────────────────────────────
+
+def _risks(model: Model) -> list[str]:
+    if not model.risks:
+        return []
+    levels = ["low", "medium", "high"]
+    live = {rid: r for rid, r in model.risks.items() if r.get("status") == "open"}
+    lines = ["## Risks", "", f"Open risks from `docs/requirements/risks.yaml` ({len(live)} of {len(model.risks)}).", "",
+             "| Likelihood ↓ / impact → | low | medium | high |", "|---|---|---|---|"]
+    for lik in reversed(levels):
+        cells = [", ".join(sorted(rid for rid, r in live.items()
+                                  if r.get("likelihood") == lik and r.get("impact") == imp)) or "—"
+                 for imp in levels]
+        lines.append(f"| **{lik}** | " + " | ".join(cells) + " |")
+    def score(r: dict) -> int:  # tolerant of bad values: the checker reports those
+        return sum(levels.index(r.get(k)) if r.get(k) in levels else 0 for k in ("likelihood", "impact"))
+    lines += ["", "| Risk | Likelihood | Impact | Retire by | Plan | Events | TBDs |", "|---|---|---|---|---|---|---|"]
+    for rid, r in sorted(live.items(), key=lambda kv: (-score(kv[1]), kv[0])):
+        lines.append(f"| {rid}: {_cell(r.get('title', ''))} | {r.get('likelihood')} | {r.get('impact')} | "
+                     f"{r.get('retire_by', '—')} | {_cell(r.get('plan', ''))} | {', '.join(r.get('events') or []) or '—'} | "
+                     f"{', '.join(r.get('tbds') or []) or '—'} |")
+    return lines + [""]
+
+
 # ── Matrix ──────────────────────────────────────────────────────────────────────
 
 def _matrix(model: Model) -> list[str]:
@@ -148,24 +192,25 @@ def _matrix(model: Model) -> list[str]:
             continue
         lines += [f"### {prefix} — {info['name']}", ""]
         if prefix == "SYS":
-            lines += ["| ID | Type | Stage | Status | Requirement | Children | Decomposition | Basis | Verify |",
-                      "|---|---|---|---|---|---|---|---|---|"]
+            lines += ["| ID | Type | Stage | Status | Requirement | Children | Decomposition | Basis | Verify | Events |",
+                      "|---|---|---|---|---|---|---|---|---|---|"]
             for rid in ids:
                 r = model.reqs[rid]
                 kids = ", ".join(children_of(model, rid)) or "—"
                 lines.append(f"| {rid} | {r.get('type')} | {r.get('stage')} | {r.get('status')} | "
                              f"{_cell(r.get('text', ''))} | {kids} | {_cell(r.get('decomposition', '—'))} | "
-                             f"{_basis(r)} | {r.get('verify')} |")
+                             f"{_basis(r)} | {r.get('verify')} | {', '.join(events_for(model, rid)) or '—'} |")
         else:
             lines += ["| ID | Type | Stage | Status | Requirement | Parents | Allocated to | Allocation rationale "
-                      "| ICD | Basis | Verify |",
-                      "|---|---|---|---|---|---|---|---|---|---|---|"]
+                      "| ICD | Basis | Verify | Events |",
+                      "|---|---|---|---|---|---|---|---|---|---|---|---|"]
             for rid in ids:
                 r = model.reqs[rid]
                 lines.append(f"| {rid} | {r.get('type')} | {r.get('stage')} | {r.get('status')} | "
                              f"{_cell(r.get('text', ''))} | {', '.join(r.get('derives_from') or []) or '—'} | "
                              f"{', '.join(allocations(r)) or '—'} | {_cell(r.get('allocation_rationale', '—'))} | "
-                             f"{r.get('icd', '—')} | {_basis(r)} | {r.get('verify')} |")
+                             f"{r.get('icd', '—')} | {_basis(r)} | {r.get('verify')} | "
+                             f"{', '.join(events_for(model, rid)) or '—'} |")
         lines.append("")
     return lines
 

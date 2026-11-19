@@ -6,9 +6,12 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
 
 ## Prep (owner)
 - [ ] Measure both windows: glass width × height, any fixed dividers, and the floor space behind each.
-- [ ] Note the desktop's operating system.
+- [x] Note the desktop's operating system.
+  _Ubuntu 26.04.1 LTS (read from `/etc/os-release` on 2026-11-18; the owner remembered 24)._
 - [ ] Install Git, Python 3.11+, Mosquitto and Claude Code on the desktop.
-- [ ] Create a private GitHub repository `monster-house`, and add this starter kit.
+  _Git, Python and Claude Code are installed (the project's virtual environment pins Python 3.11). Mosquitto is not installed yet (checked 2026-11-18): `sudo apt install mosquitto mosquitto-clients`, then tick this and Step 1's Mosquitto box._
+- [x] Create a private GitHub repository `monster-house`, and add this starter kit.
+  _Done; the repository is also on the NAS (`zobar`), which the gloss review site builds from._
 
 ## Step 1 — Project setup (November)
 - [x] Folder layout per `docs/architecture.md` §10. One Python virtual environment and a dependency file.
@@ -70,8 +73,16 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
 
 **Done when:** the setup is documented well enough to run the moment the Pi arrives.
 
+## Design reviews (in parallel with the steps above)
+See [reviews/](reviews/README.md) for the entry and exit criteria.
+- [ ] SRR package: concept of operations, owner's review of the subsystem requirements, verification plan, risk register.
+- [ ] **SRR** (December): requirements baseline frozen (tag `srr`).
+- [ ] **PDR** (late January, once Steps 2-6 run): design baseline (tag `pdr`).
+- [ ] **CDR-1 (Eyes)** at Stage 0 exit (late February): go/no-go for the Stage 1 purchase.
+
 ## Exit criteria for Stage 0 (then buy Stage 1 parts)
 - [ ] The owner likes the eyes in the house preview.
 - [ ] Pretend visits feel right.
 - [ ] Eye layout decided (lopsided or matched; rotation for each window).
 - [ ] Windows measured; projector model chosen (AAXA P400 class, or the fallback).
+- [ ] PDR and CDR-1 passed (see [reviews/](reviews/README.md)).

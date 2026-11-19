@@ -42,3 +42,17 @@
   source: stage-0-plan.md Step 8; architecture.md §2 "Setup and teardown"
   stage: 1
   status: proposed
+
+- id: DEP-004
+  text: >-
+    The teardown checklist shall say how each part is packed and list the packed size of
+    each box, so the total can be checked against the storage limit (TBD-038).
+  type: functional
+  derives_from: [SYS-051]
+  allocated_to: install-checklists
+  allocation_rationale: >-
+    Packing is the last step of teardown, which the checklists already cover (DEP-003).
+  verify: demonstration
+  source: owner 2026-11-17 (gloss comment on ConOps S13)
+  stage: 1
+  status: proposed

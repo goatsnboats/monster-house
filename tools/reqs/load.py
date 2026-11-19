@@ -17,6 +17,10 @@ import yaml
 REQ_DIR = "docs/requirements"
 SPEC_TREE = "docs/requirements/spec-tree.md"
 TRACE = "docs/requirements/trace.md"
+VERIFICATION = "docs/requirements/verification.yaml"
+RISKS = "docs/requirements/risks.yaml"
+# YAML files in REQ_DIR that are not requirements.
+NOT_REQUIREMENTS = {"verification.yaml", "risks.yaml"}
 ARCH_DIR = "docs/architecture"
 COMPONENTS = "docs/architecture/components.yaml"
 ICD_DIR = "docs/interfaces"
@@ -37,6 +41,8 @@ class Model:
     reqs: dict[str, dict] = field(default_factory=dict)      # "EYE-001" -> requirement
     comps: dict[str, dict] = field(default_factory=dict)     # "eye-renderer" -> component
     icds: dict[str, dict] = field(default_factory=dict)      # "ICD-001" -> structured block
+    events: dict[str, dict] = field(default_factory=dict)    # "VE-001" -> verification event
+    risks: dict[str, dict] = field(default_factory=dict)     # "RSK-001" -> risk
     tbds: set[str] = field(default_factory=set)              # IDs in the TBD register
     spec_tree_text: str = ""
     load_errors: list[tuple[str, str]] = field(default_factory=list)  # (where, message)
@@ -52,6 +58,8 @@ def load(root: Path) -> Model:
     _load_requirements(model)
     _load_components(model)
     _load_icds(model)
+    _load_events(model)
+    _load_list(model, RISKS, model.risks, "risks")
     tbd_path = root / TBD_FILE
     if tbd_path.exists():
         model.tbds = set(TBD_ROW.findall(tbd_path.read_text()))
@@ -96,6 +104,8 @@ def _load_spec_tree(model: Model) -> None:
 
 def _load_requirements(model: Model) -> None:
     for path in sorted((model.root / REQ_DIR).glob("*.yaml")):
+        if path.name in NOT_REQUIREMENTS:
+            continue
         data = _read_yaml(model, path)
         if data is None:
             continue
@@ -147,3 +157,44 @@ def _load_icds(model: Model) -> None:
             model.load_errors.append((path.name, f"{block['id']} is also defined in {model.icds[block['id']]['_file']}"))
             continue
         model.icds[block["id"]] = block
+
+
+def _load_events(model: Model) -> None:
+    """The verification plan, if there is one yet."""
+    path = model.root / VERIFICATION
+    if not path.exists():
+        return
+    data = _read_yaml(model, path)
+    if data is None:
+        return
+    if not isinstance(data, list):
+        model.load_errors.append((VERIFICATION, "must be a YAML list of verification events"))
+        return
+    for event in data:
+        if not isinstance(event, dict) or "id" not in event:
+            model.load_errors.append((VERIFICATION, f"entry without an id: {event!r:.80}"))
+            continue
+        if event["id"] in model.events:
+            model.load_errors.append((VERIFICATION, f"{event['id']} is listed twice"))
+            continue
+        model.events[event["id"]] = event
+
+
+def _load_list(model: Model, rel: str, into: dict, what: str) -> None:
+    """A YAML list of entries with ids (the risk register), if the file exists."""
+    path = model.root / rel
+    if not path.exists():
+        return
+    data = _read_yaml(model, path)
+    if data is None:
+        return
+    if not isinstance(data, list):
+        model.load_errors.append((rel, f"must be a YAML list of {what}"))
+        return
+    for entry in data:
+        if not isinstance(entry, dict) or "id" not in entry:
+            model.load_errors.append((rel, f"entry without an id: {entry!r:.80}"))
+        elif entry["id"] in into:
+            model.load_errors.append((rel, f"{entry['id']} is listed twice"))
+        else:
+            into[entry["id"]] = entry

@@ -1,0 +1,231 @@
+# Risk register (SRR package, item 4). Approach and field meanings: risk-register.md here.
+# Likelihood and impact are proposals for the owner to adjust (low, medium, high).
+# A risk rated high on either must have a plan and a gate by which it is retired.
+
+- id: RSK-001
+  title: The eye renderer may not reach 60 fps, or run full-screen, on a real Pi 5
+  likelihood: medium
+  impact: high
+  retire_by: CDR-1
+  plan: Run the bench test on a real Pi before buying both pods; ADR 0002's fallback is Godot.
+  events: [VE-101]
+  tbds: [TBD-013]
+  reqs: [SYS-024, SYS-040, INF-001]
+  source: ADR 0002 (open risk); TS-002 results
+  status: open
+
+- id: RSK-002
+  title: The eyes may be too dim to read at dusk against street lights
+  likelihood: medium
+  impact: high
+  retire_by: CDR-1
+  plan: Test one projector in the real window at dusk before buying two; no requirement sets a brightness yet.
+  events: [VE-103]
+  tbds: [TBD-012]
+  reqs: [SYS-024]
+  source: architecture.md §2 "Risks and open questions"
+  status: open
+
+- id: RSK-003
+  title: The window grids may show as dark lines across the eye
+  likelihood: high
+  impact: medium
+  retire_by: CDR-1
+  plan: Try it in the real window; either embrace the grid in the eye art or remove the grids for the season.
+  events: [VE-103]
+  tbds: [TBD-009]
+  reqs: [SYS-035]
+  source: architecture.md §2 "Risks and open questions"
+  status: open
+
+- id: RSK-004
+  title: The windows or the floor behind them may not fit the projector's throw distance
+  likelihood: medium
+  impact: high
+  retire_by: CDR-1
+  plan: Measure both windows and the floor space, then choose the projector and its orientation.
+  events: [VE-103]
+  tbds: [TBD-006, TBD-005, TBD-017]
+  reqs: [SYS-035]
+  source: architecture.md §2, §12; stage-0-plan.md "Prep"
+  status: open
+
+- id: RSK-005
+  title: Projector fan noise may disturb whoever sleeps in the bedroom
+  likelihood: medium
+  impact: medium
+  retire_by: CDR-1
+  plan: The pods switch off at bedtime; check the noise during the first window install.
+  events: [VE-105, VE-103]
+  tbds: [TBD-025]
+  reqs: [SYS-018]
+  source: architecture.md §2 "Risks and open questions"
+  status: open
+
+- id: RSK-006
+  title: The monster may not feel right (timing, personality, coming and going)
+  likelihood: medium
+  impact: high
+  retire_by: PDR
+  plan: Tune in the simulator with the owner; the owner signs off the pretend visits before PDR.
+  events: [VE-005, VE-004]
+  tbds: [TBD-020, TBD-021, TBD-028]
+  reqs: [SYS-002, SYS-005, SYS-047, SYS-049, SYS-050]
+  source: stage-0-plan.md Step 4 ("it feels right to the owner")
+  status: open
+
+- id: RSK-007
+  title: Porch Wi-Fi may be too weak at 2.4 GHz for the radar and the lips
+  likelihood: medium
+  impact: high
+  retire_by: CDR-2
+  plan: Measure the signal where the boxes will go before mounting; add an access point if needed.
+  events: [VE-201]
+  tbds: [TBD-008]
+  reqs: [INF-009, SYS-033]
+  source: architecture.md §4 "Risks"
+  status: open
+
+- id: RSK-008
+  title: The radar may report railings, inflatables, cars or branches as visitors
+  likelihood: high
+  impact: medium
+  retire_by: CDR-2
+  plan: Filter zones set during the walk test; check with decorations up.
+  events: [VE-201]
+  tbds: [TBD-018]
+  reqs: [EAR-005, SYS-026]
+  source: architecture.md §4 "Risks"
+  status: open
+
+- id: RSK-009
+  title: The radar may not reach far enough for the monster to wake in time
+  likelihood: medium
+  impact: medium
+  retire_by: CDR-2
+  plan: Walk test from the sidewalk; move or angle the radar if it falls short.
+  events: [VE-201]
+  tbds: [TBD-016]
+  reqs: [SYS-020, SYS-026]
+  source: architecture.md §4 "Placement"
+  status: open
+
+- id: RSK-010
+  title: Visitors lost at the door may be mistaken for new arrivals or leavers
+  likelihood: high
+  impact: medium
+  retire_by: CDR-2
+  plan: Door hold and coming/going logic tuned in the simulator with a blind spot, then checked on the real radar.
+  events: [VE-004, VE-201]
+  tbds: [TBD-028, TBD-029, TBD-030]
+  reqs: [SYS-047, SYS-049, SYS-050]
+  source: owner 2026-11-09
+  status: open
+
+- id: RSK-011
+  title: Falcon Player may not share the porch Pi 5 with the brain and Mosquitto
+  likelihood: medium
+  impact: high
+  retire_by: CDR-3
+  plan: Check FPP's support for the Pi 5 and running other services; fall back to a second small computer for FPP.
+  events: [VE-301]
+  tbds: [TBD-036, TBD-031]
+  reqs: [INF-002, SYS-039]
+  source: found while writing ICD-013 (2026-11-09)
+  status: open
+
+- id: RSK-012
+  title: The real Falcon Player may not behave like the fake one
+  likelihood: medium
+  impact: medium
+  retire_by: CDR-3
+  plan: Check FPP's topics and status against ICD-003 on the installed version; change the ICD and the fake together.
+  events: [VE-301]
+  tbds: [TBD-015]
+  reqs: [SYS-043, SHW-035]
+  source: architecture.md §3a; TBD-015
+  status: open
+
+- id: RSK-013
+  title: The voice content may not be ready in time (name, voice, clips)
+  likelihood: medium
+  impact: high
+  retire_by: CDR-3
+  plan: Rough clips recorded on a phone during Stage 0; final recordings before the Stage 3 purchase.
+  events: [VE-304]
+  tbds: [TBD-011]
+  reqs: [THM-003, SYS-015]
+  source: stage-0-plan.md Step 7
+  status: open
+
+- id: RSK-014
+  title: The porch Pi is a single point of failure for the brain, the broker and the voice
+  likelihood: low
+  impact: high
+  retire_by: CDR-3
+  plan: Services restart themselves and the eyes fall back to idle; tested in the failure scenarios; a spare SD card image kept.
+  events: [VE-004, VE-101]
+  tbds: []
+  reqs: [SYS-017, DEP-002]
+  source: judgment (2026-11-12)
+  status: open
+
+- id: RSK-015
+  title: The lips may drift out of step with the voice
+  likelihood: medium
+  impact: medium
+  retire_by: CDR-4
+  plan: Measure the skew on the bench; shift the sequences in xLights if one path is always slower.
+  events: [VE-401]
+  tbds: [TBD-034]
+  reqs: [SYS-022]
+  source: timing-budgets.md path P5
+  status: open
+
+- id: RSK-016
+  title: The monster may be too loud or too bright for the neighbors
+  likelihood: low
+  impact: medium
+  retire_by: CDR-3
+  plan: Caps in FPP, the operating system, the amp and WLED; measured at the sidewalk.
+  events: [VE-302, VE-401]
+  tbds: [TBD-026, TBD-027]
+  reqs: [SYS-030, SYS-031]
+  source: architecture.md §5, §6
+  status: open
+
+- id: RSK-017
+  title: Rain and snow may damage the outdoor parts
+  likelihood: medium
+  impact: medium
+  retire_by: CDR-4
+  plan: Radar under the roof, IP65 strips with sealed ends, weatherproof boxes; inspected at each install.
+  events: [VE-202, VE-403]
+  tbds: []
+  reqs: [SYS-046]
+  source: architecture.md §4, §5 "Risks"
+  status: open
+
+- id: RSK-018
+  title: Stage costs may run over the estimates
+  likelihood: medium
+  impact: medium
+  retire_by: CDR-1
+  plan: A parts list with prices at each CDR, compared with architecture §11.
+  events: []
+  tbds: [TBD-012, TBD-014]
+  reqs: []
+  source: architecture.md §11; TBD-014
+  status: open
+
+- id: RSK-019
+  title: A 1GB eye Pi may run short of memory
+  likelihood: low
+  impact: medium
+  retire_by: CDR-1
+  plan: Measure on the Pi; the budget check shows the margin.
+  events: [VE-007, VE-101]
+  tbds: [TBD-032]
+  reqs: [INF-003]
+  source: budget check (2026-11-09)
+  status: open

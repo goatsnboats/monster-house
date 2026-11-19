@@ -389,6 +389,93 @@ def test_icd_file_examples_are_checked_too(tmp_path):
     assert any("settings: example" in e and "missing required key 'a'" in e for e in findings(root))
 
 
+def _events(root, events):
+    (root / "docs/requirements/verification.yaml").write_text(yaml.safe_dump(events, sort_keys=False))
+
+
+GOOD_EVENTS = [
+    {"id": "VE-001", "name": "Demo", "stage": 0, "method": "demonstration", "covers": ["SYS-001"]},
+    {"id": "VE-002", "name": "Tests", "stage": 0, "method": "test", "covers": ["EYE-001", "EYE-002", "SHW-001"]},
+]
+
+
+def test_verification_plan_covering_everything_is_clean(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS)
+    assert [str(f) for f in check_all(load(root))] == []
+    assert "## Verification plan" in render(load(root), [])
+
+
+def test_verification_file_is_not_read_as_requirements(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS)
+    assert sorted(load(root).reqs) == ["EYE-001", "EYE-002", "SHW-001", "SYS-001"]
+
+
+def test_requirement_without_an_event_is_a_gap(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS[:1])
+    gaps = findings(root, "gap")
+    assert any("EYE-001" in g and "no verification event by test" in g for g in gaps)
+    assert findings(root) == []
+
+
+def test_event_method_must_match_the_requirement(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, [dict(GOOD_EVENTS[0], covers=["SYS-001", "EYE-001"]), GOOD_EVENTS[1]])
+    assert any("covers EYE-001, which is verified by test, but this event is a demonstration" in e
+               for e in findings(root))
+
+
+def test_event_errors(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS + [{"id": "VE-9", "name": "x", "stage": 7, "method": "guess",
+                                  "covers": ["SYS-404"], "colour": "red"}])
+    errors = findings(root)
+    for expected in ("must look like VE-001", "stage must be", "method must be", "SYS-404, which does not exist",
+                     "unknown field 'colour'"):
+        assert any(expected in e for e in errors), expected
+
+
+def test_risk_register(tmp_path):
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS)
+    risks = [
+        {"id": "RSK-001", "title": "Fine", "likelihood": "high", "impact": "low", "retire_by": "PDR",
+         "plan": "Test it", "events": ["VE-001"], "tbds": ["TBD-001"], "reqs": ["SYS-001"], "source": "t", "status": "open"},
+        {"id": "RSK-002", "title": "No plan", "likelihood": "low", "impact": "high", "source": "t", "status": "open"},
+        {"id": "RSK-003", "title": "Bad refs", "likelihood": "huge", "impact": "low", "retire_by": "CDR-9",
+         "events": ["VE-404"], "tbds": ["TBD-404"], "reqs": ["SYS-404"], "source": "t", "status": "open"},
+    ]
+    (root / "docs/requirements/risks.yaml").write_text(yaml.safe_dump(risks, sort_keys=False))
+    errors = findings(root)
+    assert not any("RSK-001" in e for e in errors)
+    assert any("RSK-002" in e and "needs a plan and a retire_by" in e for e in errors)
+    for expected in ("likelihood must be", "retire_by must be", "event VE-404", "TBD-404", "SYS-404 does not exist"):
+        assert any("RSK-003" in e and expected in e for e in errors), expected
+    assert "## Risks" in render(load(root), [])
+
+
+def test_srr_readiness_report(tmp_path):
+    from tools.reqs import review
+    root = write_baseline(tmp_path)
+    _events(root, GOOD_EVENTS)
+    model = load(root)
+    rows = {name.split(" ")[0]: result for name, result, _ in review.srr(model, check_all(model))}
+    assert rows["E2"] == "fail"          # SYS-001 is only proposed
+    assert rows["E5"] == "pass"          # every requirement has an event
+    assert rows["E7"] == "fail"          # the test register has no Gate column
+    (root / "docs/TBD.md").write_text(
+        "| ID | What | Resolved by | Blocks | Needed by | Gate | Status |\n|---|---|---|---|---|---|---|\n"
+        "| TBD-001 | Something open | Owner decision | — | — | PDR | Open |\n")
+    model = load(root)
+    rows = {name.split(" ")[0]: result for name, result, _ in review.srr(model, check_all(model))}
+    assert rows["E7"] == "pass"
+    assert main(["--root", str(root), "--review", "srr"]) == 0
+    report = (root / "docs/reviews/srr/readiness.md").read_text()
+    assert "| PDR | 1: TBD-001 |" in report
+
+
 def test_schema_subset():
     s = {"type": "object", "required": ["name"], "additionalProperties": False,
          "properties": {"name": {"enum": ["happy", "sleepy"]}, "ms": {"type": "integer", "minimum": 0}}}
@@ -404,6 +491,64 @@ def test_schema_subset():
 def test_repository_baseline_has_no_errors():
     errors = [str(f) for f in check_all(load(REPO_ROOT)) if f.level == "error"]
     assert errors == []
+
+
+def test_requirement_pages_are_up_to_date():
+    from tools.reqs.pages import PAGES_DIR, render_all
+    model = load(REPO_ROOT)
+    for name, text in render_all(model).items():
+        assert (REPO_ROOT / PAGES_DIR / name).read_text() == text, f"{name} is stale: run tools.reqs.check"
+
+
+def test_requirement_pages_have_a_heading_per_requirement(tmp_path):
+    from tools.reqs.pages import render_all
+    root = write_baseline(tmp_path)
+    pages = render_all(load(root))
+    assert set(pages) == {"README.md", "sys.md", "eye.md", "shw.md"}
+    assert "## EYE-001" in pages["eye.md"] and "| Derives from | [SYS-001](sys.md#sys-001) |" in pages["eye.md"]
+    assert "| Children | [EYE-001](eye.md#eye-001), [EYE-002](eye.md#eye-002), [SHW-001](shw.md#shw-001) |" in pages["sys.md"]
+    assert main(["--root", str(root)]) == 0
+    assert (root / "docs/requirements/pages/eye.md").exists()
+
+
+def test_components_page_and_sidebar_are_up_to_date():
+    from tools.reqs.pages import COMPONENTS_PAGE, components_page
+    from tools.reqs.sidebar import SIDEBAR, render as sidebar
+    model = load(REPO_ROOT)
+    assert (REPO_ROOT / COMPONENTS_PAGE).read_text() == components_page(model), "components.md is stale: run tools.reqs.check"
+    assert (REPO_ROOT / SIDEBAR).read_text() == sidebar(REPO_ROOT / "docs"), "_sidebar.md is stale: run tools.reqs.check"
+
+
+def test_pages_link_to_events_and_components(tmp_path):
+    from tools.reqs.pages import components_page, render_all
+    root = write_baseline(tmp_path)
+    _events(root, [{"id": "VE-001", "name": "Everything", "stage": 0, "method": "test",
+                    "where": "desk", "how": "run it", "pass": "it works",
+                    "covers": ["SYS-001", "EYE-001"]}])
+    model = load(root)
+    pages = render_all(model)
+    assert "ve.md" in pages and "## VE-001" in pages["ve.md"]
+    assert "[VE-001](ve.md#ve-001)" in pages["sys.md"]
+    assert "[EYE-001](eye.md#eye-001)" in pages["ve.md"]
+    assert "](../../architecture/components.md#" in pages["eye.md"]
+    comps = components_page(model)
+    for cid in model.comps:
+        assert f"## {cid}" in comps
+
+
+def test_sidebar_puts_the_system_spec_first_and_lists_every_page(tmp_path):
+    from tools.reqs.sidebar import render as sidebar
+    docs = tmp_path / "docs"
+    for rel, title in [("conops.md", "ConOps"), ("requirements/pages/sys.md", "SYS"),
+                       ("requirements/pages/eye.md", "EYE"), ("zeta/new-page.md", "New <page>"),
+                       ("aaa.md", "Top page")]:
+        (docs / rel).parent.mkdir(parents=True, exist_ok=True)
+        (docs / rel).write_text(f"# {title}\n")
+    menu = sidebar(docs)
+    assert menu.index("/conops.md") < menu.index("/requirements/pages/sys.md") < menu.index("/aaa.md")
+    assert menu.count("/requirements/pages/sys.md") == 1
+    assert "- By subsystem" in menu and "[EYE](/requirements/pages/eye.md)" in menu
+    assert "- Zeta" in menu and "New &lt;page&gt;" in menu
 
 
 def test_trace_md_is_up_to_date():

@@ -9,7 +9,7 @@ Read these before making design decisions:
 - `docs/reference/house-front.jpg`: photo of the house, for the house preview.
 - `docs/TBD.md`: every open question, with what will resolve it. A TBD in any file must cite its `TBD-NNN` ID; never write a bare "TBD".
 - `docs/requirements/`: the requirements baseline (spec tree, `SYS-` and subsystem *shall* requirements, generated `trace.md`), with `docs/architecture/components.yaml` and the ICDs in `docs/interfaces/`. Trace design decisions to requirement IDs, and run `.venv/bin/python -m tools.reqs.check` after changing any of them.
-- `docs/trades/` and `docs/decisions/`: trade studies and the decisions (ADRs) they produce. Run the `trade-study` skill for any choice of tool, library, hardware or approach with two or more defensible options.
+- `docs/trades/` and `docs/decisions/`: trade studies and the decisions (ADRs) they produce. Run the `trade-study` skill for choices in the **design of the system** (what goes on the house and the software it runs: hardware, libraries, approaches) with two or more defensible options. For **general infrastructure** (docs site, checker, dev tooling, CI, workflow), consider the alternatives briefly and recommend one; no formal study (owner, 2026-11-11).
 
 ## Current stage: Stage 0 (software-only prototype on the desktop)
 No hardware yet. Everything runs on one desktop: Mosquitto, the monster brain, both eyes (as windows), a fake radar, and a fake Falcon Player. Later stages move the eyes to Raspberry Pi 5 (1GB) pods and the brain to a porch Pi, so **everything must stay portable to Raspberry Pi OS (64-bit, Debian-based)**.

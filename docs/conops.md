@@ -1,6 +1,6 @@
 # Concept of operations — Monster House
 
-> **Status:** Draft for the owner to edit (SRR package, item 1) · **Updated:** 2026-11-09 · **Reviews:** [plan](reviews/README.md)
+> **Status:** Draft for the owner to edit (SRR package, item 1) · **Updated:** 2026-11-18 · **Reviews:** [plan](reviews/README.md)
 
 How the monster is used, told as a season and an evening, from the point of view of
 the people around it. Each step cites the system requirements (`SYS-NNN`,
@@ -8,8 +8,9 @@ the people around it. Each step cites the system requirements (`SYS-NNN`,
 covered by requirements, and every requirement must trace to a step here or to a
 stated constraint ([§8](#8-coverage)).
 
-Much of this is personality and taste. Where the draft guesses, it says so, and the
-open questions are collected in [§9](#9-questions-for-the-owner).
+Much of this is personality and taste. The owner answered the draft's questions in
+gloss comments (2026-11-15); the answers are in [§9](#9-questions-for-the-owner), and ideas
+saved for a later phase are in [§10](#10-saved-for-later).
 
 ## 1. What it is, in one paragraph
 
@@ -24,9 +25,9 @@ fails it just looks sleepy (SYS-017).
 
 | Who | What they want | What they do |
 |---|---|---|
-| **Trick-or-treaters** (kids, often in groups) | Something fun and surprising that notices *them* | Walk up the path, stop at the door for candy, walk away |
-| **Grown-ups with them** | A friendly show, nothing too scary for little ones | Often wait on the sidewalk or walk up with the kids |
-| **The owner** | A show that runs itself, small tweaks from a phone, easy setup and teardown | Sets it up, picks the theme, presses buttons now and then, answers the door |
+| **Trick-or-treaters** (kids, often in groups) | Something fun and surprising that notices *them* | Walk up the path in a steady trickle (lines are rare), stop at the door for candy, walk away |
+| **Grown-ups with them** | A friendly show, nothing too scary for little ones | Usually wait on the sidewalk; some walk up with the kids |
+| **The owner** | A show that runs itself, small tweaks from a phone, easy setup and teardown, little to store | Sets it up, picks the theme, presses buttons now and then; someone in the household hands out candy at the door |
 | **Whoever sleeps in the bedroom** | A livable room: no light spill, quiet at night | Lives with the eye pods for the season |
 | **Neighbors** | Not too loud, not too bright, not too late | Hear and see it from next door and the street |
 | **Passers-by** | Nothing; some will enjoy it | Walk or drive past without coming up the path |
@@ -62,10 +63,10 @@ Times are examples (show hours: TBD-024).
 
 | When | What's happening | What the monster does |
 |---|---|---|
-| Afternoon | Power is already on from setup; the eye pods were off overnight | Off, or eyes closed and asleep |
+| Afternoon | Power is already on from setup; the eye pods were off overnight | Asleep once the pods are on: eyes closed, silent until show hours (owner: Q10) |
 | Show hours begin (example 5:30) | Dusk; few visitors yet | Asleep: eyes closed, lips breathing, a quiet snore now and then |
 | Early evening | Small groups, gaps between them | Wakes for each group, greets, watches, chats at the door, waves goodbye, dozes off again |
-| Peak | Groups arrive while others are still leaving | Stays awake; says goodbye to leavers and glances at newcomers without yawning again |
+| Busiest stretch | A steady trickle; now and then a group arrives while another is still leaving | Stays awake; says goodbye to leavers and glances at newcomers without yawning again |
 | Show hours end (example 9:30) | A few late visitors | Stays asleep and silent, whatever the radar sees |
 | Bedtime | The household goes to bed | The eye pods switch off (TBD-025) |
 
@@ -82,6 +83,7 @@ Each step lists the system requirements it relies on.
 | S1.3 | Everything joins the home Wi-Fi under its usual name; nothing is reachable from the internet | SYS-033, SYS-038 |
 | S1.4 | The owner powers on: each Pi boots straight into its eye, the projector shows it, no keyboard needed | SYS-045, SYS-039, SYS-037 |
 | S1.5 | (First season, Stage 2) The owner walks the path while watching the radar's live values on the phone, and records the zones and positions | SYS-026, SYS-047 |
+| S1.6 | (First season, Stage 3) The owner plays a few clips and listens from the sidewalk and from the near neighbor's side, ideally with that neighbor, then sets the volume cap | SYS-030 |
 
 ### S2 — Show day begins
 
@@ -124,14 +126,14 @@ sequenceDiagram
 |---|---|---|
 | S4.1 | Three kids come up together; the monster tracks all three | SYS-025 |
 | S4.2 | Its gaze moves between them, holding on each for a few seconds | SYS-005 |
-| S4.3 | A grown-up waits on the sidewalk, outside the approach zone; the monster doesn't count them (guess: see Q3) | SYS-026 |
+| S4.3 | A grown-up waits on the sidewalk, outside the approach zone; the monster doesn't count them. Among those inside it, the ones coming toward the house get its attention first (owner: Q3) | SYS-026, SYS-005 |
 | S4.4 | The group leaves together; one goodbye covers them (the gap rule stops a goodbye per kid) | SYS-049, SYS-027 |
 
 ### S5 — A busy stretch
 
 | Step | What happens | Requirements |
 |---|---|---|
-| S5.1 | A new group comes up while the last is still at the door | SYS-050, SYS-047 |
+| S5.1 | Now and then (lines are rare) a new group comes up while the last is still at the door | SYS-050, SYS-047 |
 | S5.2 | The monster glances at the newcomers with a happy or surprised look, without yawning again | SYS-050, SYS-008 |
 | S5.3 | It says goodbye to the leavers and keeps watching the newcomers | SYS-049, SYS-005 |
 | S5.4 | Over a long evening clips start repeating, but never twice in a row within a pool | SYS-015 |
@@ -140,7 +142,7 @@ sequenceDiagram
 
 | Step | What happens | Requirements |
 |---|---|---|
-| S6.1 | People walk past on the sidewalk or cars pass in the street; the monster stays asleep (guess: see Q4) | SYS-002, SYS-026 |
+| S6.1 | People walk past on the sidewalk or cars pass in the street; the monster stays asleep (owner: Q4; a sleepy peek is saved for later, §10) | SYS-002, SYS-026 |
 
 ### S7 — The owner on the phone
 
@@ -150,13 +152,13 @@ sequenceDiagram
 | S7.2 | A great costume walks up: the owner taps **great costume**; the eyes sparkle and the monster pays a compliment within half a second | SYS-012, SYS-023 |
 | S7.3 | For fun, **burp** or **sing** | SYS-012 |
 | S7.4 | Talking to a neighbor at the door, the owner taps **mute**: no voice, but the eyes and lips carry on | SYS-013 |
-| S7.5 | **Sleep now** and **wake now** put the monster to sleep or wake it on demand (outside show hours: see Q5) | SYS-012, SYS-014 |
+| S7.5 | **Sleep now** and **wake now** put the monster to sleep or wake it on demand, at any hour, for testing and demos (owner: Q5) | SYS-012, SYS-014 |
 
 ### S8 — End of show hours
 
 | Step | What happens | Requirements |
 |---|---|---|
-| S8.1 | Show hours end; the monster goes to sleep and stays silent, even if someone walks up | SYS-014 |
+| S8.1 | Show hours end; the monster goes to sleep and stays silent, even if someone walks up (unless the owner wakes it from the phone) | SYS-014 |
 
 ### S9 — Bedtime
 
@@ -179,7 +181,8 @@ sequenceDiagram
 
 | Step | What happens | Requirements |
 |---|---|---|
-| S11.1 | Rain or snow: the porch parts are sheltered or rated for it; the show goes on | SYS-046 |
+| S11.1 | Rain or snow: the porch parts are sheltered or rated for it; the show goes on as normal (owner: Q9) | SYS-046 |
+| S11.2 | If the radar has to come in out of the weather, the monster runs without its ears: the eyes wander and blink, no greetings, the phone still works (as S10.1) | SYS-017, SYS-029 |
 
 ### S12 — Another holiday
 
@@ -192,6 +195,7 @@ sequenceDiagram
 | Step | What happens | Requirements |
 |---|---|---|
 | S13.1 | The owner unplugs everything, takes down the screens, shrouds, stands, channels and boxes; nothing stays in the bedroom, only the lip clips stay on the house | SYS-045 |
+| S13.2 | Everything packs into a small, set amount of storage space (TBD-037), following the teardown checklist | SYS-051 |
 
 ### S14 — Winter tuning on the desktop (enabling)
 
@@ -210,12 +214,11 @@ sequenceDiagram
 
 ## 8. Coverage
 
-The scenario steps cite **48 of the 50** system requirements. The other two are
-constraints that apply to the whole evening rather than to one step:
+The scenario steps cite **50 of the 51** system requirements. The other one is a
+constraint that applies to the whole evening rather than to one step:
 
 | Requirement | Applies to |
 |---|---|
-| SYS-030, volume at the sidewalk | Every spoken line in S2-S8 (a neighbor-facing step would anchor it: Q8) |
 | SYS-036, friendly tone | Everything the monster shows and says |
 
 Some cited requirements also apply throughout, beyond the step that cites them: no errors
@@ -223,23 +226,31 @@ on the screens (SYS-037), lip brightness (SYS-031), and local-network only (SYS-
 
 ## 9. Questions for the owner
 
-These are taste and personality calls the draft guessed at.
+The draft's questions, with the owner's answers (gloss comments, 2026-11-15) and where
+each landed.
 
-1. **Who answers the door?** The draft assumes someone hands out candy at the door. Is
-   there ever an unattended candy bowl, and should the monster behave differently then?
-2. **How busy does it get?** A rough number of visitors on Halloween, and how many at
-   once at the peak, helps size the clip pools and test the busy-stretch scenario (S5).
-3. **Grown-ups:** should the monster look at and greet adults too, or mainly kids? The
-   look height assumes kids (about 1.0 m), so an adult's eyes are looked at around the
-   chest. Grown-ups on the sidewalk are outside the approach zone in this draft.
-4. **Passers-by:** stay fully asleep (draft), or a sleepy peek at people on the sidewalk?
-5. **Phone outside show hours:** should **wake now** work after show hours (for example
-   to show a neighbor), or is the schedule absolute?
-6. **Crowd mode:** the architecture mentions talking less and looking around more when
-   three people are present for a while. It isn't a requirement yet. Keep it?
-7. **Dogs:** the radar will see a dog on a leash as a visitor. Fine (the monster greets
-   dogs too), or should it try to ignore them?
-8. **Neighbors:** add a step where a neighbor hears it from next door, to anchor the
-   volume and brightness limits (SYS-030, SYS-031) and show hours?
-9. **Rain:** does the show run in the rain as normal (draft), or is there a rain mode?
-10. **Before show hours:** asleep (draft), or off until show hours start?
+| # | Question | Owner's answer | Where it landed |
+|---|---|---|---|
+| 1 | Who answers the door? | Someone usually hands out candy | §2; no unattended-bowl behavior |
+| 2 | How busy does it get? | Rarely lines; a good steady trickle | §2, §5, S5.1 (busy stretches are the exception) |
+| 3 | Grown-ups too, or mainly kids? | Prioritize kids and those coming toward the house; adults usually stay at the sidewalk | S4.3, SYS-005, SHW-008. The radar can't tell height, so "coming toward the house" stands in for "kid" |
+| 4 | Passers-by: asleep or a sleepy peek? | A peek could be nice, in a later phase | S6.1 stays asleep; peek in §10 |
+| 5 | Wake now outside show hours? | Flexible control for testing and demos | S7.5, S8.1, SYS-014, SHW-019 |
+| 6 | Crowd mode? | A future add-on, like dogs and passers-by | §10 |
+| 7 | Dogs? | A dog action would be nice, after the basics | Greeted like any visitor for now; dog action in §10 |
+| 8 | A neighbor step? | Test the audio with the near neighbor | S1.6 |
+| 9 | Rain? | Run as normal unless we hit a snag; without the radar if it must come in | S11.1, S11.2 |
+| 10 | Before show hours? | Asleep (a holding state) | §5. The "wakes and grunts" idea is in §10 |
+
+## 10. Saved for later
+
+Ideas the owner wants after the basic monster works. They are not requirements yet; each
+becomes one when its phase is planned.
+
+- **Sleepy peek:** when the radar sees someone outside the approach zone (a passer-by on
+  the sidewalk), or anyone before show hours, the monster opens one eye or grunts, then
+  dozes off again (Q4, Q10).
+- **Crowd mode:** with three visitors for a while, talk less and look around more (Q6).
+- **Dog action:** something special for dogs, if they can be told apart from kids (Q7).
+- **Other holidays:** what the monster does when the visitors are mainly passers-by
+  (gloss comment on S12, open).

@@ -156,8 +156,10 @@
   method: demonstration
   where: the house, repeated as each stage is installed
   how: The season's setup and teardown from the checklists, timed.
-  pass: Everything goes up and comes down by the checklist; only the lip clips stay.
-  covers: [SYS-045]
+  pass: >-
+    Everything goes up and comes down by the checklist; only the lip clips stay; the
+    packed boxes fit the storage limit (TBD-037).
+  covers: [SYS-045, SYS-051, DEP-004]
 
 # ── Stage 2: the radar ──────────────────────────────────────────────────────────
 

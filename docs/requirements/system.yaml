@@ -66,9 +66,14 @@
 - id: SYS-005
   text: >-
     When more than one visitor is in range, the monster shall move its gaze between
-    them, giving a newly arrived visitor the focus first.
+    them, giving a newly arrived visitor the focus first and preferring visitors
+    coming toward the house over those standing still or going.
   type: functional
   verify: demonstration
+  rationale: >-
+    Kids come up the walk; grown-ups mostly wait on the sidewalk. The radar reports only
+    position and speed, not height, so coming toward the house stands in for "kid"
+    (owner, ConOps Q3, 2026-11-15).
   decomposition: >-
     Decided by the brain: focus choice (SHW-008) and the glance at newcomers
     (SHW-014).
@@ -187,10 +192,12 @@
 - id: SYS-014
   text: >-
     Outside show hours (TBD-024), the monster shall stay asleep and make no voice sound,
-    whatever the radar reports.
+    whatever the radar reports, unless the owner wakes it from the phone.
   type: functional
   verify: test
-  rationale: Neighbor-friendly; also keeps the bedroom quiet late at night.
+  rationale: >-
+    Neighbor-friendly; also keeps the bedroom quiet late at night. The phone overrides
+    the schedule for testing and demos (owner, ConOps Q5, 2026-11-15).
   decomposition: >-
     The brain keeps the schedule (SHW-019), using the network's clock sync (INF-008).
   source: architecture.md §3a (Schedule), §6 "Neighbor-friendly"
@@ -694,3 +701,18 @@
   source: owner 2026-11-09
   stage: 0
   status: approved
+
+# ── Constraint: storage (owner, 2026-11-17) ─────────────────────────────────────
+
+- id: SYS-051
+  text: >-
+    Everything taken down at the end of the season shall pack for storage into no more
+    than TBD-037.
+  type: constraint
+  verify: demonstration
+  rationale: The household has little storage space.
+  decomposition: >-
+    The teardown checklist packs every part and records the packed size (DEP-004).
+  source: owner 2026-11-17 (gloss comment on ConOps S13)
+  stage: 1
+  status: proposed

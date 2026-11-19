@@ -114,7 +114,8 @@
 - id: SHW-008
   text: >-
     The brain shall choose one focus visitor: a new arrival wins; otherwise it holds on
-    one visitor for a random 3-6 s, then switches; the closest visitor breaks ties.
+    one visitor for a random 3-6 s, then switches, preferring visitors coming toward the
+    house over those standing still or going; the closest visitor breaks ties.
   type: functional
   derives_from: [SYS-005]
   allocated_to: monster-brain
@@ -285,7 +286,8 @@
 - id: SHW-019
   text: >-
     Outside the theme's show hours (TBD-024), the brain shall stay Asleep and trigger no
-    voice clips.
+    voice clips, unless the owner presses wake now on the phone; it then follows its
+    moods as in show hours until the owner presses sleep now.
   type: functional
   derives_from: [SYS-014]
   allocated_to: monster-brain

@@ -8,7 +8,7 @@
 
 | Subsystem | functional | performance | interface | constraint | Total |
 |---|---|---|---|---|---|
-| SYS Monster House system specification | 22 | 13 | 4 | 11 | 50 |
+| SYS Monster House system specification | 22 | 13 | 4 | 12 | 51 |
 | EYE Eyes | 10 | 3 | 7 | 4 | 24 |
 | SHW Show control | 23 | 6 | 11 | 0 | 40 |
 | EAR Ears | 1 | 3 | 4 | 1 | 9 |
@@ -17,8 +17,8 @@
 | INF Infrastructure | 1 | 3 | 8 | 1 | 13 |
 | THM Themes | 3 | 0 | 1 | 3 | 7 |
 | SIM Simulators | 3 | 0 | 3 | 0 | 6 |
-| DEP Deployment | 3 | 0 | 0 | 0 | 3 |
-| **All** | 68 | 33 | 45 | 22 | **168** |
+| DEP Deployment | 4 | 0 | 0 | 0 | 4 |
+| **All** | 69 | 33 | 45 | 23 | **170** |
 
 **Components:** 51 (32 parts, 19 software). **ICDs:** 15 (7 draft, 8 skeleton).
 
@@ -26,12 +26,12 @@
 
 | Check | Result |
 |---|---|
-| System requirements with children | 50 of 50 |
-| Subsystem requirements allocated to a component | 118 of 118 |
+| System requirements with children | 51 of 51 |
+| Subsystem requirements allocated to a component | 119 of 119 |
 | Interface requirements with an ICD | 45 of 45 |
 | ICD sides with an interface requirement | 39 of 39 |
 | Performance requirements with a quantitative basis | 7 of 33 |
-| Requirements with a verification event | 168 of 168 |
+| Requirements with a verification event | 170 of 170 |
 | Checker errors | 0 |
 
 **Components with no requirement yet** (12): `content-tools`, `desktop`, `dev-env`, `eye-mask`, `lip-box`, `lip-channel`, `lip-upper`, `mouth-extras`, `porch-enclosure`, `rumble`, `speaker-wire`, `xlights`
@@ -95,6 +95,7 @@
 - TBD-034: EYE-009, EYE-024, MTH-010, SHW-003, SHW-007, SHW-023, SHW-033, SHW-040, VOC-006
 - TBD-035: MTH-001
 - TBD-036: INF-002
+- TBD-037: DEP-004, SYS-051
 
 ## Budgets
 
@@ -126,7 +127,7 @@ Events from `docs/requirements/verification.yaml`, by stage.
 | VE-103 | 1 | inspection | First window install inspection | the small (left) window, at night | 9: EYE-020, EYE-021, EYE-022, EYE-023, INF-011, DEP-003, SYS-034, SYS-035, SYS-044 |
 | VE-104 | 1 | inspection | Network inspection | the home router and each node | 3: INF-008, INF-010, SYS-033 |
 | VE-105 | 1 | demonstration | Bedtime demonstration | an installed eye pod, overnight | 2: INF-012, SYS-018 |
-| VE-106 | 1 | demonstration | Setup and teardown demonstration | the house, repeated as each stage is installed | 1: SYS-045 |
+| VE-106 | 1 | demonstration | Setup and teardown demonstration | the house, repeated as each stage is installed | 3: SYS-045, SYS-051, DEP-004 |
 | VE-201 | 2 | test | Radar walk test | the house, people walking the path | 8: EAR-001, EAR-003, EAR-004, EAR-005, EAR-006, INF-009, SYS-025, SYS-026 |
 | VE-202 | 2 | inspection | Radar install inspection | the porch | 6: EAR-002, EAR-007, EAR-008, EAR-009, INF-013, SYS-046 |
 | VE-301 | 3 | test | Voice bench test on the porch Pi | the porch Pi with FPP, the USB adapter and the amp | 8: SHW-032, SHW-033, SHW-034, SHW-035, SHW-037, INF-002, VOC-001, SYS-021 |
@@ -181,7 +182,7 @@ Open risks from `docs/requirements/risks.yaml` (19 of 19).
 | SYS-002 | functional | 0 | approved | When a visitor enters the approach zone heading toward the house, the monster shall wake: open its eyes, look around, lock on to the visitor and yawn. | SHW-001, SHW-003 | Behavior decided in one place: the brain's mood machine (SHW-001) and its wake logic (SHW-003). The eyes and voice only carry out its commands, under their general requirements (EYE-002, SHW-032). | — | demonstration | VE-005, VE-501 |
 | SYS-003 | functional | 0 | approved | When the wake clip ends with a visitor still in range, the monster shall greet the visitor with one greeting line, with a happy squint. | SHW-001, SHW-004 | Decided by the brain: the Greeting mood (SHW-001) and its expression and clip choice (SHW-004). | — | demonstration | VE-005, VE-501 |
 | SYS-004 | functional | 0 | approved | While visitors are in range, both eyes shall look toward the focus visitor's head, each eye aiming from its own window's position, so that the eyes converge on a near visitor and look parallel at a far one. | EYE-003, EYE-004, EYE-017, INF-007, SHW-006, SHW-007, SHW-028 | Split along the gaze path: the site config holds the positions (INF-007); the brain converts and smooths radar data (SHW-006, SHW-007, SHW-028); each eye aims from its own window (EYE-003, EYE-017) and glides (EYE-004). | — | test | VE-004 |
-| SYS-005 | functional | 0 | approved | When more than one visitor is in range, the monster shall move its gaze between them, giving a newly arrived visitor the focus first. | SHW-008, SHW-014 | Decided by the brain: focus choice (SHW-008) and the glance at newcomers (SHW-014). | — | demonstration | VE-005, VE-501 |
+| SYS-005 | functional | 0 | approved | When more than one visitor is in range, the monster shall move its gaze between them, giving a newly arrived visitor the focus first and preferring visitors coming toward the house over those standing still or going. | SHW-008, SHW-014 | Decided by the brain: focus choice (SHW-008) and the glance at newcomers (SHW-014). | — | demonstration | VE-005, VE-501 |
 | SYS-006 | functional | 0 | approved | While watching visitors, the monster shall say a comment or giggle at intervals set in the theme (default 10–20 s, chosen at random within that range). | SHW-005 | One owner: the brain decides when to comment (SHW-005). | — | test | VE-004 |
 | SYS-007 | functional | 0 | approved | When no visitor has been in range for the time set in the theme (default 5 s), not counting visitors at the door (SYS-047), the monster shall look toward where they left, droop its eyes, and say a goodbye line unless the last visitor to leave already got one (SYS-049). | SHW-001, SHW-011 | Decided by the brain: the Goodbye mood (SHW-001), with door-held visitors not counted as gone (SHW-011). | — | test | VE-004 |
 | SYS-008 | functional | 0 | approved | After a goodbye, the monster shall go back to sleep when no visitor has arrived for the time set in the theme (default 20 s), or greet a visitor coming toward the house without yawning first. A visitor picked up again on the way out is not a new arrival. | SHW-001, SHW-010 | Decided by the brain: the mood transitions (SHW-001), using its coming/going marks (SHW-010). | — | test | VE-004 |
@@ -190,7 +191,7 @@ Open risks from `docs/requirements/risks.yaml` (19 of 19).
 | SYS-011 | functional | 4 | approved | Whenever the monster speaks, its lips shall move in time with its voice. | MTH-001, MTH-003, MTH-005, SHW-032, SHW-036, SHW-038, THM-006 | Along the voice-and-lips chain: theme content shares names (THM-006); FPP plays audio and sequence together (SHW-032) and streams frames (SHW-036, SHW-038); the lip controller and WLED show them (MTH-005, MTH-001, MTH-003). | — | demonstration | VE-402, VE-501 |
 | SYS-012 | functional | 0 | approved | The owner shall be able to trigger great costume (sparkle eyes and a compliment), burp, sing, mute voice, sleep now and wake now from a phone, and see the monster's current mood there. | SHW-022, SHW-030 | The brain publishes the mood (SHW-022); the phone page shows it and offers the buttons (SHW-030). | — | demonstration | VE-005, VE-501 |
 | SYS-013 | functional | 0 | approved | While muted, the monster shall make no voice sound and shall keep its eyes and lip lights working. | MTH-001, SHW-020 | The brain stops triggering clips (SHW-020); the lips keep breathing on WLED's fallback (MTH-001). | — | demonstration | VE-005, VE-501 |
-| SYS-014 | functional | 0 | approved | Outside show hours (TBD-024), the monster shall stay asleep and make no voice sound, whatever the radar reports. | INF-008, SHW-019 | The brain keeps the schedule (SHW-019), using the network's clock sync (INF-008). | — | test | VE-004 |
+| SYS-014 | functional | 0 | approved | Outside show hours (TBD-024), the monster shall stay asleep and make no voice sound, whatever the radar reports, unless the owner wakes it from the phone. | INF-008, SHW-019 | The brain keeps the schedule (SHW-019), using the network's clock sync (INF-008). | — | test | VE-004 |
 | SYS-015 | functional | 0 | approved | Within each clip pool (greetings, comments, goodbyes, and so on), the monster shall not repeat a clip until every clip in that pool has played. | SHW-016, THM-003 | The brain shuffles without repeats (SHW-016); the theme supplies enough clips per pool (THM-003). | — | test | VE-004 |
 | SYS-016 | functional | 0 | approved | When the owner chooses a theme, the monster shall change to that theme's eye art, voice clips, lip sequences and timings without a software change. | EYE-014, SHW-021, SHW-030, THM-001 | Chosen on the phone page (SHW-030); the brain loads it and tells the eyes (SHW-021); the eyes swap their art (EYE-014); the format makes themes swappable (THM-001). | — | demonstration | VE-005 |
 | SYS-017 | functional | 0 | approved | If any one component stops working (an eye pod, the radar, Falcon Player, the brain or the Wi-Fi), the remaining components shall keep running and the monster shall fall back to a sleepy or idle look: eyes wandering and blinking on their own, no greetings without the radar, no voice or lip movement without Falcon Player. | DEP-002, EYE-006, EYE-007, SHW-018, SHW-039 | Each part keeps going on its own: the brain handles lost parts (SHW-018), the eyes fall back without the brain (EYE-006, EYE-007), the broker reports drop-outs by last-will (SHW-039), and services restart crashed programs (DEP-002). | — | test | VE-004 |
@@ -227,6 +228,7 @@ Open risks from `docs/requirements/risks.yaml` (19 of 19).
 | SYS-048 | functional | 0 | approved | While a visitor is at the door, the eyes shall look toward the door, and the monster may say lines from the theme's door pool (an empty pool means no door talk). | SHW-012, THM-007 | The brain looks at the door and may talk (SHW-012); the theme holds the door lines (THM-007). | — | demonstration | VE-005, VE-501 |
 | SYS-049 | functional | 0 | approved | When a visitor walks away from the house while the monster is awake, the eyes shall follow that visitor and the monster shall say a goodbye line to them, even if other visitors remain, keeping the minimum gap between lines (SYS-027). | SHW-010, SHW-013 | The brain marks visitors as going (SHW-010) and says goodbye to them (SHW-013). | — | test | VE-004 |
 | SYS-050 | functional | 0 | approved | When a new visitor comes toward the house while the monster is awake, the eyes shall glance at them with a happy or surprised look, and the monster may say a line from the theme's arrival pool, keeping the minimum gap between lines (SYS-027). | SHW-010, SHW-014, THM-007 | The brain marks visitors as coming (SHW-010) and glances or greets (SHW-014); the theme's arrival pool starts empty (THM-007). | — | demonstration | VE-005, VE-501 |
+| SYS-051 | constraint | 1 | proposed | Everything taken down at the end of the season shall pack for storage into no more than TBD-037. | DEP-004 | The teardown checklist packs every part and records the packed size (DEP-004). | — | demonstration | VE-106 |
 
 ### EYE — Eyes
 
@@ -268,7 +270,7 @@ Open risks from `docs/requirements/risks.yaml` (19 of 19).
 | SHW-005 | functional | 0 | proposed | While Watching, the brain shall trigger a clip from the comment pool at a random interval within the theme's comment range. | SYS-006 | monster-brain | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). | — | — | test | VE-001 |
 | SHW-006 | functional | 0 | proposed | The brain shall convert each radar position (mm, radar-relative) to house coordinates (m) using the radar's mount position from the site config, and set the look height to the site config's head height. | SYS-004 | monster-brain | Gaze math lives in the brain (architecture §3b); the radar only reports raw positions. | — | — | test | VE-001 |
 | SHW-007 | functional | 0 | proposed | The brain shall smooth each visitor's position to remove radar jitter, adding no more delay than its share of SYS-019 (TBD-034). | SYS-004, SYS-019 | monster-brain | Filtering goes with the gaze math in the brain, so the radar stays a simple limb; the brain's hop in path P1. | — | — | test | VE-001 |
-| SHW-008 | functional | 0 | proposed | The brain shall choose one focus visitor: a new arrival wins; otherwise it holds on one visitor for a random 3-6 s, then switches; the closest visitor breaks ties. | SYS-005 | monster-brain | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). | — | — | test | VE-001 |
+| SHW-008 | functional | 0 | proposed | The brain shall choose one focus visitor: a new arrival wins; otherwise it holds on one visitor for a random 3-6 s, then switches, preferring visitors coming toward the house over those standing still or going; the closest visitor breaks ties. | SYS-005 | monster-brain | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). | — | — | test | VE-001 |
 | SHW-009 | performance | 0 | proposed | While a visitor is tracked, the brain shall publish the focus visitor's look point at about 10 times per second. | SYS-028, SYS-019 | monster-brain | The brain is the only publisher of look points; this is its hop rate in path P1. | — | needed | test | VE-001 |
 | SHW-010 | functional | 0 | proposed | The brain shall follow each visitor across radar updates as the same visitor, and mark each newly seen visitor as coming toward the house or going away from it. | SYS-008, SYS-049, SYS-050 | monster-brain | Who is who and which way they're heading is a decision built from raw radar slots (brain). | — | — | test | VE-001 |
 | SHW-011 | functional | 0 | proposed | When a visitor is lost inside the door zone (site config), the brain shall keep them as a visitor at the door until they are seen again or the theme's door hold time (TBD-028) passes, and shall not count them as gone for the goodbye timer. | SYS-047, SYS-007 | monster-brain | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). | — | — | test | VE-001 |
@@ -279,7 +281,7 @@ Open risks from `docs/requirements/risks.yaml` (19 of 19).
 | SHW-016 | functional | 0 | proposed | The brain shall pick clips from each pool in a shuffled order and not repeat a clip until every clip in that pool has played. | SYS-015 | monster-brain | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). | — | — | test | VE-001 |
 | SHW-017 | performance | 0 | proposed | The brain shall not start a clip until the theme's minimum gap has passed since the previous clip ended, except for clips the owner triggers from the phone. | SYS-027 | monster-brain | When clips play is a decision (brain); FPP only plays what it is told. | — | needed | test | VE-001 |
 | SHW-018 | functional | 0 | proposed | The brain shall handle failures as in architecture §3b: with the radar offline or silent for TBD-023, stay in an ambient mode (eyes idle, no greetings); with an eye pod offline, log it and carry on; with Falcon Player not responding, keep the eyes going without voice. | SYS-017, SYS-029 | monster-brain | Only the brain sees every component's status, so it decides the fallback. | — | — | test | VE-001 |
-| SHW-019 | functional | 0 | proposed | Outside the theme's show hours (TBD-024), the brain shall stay Asleep and trigger no voice clips. | SYS-014 | monster-brain | One schedule, in the brain, so moods and voice follow it together. | — | — | test | VE-001 |
+| SHW-019 | functional | 0 | proposed | Outside the theme's show hours (TBD-024), the brain shall stay Asleep and trigger no voice clips, unless the owner presses wake now on the phone; it then follows its moods as in show hours until the owner presses sleep now. | SYS-014 | monster-brain | One schedule, in the brain, so moods and voice follow it together. | — | — | test | VE-001 |
 | SHW-020 | functional | 0 | proposed | While muted, the brain shall trigger no voice clips and shall keep commanding the eyes. | SYS-013 | monster-brain | The brain is the only thing that triggers clips, so muting means not triggering. | — | — | test | VE-001 |
 | SHW-021 | functional | 0 | proposed | When a theme is chosen, the brain shall load its settings and clip pools and publish the theme's name to the eyes. | SYS-016 | monster-brain | The brain holds the pools and publishes the theme to the eyes. | — | — | test | VE-001 |
 | SHW-022 | functional | 0 | proposed | The brain shall publish its current mood whenever it changes, retained. | SYS-012 | monster-brain | Only the brain knows the mood. | — | — | test | VE-001 |
@@ -390,6 +392,7 @@ Open risks from `docs/requirements/risks.yaml` (19 of 19).
 | DEP-001 | functional | 1 | proposed | One setup script shall turn a fresh Raspberry Pi OS Lite (64-bit) install on a Pi 5 (1GB) into an eye pod: dependencies installed, the renderer as a service, full-screen on KMS/DRM, cursor hidden, starting at boot. | SYS-039, SYS-045 | pi-setup | Building a node from a fresh install is deployment's job. | — | — | demonstration | VE-102 |
 | DEP-002 | functional | 1 | proposed | The system services shall start the renderer, brain and broker at boot and restart any of them that stops. | SYS-017, SYS-045 | service-units | Starting and restarting at boot is a system service's job. | — | — | test | VE-101 |
 | DEP-003 | functional | 1 | proposed | The install checklists shall cover each season's setup and teardown, and the first one-eye test (projector, screen, mask, shroud, mirroring, rotation). | SYS-045 | install-checklists | Checklists are deployment documents. | — | — | inspection | VE-103 |
+| DEP-004 | functional | 1 | proposed | The teardown checklist shall say how each part is packed and list the packed size of each box, so the total can be checked against the storage limit (TBD-037). | SYS-051 | install-checklists | Packing is the last step of teardown, which the checklists already cover (DEP-003). | — | — | demonstration | VE-106 |
 
 ## Allocation
 
@@ -731,6 +734,8 @@ flowchart LR
   DEP_002 -.-> c_service_units([service-units])
   SYS_045[SYS-045] --> DEP_003[DEP-003]
   DEP_003 -.-> c_install_checklists([install-checklists])
+  SYS_051[SYS-051] --> DEP_004[DEP-004]
+  DEP_004 -.-> c_install_checklists([install-checklists])
 ```
 
 ## Interfaces

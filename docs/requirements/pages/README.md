@@ -4,7 +4,7 @@
 
 | Subsystem | Requirements |
 |---|---|
-| [SYS — Monster House system specification](sys.md) | 50 |
+| [SYS — Monster House system specification](sys.md) | 51 |
 | [EYE — Eyes](eye.md) | 24 |
 | [SHW — Show control](shw.md) | 40 |
 | [EAR — Ears](ear.md) | 9 |
@@ -13,4 +13,4 @@
 | [INF — Infrastructure](inf.md) | 13 |
 | [THM — Themes](thm.md) | 7 |
 | [SIM — Simulators](sim.md) | 6 |
-| [DEP — Deployment](dep.md) | 3 |
+| [DEP — Deployment](dep.md) | 4 |

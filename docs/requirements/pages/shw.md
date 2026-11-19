@@ -97,7 +97,7 @@ The brain shall smooth each visitor's position to remove radar jitter, adding no
 
 ## SHW-008
 
-The brain shall choose one focus visitor: a new arrival wins; otherwise it holds on one visitor for a random 3-6 s, then switches; the closest visitor breaks ties.
+The brain shall choose one focus visitor: a new arrival wins; otherwise it holds on one visitor for a random 3-6 s, then switches, preferring visitors coming toward the house over those standing still or going; the closest visitor breaks ties.
 
 | | |
 |---|---|
@@ -241,7 +241,7 @@ The brain shall handle failures as in architecture §3b: with the radar offline 
 
 ## SHW-019
 
-Outside the theme's show hours (TBD-024), the brain shall stay Asleep and trigger no voice clips.
+Outside the theme's show hours (TBD-024), the brain shall stay Asleep and trigger no voice clips, unless the owner presses wake now on the phone; it then follows its moods as in show hours until the owner presses sleep now.
 
 | | |
 |---|---|

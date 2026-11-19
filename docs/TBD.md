@@ -60,6 +60,7 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-034 | How each end-to-end time (SYS-019 to SYS-023, SYS-029) is shared between the hops on its path | Analysis with a latency model (each hop's estimated or measured delay, added up per path like `tools/reqs/budget.py`), built while burning down TBD-020 to TBD-023 (owner, 2026-11-09); then a Measurement in the Stage 0 simulator and again on hardware. It gives the timing requirements their `basis` | Per-hop budgets in the ICDs' timing sections ([timing-budgets.md](requirements/timing-budgets.md)) | Stage 0 Step 4 | PDR | Open |
 | TBD-035 | How the lips' idle "breathe" color follows the theme (a WLED preset per theme, chosen by the brain or by FPP) | Owner decision, then a Test with WLED | MTH-001, theme format (ICD-005) | Stage 4 | CDR-4 | Open |
 | TBD-036 | Whether Falcon Player can run on the porch Pi 5 next to the brain and Mosquitto (FPP's own OS image vs Raspberry Pi OS) | Verify against FPP's documentation, then a Test | Porch Pi software setup (ICD-013), SYS-039 | Before the Stage 3 purchase | CDR-3 | Open |
+| TBD-037 | How much storage space the packed kit may take (SYS-051) | Owner decision: measure the space set aside for it | Teardown checklist and packing (DEP-004) | Stage 1 install | CDR-1 | Open |
 
 ## Closed
 

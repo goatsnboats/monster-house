@@ -10,7 +10,9 @@ uniform vec2  u_window;      // output size in pixels
 uniform bool  u_rotate90;    // projector on its side: the output is turned a quarter turn
 uniform bool  u_mirror;      // rear projection: flip left-right
 uniform vec2  u_eye_center;  // where the eye sits in the window (0-1)
-uniform float u_eye_size;    // fraction of the window the eye fills (0-1)
+uniform float u_scale;       // pixels per sketch unit (round things: iris, pupil, lines)
+uniform vec2  u_stretch;     // how much wider and taller the eye is than the sketch's (1, 1 = as sketched)
+uniform bool  u_fill;        // the white fills a rectangle (the whole window), not an oval
 uniform float u_brightness;  // 0-1, to match the two eyes
 
 uniform vec2  u_gaze;        // iris offset, sketch units
@@ -41,6 +43,12 @@ float ellipse(vec2 p, vec2 c, vec2 r) {
     return (length(q) - 1.0) * min(r.x, r.y);
 }
 
+// Approximate signed distance to a rectangle with half-size h.
+float box(vec2 p, vec2 c, vec2 h) {
+    vec2 d = abs(p - c) - h;
+    return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
+}
+
 // A four-pointed sparkle of size s.
 float star(vec2 p, vec2 c, float s) {
     vec2 q = abs(p - c) / s;
@@ -54,17 +62,21 @@ void main() {
     if (u_rotate90) { w = vec2(w.y, u_window.x - w.x); size = u_window.yx; }
     if (u_mirror)   { w.x = size.x - w.x; }
 
-    // 2. Window -> sketch space, with the eye placed and sized within the window.
-    float scale = min(size.x / 300.0, size.y / 400.0) * u_eye_size;
-    vec2 p = (w - size * u_eye_center) / scale + vec2(150.0, 200.0);
-    float px = 1.0 / scale;                 // one pixel, in sketch units
+    // 2. Window -> sketch space, with the eye placed within the window. The white, the
+    // lids and the iris's travel stretch with the eye's shape; the iris, pupil and lines
+    // stay round and keep their size, so the pupil is always round (EYE-011).
+    vec2 k = u_stretch;
+    vec2 c = vec2(150.0, 200.0);
+    vec2 p = (w - size * u_eye_center) / u_scale + c;
+    float px = 1.0 / u_scale;               // one pixel, in sketch units
 
     vec3 col = BG;
-    float sclera = ellipse(p, vec2(150.0, 200.0), vec2(118.0, 160.0));
+    vec2 r = vec2(118.0, 160.0) * k;
+    float sclera = u_fill ? box(p, c, r) : ellipse(p, c, r);
 
     // 3. Inside the white: iris, ring, pupil, catchlights, sparkles.
     vec3 eye = u_sclera;
-    vec2 ic = vec2(150.0, 200.0) + u_gaze;
+    vec2 ic = c + u_gaze * k;
     float di = length(p - ic);
     eye = mix(eye, u_iris, fill(di - 62.0, px));
     eye = mix(eye, RING,   fill(abs(di - 59.0) - 3.0, px));
@@ -74,15 +86,17 @@ void main() {
     float spark = min(star(p, ic + vec2(28.0, -32.0), 16.0), star(p, ic + vec2(-34.0, 25.0), 11.0));
     eye = mix(eye, vec3(1.0), u_spark * fill(spark, px));
 
-    // 4. Lids. The sketch's curves reduce to y = edge + 4t(1-t) * bulge across the eye.
-    float yT = 25.0;
-    float yl = 375.0 - u_low * 160.0;
-    float cu = 30.0;
-    float cl = 10.0 + u_curve * 45.0;
-    float yu = yT + (1.0 - min(u_open, 1.2)) * (yl - yT) - (u_open > 1.0 ? (u_open - 1.0) * 60.0 : 0.0);
-    float t = (p.x - 20.0) / 260.0;
+    // 4. Lids. The sketch's curves reduce to y = edge + 4t(1-t) * bulge across the eye
+    // (sketch values: top 25, bottom 375, lids 260 wide), stretched with the eye.
+    float yT = c.y - 175.0 * k.y;
+    float yl = c.y + 175.0 * k.y - u_low * 160.0 * k.y;
+    float cu = 30.0 * k.y;
+    float cl = (10.0 + u_curve * 45.0) * k.y;
+    float yu = yT + (1.0 - min(u_open, 1.2)) * (yl - yT) - (u_open > 1.0 ? (u_open - 1.0) * 60.0 * k.y : 0.0);
+    float lidW = 260.0 * k.x;
+    float t = (p.x - (c.x - lidW * 0.5)) / lidW;
     float bump = 4.0 * t * (1.0 - t);
-    float slope = 4.0 * (1.0 - 2.0 * t) / 260.0;
+    float slope = 4.0 * (1.0 - 2.0 * t) / lidW;
     float upper = yu + bump * cu;           // lower edge of the upper lid
     float lower = yl - bump * cl;           // upper edge of the lower lid
     float dUp = (p.y - upper) / sqrt(1.0 + pow(slope * cu, 2.0));

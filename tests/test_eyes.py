@@ -250,3 +250,22 @@ def test_closed_eye_shows_no_white(gl):
     size, data = _draw(gl, load_window("right"), False, Frame(EXPRESSIONS["asleep"], (0.0, 0.0)))
     sclera = tuple(round(c * 255) for c in DEFAULT_THEME.sclera_color)
     assert all(_pixel(size, data, x, y) != sclera for y in range(0, size[1], 3) for x in range(0, size[0], 3))
+
+
+def test_eye_shapes_fill_more_of_the_tall_window(gl):
+    """oval < stretch < window: how much of the left window is lit (not background)."""
+    from eyes.render import layout
+    assert layout((225, 400), 0.9, "oval")[1] == (1.0, 1.0)
+    left = load_window("left")
+    lit = {}
+    for shape in ("oval", "stretch", "window"):
+        from eyes.render import EyeRenderer, output_size
+        size = output_size(left, 200, False)
+        fbo = gl.simple_framebuffer(size)
+        r = EyeRenderer(gl, size, left, DEFAULT_THEME, False, fbo, shape)
+        r.draw(NEUTRAL)
+        data = r.read_rgba()
+        lit[shape] = sum(1 for i in range(0, len(data), 4) if tuple(data[i:i + 3]) != (11, 11, 18))
+    assert lit["oval"] < lit["stretch"] < lit["window"]
+    with pytest.raises(ValueError):
+        layout((10, 10), 0.9, "square")

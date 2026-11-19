@@ -23,7 +23,7 @@ import time
 
 from eyes.config import ConfigError, load_theme, load_window
 from eyes.expressions import EXPRESSIONS
-from eyes.render import EyeRenderer, offscreen, output_size
+from eyes.render import SHAPES, EyeRenderer, offscreen, output_size
 from eyes.state import EyeState
 
 log = logging.getLogger("eyes")
@@ -36,6 +36,8 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     ap.add_argument("--long-side", type=int, default=720, help="window's long side in pixels (desktop window)")
     ap.add_argument("--projector", action="store_true",
                     help="draw exactly what the projector shows (rotated and mirrored), not the street view")
+    ap.add_argument("--shape", choices=SHAPES, default="oval",
+                    help="oval (the sketch), stretch (oval shaped like the window) or window (fills the glass)")
     ap.add_argument("--fullscreen", action="store_true", help="full screen, cursor hidden (as on the Pi)")
     ap.add_argument("--expression", default="neutral", choices=list(EXPRESSIONS))
     ap.add_argument("--no-vsync", action="store_true", help="draw as fast as possible (to measure cost per frame)")
@@ -66,7 +68,7 @@ def screenshot(args, window, theme, state) -> int:
     import pygame
     size = output_size(window, args.long_side, args.projector)
     ctx, fbo = offscreen(size, software=args.software)
-    renderer = EyeRenderer(ctx, size, window, theme, args.projector, fbo)
+    renderer = EyeRenderer(ctx, size, window, theme, args.projector, fbo, args.shape)
     frame = state.update(1.0)          # one second in: the expression has settled
     renderer.draw(frame)
     pygame.image.save(pygame.image.frombytes(renderer.read_rgba(), size, "RGBA"), args.screenshot)
@@ -91,7 +93,7 @@ def run_window(args, window, theme, state) -> int:
     size = pygame.display.get_surface().get_size()
     ctx = moderngl.create_context(require=310)
     log.info("%s eye, %dx%d, %s", args.side, *size, ctx.info["GL_RENDERER"])
-    renderer = EyeRenderer(ctx, size, window, theme, args.projector)
+    renderer = EyeRenderer(ctx, size, window, theme, args.projector, shape=args.shape)
 
     names = list(EXPRESSIONS)
     frame_times: list[float] = []
@@ -108,7 +110,7 @@ def run_window(args, window, theme, state) -> int:
             elif event.type == pygame.KEYDOWN and pygame.K_1 <= event.key <= pygame.K_6:
                 state.set_expression(names[event.key - pygame.K_1], ms=300)
             elif event.type == pygame.MOUSEMOTION and not args.projector:
-                scale = min(size[0] / 300, size[1] / 400) * window.eye_size
+                scale = renderer.scale
                 cx, cy = size[0] * window.eye_center[0], size[1] * window.eye_center[1]
                 state.aim_sketch((event.pos[0] - cx) / scale + 150, (event.pos[1] - cy) / scale + 200)
 

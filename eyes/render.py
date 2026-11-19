@@ -34,9 +34,32 @@ def output_size(window: Window, long_side_px: int, projector: bool) -> tuple[int
     return w, h
 
 
+SHAPES = ("oval", "stretch", "window")
+
+
+def layout(size: tuple[int, int], eye_size: float, shape: str) -> tuple[float, tuple[float, float], bool]:
+    """How the eye fills its output: (pixels per sketch unit, stretch, fill a rectangle).
+
+    oval     the sketch's oval (3 wide x 4 tall), as big as fits (eye_size of the window)
+    stretch  an oval stretched to the window's shape (eye_size of each side)
+    window   the white fills the whole window; the window frame is the eye's edge
+    The size here is the window as seen from the street (before any rotation).
+    """
+    sx, sy = size[0] / 300, size[1] / 400
+    scale = min(sx, sy)
+    if shape == "oval":
+        return scale * eye_size, (1.0, 1.0), False
+    if shape == "stretch":
+        return scale * eye_size, (sx / scale, sy / scale), False
+    if shape == "window":
+        # The white is 236 x 320 sketch units; make it cover the whole window.
+        return scale, (size[0] / (236 * scale), size[1] / (320 * scale)), True
+    raise ValueError(f"eye shape must be one of {SHAPES}, not {shape!r}")
+
+
 class EyeRenderer:
     def __init__(self, ctx: moderngl.Context, size: tuple[int, int], window: Window, theme: Theme,
-                 projector: bool, target: moderngl.Framebuffer | None = None) -> None:
+                 projector: bool, target: moderngl.Framebuffer | None = None, shape: str = "oval") -> None:
         """projector=False draws the street view (no rotation or mirroring).
         target: where to draw; the window (ctx.screen) unless given."""
         self.ctx = ctx
@@ -50,7 +73,11 @@ class EyeRenderer:
         self.prog["u_rotate90"].value = projector and window.rotate_deg == 90
         self.prog["u_mirror"].value = projector and window.mirror
         self.prog["u_eye_center"].value = window.eye_center
-        self.prog["u_eye_size"].value = window.eye_size
+        street = size[::-1] if projector and window.rotate_deg == 90 else size
+        self.scale, stretch, fill = layout(street, window.eye_size, shape)
+        self.prog["u_scale"].value = self.scale
+        self.prog["u_stretch"].value = stretch
+        self.prog["u_fill"].value = fill
         self.prog["u_brightness"].value = window.brightness
         self.set_theme(theme)
 

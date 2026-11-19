@@ -29,6 +29,7 @@ Useful options:
 |---|---|
 | `--projector` | Show exactly what the projector gets: turned a quarter turn if `rotate_deg: 90`, and mirrored. Without it you see the street view |
 | `--long-side 900` | Window size: pixels along the window's long side |
+| `--shape stretch` | Eye shape to try: `oval` (the sketch, default), `stretch` (oval shaped like the window), `window` (fills the glass). A trial option until the owner picks; then it becomes a site-config setting |
 | `--fullscreen` | Full screen with the cursor hidden, as on the Pi |
 | `--seconds 20 --no-vsync` | Quit after 20 s and print frame timing (60 fps check, EYE-008) |
 | `--screenshot eye.png --software` | Draw one frame to a PNG with no window and no GPU |

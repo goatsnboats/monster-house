@@ -95,12 +95,12 @@ flowchart TB
 - **Image is mirrored horizontally**, because the audience sees the screen from behind. This is a setting in the renderer (or in the projector's "rear" mode). Don't do both.
 
 ### Per-eye configuration (the windows are different sizes)
-One window is much smaller than the other, and the larger one may have a center divider. Each eye has its own settings:
+The usable glass (below permanent blinds) is 27 × 48 in on the left and 36 × 48 in on the right, and the right window has a large center divider (measurements in [ICD-011](interfaces/ICD-011-eye-window.md)). Each eye has its own settings:
 
 ```yaml
 eyes:
   left:                       # as seen from the street
-    window_m: {w: 0.0, h: 0.0}        # glass size, to be measured
+    window_m: {w: 0.686, h: 1.219}    # usable glass size (left, measured)
     position_m: {x: -1.6, y: -0.5, z: 5.0}   # window center in house coordinates
     rotate_deg: 90            # 0 or 90: projector on its side for a tall window
     mirror: true              # rear projection
@@ -165,7 +165,7 @@ Each pod publishes `monster/eyes/left/status` (or `right`) as `online`/`offline`
 - **Window grids** will show as dark lines over the eye. Test early: embrace them, or check whether the grids pop out.
 - **Brightness at dusk** versus street lights. Test a projector in the real window in spring.
 - **Projector fan noise** in the bedroom. The schedule turns pods off at bedtime.
-- **Window glass size** is still needed; it sets the screen size and the projector distance.
+- **Window glass size** is measured ([ICD-011](interfaces/ICD-011-eye-window.md)). Still needed: the right window's divider width and the floor space behind the left window (TBD-006).
 
 ---
 
@@ -503,7 +503,7 @@ Each stage is a complete, showable monster. Costs are rough, before tax and ship
 - What's the monster's name, and who voices it?
 - Lopsided eyes (one big, one small) or matched eyes? Decide with the Stage 0 house preview
 - Does each projector sit on its side (tall eye) or flat? Depends on window shape and projector vents
-- Window glass width and height for **both** windows, any fixed dividers, and floor space behind each (sets the screen, rotation and projector distance)
+- ~~Window glass width and height for **both** windows~~ (measured 2026-11-15); still the right window's divider width and the floor space behind the left window
 - Porch roofline and railing length (sets the LED quantity)
 - Wi-Fi signal strength on the porch
 - Window grids: embrace them, or remove them for the season?

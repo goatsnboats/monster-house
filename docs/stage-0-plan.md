@@ -6,6 +6,7 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
 
 ## Prep (owner)
 - [ ] Measure both windows: glass width × height, any fixed dividers, and the floor space behind each.
+  _Glass, sills, the right window's divider and the floor behind it done 2026-11-15 ([ICD-011](interfaces/ICD-011-eye-window.md)). Still: divider width, floor behind the left window._
 - [x] Note the desktop's operating system.
   _Ubuntu 26.04.1 LTS (read from `/etc/os-release` on 2026-11-18; the owner remembered 24)._
 - [ ] Install Git, Python 3.11+, Mosquitto and Claude Code on the desktop.

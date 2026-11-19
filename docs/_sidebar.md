@@ -95,3 +95,5 @@
 - Templates
   - [NNNN — &lt;decision in a few words&gt;](/templates/adr.md)
   - [TS-NNN — &lt;the question, in a few words&gt;](/templates/trade-study.md)
+- Design
+  - [Doc feedback — design note](/design/doc-feedback.md)

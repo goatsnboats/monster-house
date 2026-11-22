@@ -467,13 +467,14 @@ def test_srr_readiness_report(tmp_path):
     assert rows["E7"] == "fail"          # the test register has no Gate column
     (root / "docs/TBD.md").write_text(
         "| ID | What | Resolved by | Blocks | Needed by | Gate | Status |\n|---|---|---|---|---|---|---|\n"
-        "| TBD-001 | Something open | Owner decision | — | — | PDR | Open |\n")
+        "| TBD-001 | Something open | Owner decision | — | — | PDR | Open |\n"
+        "| TBD-002 | A study under way | Trade study | — | — | PDR | Evaluating |\n")
     model = load(root)
     rows = {name.split(" ")[0]: result for name, result, _ in review.srr(model, check_all(model))}
     assert rows["E7"] == "pass"
     assert main(["--root", str(root), "--review", "srr"]) == 0
     report = (root / "docs/reviews/srr/readiness.md").read_text()
-    assert "| PDR | 1: TBD-001 |" in report
+    assert "| PDR | 2: TBD-001, TBD-002 |" in report   # a study's stage still counts as open
 
 
 def test_schema_subset():

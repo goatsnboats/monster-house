@@ -1,6 +1,6 @@
 # TS-003 — Message schemas in code: how payloads are defined and checked
 
-> **Status:** Recommended · **Date:** 2026-11-22 · **Decides:** how the Python components define, build and check MQTT payloads, and how that stays in step with the ICDs · **TBD:** TBD-003 · **ADR:** [0003](../decisions/0003-message-schemas.md) (Proposed) · **Affects:** `shared/`, Stage 0 Steps 1-6, ICD-001 to ICD-004, ADR 0001
+> **Status:** Decided (owner, 2026-11-22, in session) · **Date:** 2026-11-22 · **Decides:** how the Python components define, build and check MQTT payloads, and how that stays in step with the ICDs · **TBD:** [TBD-003](../TBD.md) (closed) · **ADR:** [0003](../decisions/0003-message-schemas.md) (Accepted) · **Results:** [report](results/TS-003/README.md) · **Affects:** `shared/`, Stage 0 Steps 1-6, ICD-001 to ICD-004, ADR 0001
 
 Status moves through `Framing` → `Awaiting weights` (Stop 1) → `Evaluating` →
 `Recommended` (Stop 2) → `Decided (owner, YYYY-MM-DD, <where>)`.
@@ -193,7 +193,16 @@ no new dependency.
 
 ## 9. Decision
 
-*Open: the owner decides (Stop 2). Proposed: [ADR 0003](../decisions/0003-message-schemas.md).*
+**Decided by the owner on 2026-11-22, in the Claude Code session, after reading the Stop 2
+recommendation: option D, generate the message classes from the ICDs.** Recorded in
+[ADR 0003](../decisions/0003-message-schemas.md) (Accepted).
+
+- **Requirement allocations:** none change (see ADR 0003).
+- **TBD register:** TBD-003 closed.
+- **Still to do, in Stage 0 Step 1:** build the generator and move the schema checker into
+  `shared/`, have the checker run the generator, and add a drift test. Whether to add
+  `title`s to ICD-001's look choices (for class names such as `LookAt`) is a small ICD
+  text change to settle then.
 
 ## Couplings
 

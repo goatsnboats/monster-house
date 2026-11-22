@@ -1,6 +1,6 @@
 # TS-003 results report — message schemas in code
 
-> **Status:** Final · **Date:** 2026-11-22 · **Study:** [TS-003](../../TS-003-message-schemas.md) · **Decision:** [ADR 0003](../../../decisions/0003-message-schemas.md) (Proposed) · **TBD:** TBD-003
+> **Status:** Final · **Date:** 2026-11-22 · **Study:** [TS-003](../../TS-003-message-schemas.md) · **Decision:** [ADR 0003](../../../decisions/0003-message-schemas.md) (Accepted) · **TBD:** TBD-003 (closed)
 
 This report backs up TS-003 with its evidence: ICD-001's five messages written four ways,
 then round-tripped, attacked, changed and measured. Everything here can be regenerated
@@ -30,7 +30,7 @@ hand-written dataclasses) 465; C (msgspec) 325; B (pydantic) 285.**
    keeping a 69-line generator is worth never hand-editing the code.
 
 **Order of events.** The owner set the weights on 2026-11-22 (Stop 1); the evidence was
-gathered and scored the same day.
+gathered and scored the same day (Stop 2), and the owner chose D the same day.
 
 ## What was compared
 

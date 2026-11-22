@@ -1,6 +1,6 @@
 # ICD-001 — Eye commands and eye status
 
-> **Status:** Draft · **Updated:** 2026-11-09 · **Requirements:** SHW-024, EYE-015, SIM-006 · **Spec tree:** [N² chart](../requirements/spec-tree.md)
+> **Status:** Draft · **Updated:** 2026-11-22 · **Requirements:** SHW-024, EYE-015, SIM-006 · **Spec tree:** [N² chart](../requirements/spec-tree.md)
 
 The brain tells both eyes where to look, which expression to show, when to blink and
 which theme's art to load. Each eye works out its own angle from its own window position
@@ -103,9 +103,10 @@ messages:
 | `theme` | Load this theme's eye art and colors (retained, so a restarted eye gets it at once) |
 | `monster/eyes/{side}/status` | `{side}` is `left` or `right` (from the street). `online` when connected; `offline` as the last-will |
 
-**Encoding:** commands are JSON objects in UTF-8; the status is plain text. How the code
-defines and validates these payloads is still open (TBD-003); the wire format above
-follows architecture §2.
+**Encoding:** commands are JSON objects in UTF-8; the status is plain text. The code's message
+classes are generated from the schemas above, and every payload is checked against
+them ([ADR 0003](../decisions/0003-message-schemas.md)); the wire format follows
+architecture §2.
 
 ## Timing
 

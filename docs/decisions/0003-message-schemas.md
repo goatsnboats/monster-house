@@ -1,6 +1,6 @@
 # 0003 — Message schemas: generate the code from the ICDs
 
-> **Status:** Proposed · **Date:** 2026-11-22 · **Deciders:** owner · **Supersedes:** — · **Trade study:** [TS-003](../trades/TS-003-message-schemas.md)
+> **Status:** Accepted (owner, 2026-11-22, in session) · **Date:** 2026-11-22 · **Deciders:** owner · **Supersedes:** — · **Trade study:** [TS-003](../trades/TS-003-message-schemas.md)
 
 ## Context
 Every component is Python (ADR 0002) and talks over MQTT. The ICDs already define each
@@ -64,7 +64,7 @@ payload; a sender refuses one.
 - [TS-003](../trades/TS-003-message-schemas.md) and its [results report](../trades/results/TS-003/README.md)
 - [TBD register](../TBD.md) (TBD-003)
 - [ADR 0001](0001-requirements-and-architecture-format.md), [ADR 0002](0002-eye-renderer.md)
-- Owner's decision: *pending*
+- Owner's decision: 2026-11-22, in the Claude Code session, after the Stop 2 recommendation ("D sounds good")
 
 <!-- Status values: Proposed → Accepted (owner, YYYY-MM-DD, <where>) → Superseded by NNNN.
      An Accepted ADR is never edited; a new ADR supersedes it. -->

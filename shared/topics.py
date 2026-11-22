@@ -5,8 +5,8 @@ This is the ONE place topic strings are written down (see CLAUDE.md,
 
 Source: docs/architecture.md §2 (eye messages) and §3c (topic map).
 
-Topic NAMES only. What goes inside each message (payload formats and how they
-are checked) is still open: TBD-003.
+Topic NAMES only. What goes inside each message is defined in the ICDs; the code
+for it will be generated from them (docs/decisions/0003-message-schemas.md).
 
 Wildcards, for reading the subscribe patterns below:
   +  matches exactly one level   (monster/eyes/+/status)

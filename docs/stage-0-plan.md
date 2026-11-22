@@ -17,7 +17,7 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
 ## Step 1 — Project setup (November)
 - [x] Folder layout per `docs/architecture.md` §10. One Python virtual environment and a dependency file.
 - [ ] `shared/`: MQTT topic names and payload schemas (dataclasses or pydantic) for everything in architecture §2–3c.
-  _Topic names done (`shared/topics.py`). Payload schemas wait for TBD-003._
+  _Topic names done (`shared/topics.py`). How payloads are defined is decided ([ADR 0003](decisions/0003-message-schemas.md), 2026-11-22): message classes generated from the ICDs. Building that is next._
 - [ ] Mosquitto running locally, with a config file in `deploy/`.
   _Config and run script done (`deploy/mosquitto/`) and tested with Mosquitto 2.0.22. Tick once Mosquitto is installed on the desktop (owner: needs sudo)._
 - [x] A tiny helper to publish and subscribe from the command line, for debugging.

@@ -1,6 +1,6 @@
 # TS-003 — Message schemas in code: how payloads are defined and checked
 
-> **Status:** Awaiting weights · **Date:** 2026-11-18 · **Decides:** how the Python components define, build and check MQTT payloads, and how that stays in step with the ICDs · **TBD:** TBD-003 · **ADR:** — · **Affects:** `shared/`, Stage 0 Steps 1-6, ICD-001 to ICD-004, ADR 0001
+> **Status:** Evaluating · **Date:** 2026-11-22 · **Decides:** how the Python components define, build and check MQTT payloads, and how that stays in step with the ICDs · **TBD:** TBD-003 · **ADR:** — · **Affects:** `shared/`, Stage 0 Steps 1-6, ICD-001 to ICD-004, ADR 0001
 
 Status moves through `Framing` → `Awaiting weights` (Stop 1) → `Evaluating` →
 `Recommended` (Stop 2) → `Decided (owner, YYYY-MM-DD, <where>)`.
@@ -55,13 +55,18 @@ stay in step with the payload schemas already written in the ICDs?
 
 | ID | Criterion | Weight | How measured | 1 = | 3 = | 5 = |
 |---|---|---|---|---|---|---|
-| C1 | **One source, no drift:** how many places change when a payload changes, and how surely a mismatch is caught | _30_ | Count the edits for a sample change (add a field to `expression`); seed a mismatch and see what catches it | Two or more hand-kept copies; a mismatch shows up only at run time | Two copies, but a test fails on any mismatch | One source; everything else derives from it automatically |
-| C2 | **Readable for the owner:** how plain the definitions and the sending/receiving code are | _25_ | Write the ICD-001 messages in each option; judge against "plain over clever" (CLAUDE.md) | Needs a framework's concepts (validators, generated code nobody reads) to follow | Readable with one library idiom to learn | Plain Python a reader follows line by line |
-| C3 | **Catches mistakes:** what is checked on receive (types, enums, ranges, unknown keys) and whether the editor flags a wrong field when sending | _20_ | Seed bad payloads (wrong type, unknown enum, extra key, out of range); check the editor's type hints | Only "is it JSON" | Types and required keys | Everything in the ICD schema, plus typed fields in the editor |
-| C4 | **Footprint on the Pi:** extra install size, memory and import time in each component | _15_ | Measure on the desktop (no Pi yet: TBD-013); judge the Pi from that | Tens of MB of memory or > 0.5 s import | A few MB, < 0.2 s | Standard library or near zero |
-| C5 | **Dependency risk:** new packages to pin, their maintenance and license, and how long they will last | _10_ | Package index and project pages, checked during the study | Several new packages, or one with an uncertain future | One well-maintained package | No new dependency |
+| C1 | **One source, no drift:** how many places change when a payload changes, and how surely a mismatch is caught | **35** | Count the edits for a sample change (add a field to `expression`); seed a mismatch and see what catches it | Two or more hand-kept copies; a mismatch shows up only at run time | Two copies, but a test fails on any mismatch | One source; everything else derives from it automatically |
+| C2 | **Readable for the owner:** how plain the definitions and the sending/receiving code are | **20** | Write the ICD-001 messages in each option; judge against "plain over clever" (CLAUDE.md) | Needs a framework's concepts (validators, generated code nobody reads) to follow | Readable with one library idiom to learn | Plain Python a reader follows line by line |
+| C3 | **Catches mistakes:** what is checked on receive (types, enums, ranges, unknown keys) and whether the editor flags a wrong field when sending | **10** | Seed bad payloads (wrong type, unknown enum, extra key, out of range); check the editor's type hints | Only "is it JSON" | Types and required keys | Everything in the ICD schema, plus typed fields in the editor |
+| C4 | **Footprint on the Pi:** extra install size, memory and import time in each component | **15** | Measure on the desktop (no Pi yet: TBD-013); judge the Pi from that | Tens of MB of memory or > 0.5 s import | A few MB, < 0.2 s | Standard library or near zero |
+| C5 | **Dependency risk:** new packages to pin, their maintenance and license, and how long they will last | **20** | Package index and project pages, checked during the study | Several new packages, or one with an uncertain future | One well-maintained package | No new dependency |
 
-Weights total 100. **The owner sets them at Stop 1.**
+Weights total 100, **set by the owner on 2026-11-22** (Stop 1, chat session). The draft was
+30 / 25 / 20 / 15 / 10. The owner said keeping dependencies few and having one source of
+truth matter most, and chose 35 / 20 / 10 / 15 / 20 from three proposed sets: C1 and C5 rise,
+and the points come mostly from C3 (gate G4 already makes sure a bad message can't crash a
+receiver) and some from C2. Together C4 and C5, the two "keep it light" criteria, now
+carry 35.
 
 Considered and left out as a criterion: **speed.** The busiest message is about 10 per
 second (ICD-001 `look`); any option handles that with room to spare (judgment).
@@ -102,7 +107,7 @@ checker. The ICD is the one source; nobody edits the generated file.
 
 ## 5. Evidence
 
-*Not started: gathered after the owner sets the weights.*
+*Under way (weights set 2026-11-22).*
 
 Planned:
 - **measured:** a trial in `trials/ts-003/` writing ICD-001's five messages in each
@@ -114,7 +119,7 @@ Planned:
 
 ## 6. Scores
 
-*Not run yet (Stop 1).*
+*Not run yet (evidence first).*
 
 ## 7. Sensitivity
 

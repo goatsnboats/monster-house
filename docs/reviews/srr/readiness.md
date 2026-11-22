@@ -10,7 +10,7 @@
 | E4 Concept of operations written, steps mapped | ✅ pass | 51 of 51 system requirements cited in docs/conops.md |
 | E5 Verification plan covers every requirement | ✅ pass | 24 events; 170 of 170 requirements covered |
 | E6 Risk register with ratings and plans | ✅ pass | 19 risks, 0 errors |
-| E7 Every open TBD has a method and a gate | ✅ pass | 35 open or deferred |
+| E7 Every open TBD has a method and a gate | ✅ pass | 36 open or deferred |
 | E8 Every ICD exists; Stage 0 ICDs drafted | ✅ pass | 15 ICDs; Stage 0 drafted: 6 of 6 |
 | E9 Readiness report in the package | ✅ pass | this report |
 | X1 No requirement still proposed | ❌ not yet | 120 proposed |
@@ -27,7 +27,7 @@
 |---|---|
 | SRR | 0: — |
 | PDR | 10: TBD-003, TBD-004, TBD-012, TBD-013, TBD-020, TBD-021, TBD-023, TBD-028, TBD-030, TBD-034 |
-| CDR-1 | 7: TBD-005, TBD-009, TBD-014, TBD-017, TBD-025, TBD-032, TBD-038 |
+| CDR-1 | 8: TBD-005, TBD-006, TBD-009, TBD-014, TBD-017, TBD-025, TBD-032, TBD-038 |
 | CDR-2 | 5: TBD-008, TBD-016, TBD-018, TBD-029, TBD-037 |
 | CDR-3 | 8: TBD-010, TBD-011, TBD-015, TBD-022, TBD-024, TBD-026, TBD-031, TBD-036 |
 | CDR-4 | 4: TBD-007, TBD-027, TBD-033, TBD-035 |

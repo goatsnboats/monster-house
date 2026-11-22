@@ -1,0 +1,49 @@
+--- a/docs/interfaces/ICD-001-eye-commands.md
++++ b/docs/interfaces/ICD-001-eye-commands.md
+@@ -46,13 +46,14 @@
+     rate: on change
+     payload_schema:
+       type: object
+-      required: [name, ms]
++      required: [name, ms, ease]
+       additionalProperties: false
+       properties:
+         name: {enum: [neutral, happy, sparkle, surprised, sleepy, asleep]}
+         ms: {type: integer, minimum: 0}
++        ease: {enum: [linear, smooth]}
+     examples:
+-      - {name: happy, ms: 300}
++      - {name: happy, ms: 300, ease: smooth}
+   - name: blink
+     topic: monster/eyes/blink
+     from: monster-brain
+--- a/trials/ts-003/a_stdlib/messages.py
++++ b/trials/ts-003/a_stdlib/messages.py
+@@ -40,6 +40,7 @@
+ class Expression:
+     name: ExpressionName
+     ms: int
++    ease: Literal["linear", "smooth"]
+ 
+ 
+ @dataclass
+--- a/trials/ts-003/b_pydantic/messages.py
++++ b/trials/ts-003/b_pydantic/messages.py
+@@ -37,6 +37,7 @@
+ class Expression(Message):
+     name: ExpressionName
+     ms: int = Field(ge=0)
++    ease: Literal["linear", "smooth"]
+ 
+ 
+ class Blink(Message):
+--- a/trials/ts-003/c_msgspec/messages.py
++++ b/trials/ts-003/c_msgspec/messages.py
+@@ -39,6 +39,7 @@
+ class Expression(Message):
+     name: ExpressionName
+     ms: Milliseconds
++    ease: Literal["linear", "smooth"]
+ 
+ 
+ class Blink(Message):

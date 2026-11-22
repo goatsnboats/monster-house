@@ -1,0 +1,209 @@
+{
+ "g1": [
+  {
+   "message": "look",
+   "example": {
+    "x": 1.2,
+    "y": 3.5,
+    "z": 1.0
+   },
+   "sent": "{\"x\":1.2,\"y\":3.5,\"z\":1.0}",
+   "ok": true
+  },
+  {
+   "message": "look",
+   "example": {
+    "mode": "idle"
+   },
+   "sent": "{\"mode\":\"idle\"}",
+   "ok": true
+  },
+  {
+   "message": "expression",
+   "example": {
+    "name": "happy",
+    "ms": 300
+   },
+   "sent": "{\"name\":\"happy\",\"ms\":300}",
+   "ok": true
+  },
+  {
+   "message": "blink",
+   "example": {
+    "ms": 180
+   },
+   "sent": "{\"ms\":180}",
+   "ok": true
+  },
+  {
+   "message": "theme",
+   "example": {
+    "name": "halloween"
+   },
+   "sent": "{\"name\":\"halloween\"}",
+   "ok": true
+  },
+  {
+   "message": "status",
+   "example": "online",
+   "sent": "online",
+   "ok": true
+  },
+  {
+   "message": "status",
+   "example": "offline",
+   "sent": "offline",
+   "ok": true
+  }
+ ],
+ "bad": [
+  {
+   "message": "blink",
+   "case": "not JSON",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "empty payload",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "JSON array, not an object",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "string for an integer",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "true for an integer",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "fraction for an integer",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "below the minimum",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "extra key",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "expression",
+   "case": "unknown expression name",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "expression",
+   "case": "missing key",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "look",
+   "case": "string for a number",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "look",
+   "case": "both look shapes at once",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "look",
+   "case": "unknown mode",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "theme",
+   "case": "number for a string",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "status",
+   "case": "unknown status",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "status",
+   "case": "not UTF-8",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "look",
+   "case": "whole-number coordinates (valid: integers are numbers)",
+   "should": "accept",
+   "outcome": "accepted as LookAt(x=1.0, y=2.0, z=3.0)"
+  }
+ ],
+ "send": [
+  {
+   "case": "Blink(ms=-5)",
+   "outcome": "SENT {\"ms\":-5}"
+  },
+  {
+   "case": "Expression(name='angry', ms=300)",
+   "outcome": "SENT {\"name\":\"angry\",\"ms\":300}"
+  },
+  {
+   "case": "Blink(ms='180')",
+   "outcome": "SENT {\"ms\":\"180\"}"
+  }
+ ],
+ "seeds": [
+  {
+   "seed": "add a required key (expression.ease)",
+   "verdict": "caught by the drift test; code edit needed",
+   "first_problem": "expression: the ICD has 'ease', the code doesn't",
+   "after_regenerating": null
+  },
+  {
+   "seed": "add an allowed value (expression name 'wink')",
+   "verdict": "caught by the drift test; code edit needed",
+   "first_problem": "expression.name: ICD says (('asleep', 'happy', 'neutral', 'sleepy', 'sparkle', 'surprised', 'wink'), True, None), code says (('asleep', 'happy', 'neutral', 'sleepy', 'sparkle', 'surprised'), True, None)",
+   "after_regenerating": null
+  },
+  {
+   "seed": "change a limit (blink ms minimum 0 -> 20)",
+   "verdict": "caught by the drift test; code edit needed",
+   "first_problem": "blink.ms: ICD says ('integer', True, 20), code says ('integer', True, 0)",
+   "after_regenerating": null
+  },
+  {
+   "seed": "rename a key (theme name -> theme)",
+   "verdict": "caught by the drift test; code edit needed",
+   "first_problem": "theme: the code has 'name', the ICD doesn't",
+   "after_regenerating": null
+  },
+  {
+   "seed": "remove a key (look z)",
+   "verdict": "caught by the drift test; code edit needed",
+   "first_problem": "look: ICD says [{'x': ('number', True, None), 'y': ('number', True, None)}, {'mode': (('idle',), True, None)}], code says [{'x': ('number', True, None), 'y': ('number', True, None), 'z': ('number', True, None)}, {'mode': (('idle',), True, None)}]",
+   "after_regenerating": null
+  }
+ ]
+}

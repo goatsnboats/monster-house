@@ -1,0 +1,95 @@
+{
+  "look": {
+    "oneOf": [
+      {
+        "type": "object",
+        "required": [
+          "x",
+          "y",
+          "z"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "z": {
+            "type": "number"
+          }
+        }
+      },
+      {
+        "type": "object",
+        "required": [
+          "mode"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "enum": [
+              "idle"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "expression": {
+    "type": "object",
+    "required": [
+      "name",
+      "ms"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "name": {
+        "enum": [
+          "neutral",
+          "happy",
+          "sparkle",
+          "surprised",
+          "sleepy",
+          "asleep"
+        ]
+      },
+      "ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    }
+  },
+  "blink": {
+    "type": "object",
+    "required": [
+      "ms"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    }
+  },
+  "theme": {
+    "type": "object",
+    "required": [
+      "name"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "name": {
+        "type": "string"
+      }
+    }
+  },
+  "status": {
+    "enum": [
+      "online",
+      "offline"
+    ]
+  }
+}

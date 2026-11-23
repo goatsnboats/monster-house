@@ -2,7 +2,8 @@
 
 Run from the repository root:
 
-    .venv/bin/python -m tools.reqs.check                 # check, then rewrite trace.md
+    .venv/bin/python -m tools.reqs.check                 # check, then rewrite trace.md, the
+                                                         # pages and shared/messages/
     .venv/bin/python -m tools.reqs.check --no-write      # check only
     .venv/bin/python -m tools.reqs.check --strict        # gaps and warnings fail too
     .venv/bin/python -m tools.reqs.check --impact SYS-004   # what sits below SYS-004?
@@ -85,6 +86,12 @@ def main(argv: list[str] | None = None) -> int:
     if not args.no_write:
         (args.root / TRACE).write_text(render(model, findings))
         write_pages(args.root, model)
+        from tools.reqs.gen_messages import OUT_DIR, GeneratorError, write_all
+        try:
+            write_all(args.root, model)
+        except GeneratorError as err:
+            print(f"ERROR   {OUT_DIR}: {err}")
+            return 1
 
     if args.review:
         from tools.reqs import review
@@ -102,7 +109,7 @@ def main(argv: list[str] | None = None) -> int:
     failed = n["error"] > 0 or (args.strict and (n["gap"] or n["warning"]))
     print(f"\n{len(model.reqs)} requirements, {len(model.comps)} components, {len(model.icds)} ICDs: "
           f"{'FAIL' if failed else 'OK'} ({n['error']} errors, {n['gap']} gaps, {n['warning']} warnings)"
-          + ("" if args.no_write else f"; wrote {TRACE}"))
+          + ("" if args.no_write else f"; wrote {TRACE} and shared/messages/"))
     return 1 if failed else 0
 
 

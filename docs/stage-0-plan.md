@@ -9,20 +9,21 @@ Built with Claude Code. Each step below is one Claude Code task (or a few sessio
   _Glass, sills, the right window's divider and the floor behind it done 2026-11-15 ([ICD-011](interfaces/ICD-011-eye-window.md)). Still: divider width, floor behind the left window._
 - [x] Note the desktop's operating system.
   _Ubuntu 26.04.1 LTS (read from `/etc/os-release` on 2026-11-18; the owner remembered 24)._
-- [ ] Install Git, Python 3.11+, Mosquitto and Claude Code on the desktop.
-  _Git, Python and Claude Code are installed (the project's virtual environment pins Python 3.11). Mosquitto is not installed yet (checked 2026-11-18): `sudo apt install mosquitto mosquitto-clients`, then tick this and Step 1's Mosquitto box._
+- [x] Install Git, Python 3.11+, Mosquitto and Claude Code on the desktop.
+  _All installed (the project's virtual environment pins Python 3.11). Mosquitto 2.0.22 found installed on 2026-11-23, with apt's system service running on port 1883._
 - [x] Create a private GitHub repository `monster-house`, and add this starter kit.
   _Done; the repository is also on the NAS (`zobar`), which the gloss review site builds from._
 
 ## Step 1 — Project setup (November)
 - [x] Folder layout per `docs/architecture.md` §10. One Python virtual environment and a dependency file.
-- [ ] `shared/`: MQTT topic names and payload schemas (dataclasses or pydantic) for everything in architecture §2–3c.
-  _Topic names done (`shared/topics.py`). Payload schemas wait for TBD-003._
-- [ ] Mosquitto running locally, with a config file in `deploy/`.
-  _Config and run script done (`deploy/mosquitto/`) and tested with Mosquitto 2.0.22. Tick once Mosquitto is installed on the desktop (owner: needs sudo)._
+- [x] `shared/`: MQTT topic names and payload schemas for everything in architecture §2–3c.
+  _Topic names in `shared/topics.py`. Payloads: dataclasses generated from ICD-001 to ICD-004 into `shared/messages/` by the checker, every payload checked against its ICD ([ADR 0003](decisions/0003-message-schemas.md); done 2026-11-23)._
+- [x] Mosquitto running locally, with a config file in `deploy/`.
+  _Config and run script in `deploy/mosquitto/`. On the desktop, apt's system service is running on port 1883 (its defaults also mean localhost, no password), and the tests pass against it. To use the project's config instead: `sudo systemctl disable --now mosquitto`, then `deploy/mosquitto/run-dev.sh`._
 - [x] A tiny helper to publish and subscribe from the command line, for debugging.
 
 **Done when:** a test message published by one program arrives in another through Mosquitto, using the shared schemas, and `pytest` runs green.
+_Done 2026-11-23: `tests/test_mqtt_integration.py` sends an ICD-001 `blink` between two clients and an `expression` between two programs (`shared.mqtt_tool` pub and sub), built and checked by `shared/messages`; 132 tests pass._
 
 ## Step 2 — Eye renderer, first version (November)
 - [x] **Renderer trial (about a day):** Build the same minimal eye (sclera, iris, pupil, lids) two ways, as Python + OpenGL shaders (`moderngl` + `pygame-ce` window) and as Godot. Compare smoothness, ease of iterating on the look, and the path to Pi 5 (GLES 3.0, no desktop environment, low memory). Write up the recommendation, and the owner picks one.

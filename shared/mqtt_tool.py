@@ -9,7 +9,8 @@ Examples (run from the repository root):
     python -m shared.mqtt_tool pub blink '{"ms": 180}'
 
 TOPIC can be a short name from `topics` or a full topic (anything with a "/").
-Payloads are sent exactly as typed; their formats aren't defined yet (TBD-003).
+Payloads are sent exactly as typed, without checking them against the ICDs, so the
+tool can also send bad messages on purpose.
 """
 
 from __future__ import annotations

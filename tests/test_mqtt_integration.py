@@ -1,12 +1,14 @@
 """End-to-end: a message published by one client arrives at another through Mosquitto.
 
+The message is a real ICD-001 blink, built and checked by the shared message classes
+(shared/messages, ADR 0003): Stage 0 Step 1's "done when".
+
 Needs the development broker on localhost:1883 (deploy/mosquitto/run-dev.sh).
 If nothing is listening there, these tests are skipped, not failed.
 """
 
 from __future__ import annotations
 
-import json
 import socket
 import subprocess
 import sys
@@ -17,6 +19,7 @@ from pathlib import Path
 import pytest
 
 from shared import topics
+from shared.messages import eye_commands as eyes
 from shared.mqtt_client import DEFAULT_HOST, DEFAULT_PORT, connect, new_client
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -46,8 +49,8 @@ def unique_test_topic() -> str:
 
 def test_message_between_two_clients():
     topic = unique_test_topic()
-    sent = {"test": "hello from pytest", "id": uuid.uuid4().hex}  # TBD-003: plain dict until schemas exist
-    received: list[dict] = []
+    sent = eyes.Blink(ms=180)
+    received: list = []
     subscribed = threading.Event()
     arrived = threading.Event()
 
@@ -55,7 +58,7 @@ def test_message_between_two_clients():
         subscribed.set()
 
     def on_message(_client, _userdata, msg):
-        received.append(json.loads(msg.payload))
+        received.append(eyes.decode("blink", msg.payload))
         arrived.set()
 
     listener = new_client("pytest-sub")
@@ -71,7 +74,7 @@ def test_message_between_two_clients():
         listener.subscribe(topic, qos=1)
         assert subscribed.wait(5), "subscription was not confirmed"
 
-        talker.publish(topic, json.dumps(sent), qos=1).wait_for_publish(timeout=5)
+        talker.publish(topic, eyes.encode("blink", sent), qos=1).wait_for_publish(timeout=5)
 
         assert arrived.wait(5), "message did not arrive"
         assert received == [sent]
@@ -84,7 +87,7 @@ def test_message_between_two_clients():
 def test_message_between_two_programs():
     """The debug tool, run as two separate programs: `sub` receives what `pub` sends."""
     topic = unique_test_topic()
-    payload = json.dumps({"test": "hello between programs", "id": uuid.uuid4().hex})  # TBD-003
+    payload = eyes.encode("expression", eyes.Expression(name="happy", ms=300)).decode()
     tool = [sys.executable, "-m", "shared.mqtt_tool"]
 
     sub = subprocess.Popen(
@@ -109,3 +112,5 @@ def test_message_between_two_programs():
 
     assert sub.returncode == 0, err
     assert out.strip() == f"{topic} {payload}"
+    _topic, received_payload = out.strip().split(" ", 1)
+    assert eyes.decode("expression", received_payload.encode()) == eyes.Expression(name="happy", ms=300)

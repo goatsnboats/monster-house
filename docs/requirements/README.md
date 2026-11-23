@@ -159,7 +159,8 @@ messages:
     qos: 0
     retain: false
     rate: about 10 per second
-    payload_schema: {...}          # JSON Schema subset, see tools/reqs/schema.py
+    payload_schema: {...}          # JSON Schema subset, see shared/schema.py; each oneOf
+                                   # choice needs a title (its class name in shared/messages/)
     examples: [...]                # each one must match payload_schema
 files:                             # for file interfaces (theme folder, site config)
   - name: settings

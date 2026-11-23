@@ -1,0 +1,209 @@
+{
+ "g1": [
+  {
+   "message": "look",
+   "example": {
+    "x": 1.2,
+    "y": 3.5,
+    "z": 1.0
+   },
+   "sent": "{\"x\": 1.2, \"y\": 3.5, \"z\": 1.0}",
+   "ok": true
+  },
+  {
+   "message": "look",
+   "example": {
+    "mode": "idle"
+   },
+   "sent": "{\"mode\": \"idle\"}",
+   "ok": true
+  },
+  {
+   "message": "expression",
+   "example": {
+    "name": "happy",
+    "ms": 300
+   },
+   "sent": "{\"name\": \"happy\", \"ms\": 300}",
+   "ok": true
+  },
+  {
+   "message": "blink",
+   "example": {
+    "ms": 180
+   },
+   "sent": "{\"ms\": 180}",
+   "ok": true
+  },
+  {
+   "message": "theme",
+   "example": {
+    "name": "halloween"
+   },
+   "sent": "{\"name\": \"halloween\"}",
+   "ok": true
+  },
+  {
+   "message": "status",
+   "example": "online",
+   "sent": "online",
+   "ok": true
+  },
+  {
+   "message": "status",
+   "example": "offline",
+   "sent": "offline",
+   "ok": true
+  }
+ ],
+ "bad": [
+  {
+   "message": "blink",
+   "case": "not JSON",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "empty payload",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "JSON array, not an object",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "string for an integer",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "true for an integer",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "fraction for an integer",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "below the minimum",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "blink",
+   "case": "extra key",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "expression",
+   "case": "unknown expression name",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "expression",
+   "case": "missing key",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "look",
+   "case": "string for a number",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "look",
+   "case": "both look shapes at once",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "look",
+   "case": "unknown mode",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "theme",
+   "case": "number for a string",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "status",
+   "case": "unknown status",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "status",
+   "case": "not UTF-8",
+   "should": "drop",
+   "outcome": "dropped"
+  },
+  {
+   "message": "look",
+   "case": "whole-number coordinates (valid: integers are numbers)",
+   "should": "accept",
+   "outcome": "accepted as LookXYZ(x=1, y=2, z=3)"
+  }
+ ],
+ "send": [
+  {
+   "case": "Blink(ms=-5)",
+   "outcome": "refused (ValueError)"
+  },
+  {
+   "case": "Expression(name='angry', ms=300)",
+   "outcome": "refused (ValueError)"
+  },
+  {
+   "case": "Blink(ms='180')",
+   "outcome": "refused (ValueError)"
+  }
+ ],
+ "seeds": [
+  {
+   "seed": "add a required key (expression.ease)",
+   "verdict": "caught; regenerating fixes it, no code edit",
+   "first_problem": "messages.py is out of date with the ICD (run generate.py)",
+   "after_regenerating": []
+  },
+  {
+   "seed": "add an allowed value (expression name 'wink')",
+   "verdict": "caught; regenerating fixes it, no code edit",
+   "first_problem": "messages.py is out of date with the ICD (run generate.py)",
+   "after_regenerating": []
+  },
+  {
+   "seed": "change a limit (blink ms minimum 0 -> 20)",
+   "verdict": "caught; regenerating fixes it, no code edit",
+   "first_problem": "messages.py is out of date with the ICD (run generate.py)",
+   "after_regenerating": []
+  },
+  {
+   "seed": "rename a key (theme name -> theme)",
+   "verdict": "caught; regenerating fixes it, no code edit",
+   "first_problem": "messages.py is out of date with the ICD (run generate.py)",
+   "after_regenerating": []
+  },
+  {
+   "seed": "remove a key (look z)",
+   "verdict": "caught; regenerating fixes it, no code edit",
+   "first_problem": "messages.py is out of date with the ICD (run generate.py)",
+   "after_regenerating": []
+  }
+ ]
+}

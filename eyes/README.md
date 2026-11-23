@@ -78,4 +78,6 @@ Useful options:
 | `__main__.py` | The window, keys and mouse |
 
 Tests: `tests/test_eyes.py` (the drawing tests use Mesa's CPU renderer, so they need no
-GPU) and `tests/test_eye_link.py` (the MQTT side; two of them need the broker running).
+GPU) and `tests/test_eye_link.py` (the MQTT side; two of them need the broker running,
+and they publish to the real `monster/eyes/<side>/status` topics, leaving them
+`offline`: don't run them while the eyes are up).

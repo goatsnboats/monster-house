@@ -7,6 +7,9 @@
 - `messages/` — what goes *inside* each message: one module per ICD, **generated from
   the ICDs** by the checker ([ADR 0003](../docs/decisions/0003-message-schemas.md)).
   Only `messages/codec.py` and `messages/__init__.py` are written by hand.
+- `radar_frame.py` — where the radar is (from `config/site.yaml`), what it can see, and
+  turning its millimeter readings into house coordinates and back. The brain and the
+  fake radar both use it, so they agree on which way is which (TBD-039).
 - `schema.py` — the small JSON-Schema checker every payload is checked with (the
   checker uses it on the ICD examples too).
 

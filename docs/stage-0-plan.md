@@ -42,11 +42,14 @@ _Done 2026-11-23: `tests/test_mqtt_integration.py` sends an ICD-001 `blink` betw
 _Still to check (deferred by the owner, 2026-11-23): both eyes in real windows at the desktop screen, driven over MQTT, with the 60 fps measurement above. Everything else in Step 2 runs and is tested; the eye shape is a per-eye setting, `square` by default (owner, 2026-11-23; `eye_shape` in `config/site.yaml`)._
 
 ## Step 3 — Pretend visitors / fake radar (December)
-- [ ] A top-down view of the walk, steps and sidewalk (rough dimensions, adjustable).
-- [ ] Drag up to 3 "kids" with the mouse. Add/remove kids.
-- [ ] Publishes exactly the topics and units ESPHome's LD2450 component will (mm, radar-relative), at about 10 Hz.
+- [x] A top-down view of the walk, steps and sidewalk (rough dimensions, adjustable).
+  _`python -m sim.fake_radar`; layout in `sim/fake_radar.yaml`, the radar's position and door blind spot in `config/site.yaml` (2026-11-23)._
+- [x] Drag up to 3 "kids" with the mouse. Add/remove kids.
+- [x] Publishes exactly the topics and units ESPHome's LD2450 component will (mm, radar-relative), at about 10 Hz.
+  _Checked against ESPHome's source on 2026-11-23, which corrected ICD-002: whole numbers, speed negative toward the radar, `nan` for an empty slot, sent only on change. Coming vs going is the brain's job, from movement (owner, TBD-030 closed)._
 
 **Done when:** dragging a kid makes both eyes follow, using placeholder gaze math.
+_Placeholder brain (`python -m brain`): looks at the closest kid. `tests/test_step3_end_to_end.py` moves a kid through Mosquitto and checks both eyes' gaze follows (2026-11-23). Still to see by eye: the four programs together at the desktop screen (`sim/README.md`)._
 
 ## Step 4 — Monster brain, first version (December)
 - [ ] Mood state machine: Asleep → Waking → Greeting → Watching → Goodbye (see architecture §3b), with timings from the theme settings.

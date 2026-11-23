@@ -28,12 +28,18 @@ _Done 2026-11-23: `tests/test_mqtt_integration.py` sends an ICD-001 `blink` betw
 ## Step 2 — Eye renderer, first version (November)
 - [x] **Renderer trial (about a day):** Build the same minimal eye (sclera, iris, pupil, lids) two ways, as Python + OpenGL shaders (`moderngl` + `pygame-ce` window) and as Godot. Compare smoothness, ease of iterating on the look, and the path to Pi 5 (GLES 3.0, no desktop environment, low memory). Write up the recommendation, and the owner picks one.
   _Done 2026-11-08: [TS-002](trades/TS-002-eye-renderer.md) ([results](trades/results/TS-002/README.md)). The owner chose Python + moderngl + pygame-ce ([ADR 0002](decisions/0002-eye-renderer.md))._
-- [ ] Full eye matching `docs/reference/eye-sketch.html`: layers, bold outline, catchlight, sparkle, lids with the lower-lid smile.
-- [ ] Expressions from the table in architecture §2, eased smoothly. Blinks on command, plus a fallback timer.
-- [ ] Per-eye config: window size, eye placement, rotation 0/90°, mirroring, brightness.
-- [ ] Listens to `monster/eyes/*` and `monster/theme`; publishes its online/offline status.
+- [x] Full eye matching `docs/reference/eye-sketch.html`: layers, bold outline, catchlight, sparkle, lids with the lower-lid smile.
+  _Done 2026-11-18 (`eyes/`, `python -m eyes --side left`)._
+- [x] Expressions from the table in architecture §2, eased smoothly. Blinks on command, plus a fallback timer.
+  _Commands come from the keyboard until the MQTT listener exists. The fallback starts after 5 s of silence until TBD-023 sets it._
+- [x] Per-eye config: window size, eye placement, rotation 0/90°, mirroring, brightness.
+  _From `config/site.yaml` (ICD-015) and the theme's colors (ICD-005)._
+- [x] Listens to `monster/eyes/*` and `monster/theme`; publishes its online/offline status.
+  _Done 2026-11-23 (`eyes/link.py`): messages checked by `shared/messages`, theme switched while running, "offline" by MQTT last-will if the eye vanishes. Drive it by hand with `shared.mqtt_tool` (see `eyes/README.md`)._
+- [ ] 60 fps measured on the desktop's GPU. _The `dev` account can now reach the GPU (NVIDIA RTX 5060 Ti, 2026-11-23), but only offscreen, where there's no vsync to measure against. Needs the eye in a real window on the desktop: `.venv/bin/python -m eyes --side left --seconds 20`._
 
 **Done when:** two eye windows open on the desktop, each shaped like its real window. They blink, change expression on command, and glide to look-at points sent over MQTT, at a steady 60 fps.
+_Still to check (deferred by the owner, 2026-11-23): both eyes in real windows at the desktop screen, driven over MQTT, with the 60 fps measurement above. Everything else in Step 2 runs and is tested; the eye shape is being set in its own branch (`eyes/shape-config`)._
 
 ## Step 3 — Pretend visitors / fake radar (December)
 - [ ] A top-down view of the walk, steps and sidewalk (rough dimensions, adjustable).

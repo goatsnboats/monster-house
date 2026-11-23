@@ -15,13 +15,15 @@ eyes:
     rotate_deg: 90                          # TBD-005
     mirror: true
     eye_center: [0.5, 0.5]
-    eye_size: 0.9
+    eye_size: 0.9                           # not used by the square shape
     brightness: 1.0
+    eye_shape: square                       # square (fills the glass), oval or stretch
   right:
     position_m: {x: 1.6, y: -0.5, z: 5.0}   # TBD-018
     window_m: {w: 0.914, h: 1.219}          # 36 x 48 in
     rotate_deg: 0                           # TBD-005
     mirror: true
     eye_center: [0.5, 0.5]
-    eye_size: 0.9
+    eye_size: 0.9                           # not used by the square shape
     brightness: 1.0
+    eye_shape: square                       # square (fills the glass), oval or stretch

@@ -40,8 +40,9 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     ap.add_argument("--long-side", type=int, default=720, help="window's long side in pixels (desktop window)")
     ap.add_argument("--projector", action="store_true",
                     help="draw exactly what the projector shows (rotated and mirrored), not the street view")
-    ap.add_argument("--shape", choices=SHAPES, default="oval",
-                    help="oval (the sketch), stretch (oval shaped like the window) or window (fills the glass)")
+    ap.add_argument("--shape", choices=SHAPES, default=None,
+                    help="override the site config's eye_shape for this run: square (fills the glass), "
+                         "oval (the sketch) or stretch (oval shaped like the window)")
     ap.add_argument("--fullscreen", action="store_true", help="full screen, cursor hidden (as on the Pi)")
     ap.add_argument("--expression", default="neutral", choices=list(EXPRESSIONS))
     ap.add_argument("--no-vsync", action="store_true", help="draw as fast as possible (to measure cost per frame)")

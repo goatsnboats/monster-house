@@ -204,11 +204,11 @@ def gl():
     return ctx
 
 
-def _draw(gl, window, projector, frame, long_side=200):
+def _draw(gl, window, projector, frame, long_side=200, shape="oval"):
     from eyes.render import EyeRenderer, output_size
     size = output_size(window, long_side, projector)
     fbo = gl.simple_framebuffer(size)
-    r = EyeRenderer(gl, size, window, DEFAULT_THEME, projector, fbo)
+    r = EyeRenderer(gl, size, window, DEFAULT_THEME, projector, fbo, shape)
     r.draw(frame)
     return size, r.read_rgba()
 
@@ -258,7 +258,7 @@ def test_eye_shapes_fill_more_of_the_tall_window(gl):
     assert layout((225, 400), 0.9, "oval")[1] == (1.0, 1.0)
     left = load_window("left")
     lit = {}
-    for shape in ("oval", "stretch", "window"):
+    for shape in ("oval", "stretch", "square"):
         from eyes.render import EyeRenderer, output_size
         size = output_size(left, 200, False)
         fbo = gl.simple_framebuffer(size)
@@ -266,6 +266,26 @@ def test_eye_shapes_fill_more_of_the_tall_window(gl):
         r.draw(NEUTRAL)
         data = r.read_rgba()
         lit[shape] = sum(1 for i in range(0, len(data), 4) if tuple(data[i:i + 3]) != (11, 11, 18))
-    assert lit["oval"] < lit["stretch"] < lit["window"]
+    assert lit["oval"] < lit["stretch"] < lit["square"]
     with pytest.raises(ValueError):
-        layout((10, 10), 0.9, "square")
+        layout((10, 10), 0.9, "triangle")
+
+
+def test_eye_shape_defaults_to_square_and_is_checked(tmp_path):
+    assert load_window("left").eye_shape == "square"           # config/site.yaml
+    site = yaml.safe_load((REPO_ROOT / "config/site.yaml").read_text())
+    del site["eyes"]["left"]["eye_shape"]
+    path = tmp_path / "site.yaml"
+    path.write_text(yaml.safe_dump(site))
+    assert load_window("left", path).eye_shape == "square"     # left out: square
+    site["eyes"]["left"]["eye_shape"] = "triangle"
+    path.write_text(yaml.safe_dump(site))
+    with pytest.raises(ConfigError, match="eye_shape"):
+        load_window("left", path)
+
+
+def test_square_eye_fills_the_corners_with_white(gl):
+    size, data = _draw(gl, load_window("right"), False, NEUTRAL, shape=None)   # from the config: square
+    sclera = tuple(round(c * 255) for c in DEFAULT_THEME.sclera_color)
+    assert _pixel(size, data, 12, size[1] // 2) == sclera                     # left edge, middle height
+    assert _pixel(size, data, size[0] - 12, size[1] // 2) == sclera

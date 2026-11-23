@@ -74,6 +74,7 @@ files:
                 eye_center: {type: array, items: {type: number, minimum: 0, maximum: 1}}
                 eye_size: {type: number, minimum: 0, maximum: 1}
                 brightness: {type: number, minimum: 0, maximum: 1}
+                eye_shape: {enum: [square, oval, stretch]}
             right: *eye
     examples:
       - radar:
@@ -89,6 +90,7 @@ files:
             eye_center: [0.5, 0.5]
             eye_size: 0.9
             brightness: 1.0
+            eye_shape: square
           right:
             position_m: {x: 1.6, y: -0.5, z: 5.0}
             window_m: {w: 0.914, h: 1.219}
@@ -97,6 +99,7 @@ files:
             eye_center: [0.5, 0.5]
             eye_size: 0.9
             brightness: 1.0
+            eye_shape: square
 ```
 
 ## Fields
@@ -114,6 +117,7 @@ files:
 | `eyes.<side>.mirror` | Mirror horizontally for rear projection (here *or* in the projector, not both) | Architecture §2 |
 | `eyes.<side>.eye_center`, `eye_size` | Where the eye sits in the window (0–1) and how big | Owner, from the house preview (TBD-004) |
 | `eyes.<side>.brightness` | Matches the two eyes (a bigger image looks dimmer) | Owner, at install |
+| `eyes.<side>.eye_shape` | How the eye fills its window: `square` (the white fills the glass; the window frame is the eye's edge; `eye_size` unused), `oval` (the sketch's oval) or `stretch` (an oval shaped like the window). Optional; `square` when left out | Owner, 2026-11-23: `square` by default, changeable per eye |
 
 `left` is the smaller window, as seen from the street.
 

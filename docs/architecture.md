@@ -105,10 +105,13 @@ eyes:
     rotate_deg: 90            # 0 or 90: projector on its side for a tall window
     mirror: true              # rear projection
     eye_center: [0.5, 0.5]    # where the eye sits in the window (0–1)
-    eye_size: 0.9             # fraction of the window
+    eye_size: 0.9             # fraction of the window (oval shapes only)
     brightness: 1.0           # match the two eyes (a bigger image looks dimmer)
+    eye_shape: square         # square: the eye fills the window (default); oval or stretch
   right: { ... }
 ```
+
+**Eye shape** (owner, 2026-11-23): by default the white of the eye fills the whole window, so the window frame is the eye's edge (`square`). Each eye can instead be the sketch's `oval`, or an oval stretched to its window (`stretch`).
 
 The design can lean into this as a lopsided, goofy monster (one big eye, one small) or draw matched eyes at the small window's size. That's an open decision, made in Stage 0 using the house preview.
 

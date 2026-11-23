@@ -19,6 +19,11 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SITE_CONFIG = REPO_ROOT / "config" / "site.yaml"
 THEMES_DIR = REPO_ROOT / "themes"
 SIDES = ("left", "right")
+# How the eye fills its window (eyes.<side>.eye_shape, ICD-015). square: the white fills
+# the whole window and the window frame is the eye's edge (owner's default, 2026-11-23);
+# oval: the sketch's oval; stretch: an oval shaped like the window.
+SHAPES = ("square", "oval", "stretch")
+DEFAULT_SHAPE = "square"
 
 
 @dataclass(frozen=True)
@@ -31,6 +36,7 @@ class Window:
     eye_center: tuple[float, float]          # where the eye sits in the window (0-1)
     eye_size: float                          # fraction of the window the eye fills
     brightness: float                        # 0-1, to match the two eyes
+    eye_shape: str = DEFAULT_SHAPE           # square, oval or stretch (SHAPES)
 
 
 @dataclass(frozen=True)
@@ -66,6 +72,7 @@ def load_window(side: str, path: Path = SITE_CONFIG) -> Window:
             eye_center=(float(e["eye_center"][0]), float(e["eye_center"][1])),
             eye_size=float(e["eye_size"]),
             brightness=float(e["brightness"]),
+            eye_shape=str(e.get("eye_shape", DEFAULT_SHAPE)),
         )
     except FileNotFoundError:
         raise ConfigError(f"no site config at {path}") from None
@@ -73,6 +80,8 @@ def load_window(side: str, path: Path = SITE_CONFIG) -> Window:
         raise ConfigError(f"{path}: eyes.{side} is incomplete or wrong ({err!r}); see ICD-015") from None
     if window.rotate_deg not in (0, 90):
         raise ConfigError(f"{path}: eyes.{side}.rotate_deg must be 0 or 90")
+    if window.eye_shape not in SHAPES:
+        raise ConfigError(f"{path}: eyes.{side}.eye_shape must be one of {SHAPES}, not {window.eye_shape!r}")
     if min(window.window_m) <= 0:
         raise ConfigError(f"{path}: eyes.{side}.window_m must be bigger than zero")
     return window

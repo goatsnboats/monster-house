@@ -20,10 +20,10 @@ What it checks and what the fields mean: `docs/requirements/README.md`.
 
 | File | Does |
 |---|---|
-| `reqs/check.py` | Command line: runs the checks, prints findings, writes `trace.md` |
+| `reqs/check.py` | Command line: runs the checks, prints findings, writes `trace.md`, the pages and `shared/messages/` |
 | `reqs/load.py` | Reads the files into plain data |
-| `reqs/checks.py` | The checks (errors, gaps, warnings) |
-| `reqs/schema.py` | A small JSON-Schema checker for ICD payload examples |
+| `reqs/checks.py` | The checks (errors, gaps, warnings); ICD examples are checked with `shared/schema.py` |
+| `reqs/gen_messages.py` | Writes the message classes in `shared/messages/` from the ICDs (ADR 0003) |
 | `reqs/shared_topics.py` | Compares ICD topics with `shared/topics.py` |
 | `reqs/budget.py` | Adds up what components need against what their hosts provide, per stage |
 | `reqs/trace.py` | Writes `trace.md` |

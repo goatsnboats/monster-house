@@ -51,7 +51,7 @@ More on the debug tool in `shared/README.md`.
 | `brain/` | Monster brain: moods, gaze, clip pools, phone page |
 | `eyes/` | Eye renderer (GPU) |
 | `sim/` | Fake radar, fake Falcon Player, house preview |
-| `shared/` | MQTT topic names and helpers used by everything |
+| `shared/` | MQTT topic names, message classes (generated from the ICDs) and helpers used by everything |
 | `esphome/` | Radar (ESP32 + LD2450) config |
 | `xlights/` | Lip models and sequences |
 | `themes/` | Per-holiday settings, art, audio |

@@ -16,7 +16,7 @@ import yaml
 from tools.reqs.check import main
 from tools.reqs.checks import check_all
 from tools.reqs.load import TRACE, load
-from tools.reqs.schema import problems
+from shared.schema import problems
 from tools.reqs.trace import render
 
 REPO_ROOT = Path(__file__).resolve().parent.parent

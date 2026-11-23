@@ -39,7 +39,7 @@ _Done 2026-11-23: `tests/test_mqtt_integration.py` sends an ICD-001 `blink` betw
 - [ ] 60 fps measured on the desktop's GPU. _The `dev` account can now reach the GPU (NVIDIA RTX 5060 Ti, 2026-11-23), but only offscreen, where there's no vsync to measure against. Needs the eye in a real window on the desktop: `.venv/bin/python -m eyes --side left --seconds 20`._
 
 **Done when:** two eye windows open on the desktop, each shaped like its real window. They blink, change expression on command, and glide to look-at points sent over MQTT, at a steady 60 fps.
-_Still to check (deferred by the owner, 2026-11-23): both eyes in real windows at the desktop screen, driven over MQTT, with the 60 fps measurement above. Everything else in Step 2 runs and is tested; the eye shape is being set in its own branch (`eyes/shape-config`)._
+_Still to check (deferred by the owner, 2026-11-23): both eyes in real windows at the desktop screen, driven over MQTT, with the 60 fps measurement above. Everything else in Step 2 runs and is tested; the eye shape is a per-eye setting, `square` by default (owner, 2026-11-23; `eye_shape` in `config/site.yaml`)._
 
 ## Step 3 — Pretend visitors / fake radar (December)
 - [ ] A top-down view of the walk, steps and sidewalk (rough dimensions, adjustable).

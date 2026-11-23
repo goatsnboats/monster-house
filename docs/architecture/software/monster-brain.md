@@ -33,7 +33,6 @@ The one place that decides: moods, gaze, blinks, clips, coming and going, failur
 
 - TBD-020, TBD-021, TBD-034 (timing)
 - TBD-028 (door hold)
-- TBD-030 (coming vs going)
 
 ## Requirements
 

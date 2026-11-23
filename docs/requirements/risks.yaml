@@ -117,7 +117,7 @@
   retire_by: CDR-2
   plan: Door hold and coming/going logic tuned in the simulator with a blind spot, then checked on the real radar.
   events: [VE-004, VE-201]
-  tbds: [TBD-028, TBD-029, TBD-030]
+  tbds: [TBD-028, TBD-029]
   reqs: [SYS-047, SYS-049, SYS-050]
   source: owner 2026-11-09
   status: open

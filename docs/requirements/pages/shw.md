@@ -132,7 +132,7 @@ The brain shall follow each visitor across radar updates as the same visitor, an
 | Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | Who is who and which way they're heading is a decision built from raw radar slots (brain). |
 | Verified by | test ([VE-001](ve.md#ve-001)) |
-| Notes | The LD2450 reports three target slots, not people; the brain matches slots to visitors. Coming vs going comes from the radar's direction or from position change (TBD-030). |
+| Notes | The LD2450 reports three target slots, not people; the brain matches slots to visitors. Coming vs going comes from the change in position over about 0.5 s, in house coordinates (owner 2026-11-23, closing TBD-030). |
 | Source | owner 2026-11-09 (coming vs going) |
 
 ## SHW-011
@@ -228,7 +228,7 @@ The brain shall not start a clip until the theme's minimum gap has passed since 
 
 ## SHW-018
 
-The brain shall handle failures as in architecture §3b: with the radar offline or silent for TBD-023, stay in an ambient mode (eyes idle, no greetings); with an eye pod offline, log it and carry on; with Falcon Player not responding, keep the eyes going without voice.
+The brain shall handle failures as in architecture §3b: with the radar offline (its status, ICD-002), stay in an ambient mode (eyes idle, no greetings); with an eye pod offline, log it and carry on; with Falcon Player not responding, keep the eyes going without voice.
 
 | | |
 |---|---|
@@ -237,6 +237,7 @@ The brain shall handle failures as in architecture §3b: with the radar offline 
 | Allocated to | [`monster-brain`](../../architecture/components.md#monster-brain) |
 | Why there | Only the brain sees every component's status, so it decides the fallback. |
 | Verified by | test ([VE-001](ve.md#ve-001)) |
+| Notes | "Radar silent" was dropped 2026-11-23: ESPHome sends a value only when it changes, so an empty walk is silent too (ICD-002 Timing). The radar's offline last-will is the only sign it has gone. |
 | Source | architecture.md §3b "What happens when something fails" |
 
 ## SHW-019

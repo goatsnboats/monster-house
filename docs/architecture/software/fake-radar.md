@@ -21,7 +21,7 @@ A desktop window with a top-down view of the walk where the owner drags pretend 
 ## Open items
 
 - TBD-029 (blind spot size)
-- TBD-030 (direction)
+- TBD-039 (which way radar x points)
 
 ## Requirements
 

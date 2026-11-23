@@ -1,0 +1,145 @@
+{
+  "renderer": "NVIDIA GeForce RTX 5060 Ti/PCIe/SSE2",
+  "scenes": [
+    {
+      "name": "01-sidewalk-left",
+      "caption": "On the sidewalk, left of the walk",
+      "kid_house_m": [
+        -1.1,
+        5.2
+      ],
+      "radar_messages_first_frame": {
+        "monster-radar/sensor/target_1_x/state": "-1100",
+        "monster-radar/sensor/target_1_y/state": "5200",
+        "monster-radar/sensor/target_1_speed/state": "0",
+        "monster-radar/sensor/target_2_x/state": "nan",
+        "monster-radar/sensor/target_2_y/state": "nan",
+        "monster-radar/sensor/target_2_speed/state": "nan",
+        "monster-radar/sensor/target_3_x/state": "nan",
+        "monster-radar/sensor/target_3_y/state": "nan",
+        "monster-radar/sensor/target_3_speed/state": "nan",
+        "monster-radar/sensor/target_count/state": "1"
+      },
+      "look": {
+        "x": -1.1,
+        "y": 5.2,
+        "z": 1.0
+      },
+      "iris_offset_sketch_units": {
+        "left": [
+          4.6,
+          58.2
+        ],
+        "right": [
+          -22.7,
+          54.4
+        ]
+      }
+    },
+    {
+      "name": "02-walk",
+      "caption": "Halfway up the walk",
+      "kid_house_m": [
+        -1.1,
+        3.0
+      ],
+      "radar_messages_first_frame": {
+        "monster-radar/sensor/target_1_x/state": "-1100",
+        "monster-radar/sensor/target_1_y/state": "3000",
+        "monster-radar/sensor/target_1_speed/state": "0",
+        "monster-radar/sensor/target_2_x/state": "nan",
+        "monster-radar/sensor/target_2_y/state": "nan",
+        "monster-radar/sensor/target_2_speed/state": "nan",
+        "monster-radar/sensor/target_3_x/state": "nan",
+        "monster-radar/sensor/target_3_y/state": "nan",
+        "monster-radar/sensor/target_3_speed/state": "nan",
+        "monster-radar/sensor/target_count/state": "1"
+      },
+      "look": {
+        "x": -1.1,
+        "y": 3.0,
+        "z": 1.0
+      },
+      "iris_offset_sketch_units": {
+        "left": [
+          7.5,
+          76.1
+        ],
+        "right": [
+          -32.4,
+          68.2
+        ]
+      }
+    },
+    {
+      "name": "03-dragged-right",
+      "caption": "Dragged across to the right",
+      "kid_house_m": [
+        2.0,
+        3.5
+      ],
+      "radar_messages_first_frame": {
+        "monster-radar/sensor/target_1_x/state": "2000",
+        "monster-radar/sensor/target_1_y/state": "3500",
+        "monster-radar/sensor/target_1_speed/state": "0",
+        "monster-radar/sensor/target_2_x/state": "nan",
+        "monster-radar/sensor/target_2_y/state": "nan",
+        "monster-radar/sensor/target_2_speed/state": "nan",
+        "monster-radar/sensor/target_3_x/state": "nan",
+        "monster-radar/sensor/target_3_y/state": "nan",
+        "monster-radar/sensor/target_3_speed/state": "nan",
+        "monster-radar/sensor/target_count/state": "1"
+      },
+      "look": {
+        "x": 2.0,
+        "y": 3.5,
+        "z": 1.0
+      },
+      "iris_offset_sketch_units": {
+        "left": [
+          35.5,
+          60.6
+        ],
+        "right": [
+          5.3,
+          71.7
+        ]
+      }
+    },
+    {
+      "name": "04-steps",
+      "caption": "At the foot of the steps, close to the house",
+      "kid_house_m": [
+        -1.1,
+        2.0
+      ],
+      "radar_messages_first_frame": {
+        "monster-radar/sensor/target_1_x/state": "-1100",
+        "monster-radar/sensor/target_1_y/state": "2000",
+        "monster-radar/sensor/target_1_speed/state": "0",
+        "monster-radar/sensor/target_2_x/state": "nan",
+        "monster-radar/sensor/target_2_y/state": "nan",
+        "monster-radar/sensor/target_2_speed/state": "nan",
+        "monster-radar/sensor/target_3_x/state": "nan",
+        "monster-radar/sensor/target_3_y/state": "nan",
+        "monster-radar/sensor/target_3_speed/state": "nan",
+        "monster-radar/sensor/target_count/state": "1"
+      },
+      "look": {
+        "x": -1.1,
+        "y": 2.0,
+        "z": 1.0
+      },
+      "iris_offset_sketch_units": {
+        "left": [
+          10.4,
+          85.7
+        ],
+        "right": [
+          -39.0,
+          74.8
+        ]
+      }
+    }
+  ]
+}

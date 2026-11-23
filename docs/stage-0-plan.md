@@ -49,7 +49,7 @@ _Still to check (deferred by the owner, 2026-11-23): both eyes in real windows a
   _Checked against ESPHome's source on 2026-11-23, which corrected ICD-002: whole numbers, speed negative toward the radar, `nan` for an empty slot, sent only on change. Coming vs going is the brain's job, from movement (owner, TBD-030 closed)._
 
 **Done when:** dragging a kid makes both eyes follow, using placeholder gaze math.
-_Placeholder brain (`python -m brain`): looks at the closest kid. `tests/test_step3_end_to_end.py` moves a kid through Mosquitto and checks both eyes' gaze follows (2026-11-23). Still to see by eye: the four programs together at the desktop screen (`sim/README.md`)._
+_Placeholder brain (`python -m brain`): looks at the closest kid. `tests/test_step3_end_to_end.py` moves a kid through Mosquitto and checks both eyes' gaze follows (2026-11-23). Pictures and test results: [build results](results/stage-0-step-3/README.md). Still to see by eye: the four programs together at the desktop screen (`sim/README.md`)._
 
 ## Step 4 — Monster brain, first version (December)
 - [ ] Mood state machine: Asleep → Waking → Greeting → Watching → Goodbye (see architecture §3b), with timings from the theme settings.

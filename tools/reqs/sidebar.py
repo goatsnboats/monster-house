@@ -28,6 +28,7 @@ FOLDERS = [
     ("interfaces", "Interfaces (ICDs)"),
     ("architecture", "Architecture data"),
     ("reviews", "Design reviews"),
+    ("results", "Build results"),
     ("decisions", "Decisions (ADRs)"),
     ("trades", "Trade studies"),
     ("reference", "Reference"),

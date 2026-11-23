@@ -157,13 +157,13 @@ def _icd_schema(icd_id: str) -> dict:
 
 
 def test_site_config_matches_icd_015():
-    from tools.reqs.schema import problems
+    from shared.schema import problems
     site = yaml.safe_load((REPO_ROOT / "config/site.yaml").read_text())
     assert problems(site, _icd_schema("ICD-015")) == []
 
 
 def test_halloween_theme_matches_icd_005():
-    from tools.reqs.schema import problems
+    from shared.schema import problems
     settings = yaml.safe_load((REPO_ROOT / "themes/halloween/settings.yaml").read_text())
     assert problems(settings, _icd_schema("ICD-005")) == []
 

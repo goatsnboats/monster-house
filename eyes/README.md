@@ -6,18 +6,39 @@ Draws one monster eye per window on the GPU (Python + moderngl + pygame-ce,
 
 **Status:** draws the eye with every expression, eases between them, blinks, glides the
 pupil to a look point with parallax, wanders and blinks on its own, and applies each
-window's settings. **Not yet:** the MQTT listener and online/offline status (waits for
-TS-003, how messages are defined in code), theme switching while running, full-screen
-on the Pi (Step 8).
+window's settings. It obeys the brain's MQTT messages (ICD-001), switches theme while
+running, and announces itself online/offline. **Not yet:** 60 fps measured in a real
+window, full-screen on the Pi (Step 8).
 
 ## How to run it
 
-From the repository root, with the virtual environment set up (see the main README):
+From the repository root, with the virtual environment set up (see the main README) and
+the broker running (see `deploy/mosquitto/README.md`):
 
 ```bash
 .venv/bin/python -m eyes --side left        # the small window
 .venv/bin/python -m eyes --side right       # the big window (run both for two eyes)
 ```
+
+No broker? The eye still runs, wanders and blinks on its own, and connects when the
+broker appears.
+
+## Talking to it over MQTT
+
+Until the brain exists, play the brain from another terminal (ICD-001 has every message):
+
+```bash
+.venv/bin/python -m shared.mqtt_tool pub look '{"x": 1.2, "y": 3.5, "z": 1.0}'   # look at a point (m, house coordinates)
+.venv/bin/python -m shared.mqtt_tool pub look '{"mode": "idle"}'                  # wander
+.venv/bin/python -m shared.mqtt_tool pub expression '{"name": "happy", "ms": 300}'
+.venv/bin/python -m shared.mqtt_tool pub blink '{"ms": 180}'                       # both eyes blink
+.venv/bin/python -m shared.mqtt_tool pub theme '{"name": "halloween"}' --retain
+.venv/bin/python -m shared.mqtt_tool sub eye-status                                # online / offline
+```
+
+A message that breaks ICD-001 is logged (`dropped ICD-001 blink: ...`) and ignored; the
+screen never shows it. After 5 s with no brain messages (TBD-023) the eye looks after
+itself again. A theme kept by the broker (retained) doesn't count as the brain being there.
 
 Keys: `1`-`6` neutral, happy, sparkle, surprised, sleepy, asleep · `space` blink ·
 `i` look around on its own · mouse: look at the mouse · `Esc` quit. Left alone, the eye
@@ -27,6 +48,8 @@ Useful options:
 
 | Option | What it does |
 |---|---|
+| `--host`, `--port` | The MQTT broker (default `localhost:1883`) |
+| `--no-mqtt` | Don't connect: keyboard and mouse only |
 | `--projector` | Show exactly what the projector gets: turned a quarter turn if `rotate_deg: 90`, and mirrored. Without it you see the street view |
 | `--long-side 900` | Window size: pixels along the window's long side |
 | `--shape stretch` | Eye shape to try: `oval` (the sketch, default), `stretch` (oval shaped like the window), `window` (fills the glass). A trial option until the owner picks; then it becomes a site-config setting |
@@ -51,6 +74,8 @@ Useful options:
 | `state.py` | Easing, blinks, gliding, wandering and the fallback timer (no drawing) |
 | `config.py` | Reading the site config and the theme |
 | `render.py`, `shaders/eye.frag` | The drawing: one shader, all on the GPU |
+| `link.py` | MQTT: the brain's messages in (checked by `shared/messages`), online/offline out |
 | `__main__.py` | The window, keys and mouse |
 
-Tests: `tests/test_eyes.py` (the drawing tests use Mesa's CPU renderer, so they need no GPU).
+Tests: `tests/test_eyes.py` (the drawing tests use Mesa's CPU renderer, so they need no
+GPU) and `tests/test_eye_link.py` (the MQTT side; two of them need the broker running).

@@ -1,7 +1,9 @@
 """Run one eye:  python -m eyes --side left
 
-Opens a window shaped like that eye's real window and draws the eye. Until the brain
-exists (and TS-003 decides the message code), the keyboard and mouse stand in for it:
+Opens a window shaped like that eye's real window and draws the eye. It obeys the
+brain's messages over MQTT (ICD-001: look, expression, blink, theme) and announces
+itself online/offline. Until the brain exists, send those by hand with
+`python -m shared.mqtt_tool pub ...`, or use the keyboard and mouse:
 
     1-6     neutral, happy, sparkle, surprised, sleepy, asleep
     space   blink
@@ -9,8 +11,8 @@ exists (and TS-003 decides the message code), the keyboard and mouse stand in fo
     mouse   look at the mouse
     Esc     quit
 
-With no brain messages the eye wanders and blinks on its own, as it will when the brain
-goes quiet (EYE-006).
+With no brain messages (or no broker) the eye wanders and blinks on its own, as it will
+when the brain goes quiet (EYE-006).
 """
 
 from __future__ import annotations
@@ -23,8 +25,10 @@ import time
 
 from eyes.config import ConfigError, load_theme, load_window
 from eyes.expressions import EXPRESSIONS
+from eyes.link import EyeLink, apply
 from eyes.render import SHAPES, EyeRenderer, offscreen, output_size
 from eyes.state import EyeState
+from shared.mqtt_client import DEFAULT_HOST, DEFAULT_PORT
 
 log = logging.getLogger("eyes")
 
@@ -44,6 +48,9 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     ap.add_argument("--seconds", type=float, default=0, help="quit after this many seconds and print frame timing")
     ap.add_argument("--screenshot", metavar="PNG", help="draw one frame offscreen, save it and quit (no window)")
     ap.add_argument("--software", action="store_true", help="with --screenshot: use the CPU renderer (no GPU needed)")
+    ap.add_argument("--host", default=DEFAULT_HOST, help=f"MQTT broker (default {DEFAULT_HOST})")
+    ap.add_argument("--port", type=int, default=DEFAULT_PORT, help=f"MQTT port (default {DEFAULT_PORT})")
+    ap.add_argument("--no-mqtt", action="store_true", help="don't connect to the broker (keyboard and mouse only)")
     return ap.parse_args(argv)
 
 
@@ -95,6 +102,18 @@ def run_window(args, window, theme, state) -> int:
     log.info("%s eye, %dx%d, %s", args.side, *size, ctx.info["GL_RENDERER"])
     renderer = EyeRenderer(ctx, size, window, theme, args.projector, shape=args.shape)
 
+    def switch_theme(name: str) -> None:
+        """A theme message from the brain: new colors and blink timing, no restart (EYE-014)."""
+        new = load_theme(name)                 # the default eye if it can't be read
+        renderer.set_theme(new)
+        state.blink_every_s, state.blink_ms = new.blink_every_s, new.blink_ms
+        log.info("theme: %s", new.name)
+
+    link = None
+    if not args.no_mqtt:
+        link = EyeLink(args.side, args.host, args.port)
+        link.start()
+
     names = list(EXPRESSIONS)
     frame_times: list[float] = []
     start = last = time.perf_counter()
@@ -114,6 +133,10 @@ def run_window(args, window, theme, state) -> int:
                 cx, cy = size[0] * window.eye_center[0], size[1] * window.eye_center[1]
                 state.aim_sketch((event.pos[0] - cx) / scale + 150, (event.pos[1] - cy) / scale + 200)
 
+        if link:
+            for name, message, retained in link.messages():
+                apply(state, name, message, retained, switch_theme)
+
         now = time.perf_counter()
         dt, last = now - last, now
         frame_times.append(dt)
@@ -125,6 +148,8 @@ def run_window(args, window, theme, state) -> int:
         if args.seconds and now - start > args.seconds:
             running = False
 
+    if link:
+        link.stop()                            # tells the brain "offline"
     pygame.quit()
     if args.seconds:
         print(json.dumps(timing(frame_times[30:])), flush=True)   # skip start-up frames

@@ -34,9 +34,9 @@ _Done 2026-11-23: `tests/test_mqtt_integration.py` sends an ICD-001 `blink` betw
   _Commands come from the keyboard until the MQTT listener exists. The fallback starts after 5 s of silence until TBD-023 sets it._
 - [x] Per-eye config: window size, eye placement, rotation 0/90°, mirroring, brightness.
   _From `config/site.yaml` (ICD-015) and the theme's colors (ICD-005)._
-- [ ] Listens to `monster/eyes/*` and `monster/theme`; publishes its online/offline status.
-  _Waits for [TS-003](trades/TS-003-message-schemas.md) (how messages are defined in code)._
-- [ ] 60 fps measured on the desktop's GPU. _Not yet: the `dev` account has no GPU access while its desktop session is off (2026-11-18)._
+- [x] Listens to `monster/eyes/*` and `monster/theme`; publishes its online/offline status.
+  _Done 2026-11-23 (`eyes/link.py`): messages checked by `shared/messages`, theme switched while running, "offline" by MQTT last-will if the eye vanishes. Drive it by hand with `shared.mqtt_tool` (see `eyes/README.md`)._
+- [ ] 60 fps measured on the desktop's GPU. _The `dev` account can now reach the GPU (NVIDIA RTX 5060 Ti, 2026-11-23), but only offscreen, where there's no vsync to measure against. Needs the eye in a real window on the desktop: `.venv/bin/python -m eyes --side left --seconds 20`._
 
 **Done when:** two eye windows open on the desktop, each shaped like its real window. They blink, change expression on command, and glide to look-at points sent over MQTT, at a steady 60 fps.
 

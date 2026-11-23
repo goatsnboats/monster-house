@@ -22,7 +22,7 @@ TargetValue = str
 
 
 # target count (radar-firmware, fake-radar -> monster-brain): plain text
-TargetCount = Literal['0', '1', '2', '3']
+TargetCount = Literal['0', '1', '2', '3', 'nan']
 
 
 # status (radar-firmware, fake-radar -> monster-brain): plain text
@@ -35,7 +35,7 @@ CLASSES: dict = {}  # every message in this ICD is plain text
 # Each message's payload schema, exactly as written in the ICD.
 SCHEMAS = {
     'target value': {'type': 'string'},
-    'target count': {'type': 'string', 'enum': ['0', '1', '2', '3']},
+    'target count': {'type': 'string', 'enum': ['0', '1', '2', '3', 'nan']},
     'status': {'enum': ['online', 'offline']},
 }
 

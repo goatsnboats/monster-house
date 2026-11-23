@@ -7,6 +7,9 @@
 radar:
   mount: {x: 0.0, y: 0.0, z: 1.2}          # TBD-018
   approach_range_m: 5.0
+  # Where the radar loses a visitor walking up to the door (radar mm). A guess until
+  # measured at the Stage 2 install (TBD-029); the fake radar's blind spot uses it.
+  door_zone_mm: {x1: -1800, y1: 0, x2: -500, y2: 900}  # TBD-029
 head_height_m: 1.0
 eyes:
   left:                                     # as seen from the street: the smaller window

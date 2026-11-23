@@ -683,7 +683,7 @@
   decomposition: >-
     The brain marks visitors as going (SHW-010) and says goodbye to them (SHW-013).
   source: owner 2026-11-09
-  notes: Coming vs going is told from the radar's speed sign if it carries direction (TBD-030), otherwise from the change in position.
+  notes: Coming vs going is told by the brain from the change in position over about 0.5 s, toward or away from the house (owner 2026-11-23, closing TBD-030).
   stage: 0
   status: approved
 

@@ -1,0 +1,29 @@
+# Fake radar (Stage 0 Step 3): the top-down picture of the front of the house.
+# Only the fake radar reads this file. Where the radar is, and its blind spot by the
+# door, come from config/site.yaml (ICD-015), the same file the brain reads.
+#
+# Everything is in house coordinates, meters (ICD-015): x to the right as seen from
+# the street, y from the house toward the street. Rough guesses from
+# docs/reference/house-front.jpg; adjust freely, nothing else depends on them.
+
+view:                     # the part of the ground shown in the window
+  x: [-5.0, 5.0]
+  y: [-1.2, 7.5]
+pixels_per_m: 80
+
+house:                    # front wall, porch and door
+  wall_y: -0.5
+  x: [-3.5, 3.5]
+  porch: {x: [-3.2, 3.2], y: [-0.5, 1.3]}
+  door_x: [-1.6, -0.8]
+steps: {x: [-1.6, -0.6], y: [1.3, 2.3]}
+walk: {x: [-1.6, -0.6], y: [2.3, 4.5]}
+sidewalk_y: [4.5, 6.0]    # the street is beyond it
+
+# Where new kids appear when added from the keyboard (on the sidewalk, by the walk).
+start_spot: {x: -1.1, y: 5.2}
+
+# How the fake radar behaves (ICD-002).
+frame_hz: 10              # radar frames a second, as our ESPHome config will send
+jitter_mm: 0              # random wobble added to x and y (a real radar wobbles a little)
+speed_window_s: 0.3       # speed is the change in distance over this long

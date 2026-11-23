@@ -83,7 +83,7 @@
 - TBD-020: SYS-019
 - TBD-021: SYS-020
 - TBD-022: SHW-033, SYS-021
-- TBD-023: EYE-006, SHW-018, SYS-029
+- TBD-023: EYE-006, SYS-029
 - TBD-024: SHW-019, SYS-014
 - TBD-025: INF-012, SYS-018
 - TBD-026: SYS-030, VOC-002
@@ -159,7 +159,7 @@ Open risks from `docs/requirements/risks.yaml` (19 of 19).
 | RSK-006: The monster may not feel right (timing, personality, coming and going) | medium | high | PDR | Tune in the simulator with the owner; the owner signs off the pretend visits before PDR. | VE-005, VE-004 | TBD-020, TBD-021, TBD-028 |
 | RSK-007: Porch Wi-Fi may be too weak at 2.4 GHz for the radar and the lips | medium | high | CDR-2 | Measure the signal where the boxes will go before mounting; add an access point if needed. | VE-201 | TBD-008 |
 | RSK-008: The radar may report railings, inflatables, cars or branches as visitors | high | medium | CDR-2 | Filter zones set during the walk test; check with decorations up. | VE-201 | TBD-018 |
-| RSK-010: Visitors lost at the door may be mistaken for new arrivals or leavers | high | medium | CDR-2 | Door hold and coming/going logic tuned in the simulator with a blind spot, then checked on the real radar. | VE-004, VE-201 | TBD-028, TBD-029, TBD-030 |
+| RSK-010: Visitors lost at the door may be mistaken for new arrivals or leavers | high | medium | CDR-2 | Door hold and coming/going logic tuned in the simulator with a blind spot, then checked on the real radar. | VE-004, VE-201 | TBD-028, TBD-029 |
 | RSK-011: Falcon Player may not share the porch Pi 5 with the brain and Mosquitto | medium | high | CDR-3 | Check FPP's support for the Pi 5 and running other services; fall back to a second small computer for FPP. | VE-301 | TBD-036, TBD-031 |
 | RSK-013: The voice content may not be ready in time (name, voice, clips) | medium | high | CDR-3 | Rough clips recorded on a phone during Stage 0; final recordings before the Stage 3 purchase. | VE-304 | TBD-011 |
 | RSK-005: Projector fan noise may disturb whoever sleeps in the bedroom | medium | medium | CDR-1 | The pods switch off at bedtime; check the noise during the first window install. | VE-105, VE-103 | TBD-025 |
@@ -280,7 +280,7 @@ Open risks from `docs/requirements/risks.yaml` (19 of 19).
 | SHW-015 | functional | 0 | proposed | While awake, the brain shall command blinks for both eyes with one message at a random interval within the theme's blink range. | SYS-009 | monster-brain | The brain owns blinks so that both eyes blink together (architecture §2). | — | — | test | VE-001 |
 | SHW-016 | functional | 0 | proposed | The brain shall pick clips from each pool in a shuffled order and not repeat a clip until every clip in that pool has played. | SYS-015 | monster-brain | A decision, and all decisions live in the brain (CLAUDE.md, one brain, simple limbs). | — | — | test | VE-001 |
 | SHW-017 | performance | 0 | proposed | The brain shall not start a clip until the theme's minimum gap has passed since the previous clip ended, except for clips the owner triggers from the phone. | SYS-027 | monster-brain | When clips play is a decision (brain); FPP only plays what it is told. | — | needed | test | VE-001 |
-| SHW-018 | functional | 0 | proposed | The brain shall handle failures as in architecture §3b: with the radar offline or silent for TBD-023, stay in an ambient mode (eyes idle, no greetings); with an eye pod offline, log it and carry on; with Falcon Player not responding, keep the eyes going without voice. | SYS-017, SYS-029 | monster-brain | Only the brain sees every component's status, so it decides the fallback. | — | — | test | VE-001 |
+| SHW-018 | functional | 0 | proposed | The brain shall handle failures as in architecture §3b: with the radar offline (its status, ICD-002), stay in an ambient mode (eyes idle, no greetings); with an eye pod offline, log it and carry on; with Falcon Player not responding, keep the eyes going without voice. | SYS-017, SYS-029 | monster-brain | Only the brain sees every component's status, so it decides the fallback. | — | — | test | VE-001 |
 | SHW-019 | functional | 0 | proposed | Outside the theme's show hours (TBD-024), the brain shall stay Asleep and trigger no voice clips, unless the owner presses wake now on the phone; it then follows its moods as in show hours until the owner presses sleep now. | SYS-014 | monster-brain | One schedule, in the brain, so moods and voice follow it together. | — | — | test | VE-001 |
 | SHW-020 | functional | 0 | proposed | While muted, the brain shall trigger no voice clips and shall keep commanding the eyes. | SYS-013 | monster-brain | The brain is the only thing that triggers clips, so muting means not triggering. | — | — | test | VE-001 |
 | SHW-021 | functional | 0 | proposed | When a theme is chosen, the brain shall load its settings and clip pools and publish the theme's name to the eyes. | SYS-016 | monster-brain | The brain holds the pools and publishes the theme to the eyes. | — | — | test | VE-001 |

@@ -1,6 +1,6 @@
 # TBD register
 
-> **Status:** Current · **Updated:** 2026-11-22 · Every open question in the project, with what will settle it.
+> **Status:** Current · **Updated:** 2026-11-23 · Every open question in the project, with what will settle it.
 
 TBDs are allowed in any document, but each one gets an ID here so none is lost.
 
@@ -52,7 +52,6 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-027 | Brightness cap for the lips (SYS-031) | Owner decision, then a Test at the house | WLED brightness limit, power supply sizing | Stage 4 | CDR-4 | Open |
 | TBD-028 | Door hold time: how long a visitor lost at the door still counts as present (SYS-047) | Owner decision, tuned in the Stage 0 simulator | Brain door-hold logic, theme settings | Stage 0 Step 4 | PDR | Open |
 | TBD-029 | Where the real radar loses visitors near the door (sets the door zone) (SYS-047) | Measurement at the Stage 2 install | Door zone in the site config, fake radar's blind spot | Stage 2 (simulator uses a guess until then) | CDR-2 | Open |
-| TBD-030 | How the radar tells coming from going, and the exact text of its messages. ESPHome's LD2450 page (checked 2026-11-09) gives speed in mm/s with no sign convention, and a per-target `direction` text sensor (`Approaching`, `Moving away`, `Stationary`) that would need a topic `shared/topics.py` doesn't have yet. It also doesn't state the state payload's number format (SYS-049, ICD-002) | Owner decision (use the `direction` sensor, which adds a topic), then a Test with the real ESP32 | How the brain tells coming from going; fake-radar parity | Stage 0 Step 3 (fake radar must match) | PDR | Open |
 | TBD-031 | How much memory (RAM) the porch Pi has (architecture §3 doesn't say) | Owner decision at the Stage 3 purchase, using the budget check | Porch Pi memory budget (INF-009) | Stage 3 purchase | CDR-3 | Open |
 | TBD-032 | Memory each program and the operating system use on a Pi | Measurement on a real Pi (with TBD-013) | Eye Pi and porch Pi memory budgets | Stage 1 (eye Pi), Stage 3 (porch Pi) | CDR-1 | Open |
 | TBD-033 | Power the lip strips, extras and controller draw at the brightness cap | Analysis, after TBD-007 (lengths) and TBD-027 (cap) | Lip supply budget (MTH-009) | Stage 4 purchase | CDR-4 | Open |
@@ -61,6 +60,7 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-036 | Whether Falcon Player can run on the porch Pi 5 next to the brain and Mosquitto (FPP's own OS image vs Raspberry Pi OS) | Verify against FPP's documentation, then a Test | Porch Pi software setup (ICD-013), SYS-039 | Before the Stage 3 purchase | CDR-3 | Open |
 | TBD-037 | Where the radar goes and what box it needs: on a porch column under the roof (EAR-003, EAR-008 as written), or on a small stand in the front garden for a clearer view (needs a rain-proof box, a cord across the garden, and maybe a yaw setting in the site config if it is aimed at an angle) | Test: try both spots with the bare radar and ESP32 (range, ghost targets from plants and decorations, door blind spot), then a trade study if both work | Radar box and mount (ICD-010), EAR-003/EAR-008 wording, site config (ICD-015) | Stage 2 | CDR-2 | Open |
 | TBD-038 | How much storage space the packed kit may take (SYS-051) | Owner decision: measure the space set aside for it | Teardown checklist and packing (DEP-004) | Stage 1 install | CDR-1 | Open |
+| TBD-039 | Which way the radar's `x` points as seen from the street. ESPHome's page says only "negative is left of the sensor"; the brain and the fake radar assume `x` grows to the right as seen from the street, the same as house `x` (ICD-002, ICD-015) | Test: walk across the path at the Stage 2 install, watching `x` | Radar-to-house conversion in the brain (`shared/radar_frame.py`) | Stage 2 | CDR-2 | Open |
 
 ## Closed
 
@@ -69,3 +69,4 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 | TBD-001 | How requirements, architecture and ICDs are documented | [ADR 0001](decisions/0001-requirements-and-architecture-format.md): Markdown + YAML with our own checker, SysML-ready (owner; [TS-001](trades/TS-001-requirements-approach.md)) | 2026-11-08 |
 | TBD-002 | Eye renderer: Python + moderngl + pygame-ce, or Godot | [ADR 0002](decisions/0002-eye-renderer.md): Python + moderngl + pygame-ce (owner; [TS-002](trades/TS-002-eye-renderer.md), [results](trades/results/TS-002/README.md)) | 2026-11-08 |
 | TBD-003 | How our MQTT message schemas are defined and validated | [ADR 0003](decisions/0003-message-schemas.md): generated from the ICDs, standard library, no new dependency (owner; [TS-003](trades/TS-003-message-schemas.md), [results](trades/results/TS-003/README.md)) | 2026-11-22 |
+| TBD-030 | How the radar tells coming from going, and the exact text of its messages | Owner decision: the brain works it out from position change over about 0.5 s, in house coordinates; no new topic. The message text was read from ESPHome's source: whole-number mm and mm/s, speed negative toward the radar, `nan` for an empty slot ([ICD-002](interfaces/ICD-002-radar-targets.md)); confirm on the real ESP32 at Stage 2 | 2026-11-23 |

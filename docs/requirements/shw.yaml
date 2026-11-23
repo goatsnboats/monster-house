@@ -154,8 +154,8 @@
   verify: test
   notes: >-
     The LD2450 reports three target slots, not people; the brain matches slots to
-    visitors. Coming vs going comes from the radar's direction or from position change
-    (TBD-030).
+    visitors. Coming vs going comes from the change in position over about 0.5 s, in
+    house coordinates (owner 2026-11-23, closing TBD-030).
   source: owner 2026-11-09 (coming vs going)
   stage: 0
   status: proposed
@@ -269,8 +269,8 @@
 
 - id: SHW-018
   text: >-
-    The brain shall handle failures as in architecture §3b: with the radar offline or
-    silent for TBD-023, stay in an ambient mode (eyes idle, no greetings); with an eye
+    The brain shall handle failures as in architecture §3b: with the radar offline
+    (its status, ICD-002), stay in an ambient mode (eyes idle, no greetings); with an eye
     pod offline, log it and carry on; with Falcon Player not responding, keep the eyes
     going without voice.
   type: functional
@@ -280,6 +280,10 @@
     Only the brain sees every component's status, so it decides the fallback.
   verify: test
   source: architecture.md §3b "What happens when something fails"
+  notes: >-
+    "Radar silent" was dropped 2026-11-23: ESPHome sends a value only when it changes,
+    so an empty walk is silent too (ICD-002 Timing). The radar's offline last-will is
+    the only sign it has gone.
   stage: 0
   status: proposed
 

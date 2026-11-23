@@ -613,7 +613,7 @@ When a visitor walks away from the house while the monster is awake, the eyes sh
 | Children | [SHW-010](shw.md#shw-010), [SHW-013](shw.md#shw-013) |
 | How it splits | The brain marks visitors as going (SHW-010) and says goodbye to them (SHW-013). |
 | Verified by | test ([VE-004](ve.md#ve-004)) |
-| Notes | Coming vs going is told from the radar's speed sign if it carries direction (TBD-030), otherwise from the change in position. |
+| Notes | Coming vs going is told by the brain from the change in position over about 0.5 s, toward or away from the house (owner 2026-11-23, closing TBD-030). |
 | Source | owner 2026-11-09 |
 
 ## SYS-050

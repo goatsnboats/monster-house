@@ -23,7 +23,7 @@ Our ESPHome configuration for the radar node (`esphome/`, Stage 2): sensors name
 
 ## Open items
 
-- TBD-030 (direction, payload format)
+- TBD-039 (which way radar x points)
 - TBD-016 (range to the sidewalk)
 
 ## Requirements

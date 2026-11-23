@@ -164,7 +164,7 @@ The eye renderer shall never draw text or an error, and shall hide the mouse cur
 
 ## EYE-013
 
-The eye renderer shall apply its eye's window settings from the site config: window size, eye placement and size within it, rotation 0° or 90°, horizontal mirroring and brightness.
+The eye renderer shall apply its eye's window settings from the site config: window size, eye shape (filling the window, or an oval), eye placement and size within it, rotation 0° or 90°, horizontal mirroring and brightness.
 
 | | |
 |---|---|

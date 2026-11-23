@@ -181,8 +181,8 @@
 - id: EYE-013
   text: >-
     The eye renderer shall apply its eye's window settings from the site config: window
-    size, eye placement and size within it, rotation 0° or 90°, horizontal mirroring
-    and brightness.
+    size, eye shape (filling the window, or an oval), eye placement and size within it,
+    rotation 0° or 90°, horizontal mirroring and brightness.
   type: functional
   derives_from: [SYS-035, SYS-024]
   allocated_to: eye-renderer

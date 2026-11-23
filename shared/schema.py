@@ -1,9 +1,13 @@
-"""A tiny JSON-Schema checker, enough for the payload examples in our ICDs.
+"""A tiny JSON-Schema checker, enough for the message payloads in our ICDs.
+
+The checker (tools/reqs) uses it on each ICD's examples; every component uses it on
+every message it sends or receives (shared/messages, ADR 0003).
 
 Supported keywords: type, required, properties, additionalProperties (false only),
 items, enum, const, minimum, maximum, oneOf. That covers every ICD payload so far.
-If an ICD needs more, add it here (or move to the `jsonschema` package; ask first,
-it's a new dependency). Unknown keywords are reported, never silently ignored.
+If an ICD needs more, add it here and to the message generator
+(tools/reqs/gen_messages.py), or move to the `jsonschema` package (ask first, it's a
+new dependency). Unknown keywords are reported, never silently ignored.
 """
 
 from __future__ import annotations
@@ -30,7 +34,7 @@ def problems(value, schema: dict, path: str = "payload") -> list[str]:
         return [f"{path}: schema must be a mapping"]
     unknown = set(schema) - SUPPORTED
     if unknown:
-        return [f"{path}: schema keyword(s) not supported by tools/reqs/schema.py: {sorted(unknown)}"]
+        return [f"{path}: schema keyword(s) not supported by shared/schema.py: {sorted(unknown)}"]
 
     if "oneOf" in schema:
         matching = [s for s in schema["oneOf"] if not problems(value, s, path)]

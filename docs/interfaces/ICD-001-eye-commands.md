@@ -1,6 +1,6 @@
 # ICD-001 — Eye commands and eye status
 
-> **Status:** Draft · **Updated:** 2026-11-22 · **Requirements:** SHW-024, EYE-015, SIM-006 · **Spec tree:** [N² chart](../requirements/spec-tree.md)
+> **Status:** Draft · **Updated:** 2026-11-23 · **Requirements:** SHW-024, EYE-015, SIM-006 · **Spec tree:** [N² chart](../requirements/spec-tree.md)
 
 The brain tells both eyes where to look, which expression to show, when to blink and
 which theme's art to load. Each eye works out its own angle from its own window position
@@ -26,11 +26,13 @@ messages:
     rate: about 10 per second while a visitor is tracked (SHW-009); on change otherwise
     payload_schema:
       oneOf:
-        - type: object
+        - title: LookAt
+          type: object
           required: [x, y, z]
           additionalProperties: false
           properties: {x: {type: number}, y: {type: number}, z: {type: number}}
-        - type: object
+        - title: LookIdle
+          type: object
           required: [mode]
           additionalProperties: false
           properties: {mode: {enum: [idle]}}

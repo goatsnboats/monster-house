@@ -14,7 +14,8 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-from tools.reqs import schema, shared_topics
+from shared import schema
+from tools.reqs import shared_topics
 from tools.reqs import budget
 from tools.reqs.load import ARCH_DIR, COMPONENTS, ICD_DIR, REQ_DIR, RISKS, SPEC_TREE, TOPICS_FILE, VERIFICATION, Model
 

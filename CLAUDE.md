@@ -44,6 +44,8 @@ Friendly, goofy, delighted to see visitors. Never scary. Big round pupils, smile
 - Start each task by restating the goal and the "done when" from `docs/stage-0-plan.md`, then propose a short plan.
 - Stop and ask when a decision is a matter of taste (look, timing, personality) or would change the architecture. Make the reasonable call on purely technical details and mention it.
 - When a task is done: run the tests, show how to run/see the result, and update the relevant README and the plan checklist.
+- Comments on the docs live in gloss, not in the repo. Work them with /gloss (or ~/dev/gloss/bin/gloss list); answer with gloss answer, never resolve: the owner does.
+- Machine-wide rules (no sudo, `/tmp` is RAM, other projects read-only, worktrees under `~/worktrees/`) are in `~/.claude/CLAUDE.md`; where this file differs, this file wins. Propose any change outside this repo (shared units, ~/.local/bin, ~/.config, ~/.claude, ~/.profile, ports) through lighthouse: ~/dev/lighthouse/changes/.
 
 ## Glossary
 - **Eye pod:** Pi + projector + screen at one window (Stage 1+). In Stage 0, an eye window on the desktop.

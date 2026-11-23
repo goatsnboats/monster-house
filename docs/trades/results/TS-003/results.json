@@ -1,0 +1,957 @@
+{
+ "machine": {
+  "python": "3.11.18",
+  "platform": "Linux-7.0.0-44-generic-x86_64-with-glibc2.43",
+  "cpu": "x86_64"
+ },
+ "versions": {
+  "pydantic": "2.14.4",
+  "pydantic_core": "2.50.5",
+  "msgspec": "0.22.0"
+ },
+ "probes": {
+  "A": {
+   "g1": [
+    {
+     "message": "look",
+     "example": {
+      "x": 1.2,
+      "y": 3.5,
+      "z": 1.0
+     },
+     "sent": "{\"x\": 1.2, \"y\": 3.5, \"z\": 1.0}",
+     "ok": true
+    },
+    {
+     "message": "look",
+     "example": {
+      "mode": "idle"
+     },
+     "sent": "{\"mode\": \"idle\"}",
+     "ok": true
+    },
+    {
+     "message": "expression",
+     "example": {
+      "name": "happy",
+      "ms": 300
+     },
+     "sent": "{\"name\": \"happy\", \"ms\": 300}",
+     "ok": true
+    },
+    {
+     "message": "blink",
+     "example": {
+      "ms": 180
+     },
+     "sent": "{\"ms\": 180}",
+     "ok": true
+    },
+    {
+     "message": "theme",
+     "example": {
+      "name": "halloween"
+     },
+     "sent": "{\"name\": \"halloween\"}",
+     "ok": true
+    },
+    {
+     "message": "status",
+     "example": "online",
+     "sent": "online",
+     "ok": true
+    },
+    {
+     "message": "status",
+     "example": "offline",
+     "sent": "offline",
+     "ok": true
+    }
+   ],
+   "bad": [
+    {
+     "message": "blink",
+     "case": "not JSON",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "empty payload",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "JSON array, not an object",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "string for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "true for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "fraction for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "below the minimum",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "extra key",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "expression",
+     "case": "unknown expression name",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "expression",
+     "case": "missing key",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "string for a number",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "both look shapes at once",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "unknown mode",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "theme",
+     "case": "number for a string",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "status",
+     "case": "unknown status",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "status",
+     "case": "not UTF-8",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "whole-number coordinates (valid: integers are numbers)",
+     "should": "accept",
+     "outcome": "accepted as LookAt(x=1, y=2, z=3)"
+    }
+   ],
+   "send": [
+    {
+     "case": "Blink(ms=-5)",
+     "outcome": "refused (ValueError)"
+    },
+    {
+     "case": "Expression(name='angry', ms=300)",
+     "outcome": "refused (ValueError)"
+    },
+    {
+     "case": "Blink(ms='180')",
+     "outcome": "refused (ValueError)"
+    }
+   ],
+   "seeds": [
+    {
+     "seed": "add a required key (expression.ease)",
+     "verdict": "caught; after regenerating, the drift test still asks for a code edit",
+     "first_problem": "expression: schemas.json is out of date with the ICD (run the checker)",
+     "after_regenerating": [
+      "expression: the ICD has 'ease', the code doesn't",
+      "expression: the ICD example {'name': 'happy', 'ms': 300, 'ease': 'smooth'} doesn't decode"
+     ]
+    },
+    {
+     "seed": "add an allowed value (expression name 'wink')",
+     "verdict": "caught; after regenerating, the drift test still asks for a code edit",
+     "first_problem": "expression: schemas.json is out of date with the ICD (run the checker)",
+     "after_regenerating": [
+      "expression.name: ICD says (('asleep', 'happy', 'neutral', 'sleepy', 'sparkle', 'surprised', 'wink'), True, None), code says (('asleep', 'happy', 'neutral', 'sleepy', 'sparkle', 'surprised'), True, None)"
+     ]
+    },
+    {
+     "seed": "change a limit (blink ms minimum 0 -> 20)",
+     "verdict": "caught; regenerating fixes it, no code edit",
+     "first_problem": "blink: schemas.json is out of date with the ICD (run the checker)",
+     "after_regenerating": []
+    },
+    {
+     "seed": "rename a key (theme name -> theme)",
+     "verdict": "caught; after regenerating, the drift test still asks for a code edit",
+     "first_problem": "theme: schemas.json is out of date with the ICD (run the checker)",
+     "after_regenerating": [
+      "theme: the code has 'name', the ICD doesn't",
+      "theme: the ICD has 'theme', the code doesn't",
+      "theme: the ICD example {'theme': 'halloween'} doesn't decode"
+     ]
+    },
+    {
+     "seed": "remove a key (look z)",
+     "verdict": "caught; after regenerating, the drift test still asks for a code edit",
+     "first_problem": "look: schemas.json is out of date with the ICD (run the checker)",
+     "after_regenerating": [
+      "look: ICD says [{'x': ('number', True, None), 'y': ('number', True, None)}, {'mode': (('idle',), True, None)}], code says [{'x': ('number', True, None), 'y': ('number', True, None), 'z': ('number', True, None)}, {'mode': (('idle',), True, None)}]",
+      "look: the ICD example {'x': 1.2, 'y': 3.5} doesn't decode"
+     ]
+    }
+   ]
+  },
+  "B": {
+   "g1": [
+    {
+     "message": "look",
+     "example": {
+      "x": 1.2,
+      "y": 3.5,
+      "z": 1.0
+     },
+     "sent": "{\"x\":1.2,\"y\":3.5,\"z\":1.0}",
+     "ok": true
+    },
+    {
+     "message": "look",
+     "example": {
+      "mode": "idle"
+     },
+     "sent": "{\"mode\":\"idle\"}",
+     "ok": true
+    },
+    {
+     "message": "expression",
+     "example": {
+      "name": "happy",
+      "ms": 300
+     },
+     "sent": "{\"name\":\"happy\",\"ms\":300}",
+     "ok": true
+    },
+    {
+     "message": "blink",
+     "example": {
+      "ms": 180
+     },
+     "sent": "{\"ms\":180}",
+     "ok": true
+    },
+    {
+     "message": "theme",
+     "example": {
+      "name": "halloween"
+     },
+     "sent": "{\"name\":\"halloween\"}",
+     "ok": true
+    },
+    {
+     "message": "status",
+     "example": "online",
+     "sent": "online",
+     "ok": true
+    },
+    {
+     "message": "status",
+     "example": "offline",
+     "sent": "offline",
+     "ok": true
+    }
+   ],
+   "bad": [
+    {
+     "message": "blink",
+     "case": "not JSON",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "empty payload",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "JSON array, not an object",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "string for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "true for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "fraction for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "below the minimum",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "extra key",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "expression",
+     "case": "unknown expression name",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "expression",
+     "case": "missing key",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "string for a number",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "both look shapes at once",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "unknown mode",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "theme",
+     "case": "number for a string",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "status",
+     "case": "unknown status",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "status",
+     "case": "not UTF-8",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "whole-number coordinates (valid: integers are numbers)",
+     "should": "accept",
+     "outcome": "accepted as LookAt(x=1.0, y=2.0, z=3.0)"
+    }
+   ],
+   "send": [
+    {
+     "case": "Blink(ms=-5)",
+     "outcome": "refused (ValidationError)"
+    },
+    {
+     "case": "Expression(name='angry', ms=300)",
+     "outcome": "refused (ValidationError)"
+    },
+    {
+     "case": "Blink(ms='180')",
+     "outcome": "refused (ValidationError)"
+    }
+   ],
+   "seeds": [
+    {
+     "seed": "add a required key (expression.ease)",
+     "verdict": "caught by the drift test; code edit needed",
+     "first_problem": "expression: the ICD has 'ease', the code doesn't",
+     "after_regenerating": null
+    },
+    {
+     "seed": "add an allowed value (expression name 'wink')",
+     "verdict": "caught by the drift test; code edit needed",
+     "first_problem": "expression.name: ICD says (('asleep', 'happy', 'neutral', 'sleepy', 'sparkle', 'surprised', 'wink'), True, None), code says (('asleep', 'happy', 'neutral', 'sleepy', 'sparkle', 'surprised'), True, None)",
+     "after_regenerating": null
+    },
+    {
+     "seed": "change a limit (blink ms minimum 0 -> 20)",
+     "verdict": "caught by the drift test; code edit needed",
+     "first_problem": "blink.ms: ICD says ('integer', True, 20), code says ('integer', True, 0)",
+     "after_regenerating": null
+    },
+    {
+     "seed": "rename a key (theme name -> theme)",
+     "verdict": "caught by the drift test; code edit needed",
+     "first_problem": "theme: the code has 'name', the ICD doesn't",
+     "after_regenerating": null
+    },
+    {
+     "seed": "remove a key (look z)",
+     "verdict": "caught by the drift test; code edit needed",
+     "first_problem": "look: ICD says [{'x': ('number', True, None), 'y': ('number', True, None)}, {'mode': (('idle',), True, None)}], code says [{'x': ('number', True, None), 'y': ('number', True, None), 'z': ('number', True, None)}, {'mode': (('idle',), True, None)}]",
+     "after_regenerating": null
+    }
+   ]
+  },
+  "C": {
+   "g1": [
+    {
+     "message": "look",
+     "example": {
+      "x": 1.2,
+      "y": 3.5,
+      "z": 1.0
+     },
+     "sent": "{\"x\":1.2,\"y\":3.5,\"z\":1.0}",
+     "ok": true
+    },
+    {
+     "message": "look",
+     "example": {
+      "mode": "idle"
+     },
+     "sent": "{\"mode\":\"idle\"}",
+     "ok": true
+    },
+    {
+     "message": "expression",
+     "example": {
+      "name": "happy",
+      "ms": 300
+     },
+     "sent": "{\"name\":\"happy\",\"ms\":300}",
+     "ok": true
+    },
+    {
+     "message": "blink",
+     "example": {
+      "ms": 180
+     },
+     "sent": "{\"ms\":180}",
+     "ok": true
+    },
+    {
+     "message": "theme",
+     "example": {
+      "name": "halloween"
+     },
+     "sent": "{\"name\":\"halloween\"}",
+     "ok": true
+    },
+    {
+     "message": "status",
+     "example": "online",
+     "sent": "online",
+     "ok": true
+    },
+    {
+     "message": "status",
+     "example": "offline",
+     "sent": "offline",
+     "ok": true
+    }
+   ],
+   "bad": [
+    {
+     "message": "blink",
+     "case": "not JSON",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "empty payload",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "JSON array, not an object",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "string for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "true for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "fraction for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "below the minimum",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "extra key",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "expression",
+     "case": "unknown expression name",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "expression",
+     "case": "missing key",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "string for a number",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "both look shapes at once",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "unknown mode",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "theme",
+     "case": "number for a string",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "status",
+     "case": "unknown status",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "status",
+     "case": "not UTF-8",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "whole-number coordinates (valid: integers are numbers)",
+     "should": "accept",
+     "outcome": "accepted as LookAt(x=1.0, y=2.0, z=3.0)"
+    }
+   ],
+   "send": [
+    {
+     "case": "Blink(ms=-5)",
+     "outcome": "SENT {\"ms\":-5}"
+    },
+    {
+     "case": "Expression(name='angry', ms=300)",
+     "outcome": "SENT {\"name\":\"angry\",\"ms\":300}"
+    },
+    {
+     "case": "Blink(ms='180')",
+     "outcome": "SENT {\"ms\":\"180\"}"
+    }
+   ],
+   "seeds": [
+    {
+     "seed": "add a required key (expression.ease)",
+     "verdict": "caught by the drift test; code edit needed",
+     "first_problem": "expression: the ICD has 'ease', the code doesn't",
+     "after_regenerating": null
+    },
+    {
+     "seed": "add an allowed value (expression name 'wink')",
+     "verdict": "caught by the drift test; code edit needed",
+     "first_problem": "expression.name: ICD says (('asleep', 'happy', 'neutral', 'sleepy', 'sparkle', 'surprised', 'wink'), True, None), code says (('asleep', 'happy', 'neutral', 'sleepy', 'sparkle', 'surprised'), True, None)",
+     "after_regenerating": null
+    },
+    {
+     "seed": "change a limit (blink ms minimum 0 -> 20)",
+     "verdict": "caught by the drift test; code edit needed",
+     "first_problem": "blink.ms: ICD says ('integer', True, 20), code says ('integer', True, 0)",
+     "after_regenerating": null
+    },
+    {
+     "seed": "rename a key (theme name -> theme)",
+     "verdict": "caught by the drift test; code edit needed",
+     "first_problem": "theme: the code has 'name', the ICD doesn't",
+     "after_regenerating": null
+    },
+    {
+     "seed": "remove a key (look z)",
+     "verdict": "caught by the drift test; code edit needed",
+     "first_problem": "look: ICD says [{'x': ('number', True, None), 'y': ('number', True, None)}, {'mode': (('idle',), True, None)}], code says [{'x': ('number', True, None), 'y': ('number', True, None), 'z': ('number', True, None)}, {'mode': (('idle',), True, None)}]",
+     "after_regenerating": null
+    }
+   ]
+  },
+  "D": {
+   "g1": [
+    {
+     "message": "look",
+     "example": {
+      "x": 1.2,
+      "y": 3.5,
+      "z": 1.0
+     },
+     "sent": "{\"x\": 1.2, \"y\": 3.5, \"z\": 1.0}",
+     "ok": true
+    },
+    {
+     "message": "look",
+     "example": {
+      "mode": "idle"
+     },
+     "sent": "{\"mode\": \"idle\"}",
+     "ok": true
+    },
+    {
+     "message": "expression",
+     "example": {
+      "name": "happy",
+      "ms": 300
+     },
+     "sent": "{\"name\": \"happy\", \"ms\": 300}",
+     "ok": true
+    },
+    {
+     "message": "blink",
+     "example": {
+      "ms": 180
+     },
+     "sent": "{\"ms\": 180}",
+     "ok": true
+    },
+    {
+     "message": "theme",
+     "example": {
+      "name": "halloween"
+     },
+     "sent": "{\"name\": \"halloween\"}",
+     "ok": true
+    },
+    {
+     "message": "status",
+     "example": "online",
+     "sent": "online",
+     "ok": true
+    },
+    {
+     "message": "status",
+     "example": "offline",
+     "sent": "offline",
+     "ok": true
+    }
+   ],
+   "bad": [
+    {
+     "message": "blink",
+     "case": "not JSON",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "empty payload",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "JSON array, not an object",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "string for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "true for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "fraction for an integer",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "below the minimum",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "blink",
+     "case": "extra key",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "expression",
+     "case": "unknown expression name",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "expression",
+     "case": "missing key",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "string for a number",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "both look shapes at once",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "unknown mode",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "theme",
+     "case": "number for a string",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "status",
+     "case": "unknown status",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "status",
+     "case": "not UTF-8",
+     "should": "drop",
+     "outcome": "dropped"
+    },
+    {
+     "message": "look",
+     "case": "whole-number coordinates (valid: integers are numbers)",
+     "should": "accept",
+     "outcome": "accepted as LookXYZ(x=1, y=2, z=3)"
+    }
+   ],
+   "send": [
+    {
+     "case": "Blink(ms=-5)",
+     "outcome": "refused (ValueError)"
+    },
+    {
+     "case": "Expression(name='angry', ms=300)",
+     "outcome": "refused (ValueError)"
+    },
+    {
+     "case": "Blink(ms='180')",
+     "outcome": "refused (ValueError)"
+    }
+   ],
+   "seeds": [
+    {
+     "seed": "add a required key (expression.ease)",
+     "verdict": "caught; regenerating fixes it, no code edit",
+     "first_problem": "messages.py is out of date with the ICD (run generate.py)",
+     "after_regenerating": []
+    },
+    {
+     "seed": "add an allowed value (expression name 'wink')",
+     "verdict": "caught; regenerating fixes it, no code edit",
+     "first_problem": "messages.py is out of date with the ICD (run generate.py)",
+     "after_regenerating": []
+    },
+    {
+     "seed": "change a limit (blink ms minimum 0 -> 20)",
+     "verdict": "caught; regenerating fixes it, no code edit",
+     "first_problem": "messages.py is out of date with the ICD (run generate.py)",
+     "after_regenerating": []
+    },
+    {
+     "seed": "rename a key (theme name -> theme)",
+     "verdict": "caught; regenerating fixes it, no code edit",
+     "first_problem": "messages.py is out of date with the ICD (run generate.py)",
+     "after_regenerating": []
+    },
+    {
+     "seed": "remove a key (look z)",
+     "verdict": "caught; regenerating fixes it, no code edit",
+     "first_problem": "messages.py is out of date with the ICD (run generate.py)",
+     "after_regenerating": []
+    }
+   ]
+  }
+ },
+ "sample_change": {
+  "A": {
+   "files_edited_by_hand": 2,
+   "code_lines_edited_by_hand": 1,
+   "regenerated": [
+    "schemas.json (by the checker)"
+   ],
+   "drift_after_change": []
+  },
+  "B": {
+   "files_edited_by_hand": 2,
+   "code_lines_edited_by_hand": 1,
+   "regenerated": [],
+   "drift_after_change": []
+  },
+  "C": {
+   "files_edited_by_hand": 2,
+   "code_lines_edited_by_hand": 1,
+   "regenerated": [],
+   "drift_after_change": []
+  },
+  "D": {
+   "files_edited_by_hand": 1,
+   "code_lines_edited_by_hand": 0,
+   "regenerated": [
+    "messages.py (by generate.py)"
+   ],
+   "drift_after_change": []
+  }
+ },
+ "footprint": {
+  "baseline (json, logging, dataclasses, typing)": {
+   "import_ms_median": 6.6,
+   "rss_mb_median": 17.9
+  },
+  "A": {
+   "import_ms_median": 10.1,
+   "rss_mb_median": 18.8,
+   "extra_memory_mb": 0.9
+  },
+  "B": {
+   "import_ms_median": 47.3,
+   "rss_mb_median": 32.0,
+   "extra_memory_mb": 14.1
+  },
+  "C": {
+   "import_ms_median": 11.6,
+   "rss_mb_median": 19.4,
+   "extra_memory_mb": 1.5
+  },
+  "D": {
+   "import_ms_median": 8.5,
+   "rss_mb_median": 18.2,
+   "extra_memory_mb": 0.3
+  }
+ },
+ "install_size_mb": {
+  "A": 0.0,
+  "D": 0.0,
+  "B": 7.32,
+  "C": 0.52
+ },
+ "code_lines": {
+  "A": {
+   "messages.py": 62,
+   "drift.py": 33
+  },
+  "B": {
+   "messages.py": 51,
+   "drift.py": 31
+  },
+  "C": {
+   "messages.py": 53,
+   "drift.py": 31
+  },
+  "D": {
+   "codec.py": 34,
+   "drift.py": 15,
+   "generate.py": 69,
+   "messages.py (generated)": 58
+  },
+  "shared by A and D": {
+   "schema.py": 62
+  },
+  "shared by A, B and C drift tests": {
+   "shape.py": 38
+  }
+ },
+ "pydantic_default_mode": {
+  "lax_string_for_integer": "ms=180"
+ },
+ "msgspec_union": [
+  "untagged union: refused: If a type union contains multiple Struct types, all Struct types must be tagged (via `tag` or `tag_field` kwarg) - type `typing.Union[__main__.LookAt, __main__.LookIdle]` is not supported",
+  "tagged struct puts on the wire: {\"type\":\"Tagged\",\"x\":1.2,\"y\":3.5,\"z\":1.0}"
+ ]
+}

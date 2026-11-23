@@ -46,7 +46,7 @@ def unique_test_topic() -> str:
 
 def test_message_between_two_clients():
     topic = unique_test_topic()
-    sent = {"test": "hello from pytest", "id": uuid.uuid4().hex}  # TBD-003: plain dict until schemas exist
+    sent = {"test": "hello from pytest", "id": uuid.uuid4().hex}  # plain dict until the generated message classes exist (ADR 0003)
     received: list[dict] = []
     subscribed = threading.Event()
     arrived = threading.Event()
@@ -84,7 +84,7 @@ def test_message_between_two_clients():
 def test_message_between_two_programs():
     """The debug tool, run as two separate programs: `sub` receives what `pub` sends."""
     topic = unique_test_topic()
-    payload = json.dumps({"test": "hello between programs", "id": uuid.uuid4().hex})  # TBD-003
+    payload = json.dumps({"test": "hello between programs", "id": uuid.uuid4().hex})  # plain JSON until ADR 0003 is built
     tool = [sys.executable, "-m", "shared.mqtt_tool"]
 
     sub = subprocess.Popen(

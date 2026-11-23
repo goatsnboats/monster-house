@@ -1,6 +1,6 @@
 # TBD register
 
-> **Status:** Current · **Updated:** 2026-11-16 · Every open question in the project, with what will settle it.
+> **Status:** Current · **Updated:** 2026-11-22 · Every open question in the project, with what will settle it.
 
 TBDs are allowed in any document, but each one gets an ID here so none is lost.
 
@@ -26,7 +26,6 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 
 | ID | What is undecided | Resolved by | Blocks | Needed by | Gate | Status |
 |---|---|---|---|---|---|---|
-| TBD-003 | How our MQTT message schemas are defined and validated (dataclasses, pydantic, msgspec, JSON Schema) | Trade study (not started). TBD-002 is closed (Python renderer, [ADR 0002](decisions/0002-eye-renderer.md)), so every component is Python; still depends on the ICD format from [ADR 0001](decisions/0001-requirements-and-architecture-format.md) | The `shared/` schemas; Stage 0 Step 1 "done when" | Stage 0 Step 1 | PDR | Open |
 | TBD-004 | Lopsided eyes (one big, one small) or matched eyes | Owner decision, using the house preview | Eye art, per-eye config | Stage 0 exit | PDR | Open |
 | TBD-005 | Each projector on its side (tall eye) or flat | Owner decision, after TBD-006 and TBD-017 | Per-eye `rotate_deg`, stands | Stage 0 exit | CDR-1 | Open |
 | TBD-006 | Glass width × height of both windows, fixed dividers, floor space behind each. **Measured 2026-11-15** ([ICD-011](interfaces/ICD-011-eye-window.md)): glass, sills, right-window divider position, right floor space. **Still open:** the right window's divider width, and the floor space behind the left window | Measurement | Screen size, projector distance, TBD-005 | Stage 0 exit | CDR-1 | Open (partly measured) |
@@ -69,3 +68,4 @@ TBDs are allowed in any document, but each one gets an ID here so none is lost.
 |---|---|---|---|
 | TBD-001 | How requirements, architecture and ICDs are documented | [ADR 0001](decisions/0001-requirements-and-architecture-format.md): Markdown + YAML with our own checker, SysML-ready (owner; [TS-001](trades/TS-001-requirements-approach.md)) | 2026-11-08 |
 | TBD-002 | Eye renderer: Python + moderngl + pygame-ce, or Godot | [ADR 0002](decisions/0002-eye-renderer.md): Python + moderngl + pygame-ce (owner; [TS-002](trades/TS-002-eye-renderer.md), [results](trades/results/TS-002/README.md)) | 2026-11-08 |
+| TBD-003 | How our MQTT message schemas are defined and validated | [ADR 0003](decisions/0003-message-schemas.md): generated from the ICDs, standard library, no new dependency (owner; [TS-003](trades/TS-003-message-schemas.md), [results](trades/results/TS-003/README.md)) | 2026-11-22 |

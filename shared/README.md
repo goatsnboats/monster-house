@@ -5,7 +5,8 @@
 - `mqtt_client.py` — broker address defaults and a client factory (paho-mqtt 2.x).
 - `mqtt_tool.py` — command-line publish/subscribe tool for debugging.
 
-Payload formats (what goes *inside* each message) are not defined yet: TBD-003.
+Payload formats (what goes *inside* each message) are defined in the ICDs; the message
+classes will be generated from them ([ADR 0003](../docs/decisions/0003-message-schemas.md), not built yet).
 
 ## How to use it
 

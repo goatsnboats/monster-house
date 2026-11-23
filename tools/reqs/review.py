@@ -22,7 +22,11 @@ Row = Tuple[str, str, str]  # (criterion, result: pass | fail | judged, detail)
 
 
 def open_tbds(model: Model) -> List[dict]:
-    """The open and deferred TBDs from the register's first table, with their columns."""
+    """The TBDs not yet closed, from the register's first table, with their columns.
+
+    Besides `Open` and `Deferred`, a TBD settled by a trade study carries the study's
+    stage as its status (`Awaiting weights`, `Evaluating`, `Recommended`); it is still open.
+    """
     text = (model.root / TBD_FILE).read_text()
     rows, header = [], None
     for line in text.splitlines():
@@ -36,7 +40,7 @@ def open_tbds(model: Model) -> List[dict]:
             continue
         if header and re.match(r"^TBD-\d{3}$", cells[0]) and len(cells) == len(header):
             rows.append(dict(zip(header, cells)))
-    return [r for r in rows if r.get("status") in ("Open", "Deferred")]
+    return [r for r in rows if r.get("status") != "Closed"]
 
 
 def srr(model: Model, findings: List[Finding]) -> List[Row]:
@@ -68,7 +72,7 @@ def srr(model: Model, findings: List[Finding]) -> List[Row]:
     add("E6 Risk register with ratings and plans", bool(model.risks) and not risk_errors,
         f"{len(model.risks)} risks, {len(risk_errors)} errors")
     tbds = open_tbds(model)
-    no_gate = [t["id"] for t in tbds if t.get("status") == "Open" and t.get("gate") not in GATES]
+    no_gate = [t["id"] for t in tbds if t.get("status") != "Deferred" and t.get("gate") not in GATES]
     add("E7 Every open TBD has a method and a gate", not no_gate,
         f"{len(tbds)} open or deferred" + (f"; no gate: {', '.join(no_gate)}" if no_gate else ""))
     drafts = [i for i in STAGE0_ICDS if model.icds.get(i, {}).get("status") in ("draft", "approved")]
@@ -82,7 +86,7 @@ def srr(model: Model, findings: List[Finding]) -> List[Row]:
     add("X2 Concept of operations accepted", False, "the owner's call at the review", judged=True)
     add("X3 Proposed formats and topic differences decided", False,
         "ICD-004, ICD-005, ICD-015 and the shared/topics.py warnings: the owner's call", judged=True)
-    due = [t["id"] for t in tbds if t.get("gate") == "SRR" and t.get("status") == "Open"]
+    due = [t["id"] for t in tbds if t.get("gate") == "SRR" and t.get("status") != "Deferred"]
     add("X4 TBDs due at SRR closed", not due, f"{len(due)} due at SRR still open" + (f": {', '.join(due)}" if due else ""))
     high = [rid for rid, r in model.risks.items()
             if r.get("status") == "open" and "high" in (r.get("likelihood"), r.get("impact"))]
@@ -102,7 +106,7 @@ def render(review: str, rows: List[Row], tbds: List[dict]) -> str:
     lines += [f"| {name} | {mark[result]} | {detail} |" for name, result, detail in rows]
     lines += ["", "## TBD burndown by gate", "", "| Gate | Open TBDs due |", "|---|---|"]
     for gate in GATES:
-        ids = [t["id"] for t in tbds if t.get("gate") == gate and t.get("status") == "Open"]
+        ids = [t["id"] for t in tbds if t.get("gate") == gate and t.get("status") != "Deferred"]
         lines.append(f"| {gate} | {len(ids)}: {', '.join(ids) if ids else '—'} |")
     deferred = [t["id"] for t in tbds if t.get("status") == "Deferred"]
     if deferred:

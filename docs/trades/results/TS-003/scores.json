@@ -1,0 +1,136 @@
+{
+  "weights": {
+    "C1": 35,
+    "C2": 20,
+    "C3": 10,
+    "C4": 15,
+    "C5": 20
+  },
+  "criteria": {
+    "C1": "One source, no drift",
+    "C2": "Readable for the owner",
+    "C3": "Catches mistakes",
+    "C4": "Footprint on the Pi",
+    "C5": "Dependency risk"
+  },
+  "scores": {
+    "A": {
+      "C1": 4,
+      "C2": 5,
+      "C3": 5,
+      "C4": 5,
+      "C5": 5
+    },
+    "B": {
+      "C1": 3,
+      "C2": 3,
+      "C3": 5,
+      "C4": 2,
+      "C5": 2
+    },
+    "C": {
+      "C1": 3,
+      "C2": 3,
+      "C3": 4,
+      "C4": 4,
+      "C5": 3
+    },
+    "D": {
+      "C1": 5,
+      "C2": 4,
+      "C3": 5,
+      "C4": 5,
+      "C5": 5
+    }
+  },
+  "names": {
+    "A": "ICD-first, standard library",
+    "B": "pydantic v2",
+    "C": "msgspec",
+    "D": "Generated from the ICDs"
+  },
+  "totals": {
+    "A": 465,
+    "B": 285,
+    "C": 325,
+    "D": 480
+  },
+  "gap": 15,
+  "sensitivity": {
+    "C1": {
+      "name": "One source, no drift",
+      "weight": 35,
+      "runner_minus_leader": -1,
+      "tie_weight": 20.0,
+      "verdict": "tie at weight 20 (change -15)"
+    },
+    "C2": {
+      "name": "Readable for the owner",
+      "weight": 20,
+      "runner_minus_leader": 1,
+      "tie_weight": 35.0,
+      "verdict": "tie at weight 35 (change +15)"
+    },
+    "C3": {
+      "name": "Catches mistakes",
+      "weight": 10,
+      "runner_minus_leader": 0,
+      "tie_weight": null,
+      "verdict": "no effect (equal scores)"
+    },
+    "C4": {
+      "name": "Footprint on the Pi",
+      "weight": 15,
+      "runner_minus_leader": 0,
+      "tie_weight": null,
+      "verdict": "no effect (equal scores)"
+    },
+    "C5": {
+      "name": "Dependency risk",
+      "weight": 20,
+      "runner_minus_leader": 0,
+      "tie_weight": null,
+      "verdict": "no effect (equal scores)"
+    }
+  },
+  "close": false,
+  "shifts": [
+    {
+      "from": "C1",
+      "to": "C2",
+      "points": 7.5
+    },
+    {
+      "from": "C1",
+      "to": "C3",
+      "points": 15.0
+    },
+    {
+      "from": "C1",
+      "to": "C4",
+      "points": 15.0
+    },
+    {
+      "from": "C1",
+      "to": "C5",
+      "points": 15.0
+    },
+    {
+      "from": "C4",
+      "to": "C2",
+      "points": 15.0
+    },
+    {
+      "from": "C5",
+      "to": "C2",
+      "points": 15.0
+    }
+  ],
+  "one_point_flips": [
+    "D C1 5 -> 4: D 445, A 465 (flips)",
+    "D C2 4 -> 3: D 460, A 465 (flips)",
+    "D C4 5 -> 4: D 465, A 465 (tie)",
+    "D C5 5 -> 4: D 460, A 465 (flips)",
+    "A C1 4 -> 5: D 480, A 500 (flips)"
+  ]
+}

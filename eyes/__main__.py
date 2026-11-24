@@ -64,7 +64,7 @@ def main(argv: list[str] | None = None) -> int:
         log.error("%s", err)       # to the log only: the screen never shows text (EYE-012)
         return 2
     theme = load_theme(args.theme)
-    state = EyeState(window.position_m, theme.blink_every_s, theme.blink_ms)
+    state = EyeState(window.position_m, theme.blink_every_s, theme.blink_ms, clock_start=time.time())
     state.set_expression(args.expression, ms=0)
 
     if args.screenshot:

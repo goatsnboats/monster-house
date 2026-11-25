@@ -81,7 +81,8 @@
 - id: EYE-006
   text: >-
     If the eye renderer hears nothing from the brain for TBD-023, it shall wander and
-    blink on its own fallback timer until the brain's messages return.
+    blink on its own fallback timer, in step with the other eye, until the brain's
+    messages return.
   type: functional
   derives_from: [SYS-017, SYS-029]
   allocated_to: eye-renderer
@@ -89,21 +90,28 @@
     Only the eye can tell it has stopped hearing from the brain, so the fallback timer
     has to live in the eye.
   verify: test
-  source: architecture.md §3b "What happens when something fails" (Wi-Fi blip)
+  source: architecture.md §3b "What happens when something fails" (Wi-Fi blip); in step with the other eye, owner 2026-11-23
+  notes: >-
+    Both eyes take their fallback blink times from the time of day (eyes/schedule.py),
+    so they blink together with no messages. The eye Pis' clocks must therefore be in
+    sync (NTP).
   stage: 0
   status: proposed
 
 - id: EYE-007
   text: >-
-    On an idle look command, the eye renderer shall wander and look around on its own
-    until it receives a look point.
+    On an idle look command, the eye renderer shall wander and look around on its own,
+    looking the same way as the other eye, until it receives a look point.
   type: functional
   derives_from: [SYS-017]
   allocated_to: eye-renderer
   allocation_rationale: >-
     Wandering is frame-by-frame motion; the brain only asks for it.
   verify: demonstration
-  source: 'architecture.md §2 messages table ({"mode": "idle"})'
+  source: 'architecture.md §2 messages table ({"mode": "idle"}); the same way as the other eye, owner 2026-11-23'
+  notes: >-
+    Both eyes take their wander points and times from the time of day
+    (eyes/schedule.py), so they agree without messages, even with the brain gone.
   stage: 0
   status: proposed
 

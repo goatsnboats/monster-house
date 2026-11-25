@@ -72,7 +72,7 @@ The eye renderer shall start a blink when commanded, closing and opening the lid
 
 ## EYE-006
 
-If the eye renderer hears nothing from the brain for TBD-023, it shall wander and blink on its own fallback timer until the brain's messages return.
+If the eye renderer hears nothing from the brain for TBD-023, it shall wander and blink on its own fallback timer, in step with the other eye, until the brain's messages return.
 
 | | |
 |---|---|
@@ -81,11 +81,12 @@ If the eye renderer hears nothing from the brain for TBD-023, it shall wander an
 | Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | Only the eye can tell it has stopped hearing from the brain, so the fallback timer has to live in the eye. |
 | Verified by | test ([VE-002](ve.md#ve-002)) |
-| Source | architecture.md §3b "What happens when something fails" (Wi-Fi blip) |
+| Notes | Both eyes take their fallback blink times from the time of day (eyes/schedule.py), so they blink together with no messages. The eye Pis' clocks must therefore be in sync (NTP). |
+| Source | architecture.md §3b "What happens when something fails" (Wi-Fi blip); in step with the other eye, owner 2026-11-23 |
 
 ## EYE-007
 
-On an idle look command, the eye renderer shall wander and look around on its own until it receives a look point.
+On an idle look command, the eye renderer shall wander and look around on its own, looking the same way as the other eye, until it receives a look point.
 
 | | |
 |---|---|
@@ -94,7 +95,8 @@ On an idle look command, the eye renderer shall wander and look around on its ow
 | Allocated to | [`eye-renderer`](../../architecture/components.md#eye-renderer) |
 | Why there | Wandering is frame-by-frame motion; the brain only asks for it. |
 | Verified by | demonstration ([VE-005](ve.md#ve-005)) |
-| Source | architecture.md §2 messages table ({"mode": "idle"}) |
+| Notes | Both eyes take their wander points and times from the time of day (eyes/schedule.py), so they agree without messages, even with the brain gone. |
+| Source | architecture.md §2 messages table ({"mode": "idle"}); the same way as the other eye, owner 2026-11-23 |
 
 ## EYE-008
 

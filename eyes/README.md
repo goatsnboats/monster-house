@@ -44,6 +44,12 @@ Keys: `1`-`6` neutral, happy, sparkle, surprised, sleepy, asleep · `space` blin
 `i` look around on its own · mouse: look at the mouse · `Esc` quit. Left alone, the eye
 wanders and blinks by itself, as it will when the brain goes quiet.
 
+**Both eyes move together on their own.** While wandering, and when blinking on the
+fallback timer, each eye takes its points and blink times from the time of day
+(`eyes/schedule.py`), so two eyes look the same way and blink together with no messages
+between them, even if they were started at different moments (EYE-006, EYE-007). On the
+Pis this needs their clocks in sync (NTP).
+
 Useful options:
 
 | Option | What it does |

@@ -15,6 +15,7 @@ from dataclasses import dataclass
 
 from eyes.expressions import EXPRESSIONS, Expression
 from eyes.gaze import iris_offset
+from eyes.schedule import ClockSchedule
 
 # Pupil glide: an ease-out that covers 20% of the remaining way per 60 fps frame, as in
 # the sketch (EYE-004).
@@ -26,6 +27,9 @@ MICRO_RATE = 30.0                # how fast a micro-jump happens
 # Wandering, when told to idle or when the brain goes quiet (EYE-006, EYE-007).
 WANDER_RANGE = (40.0, 60.0)      # sketch units, x and y (from the sketch)
 WANDER_EVERY_S = (1.2, 3.0)
+# Both eyes wander to the same points at the same moments, and blink together on their
+# fallback timer, by reading the same clock (eyes/schedule.py; owner, 2026-11-23).
+WANDER = ClockSchedule("wander", WANDER_EVERY_S)
 MOUSE_HOLD_S = 2.5               # after the mouse moves, wait this long before wandering again
 NO_BLINK_BELOW_OPEN = 0.2        # no blinking while the eye is (nearly) shut
 
@@ -40,12 +44,16 @@ class Frame:
 class EyeState:
     def __init__(self, window_position: tuple[float, float, float] = (0.0, 0.0, 0.0),
                  blink_every_s: tuple[float, float] = (2.5, 6.0), blink_ms: int = 200,
-                 fallback_after_s: float = 5.0, rng: random.Random | None = None) -> None:
+                 fallback_after_s: float = 5.0, rng: random.Random | None = None,
+                 clock_start: float = 0.0) -> None:
         """
         window_position: this eye's window center in house coordinates (site config).
         blink_every_s, blink_ms: the theme's blink timing, for the fallback timer.
         fallback_after_s: how long without a brain message before the eye looks after
             itself (TBD-023: the owner hasn't set it; 5 s until then).
+        clock_start: the time of day (time.time()) when this eye started. Wandering and
+            fallback blinks follow the clock, so two eyes started at different moments
+            still move together. Tests leave it at 0.
         """
         self.window = window_position
         self.blink_every_s = blink_every_s
@@ -53,6 +61,7 @@ class EyeState:
         self.fallback_after_s = fallback_after_s
         self.rng = rng or random.Random()
         self.now = 0.0
+        self.clock_start = clock_start
 
         # Expression: eases from `_from` to `_to` over `_ms`, starting at `_start`.
         self._from = self._to = EXPRESSIONS["neutral"]
@@ -63,14 +72,14 @@ class EyeState:
         self.gaze_target = (0.0, 0.0)
         self.idle = True                     # wandering on its own until given a point
         self._last_mouse = -1e9
-        self._next_wander = 0.0
+        self._wander_event: int | None = None
         self._micro = (0.0, 0.0)
         self._micro_target = (0.0, 0.0)
         self._next_micro = 0.0
         # Blinks.
         self._blink_start = -1.0
         self._blink_ms = blink_ms
-        self._next_own_blink = self._own_blink_gap()
+        self._own_blink_event: int | None = None
         # When the brain was last heard from (never, so far).
         self._last_brain = -1e9
 
@@ -132,10 +141,17 @@ class EyeState:
         expr = self.expression()
 
         # Wander when idle or when the brain has gone quiet (unless the mouse is in charge).
+        # The point comes from the clock, so both eyes pick the same one at the same moment.
+        clock = self.clock_start + self.now
         wandering = self.idle or not self.brain_present
-        if wandering and self.now - self._last_mouse > MOUSE_HOLD_S and self.now >= self._next_wander:
-            self.gaze_target = (self.rng.uniform(-1, 1) * WANDER_RANGE[0], self.rng.uniform(-1, 1) * WANDER_RANGE[1])
-            self._next_wander = self.now + self.rng.uniform(*WANDER_EVERY_S)
+        if wandering and self.now - self._last_mouse > MOUSE_HOLD_S:
+            n = WANDER.last_event(clock)
+            if n != self._wander_event:
+                self._wander_event = n
+                x, y = WANDER.values(n, 2)
+                self.gaze_target = (x * WANDER_RANGE[0], y * WANDER_RANGE[1])
+        else:
+            self._wander_event = None          # on wandering again, join the current point at once
 
         # Glide toward the target (ease-out), plus micro-saccades.
         k = 1 - math.exp(-GLIDE_RATE * dt)
@@ -146,11 +162,13 @@ class EyeState:
         m = 1 - math.exp(-MICRO_RATE * dt)
         self._micro = tuple(c + (t - c) * m for c, t in zip(self._micro, self._micro_target))
 
-        # The brain owns blinks; the eye blinks on its own only when the brain is quiet.
-        if not self.brain_present and self.now >= self._next_own_blink:
-            if self._to.open > NO_BLINK_BELOW_OPEN:
+        # The brain owns blinks; the eye blinks on its own only when the brain is quiet,
+        # on a clock schedule, so both eyes blink together.
+        n = ClockSchedule("blink", self.blink_every_s).last_event(clock)
+        if n != self._own_blink_event:
+            if self._own_blink_event is not None and not self.brain_present and self._to.open > NO_BLINK_BELOW_OPEN:
                 self.blink()
-            self._next_own_blink = self.now + self._own_blink_gap()
+            self._own_blink_event = n
         factor = 1.0
         if self._blink_start >= 0:
             t = (self.now - self._blink_start) * 1000 / self._blink_ms
@@ -161,6 +179,3 @@ class EyeState:
 
         shown = Expression(expr.open * factor, expr.low, expr.curve, expr.pupil, expr.spark)
         return Frame(shown, (self.gaze[0] + self._micro[0], self.gaze[1] + self._micro[1]))
-
-    def _own_blink_gap(self) -> float:
-        return self.rng.uniform(*self.blink_every_s)

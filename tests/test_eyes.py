@@ -289,3 +289,50 @@ def test_square_eye_fills_the_corners_with_white(gl):
     sclera = tuple(round(c * 255) for c in DEFAULT_THEME.sclera_color)
     assert _pixel(size, data, 12, size[1] // 2) == sclera                     # left edge, middle height
     assert _pixel(size, data, size[0] - 12, size[1] // 2) == sclera
+
+
+# ── Both eyes together while they look after themselves (owner, 2026-11-23) ────
+
+def test_clock_schedule_gaps_stay_within_the_range():
+    from eyes.schedule import ClockSchedule
+    sched = ClockSchedule("test", (1.2, 3.0))
+    times = [sched.event_time(n) for n in range(500)]
+    gaps = [b - a for a, b in zip(times, times[1:])]
+    assert 1.2 - 1e-9 <= min(gaps) and max(gaps) <= 3.0 + 1e-9
+    assert sched.last_event(times[10]) == 10 and sched.last_event(times[10] - 1e-6) == 9
+
+
+def two_eyes(**kw) -> tuple[EyeState, EyeState]:
+    """A left and a right eye started 0.7 s apart (as two programs would be), each with
+    its own dice, but reading the same clock."""
+    left = EyeState(LEFT_WINDOW, rng=random.Random(1), clock_start=1_000_000.0, **kw)
+    right = EyeState((1.6, -0.5, 5.0), rng=random.Random(2), clock_start=1_000_000.7, **kw)
+    run(left, 0.7)                          # the left one has been running a little longer
+    return left, right
+
+
+def test_both_eyes_wander_to_the_same_points_at_the_same_moments():
+    left, right = two_eyes()
+    left.look_idle(), right.look_idle()
+    for _ in range(600):                    # 10 s
+        left.update(1 / 60), right.update(1 / 60)
+        assert left.gaze_target == right.gaze_target
+    assert left._wander_event > 2           # and they did move several times
+
+
+def test_both_eyes_blink_together_when_the_brain_is_quiet():
+    left, right = two_eyes(blink_every_s=(1.0, 2.0), fallback_after_s=1.0)
+    l_open = [f.expression.open for f in run(left, 12)]
+    r_open = [f.expression.open for f in run(right, 12)]
+    l_shut = {i for i, v in enumerate(l_open) if v < 0.2}
+    r_shut = {i for i, v in enumerate(r_open) if v < 0.2}
+    assert l_shut and len(l_shut ^ r_shut) <= 4        # same frames, give or take rounding
+
+
+def test_wandering_again_joins_the_shared_point_at_once():
+    left, right = two_eyes()
+    right.look_at((3.0, 2.0, 1.0))
+    run(left, 2), run(right, 2, brain=True)
+    right.look_idle()
+    left.update(1 / 60), right.update(1 / 60)
+    assert right.gaze_target == left.gaze_target

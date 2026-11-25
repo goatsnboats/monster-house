@@ -31,6 +31,7 @@ from shared.messages import phone_page
 log = logging.getLogger("brain")
 
 GLANCE_S = 0.8          # SHW-014: a surprised glance at a new kid coming, this long
+RECENT_BLINK_S = 0.5    # no blink for a focus switch this soon after another blink
 KEEPALIVE_S = 2.0       # re-send the look at least this often, inside the eyes' 5 s fallback
 
 SUBSCRIPTIONS = [topics.RADAR_SENSOR_ALL, topics.RADAR_STATUS, topics.EYES_STATUS_ALL, topics.FPP_STATUS]
@@ -63,6 +64,7 @@ class Brain:
         self._look: bytes | None = None              # the last look message sent
         self._look_at = -1e9
         self._radar_was_online: bool | None = None
+        self._last_blink = -1e9
 
     # ── Messages in ───────────────────────────────────────────────────────────────
 
@@ -142,9 +144,12 @@ class Brain:
             self._glance_until = None
             actions.append(Action("expression", MOOD_EXPRESSION[self.moods.mood]))
 
-        if switched and self.moods.awake and not any(a.kind == "blink" for a in actions):
+        if any(a.kind == "blink" for a in actions):
+            self._last_blink = now
+        elif switched and self.moods.awake and now - self._last_blink >= RECENT_BLINK_S:
             actions.append(Action("blink", self.theme.timing.blink_ms))           # blink on a switch
             self.moods.note_blink(now)
+            self._last_blink = now
 
         out = self._actions(actions)
         out += self._look_out(now)

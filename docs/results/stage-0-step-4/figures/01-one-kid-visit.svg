@@ -1,0 +1,99 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 470' width='960' height='470' font-family='system-ui, sans-serif' font-size='13'>
+<title>A pretend visit: one kid walks up, goes to the door, and leaves</title>
+<rect width='960' height='470' fill='#fcfcfb'/>
+<text x='120.0' y='24.0' fill='#0b0b0b' text-anchor='start' font-size='15' font-weight='600'>One kid: up the path, to the door (out of the radar&#x27;s sight), and away</text>
+<rect x='120' y='40' width='12' height='12' rx='3' fill='#2a78d6'/>
+<text x='137.0' y='50.0' fill='#52514e' text-anchor='start' font-size='12' font-weight='normal'>asleep</text>
+<rect x='212' y='40' width='12' height='12' rx='3' fill='#eb6834'/>
+<text x='229.0' y='50.0' fill='#52514e' text-anchor='start' font-size='12' font-weight='normal'>waking</text>
+<rect x='304' y='40' width='12' height='12' rx='3' fill='#1baf7a'/>
+<text x='321.0' y='50.0' fill='#52514e' text-anchor='start' font-size='12' font-weight='normal'>greeting</text>
+<rect x='410' y='40' width='12' height='12' rx='3' fill='#eda100'/>
+<text x='427.0' y='50.0' fill='#52514e' text-anchor='start' font-size='12' font-weight='normal'>watching</text>
+<rect x='516' y='40' width='12' height='12' rx='3' fill='#e87ba4'/>
+<text x='533.0' y='50.0' fill='#52514e' text-anchor='start' font-size='12' font-weight='normal'>goodbye</text>
+<text x='110.0' y='74.0' fill='#52514e' text-anchor='end' font-size='13' font-weight='normal'>kid&#x27;s distance</text>
+<line x1='120' x2='936' y1='200.0' y2='200.0' stroke='#e4e3df'/>
+<text x='110.0' y='204.0' fill='#8a8984' text-anchor='end' font-size='11' font-weight='normal'>0 m</text>
+<line x1='120' x2='936' y1='165.7' y2='165.7' stroke='#e4e3df'/>
+<text x='110.0' y='169.7' fill='#8a8984' text-anchor='end' font-size='11' font-weight='normal'>2 m</text>
+<line x1='120' x2='936' y1='131.4' y2='131.4' stroke='#e4e3df'/>
+<text x='110.0' y='135.4' fill='#8a8984' text-anchor='end' font-size='11' font-weight='normal'>4 m</text>
+<line x1='120' x2='936' y1='97.1' y2='97.1' stroke='#e4e3df'/>
+<text x='110.0' y='101.1' fill='#8a8984' text-anchor='end' font-size='11' font-weight='normal'>6 m</text>
+<polyline points='160.8,104.2 162.2,105.9 163.5,107.5 164.9,109.2 166.2,110.9 167.6,112.6 169.0,114.3 170.3,115.9 171.7,117.6 173.0,119.3 174.4,121.0 175.8,122.6 177.1,124.3 178.5,126.0 179.8,127.7 181.2,129.3 182.6,131.0 183.9,132.6 185.3,134.3 186.6,135.9 188.0,137.6 189.4,139.2 190.7,140.9 192.1,142.5 193.4,144.2 194.8,145.8 196.2,147.4 197.5,149.0 198.9,150.6 200.2,152.2 201.6,153.8 203.0,155.4 204.3,157.0 205.7,158.6 207.0,160.1 208.4,161.7 209.8,161.7 211.1,161.7 212.5,161.7 213.8,161.7 215.2,161.7 216.6,161.7 217.9,161.7 219.3,161.7 220.6,161.7 222.0,161.7 223.4,161.7 224.7,161.7 226.1,161.7 227.4,161.7 228.8,161.7 230.2,161.7 231.5,161.7 232.9,161.7 234.2,161.7 235.6,161.7 237.0,161.7 238.3,161.7 239.7,161.7 241.0,161.7 242.4,161.7 243.8,161.7 245.1,161.7 246.5,161.7 247.8,161.7 249.2,161.7 250.6,161.7 251.9,161.7 253.3,161.7 254.6,161.7 256.0,161.7 257.4,161.7 258.7,161.7 260.1,161.7 261.4,161.7 262.8,161.7 264.2,161.7 265.5,161.7 266.9,161.7 268.2,161.7 269.6,161.7 271.0,161.7 272.3,161.7 273.7,161.7 275.0,161.7 276.4,161.7 277.8,161.7 279.1,161.7 280.5,161.7 281.8,161.7 283.2,161.7 284.6,163.0 285.9,164.4 287.3,165.7 288.6,167.0 290.0,168.3 291.4,169.5 292.7,170.8 294.1,172.0 295.4,173.2 296.8,174.3 298.2,175.5 299.5,176.5 300.9,177.5 302.2,178.5 303.6,179.4 305.0,180.2 306.3,181.0 307.7,181.6 309.0,182.2 310.4,182.6 311.8,182.9 313.1,183.1 314.5,183.1 315.8,183.0 317.2,182.8 318.6,182.4 319.9,182.0 321.3,181.4 322.6,180.7 324.0,179.9 325.4,179.9 326.7,179.9 328.1,179.9 329.4,179.9 330.8,179.9 332.2,179.9 333.5,179.9 334.9,179.9 336.2,179.9 337.6,179.9 339.0,179.9 340.3,179.9 341.7,179.9 343.0,179.9 344.4,179.9 345.8,179.9 347.1,179.9 348.5,179.9 349.8,179.9 351.2,179.9 352.6,179.9 353.9,179.9 355.3,179.9 356.6,179.9 358.0,179.9 359.4,179.9 360.7,179.9 362.1,179.9 363.4,179.9 364.8,179.9 366.2,179.9 367.5,179.9 368.9,179.9 370.2,179.9 371.6,179.9 373.0,179.9 374.3,179.9 375.7,179.9 377.0,179.9 378.4,179.9 379.8,179.9 381.1,179.9 382.5,179.9 383.8,179.9 385.2,179.9 386.6,179.9 387.9,179.9 389.3,179.9 390.6,179.9 392.0,179.9 393.4,179.9 394.7,179.9 396.1,179.9 397.4,179.9 398.8,179.9 400.2,179.9 401.5,179.9 402.9,179.9 404.2,179.9 405.6,179.9 407.0,179.9 408.3,179.9 409.7,179.9 411.0,179.9 412.4,179.9 413.8,179.9 415.1,179.9 416.5,179.9 417.8,179.9 419.2,179.9 420.6,179.9 421.9,179.9 423.3,179.9 424.6,179.9 426.0,179.9 427.4,179.9 428.7,179.9 430.1,179.9 431.4,179.9 432.8,179.9 434.2,179.9 435.5,179.9 436.9,179.9 438.2,179.9 439.6,179.9 441.0,179.9 442.3,179.9 443.7,179.9 445.0,179.9 446.4,179.9 447.8,179.3 449.1,178.5 450.5,177.6 451.8,176.6 453.2,175.5 454.6,174.4 455.9,173.2 457.3,171.9 458.6,170.6 460.0,169.3 461.4,167.9 462.7,166.4 464.1,165.0 465.4,163.5 466.8,162.0 468.2,160.5 469.5,158.9 470.9,157.4 472.2,155.8 473.6,154.2 475.0,152.6 476.3,151.0 477.7,149.4 479.0,147.8 480.4,146.2 481.8,144.5 483.1,142.9 484.5,141.2 485.8,139.6 487.2,137.9 488.6,136.3 489.9,134.6 491.3,132.9 492.6,131.2 494.0,129.6 495.4,127.9 496.7,126.2 498.1,124.5 499.4,122.8 500.8,121.1 502.2,119.4 503.5,117.8 504.9,116.1 506.2,114.4 507.6,112.7 509.0,111.0 510.3,109.2 511.7,107.5 513.0,105.8 514.4,104.1 515.8,102.4 517.1,100.7 518.5,99.0 519.8,97.3 521.2,95.6 522.6,93.9 523.9,92.1 525.3,90.4 526.6,88.7 528.0,87.0' fill='none' stroke='#52514e' stroke-width='2' stroke-linejoin='round'/>
+<rect x='313.1' y='80' width='138.7' height='120' fill='#52514e' fill-opacity='0.08'><title>at the door, out of the radar's sight</title></rect>
+<text x='382.5' y='94.0' fill='#52514e' text-anchor='middle' font-size='12' font-weight='normal'>at the door: radar can&#x27;t see</text>
+<text x='932.0' y='93.1' fill='#8a8984' text-anchor='end' font-size='11' font-weight='normal'>radar&#x27;s range</text>
+<line x1='120.0' x2='120.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='120.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>0</text>
+<line x1='188.0' x2='188.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='188.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>5</text>
+<line x1='256.0' x2='256.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='256.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>10</text>
+<line x1='324.0' x2='324.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='324.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>15</text>
+<line x1='392.0' x2='392.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='392.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>20</text>
+<line x1='460.0' x2='460.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='460.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>25</text>
+<line x1='528.0' x2='528.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='528.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>30</text>
+<line x1='596.0' x2='596.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='596.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>35</text>
+<line x1='664.0' x2='664.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='664.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>40</text>
+<line x1='732.0' x2='732.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='732.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>45</text>
+<line x1='800.0' x2='800.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='800.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>50</text>
+<line x1='868.0' x2='868.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='868.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>55</text>
+<line x1='936.0' x2='936.0' y1='210' y2='410' stroke='#e4e3df'/>
+<text x='936.0' y='426.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>60</text>
+<text x='528.0' y='444.0' fill='#8a8984' text-anchor='middle' font-size='12' font-weight='normal'>seconds</text>
+<text x='110.0' y='232.0' fill='#52514e' text-anchor='end' font-size='13' font-weight='normal'>mood</text>
+<rect x='121.0' y='218' width='49.7' height='20' rx='4' fill='#2a78d6'><title>asleep: 0.0-3.8 s</title></rect>
+<rect x='172.7' y='218' width='32.0' height='20' rx='4' fill='#eb6834'><title>waking: 3.8-6.3 s</title></rect>
+<rect x='206.7' y='218' width='32.0' height='20' rx='4' fill='#1baf7a'><title>greeting: 6.3-8.8 s</title></rect>
+<rect x='240.7' y='218' width='353.0' height='20' rx='4' fill='#eda100'><title>watching: 8.8-34.9 s</title></rect>
+<text x='245.7' y='232.0' fill='#ffffff' text-anchor='start' font-size='12' font-weight='600'>watching</text>
+<rect x='595.6' y='218' width='270.0' height='20' rx='4' fill='#e87ba4'><title>goodbye: 34.9-54.9 s</title></rect>
+<text x='600.6' y='232.0' fill='#ffffff' text-anchor='start' font-size='12' font-weight='600'>goodbye</text>
+<rect x='867.6' y='218' width='67.4' height='20' rx='4' fill='#2a78d6'><title>asleep: 54.9-60.0 s</title></rect>
+<text x='872.6' y='232.0' fill='#ffffff' text-anchor='start' font-size='12' font-weight='600'>asleep</text>
+<text x='110.0' y='294.0' fill='#52514e' text-anchor='end' font-size='13' font-weight='normal'>expression</text>
+<circle cx='120.0' cy='290' r='4.5' fill='#52514e' stroke='#fcfcfb' stroke-width='2'><title>asleep at 0.0 s</title></circle>
+<text x='127.0' y='284.0' fill='#0b0b0b' text-anchor='start' font-size='12' font-weight='normal'>asleep</text>
+<circle cx='171.7' cy='290' r='4.5' fill='#52514e' stroke='#fcfcfb' stroke-width='2'><title>neutral at 3.8 s</title></circle>
+<text x='178.7' y='271.0' fill='#0b0b0b' text-anchor='start' font-size='12' font-weight='normal'>neutral</text>
+<circle cx='205.7' cy='290' r='4.5' fill='#52514e' stroke='#fcfcfb' stroke-width='2'><title>happy at 6.3 s</title></circle>
+<text x='212.7' y='284.0' fill='#0b0b0b' text-anchor='start' font-size='12' font-weight='normal'>happy</text>
+<circle cx='594.6' cy='290' r='4.5' fill='#52514e' stroke='#fcfcfb' stroke-width='2'><title>neutral at 34.9 s</title></circle>
+<text x='601.6' y='284.0' fill='#0b0b0b' text-anchor='start' font-size='12' font-weight='normal'>neutral</text>
+<circle cx='621.8' cy='290' r='4.5' fill='#52514e' stroke='#fcfcfb' stroke-width='2'><title>sleepy at 36.9 s</title></circle>
+<text x='628.8' y='271.0' fill='#0b0b0b' text-anchor='start' font-size='12' font-weight='normal'>sleepy</text>
+<circle cx='866.6' cy='290' r='4.5' fill='#52514e' stroke='#fcfcfb' stroke-width='2'><title>asleep at 54.9 s</title></circle>
+<text x='873.6' y='284.0' fill='#0b0b0b' text-anchor='start' font-size='12' font-weight='normal'>asleep</text>
+<text x='110.0' y='354.0' fill='#52514e' text-anchor='end' font-size='13' font-weight='normal'>voice clip</text>
+<circle cx='171.7' cy='350' r='4.5' fill='#52514e' stroke='#fcfcfb' stroke-width='2'><title>yawn_01 at 3.8 s</title></circle>
+<text x='178.7' y='344.0' fill='#0b0b0b' text-anchor='start' font-size='12' font-weight='normal'>yawn_01</text>
+<circle cx='205.7' cy='350' r='4.5' fill='#52514e' stroke='#fcfcfb' stroke-width='2'><title>greet_02 at 6.3 s</title></circle>
+<text x='212.7' y='331.0' fill='#0b0b0b' text-anchor='start' font-size='12' font-weight='normal'>greet_02</text>
+<circle cx='460.0' cy='350' r='4.5' fill='#52514e' stroke='#fcfcfb' stroke-width='2'><title>bye_01 at 25.0 s</title></circle>
+<text x='467.0' y='344.0' fill='#0b0b0b' text-anchor='start' font-size='12' font-weight='normal'>bye_01</text>
+<text x='110.0' y='390.0' fill='#52514e' text-anchor='end' font-size='13' font-weight='normal'>blink</text>
+<line x1='171.7' x2='171.7' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 3.8 s</title></line>
+<line x1='211.1' x2='211.1' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 6.7 s</title></line>
+<line x1='249.2' x2='249.2' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 9.5 s</title></line>
+<line x1='322.6' x2='322.6' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 14.9 s</title></line>
+<line x1='367.5' x2='367.5' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 18.2 s</title></line>
+<line x1='415.1' x2='415.1' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 21.7 s</title></line>
+<line x1='454.6' x2='454.6' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 24.6 s</title></line>
+<line x1='499.4' x2='499.4' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 27.9 s</title></line>
+<line x1='572.9' x2='572.9' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 33.3 s</title></line>
+<line x1='616.4' x2='616.4' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 36.5 s</title></line>
+<line x1='665.4' x2='665.4' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 40.1 s</title></line>
+<line x1='729.3' x2='729.3' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 44.8 s</title></line>
+<line x1='798.6' x2='798.6' y1='380' y2='392' stroke='#52514e' stroke-width='2' stroke-linecap='round'><title>blink at 49.9 s</title></line>
+</svg>

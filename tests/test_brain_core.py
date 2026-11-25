@@ -118,3 +118,11 @@ def test_theme_is_published_first_and_retained(tmp_path):
     first = v.brain.start(0.0)[0]
     assert first.topic == topics.THEME and first.retain
     assert eyes.decode("theme", first.payload) == eyes.Theme("halloween")
+
+
+def test_never_two_blinks_in_a_row(tmp_path):
+    v = Visit(tmp_path)
+    a, b = walk(-1.0, 5.5, 2.0, t0=1), walk(1.5, 5.5, 2.0, t0=1.4)
+    v.run(90, lambda t: [a(t), b(t)])
+    times = v.blinks()
+    assert min(q - p for p, q in zip(times, times[1:])) >= 0.5 - 1e-9

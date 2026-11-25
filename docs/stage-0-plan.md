@@ -60,6 +60,8 @@ _Placeholder brain (`python -m brain`): looks at the closest kid. `tests/test_st
 - [ ] Failure behavior: radar missing → ambient mode; eye missing → keep going.
 - [ ] Tests for mood transitions, gaze math and clip pools.
 
+_Starting values (owner, 2026-11-24), all in `themes/halloween/settings.yaml` to tune in the simulator: goodbye after 5 s with nobody, asleep after 20 quiet seconds, a comment every 10–20 s, at least 10 s between lines; focus: new arrival wins, hold 3–6 s, closest breaks ties; brain blinks every 2.5–6 s (200 ms), plus one when the eyes switch kids; door hold 15 s (TBD-028)._
+
 **Done when:** a pretend visit plays through from asleep to goodbye and back to sleep, and it *feels* right to the owner.
 
 ## Step 5 — House preview (January)

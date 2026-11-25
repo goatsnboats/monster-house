@@ -178,6 +178,8 @@ class Brain:
                 log.info("mood: %s", a.value)
                 out.append(Out(topics.STATE, phone_page.encode("mood", phone_page.Mood(a.value)), 1, True))
             elif a.kind == "expression":
+                if str(a.value) == self._expression:
+                    continue                         # already showing it
                 self._expression = str(a.value)
                 out.append(Out(topics.EYES_EXPRESSION,
                                eyes.encode("expression", eyes.Expression(self._expression, EXPRESSION_MS)), 1, False))

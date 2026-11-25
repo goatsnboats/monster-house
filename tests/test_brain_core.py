@@ -5,77 +5,20 @@ and back to sleep) and the failure behavior (SHW-018)."""
 
 from __future__ import annotations
 
-import random
-
 import pytest
 
-from brain.core import Brain
-from brain.settings import load_theme_settings
 from shared import topics
 from shared.messages import eye_commands as eyes
-from shared.messages import phone_page
-from shared.radar_frame import load_radar_site
-from sim.fake_fpp import FakeFpp
-from sim.radar_model import Kid, RadarModel
+from sim.pretend_visit import ONE_KID, ONE_KID_S, Visit, walk
+from sim.radar_model import Kid
 
-STEP = 0.1
-
-
-class Visit:
-    """Runs the brain, the radar model and the fake FPP together, 10 ticks a second."""
-
-    def __init__(self, tmp_path, fpp: bool = True, seed: int = 4) -> None:
-        self.site = load_radar_site()
-        self.theme = load_theme_settings("halloween")
-        self.brain = Brain(self.site, self.theme, random.Random(seed), any_time=True)
-        self.radar = RadarModel(self.site)
-        self.fpp = FakeFpp(tmp_path, default_s=2.5) if fpp else None
-        self.t = 0.0
-        self.sent: list[tuple[float, str, bytes]] = [(0.0, o.topic, o.payload) for o in self.brain.start(0.0)]
-        self.radar_status(b"online")
-
-    def radar_status(self, status: bytes) -> None:
-        self.brain.on_message(topics.RADAR_STATUS, status, self.t)
-
-    def run(self, seconds: float, kids=lambda t: []) -> None:
-        end = self.t + seconds
-        while self.t < end - 1e-9:
-            self.t = round(self.t + STEP, 6)
-            for topic, payload in self.radar.frame(self.t, kids(self.t)):
-                self.brain.on_message(topic, payload, self.t)
-            if self.fpp:
-                for topic, payload in self.fpp.tick(self.t):
-                    self.brain.on_message(topic, payload, self.t)
-            for o in self.brain.tick(self.t):
-                self.sent.append((self.t, o.topic, o.payload))
-                name = topics.fpp_playlist_from_start(o.topic)
-                if name and self.fpp:
-                    for topic, payload in self.fpp.start(name, self.t):
-                        self.brain.on_message(topic, payload, self.t)
-
-    # What the brain sent, decoded.
-    def moods(self) -> list[str]:
-        return [phone_page.decode("mood", p).mood for _, t, p in self.sent if t == topics.STATE]
-
-    def expressions(self, since: float = 0.0) -> list[str]:
-        return [eyes.decode("expression", p).name for s, t, p in self.sent if t == topics.EYES_EXPRESSION and s >= since]
-
-    def looks(self, since: float = 0.0) -> list[tuple[float, object]]:
-        return [(s, eyes.decode("look", p)) for s, t, p in self.sent if t == topics.EYES_LOOK and s >= since]
-
-    def blinks(self, since: float = 0.0) -> list[float]:
-        return [s for s, t, _ in self.sent if t == topics.EYES_BLINK and s >= since]
-
-    def clips(self) -> list[str]:
-        return [n for _, t, _ in self.sent if (n := topics.fpp_playlist_from_start(t))]
-
-
-def walk(x: float, y0: float, y1: float, t0: float, speed: float = 1.0):
-    """A kid walking straight from y0 to y1 (house m) at `speed` m/s, starting at t0."""
-    def at(t: float) -> Kid:
-        d = max(0.0, t - t0) * speed
-        return Kid(x, y0 - d if y1 < y0 else y0 + d) if d < abs(y1 - y0) else Kid(x, y1)
-    return at
+def test_the_step_4_story_plays_through(tmp_path):
+    """The results page's visit: up the path, to the door and out of sight, and away."""
+    v = Visit(tmp_path)
+    v.run(ONE_KID_S, ONE_KID)
+    assert v.moods() == ["asleep", "waking", "greeting", "watching", "goodbye", "asleep"]
+    goodbye = dict((m, t) for t, m in v.mood_changes())["goodbye"]
+    assert goodbye > 24 + v.theme.timing.goodbye_after_s       # not while at the door (15-24 s)
 
 
 def test_a_pretend_visit_from_asleep_to_goodbye_and_back_to_sleep(tmp_path):

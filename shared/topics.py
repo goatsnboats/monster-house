@@ -84,6 +84,9 @@ def radar_target(target: int, field: str) -> str:
 # ---------------------------------------------------------------------------
 FPP_PREFIX = "falcon/player/FPP"       # "FPP" is the player's host name in FPP's settings
 FPP_ALL = f"{FPP_PREFIX}/#"            # subscribe pattern: everything FPP publishes
+FPP_STATUS = f"{FPP_PREFIX}/status"                          # "playing" or "idle" (ICD-003)
+FPP_PLAYLIST_PLAYING = f"{FPP_PREFIX}/playlist/name/status"  # the clip playing (ICD-003)
+FPP_PLAYLIST_START_ALL = f"{FPP_PREFIX}/set/playlist/+/start"  # subscribe pattern: every start
 
 
 def fpp_playlist_start(playlist: str) -> str:
@@ -94,6 +97,15 @@ def fpp_playlist_start(playlist: str) -> str:
     if not playlist or any(ch in playlist for ch in "/+#"):
         raise ValueError(f"not a usable playlist name: {playlist!r}")
     return f"{FPP_PREFIX}/set/playlist/{playlist}/start"
+
+
+def fpp_playlist_from_start(topic: str) -> str | None:
+    """The playlist name in a start topic, or None if it isn't one (for the fake FPP)."""
+    head, tail = f"{FPP_PREFIX}/set/playlist/", "/start"
+    if topic.startswith(head) and topic.endswith(tail):
+        name = topic[len(head):-len(tail)]
+        return name if name and "/" not in name else None
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -118,6 +130,7 @@ ALIASES: dict[str, str] = {
     "radar": RADAR_SENSOR_ALL,
     "radar-status": RADAR_STATUS,
     "fpp": FPP_ALL,
+    "fpp-status": FPP_STATUS,
     "monster": MONSTER_ALL,
     "test": DEBUG_TEST,
 }

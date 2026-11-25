@@ -58,3 +58,7 @@ class Focus:
         self.current = v.id
         self._seeing_off = seeing_off
         self._until = now + self.rng.uniform(*self.hold_s)
+
+    def glance(self, v: Visitor, now: float) -> None:
+        """Look at this visitor now and hold them (a kid just seen coming, SHW-014)."""
+        self._set(v, now, seeing_off=False)

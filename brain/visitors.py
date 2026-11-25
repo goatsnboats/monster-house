@@ -26,6 +26,8 @@ DOOR_MATCH_M = 1.5         # ... and this close for a visitor held at the door
 LOST_GRACE_S = 0.5         # a visitor missing this long (outside the door zone) has left
 HEADING_WINDOW_S = 0.5     # coming vs going: position change over this long (TBD-030)
 HEADING_MIN_M_S = 0.25     # slower than this along y is neither coming nor going
+DOOR_MARGIN_MM = 500       # the radar loses a kid as they step into the door zone, so their
+                           # last reading is at its edge: count this close as "at the door"
 
 
 @dataclass
@@ -37,6 +39,7 @@ class Visitor:
     last_seen: float
     heading: str | None = None           # "coming", "going", or None (standing still / not known)
     at_door_since: float | None = None
+    raw: tuple[float, float] = (0.0, 0.0)   # the last unsmoothed position
     marked: set = field(default_factory=set, repr=False)   # headings already announced
     _history: deque = field(default_factory=deque, repr=False)
 
@@ -67,9 +70,13 @@ class Tracker:
         mx, my, _ = self.site.mount
         return math.hypot(v.x - mx, v.y - my)
 
-    def in_door_zone(self, x: float, y: float) -> bool:
+    def in_door_zone(self, x: float, y: float, margin_mm: float = 0.0) -> bool:
         zone = self.site.door_zone
-        return zone is not None and zone.contains(*house_to_radar(x, y, self.site))
+        if zone is None:
+            return False
+        rx, ry = house_to_radar(x, y, self.site)
+        return (min(zone.x1, zone.x2) - margin_mm <= rx <= max(zone.x1, zone.x2) + margin_mm
+                and min(zone.y1, zone.y2) - margin_mm <= ry <= max(zone.y1, zone.y2) + margin_mm)
 
     def update(self, now: float, targets_mm: list[tuple[float, float]]) -> list[Event]:
         """Take the targets the radar sees now (radar mm) and return what changed."""
@@ -87,14 +94,15 @@ class Tracker:
             if vid in matched_v or i in matched_p:
                 continue
             v = self.visitors[vid]
-            if dist <= (DOOR_MATCH_M if v.at_door else MATCH_M) or (v.at_door and self.in_door_zone(*points[i])):
+            if dist <= (DOOR_MATCH_M if v.at_door else MATCH_M) or (
+                    v.at_door and self.in_door_zone(*points[i], margin_mm=DOOR_MARGIN_MM)):
                 matched_v.add(vid)
                 matched_p.add(i)
                 self._seen(v, points[i], now, dt, events)
 
         for i, (x, y) in enumerate(points):
             if i not in matched_p:
-                v = Visitor(self._next_id, x, y, first_seen=now, last_seen=now)
+                v = Visitor(self._next_id, x, y, first_seen=now, last_seen=now, raw=(x, y))
                 v._history.append((now, x, y))
                 self._next_id += 1
                 self.visitors[v.id] = v
@@ -107,7 +115,7 @@ class Tracker:
             if v.at_door:
                 if now - v.at_door_since >= self.door_hold_s:
                     events.append(Event("left", self.visitors.pop(vid)))
-            elif self.in_door_zone(v.x, v.y):
+            elif self.in_door_zone(*v.raw, margin_mm=DOOR_MARGIN_MM):
                 v.at_door_since = now
                 events.append(Event("at door", v))
             elif now - v.last_seen >= LOST_GRACE_S:
@@ -117,6 +125,7 @@ class Tracker:
     def _seen(self, v: Visitor, point: tuple[float, float], now: float, dt: float,
               events: list[Event]) -> None:
         k = 1.0 - math.exp(-dt / SMOOTH_S) if dt > 0 else 1.0
+        v.raw = point
         v.x += (point[0] - v.x) * k
         v.y += (point[1] - v.y) * k
         v.last_seen = now

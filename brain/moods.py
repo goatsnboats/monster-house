@@ -143,7 +143,7 @@ class MoodMachine:
             self._flutter_until = None
             self._expression("asleep")
         if now >= self._next_snore:                      # SHW-002: snore, with a droopy flutter
-            self._say("snore", now)
+            self.say("snore", now)
             self._expression("sleepy")
             self._flutter_until = now + FLUTTER_S
             self._next_snore = now + self.timing.snore_every_s
@@ -166,7 +166,7 @@ class MoodMachine:
         if self._gone_for(now) >= self.timing.goodbye_after_s:
             self._enter(Mood.GOODBYE, now)
             return
-        if now >= self._next_comment and self._say("comment", now):   # SHW-005
+        if now >= self._next_comment and self.say("comment", now):   # SHW-005
             self._next_comment = now + self.rng.uniform(*self.timing.comment_every_s)
 
     def _goodbye(self, now: float, senses: Senses) -> None:
@@ -200,14 +200,14 @@ class MoodMachine:
         elif mood is Mood.WAKING:
             self._out.append(Action("blink", self.timing.blink_ms))   # blink open
             self._schedule_blink(now)
-            self._spoke = self._say("wake", now)
+            self._spoke = self.say("wake", now)
         elif mood is Mood.GREETING:
             # The greeting follows the wake clip at once: it isn't held back by the gap.
-            self._spoke = self._say("greet", now, keep_gap=False)
+            self._spoke = self.say("greet", now, keep_gap=False)
         elif mood is Mood.WATCHING:
             self._next_comment = now + self.rng.uniform(*self.timing.comment_every_s)
         elif mood is Mood.GOODBYE:
-            self._spoke = self._say("bye", now)
+            self._spoke = self.say("bye", now)
 
     def _ambient_check(self, now: float, senses: Senses) -> None:
         """Radar offline: no visits, eyes open and wandering in show hours (SHW-018)."""
@@ -234,7 +234,8 @@ class MoodMachine:
     def _gone_for(self, now: float) -> float:
         return now - self._last_present
 
-    def _say(self, pool: str, now: float, keep_gap: bool = True) -> bool:
+    def say(self, pool: str, now: float, keep_gap: bool = True) -> bool:
+        """Start a clip unless the monster should be quiet (outside show hours, ambient)."""
         if self.quiet or self.ambient:
             return False
         return self.voice.say(pool, now, keep_gap=keep_gap)

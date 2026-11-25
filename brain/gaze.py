@@ -1,8 +1,9 @@
 """Where the eyes should look (architecture §3b, "Turning radar data into a gaze").
 
-PLACEHOLDER (Stage 0 Step 3): look at the target closest to the radar, at head height,
-with no smoothing and no focus rules. Step 4 adds the filter and the focus choice
-(new arrival wins, hold 3-6 s, closest breaks ties; SHW-007 to SHW-009).
+`visitor_point` is Step 4's: a tracked visitor's head, or the door. Following visitors
+and smoothing are in brain/visitors.py, the focus choice in brain/focus.py.
+`closest` and `look_point` are Step 3's placeholder (the closest target, raw), kept for
+the Step 3 results script.
 
 The brain sends one point in house coordinates; each eye works out its own angle from
 its own window (ICD-001, EYE-003).

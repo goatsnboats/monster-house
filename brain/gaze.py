@@ -27,3 +27,12 @@ def look_point(targets: list[Target], site: RadarSite) -> tuple[float, float, fl
     if target is None:
         return None
     return radar_to_house(target.x_mm, target.y_mm, site)
+
+
+def visitor_point(visitor, site: RadarSite) -> tuple[float, float, float]:
+    """Where to look for one tracked visitor (brain/visitors.py), in house meters: their
+    head (site head height, SHW-006), or the door point while they're held at the door
+    (SHW-012). Without a door point in the site config, their last seen spot."""
+    if visitor.at_door and site.door_point is not None:
+        return site.door_point
+    return (visitor.x, visitor.y, site.head_height_m)

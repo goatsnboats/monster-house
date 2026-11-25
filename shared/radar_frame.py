@@ -54,6 +54,7 @@ class RadarSite:
     approach_range_m: float
     head_height_m: float
     door_zone: Zone | None = None         # where the radar loses visitors (TBD-029)
+    door_point: tuple[float, float, float] | None = None   # where to look at the door (house m)
 
 
 class SiteError(Exception):
@@ -66,11 +67,13 @@ def load_radar_site(path: Path = SITE_CONFIG) -> RadarSite:
         radar = site["radar"]
         m = radar["mount"]
         zone = radar.get("door_zone_mm")
+        door = site.get("door_point")
         return RadarSite(
             mount=(float(m["x"]), float(m["y"]), float(m["z"])),
             approach_range_m=float(radar["approach_range_m"]),
             head_height_m=float(site["head_height_m"]),
             door_zone=Zone(*(float(zone[k]) for k in ("x1", "y1", "x2", "y2"))) if zone else None,
+            door_point=tuple(float(door[k]) for k in ("x", "y", "z")) if door else None,
         )
     except FileNotFoundError:
         raise SiteError(f"no site config at {path}") from None

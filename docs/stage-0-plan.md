@@ -39,7 +39,7 @@ _Done 2026-11-23: `tests/test_mqtt_integration.py` sends an ICD-001 `blink` betw
 - [ ] 60 fps measured on the desktop's GPU. _The `dev` account can now reach the GPU (NVIDIA RTX 5060 Ti, 2026-11-23), but only offscreen, where there's no vsync to measure against. Needs the eye in a real window on the desktop: `.venv/bin/python -m eyes --side left --seconds 20`._
 
 **Done when:** two eye windows open on the desktop, each shaped like its real window. They blink, change expression on command, and glide to look-at points sent over MQTT, at a steady 60 fps.
-_Still to check (deferred by the owner, 2026-11-23): both eyes in real windows at the desktop screen, driven over MQTT, with the 60 fps measurement above. Everything else in Step 2 runs and is tested; the eye shape is a per-eye setting, `square` by default (owner, 2026-11-23; `eye_shape` in `config/site.yaml`)._
+_Still to check (deferred by the owner, 2026-11-23): both eyes in real windows at the desktop screen, driven over MQTT, with the 60 fps measurement above ([UT-001](user-tests.md#ut-001)). Everything else in Step 2 runs and is tested; the eye shape is a per-eye setting, `square` by default (owner, 2026-11-23; `eye_shape` in `config/site.yaml`)._
 
 ## Step 3 — Pretend visitors / fake radar (December)
 - [x] A top-down view of the walk, steps and sidewalk (rough dimensions, adjustable).
@@ -49,6 +49,8 @@ _Still to check (deferred by the owner, 2026-11-23): both eyes in real windows a
   _Checked against ESPHome's source on 2026-11-23, which corrected ICD-002: whole numbers, speed negative toward the radar, `nan` for an empty slot, sent only on change. Coming vs going is the brain's job, from movement (owner, TBD-030 closed)._
 
 **Done when:** dragging a kid makes both eyes follow, using placeholder gaze math.
+
+_Still to see in real windows: [UT-002](user-tests.md#ut-002)._
 _Placeholder brain (`python -m brain`): looks at the closest kid. `tests/test_step3_end_to_end.py` moves a kid through Mosquitto and checks both eyes' gaze follows (2026-11-23). Pictures and test results: [build results](results/stage-0-step-3/README.md). Still to see by eye: the four programs together at the desktop screen (`sim/README.md`)._
 
 ## Step 4 — Monster brain, first version (December)
@@ -59,7 +61,7 @@ _Placeholder brain (`python -m brain`): looks at the closest kid. `tests/test_st
 - [x] Fake FPP: logs clip triggers and plays placeholder audio files through the desktop speakers. It reports "clip finished" like FPP will.
 - [x] Failure behavior: radar missing → ambient mode; eye missing → keep going.
 - [x] Tests for mood transitions, gaze math and clip pools.
-- [ ] The owner watches a pretend visit in the real windows and tunes the values: on the [device testing](device-testing.md) list ([results](results/stage-0-step-4/README.md), 2026-11-25).
+- [ ] The owner watches a pretend visit in the real windows and tunes the values: [UT-003](user-tests.md#ut-003) ([results](results/stage-0-step-4/README.md), 2026-11-25).
 
 _Starting values (owner, 2026-11-24), all in `themes/halloween/settings.yaml` to tune in the simulator: goodbye after 5 s with nobody, asleep after 20 quiet seconds, a comment every 10–20 s, at least 10 s between lines; focus: new arrival wins, hold 3–6 s, closest breaks ties; brain blinks every 2.5–6 s (200 ms), plus one when the eyes switch kids; door hold 15 s (TBD-028)._
 

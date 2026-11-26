@@ -7,7 +7,7 @@
   - [Architecture](/architecture.md)
   - [Stage 0 plan](/stage-0-plan.md)
   - [Open questions (TBD register)](/TBD.md)
-  - [Device testing](/device-testing.md)
+  - [User tests](/user-tests.md)
 - Requirements
   - [Requirements](/requirements/README.md)
   - [Risk register](/requirements/risk-register.md)

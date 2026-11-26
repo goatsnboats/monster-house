@@ -80,12 +80,9 @@
     - [SRR readiness (generated, do not edit)](/reviews/srr/readiness.md)
 - Build results
   - [Build results](/results/README.md)
-  - Stage 0 step 3
-    - [Stage 0, Step 3: fake radar, and the eyes following a pretend kid](/results/stage-0-step-3/README.md)
-  - Stage 0 step 4
-    - [Stage 0, Step 4: the monster brain, first version](/results/stage-0-step-4/README.md)
-  - Stage 0 step 5
-    - [Stage 0, Step 5: house preview](/results/stage-0-step-5/README.md)
+  - [Stage 0, Step 3: fake radar, and the eyes following a pretend kid](/results/stage-0-step-3/README.md)
+  - [Stage 0, Step 4: the monster brain, first version](/results/stage-0-step-4/README.md)
+  - [Stage 0, Step 5: house preview](/results/stage-0-step-5/README.md)
 - Decisions (ADRs)
   - [0001 — Requirements, architecture and ICDs in Markdown and YAML, SysML-ready](/decisions/0001-requirements-and-architecture-format.md)
   - [0002 — Eye renderer: Python + moderngl + pygame-ce](/decisions/0002-eye-renderer.md)
@@ -103,8 +100,7 @@
       - [TS-002 results report — eye renderer: Python + moderngl, or Godot](/trades/results/TS-002/README.md)
       - Figures
         - [Palette check for the TS-002 charts](/trades/results/TS-002/figures/palette-validator.md)
-    - TS-003
-      - [TS-003 results report — message schemas in code](/trades/results/TS-003/README.md)
+    - [TS-003 results report — message schemas in code](/trades/results/TS-003/README.md)
 - Templates
   - [NNNN — &lt;decision in a few words&gt;](/templates/adr.md)
   - [TS-NNN — &lt;the question, in a few words&gt;](/templates/trade-study.md)

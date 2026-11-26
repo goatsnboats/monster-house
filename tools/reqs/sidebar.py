@@ -88,14 +88,19 @@ def render(docs: Path) -> str:
         if not inside:
             continue
         lines.append(f"- {label}")
+        # A sub-folder whose only page is its README (one build step's results) is listed
+        # as that page, without a label line of its own.
+        lone = {r.parent for r in inside if r.name == "README.md" and len(r.parts) > 2
+                and sum(1 for q in inside if r.parent in q.parents) == 1}
         group = None
         for rel in inside:
+            shown_parts = rel.parts[:-1] if rel.parent in lone else rel.parts
             # A sub-folder gets its own label line, with its pages under it.
-            for depth in range(1, len(rel.parts) - 1):
-                sub = rel.parts[:depth + 1]
+            for depth in range(1, len(shown_parts) - 1):
+                sub = shown_parts[:depth + 1]
                 if group is None or tuple(group[:depth + 1]) != sub:
                     lines.append(f"{'  ' * depth}- {_label(sub[-1])}")
-            group = rel.parts[:-1]
-            indent = "  " * (len(rel.parts) - 1)
+            group = shown_parts[:-1]
+            indent = "  " * (len(shown_parts) - 1)
             lines.append(f"{indent}- {_link(docs, rel)}")
     return "\n".join(lines) + "\n"

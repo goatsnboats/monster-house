@@ -59,7 +59,7 @@ _Placeholder brain (`python -m brain`): looks at the closest kid. `tests/test_st
 - [x] Fake FPP: logs clip triggers and plays placeholder audio files through the desktop speakers. It reports "clip finished" like FPP will.
 - [x] Failure behavior: radar missing → ambient mode; eye missing → keep going.
 - [x] Tests for mood transitions, gaze math and clip pools.
-- [ ] The owner watches a pretend visit in the real windows and tunes the values ([results](results/stage-0-step-4/README.md), 2026-11-25).
+- [ ] The owner watches a pretend visit in the real windows and tunes the values: on the [device testing](device-testing.md) list ([results](results/stage-0-step-4/README.md), 2026-11-25).
 
 _Starting values (owner, 2026-11-24), all in `themes/halloween/settings.yaml` to tune in the simulator: goodbye after 5 s with nobody, asleep after 20 quiet seconds, a comment every 10–20 s, at least 10 s between lines; focus: new arrival wins, hold 3–6 s, closest breaks ties; brain blinks every 2.5–6 s (200 ms), plus one when the eyes switch kids; door hold 15 s (TBD-028)._
 

@@ -11,6 +11,12 @@ with its study in [trades/results/](../trades/results/).
 Figures are made by a script in `tools/results/` from the real code, so they can be
 made again after a change. Each report says how.
 
+Each report is the step's formal record, and it stays up to date. It says **where** to
+run its commands (computer, user, folder). It lists the **calls made without asking**,
+for the owner to overturn. It ends with dated **Updates**: user test verdicts
+([user tests](../user-tests.md)) and later changes that affect it. Loose ends outside a
+step go to gloss as notes, not here.
+
 | Step | What it shows | Date |
 |---|---|---|
 | [Stage 0, Step 3: fake radar](stage-0-step-3/README.md) | A pretend kid on the fake radar, and both eyes following them | 2026-11-23 |

@@ -87,6 +87,8 @@ All 255 tests pass (205 before this step); the requirements checker reports 0 er
 
 ## Try it yourself
 
+**Where:** on the desktop `lighthouse`, as user `dev`, in `~/dev/monster-house`. The windows need a `dev` desktop session on the monitor (the owner starts one); the broker is the Mosquitto service already running there (localhost:1883).
+
 At the desktop, with the broker running, run each line in its own terminal, then drag a
 kid from the sidewalk up the path in the fake radar:
 
@@ -104,6 +106,8 @@ brain's terminal and the clips in the fake FPP's. Without windows,
 
 ## Reproduce
 
+**Where:** on `lighthouse`, as `dev`, in `~/dev/monster-house`. No desktop session is needed (it draws offscreen), so it also works over SSH.
+
 ```bash
 .venv/bin/python -m tools.results.stage_0_step_4   # the figures and results.json
 .venv/bin/python -m pytest -q
@@ -112,3 +116,29 @@ brain's terminal and the clips in the fake FPP's. Without windows,
 The script runs the real brain, the radar model and the fake FPP in one process on a
 pretend clock (`sim/pretend_visit.py`). The MQTT trip is covered by the end-to-end test.
 The figures are plain SVG; hover a mark to see its exact time.
+
+## Calls made without asking
+
+Technical calls Claude made during the step. Overturn any of them with a gloss comment.
+
+- **The greeting skips the 10 s gap** after the yawn. Otherwise the gap would block the
+  greeting completely.
+- **A kid going away gets "bye"** when they turn to leave (SHW-013). The 10 s gap then
+  stops a second "bye" when Goodbye starts.
+- **Every switch between kids blinks**, unless the eyes blinked in the last 0.5 s.
+- **`door_point` in `config/site.yaml`** is a guess (the middle of the door zone, at a
+  kid's head height) until it's measured at install (TBD-029).
+- **Constants in code**, not the theme, because they are how the face moves, not show
+  timings: expression ease 0.4 s, look-around 1.5 s, droop after 2 s, flutter 1.2 s,
+  glance 0.8 s, look re-sent every 2 s (inside the eyes' 5 s fallback), smoothing
+  0.15 s, coming/going over 0.5 s at 0.25 m/s or more, door margin 0.5 m, FPP answer
+  2 s (TBD-023).
+- **ICD-003's status topic names** were added to `shared/topics.py`. No message format
+  changed.
+- **The figures are plain SVG**, so no plotting library was added.
+
+## Updates
+
+- **2026-11-25:** The owner's feel check is filed as
+  [UT-003](../../user-tests.md#ut-003).
+- **2026-11-26:** Added where to run the commands (gloss #24, #25).

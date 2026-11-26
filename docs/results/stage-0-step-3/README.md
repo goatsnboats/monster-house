@@ -85,6 +85,8 @@ The three new test files have 29 tests:
 
 ## Try it yourself
 
+**Where:** on the desktop `lighthouse`, as user `dev`, in `~/dev/monster-house`. The windows need a `dev` desktop session on the monitor (the owner starts one); the broker is the Mosquitto service already running there (localhost:1883).
+
 At the desktop, with the broker running, run each line in its own terminal:
 
 ```bash
@@ -99,6 +101,8 @@ Click to add a kid, drag them, right-click to remove them (more in
 
 ## Reproduce
 
+**Where:** on `lighthouse`, as `dev`, in `~/dev/monster-house`. No desktop session is needed (it draws offscreen), so it also works over SSH.
+
 ```bash
 .venv/bin/python -m tools.results.stage_0_step_3              # the figures and results.json (GPU)
 .venv/bin/python -m tools.results.stage_0_step_3 --software   # without a GPU
@@ -108,3 +112,14 @@ Click to add a kid, drag them, right-click to remove them (more in
 The figures were drawn on the desktop's NVIDIA RTX 5060 Ti through EGL, with no window.
 The script runs the real code in one process (fake radar model → brain → each eye's
 state → eye renderer). The MQTT trip is covered by the end-to-end test instead.
+
+## Updates
+
+- **2026-11-25:** Step 4 replaced the placeholder brain. `python -m brain` now wakes
+  only for a kid walking toward the house, and stays asleep outside the show hours
+  unless started with `--any-time`. To watch the eyes follow a kid today, use
+  [Step 4's Try it yourself](../stage-0-step-4/README.md#try-it-yourself). The figures
+  above were made with the placeholder, which now lives in
+  `tools/results/stage_0_step_3.py`. Still to see in real windows:
+  [UT-002](../../user-tests.md#ut-002).
+- **2026-11-26:** Added where to run the commands (gloss #24, #25).

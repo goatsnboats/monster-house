@@ -78,6 +78,8 @@ All 261 tests pass (255 before this step); the requirements checker reports 0 er
 
 ## Try it yourself
 
+**Where:** on the desktop `lighthouse`, as user `dev`, in `~/dev/monster-house`. The windows need a `dev` desktop session on the monitor (the owner starts one); the broker is the Mosquitto service already running there (localhost:1883).
+
 ```bash
 .venv/bin/python -m sim.house_preview --no-mqtt     # on its own: the eyes wander
 ```
@@ -88,6 +90,8 @@ Keys are in `sim/README.md`.
 
 ## Reproduce
 
+**Where:** on `lighthouse`, as `dev`, in `~/dev/monster-house`. No desktop session is needed (it draws offscreen), so it also works over SSH.
+
 ```bash
 .venv/bin/python -m tools.results.stage_0_step_5              # the figures (GPU)
 .venv/bin/python -m tools.results.stage_0_step_5 --software   # without a GPU
@@ -95,3 +99,23 @@ Keys are in `sim/README.md`.
 ```
 
 The figures were drawn on the desktop's NVIDIA RTX 5060 Ti through EGL, offscreen.
+
+## Calls made without asking
+
+Technical calls Claude made during the step. Overturn any of them with a gloss comment.
+
+- **The preview listens like an eye but never reports itself as one** (`EyeLink` with
+  no side), so the brain doesn't log a third eye.
+- **The warp is done on the GPU** (a 3×3 matrix in the shader), solved in plain Python
+  when a corner moves, so no numpy.
+- **"Matched" means the same size in meters:** both ovals take the small window's eye
+  size.
+- **The window corners were measured from the photo;** the lip points are a guess to
+  drag into place.
+- **The comparisons use a kid on the sidewalk (6 m),** so the iris shows; the
+  expressions figure also shows a kid on the walk (4 m).
+
+## Updates
+
+- **2026-11-26:** The owner's decisions are filed as
+  [UT-004](../../user-tests.md#ut-004). Added where to run the commands.

@@ -68,8 +68,10 @@ _Starting values (owner, 2026-11-24), all in `themes/halloween/settings.yaml` to
 **Done when:** a pretend visit plays through from asleep to goodbye and back to sleep, and it *feels* right to the owner.
 
 ## Step 5 — House preview (January)
-- [ ] The live eyes composited onto `docs/reference/house-front.jpg` at the two window positions (positions adjustable by dragging corners).
-- [ ] A simple glowing line where the lips will go (porch roof edge and railing), so the whole face reads.
+- [x] The live eyes composited onto `docs/reference/house-front.jpg` at the two window positions (positions adjustable by dragging corners).
+- [x] A simple glowing line where the lips will go (porch roof edge and railing), so the whole face reads.
+
+- [ ] The owner decides with it: [UT-004](user-tests.md#ut-004) ([results](results/stage-0-step-5/README.md), 2026-11-26).
 
 **Done when:** the owner can decide lopsided vs. matched eyes, eye size and colors by looking at it.
 

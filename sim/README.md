@@ -5,7 +5,7 @@ messages as the real thing:
 - **fake radar** (drag pretend visitors; mimics ESPHome's LD2450 topics). Step 3, done
 - **fake Falcon Player** (logs clip triggers, answers playing/idle, plays the theme's audio). Step 4, done
 - **pretend visit** (a scripted visit with the real brain, no windows). Step 4, done
-- house preview (eyes composited onto the house photo). Step 5
+- **house preview** (the live eyes and the lips on the house photo). Step 5, done
 
 ## Fake radar
 
@@ -84,3 +84,28 @@ Takes the brain's clip starts and answers as Falcon Player will (ICD-003, SIM-00
 Plays a scripted visit (a kid walks up, goes to the door, walks away) through the real
 brain, the radar model and the fake FPP on a pretend clock, and prints every mood,
 expression, clip and blink. The tests and `tools/results/stage_0_step_4.py` use it too.
+
+## House preview
+
+The live eyes on `docs/reference/house-front.jpg`, at the two windows, with the lips'
+glowing line, for judging lopsided vs matched eyes, eye size and colors (SIM-005).
+It listens to the brain like a third eye (ICD-001, SIM-006) but never reports itself
+as one. Each eye is drawn by the real eye renderer and warped onto its window.
+
+```bash
+.venv/bin/python -m sim.house_preview                # --no-mqtt: just wander
+```
+
+| Do this | To |
+|---|---|
+| Drag a corner or a lip point | Move it |
+| `m` | Eye mode: fills each window (lopsided) · ovals as big as each window · matched ovals (both the small window's size, in meters) · ovals stretched to each window |
+| `c` | Next iris color (`iris_colors` in the layout file) |
+| `d` | Dusk: dim the photo (the eyes are lit) |
+| `l`, `h` | Lips on/off, handles on/off |
+| `s` | Save the corners and lip points to `sim/house_preview.yaml` |
+| `Space`, `1`-`6`, `i` | Blink, expressions, wander (when no brain is running) |
+
+The window title shows the mode, color and dusk level. Run it with the brain and the
+fake radar (see `brain/README.md`) to watch a whole pretend visit on the house.
+`--screenshot file.png` draws one frame without a window.

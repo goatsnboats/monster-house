@@ -300,8 +300,10 @@ def parse_args(argv=None):
 
 def render_png(path: Path, layout: HouseLayout, windows, theme, height: int, mode: str = "window",
                expression: str | None = None, software: bool = False, handles: bool = False,
-               iris: int = 0, dusk: int = 0, settle_s: float = 1.0) -> None:
-    """One frame drawn offscreen and saved as a PNG (for docs and tests)."""
+               iris: int = 0, dusk: int = 0, settle_s: float = 1.0,
+               look: tuple[float, float, float] = (0.8, 4.0, 1.0)) -> None:
+    """One frame drawn offscreen and saved as a PNG (for docs and tests). The eyes look at
+    `look` (house m; default a kid on the walk, right of center)."""
     import pygame
     img = pygame.image.load(str(layout.photo))
     view = view_size(img.get_size(), height)
@@ -312,7 +314,7 @@ def render_png(path: Path, layout: HouseLayout, windows, theme, height: int, mod
     preview.dusk, preview.handles_on = dusk, handles
     states = {s: EyeState(windows[s].position_m, (1e6, 1e6), theme.blink_ms) for s in SIDES}
     for st in states.values():
-        st.look_at((0.8, 4.0, 1.0))                 # a kid on the walk, right of center
+        st.look_at(look)
         if expression:
             st.set_expression(expression, ms=0)
         st.heard_from_brain()

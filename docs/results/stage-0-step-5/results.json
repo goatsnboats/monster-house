@@ -1,0 +1,77 @@
+{
+ "window_corners_photo_px": {
+  "left": [
+   [
+    602.0,
+    652.0
+   ],
+   [
+    690.0,
+    652.0
+   ],
+   [
+    690.0,
+    815.0
+   ],
+   [
+    602.0,
+    815.0
+   ]
+  ],
+  "right": [
+   [
+    918.0,
+    652.0
+   ],
+   [
+    1042.0,
+    652.0
+   ],
+   [
+    1042.0,
+    815.0
+   ],
+   [
+    918.0,
+    815.0
+   ]
+  ]
+ },
+ "glass_m": {
+  "left": [
+   0.686,
+   1.219
+  ],
+  "right": [
+   0.914,
+   1.219
+  ]
+ },
+ "glass_aspect_real": {
+  "left": 0.563,
+  "right": 0.75
+ },
+ "glass_aspect_photo": {
+  "left": 0.54,
+  "right": 0.761
+ },
+ "modes": {
+  "window": "each eye fills its window (lopsided)",
+  "oval": "ovals, as big as each window (lopsided)",
+  "matched": "ovals, both the small window's size (matched)",
+  "stretch": "ovals stretched to each window"
+ },
+ "iris_colors": [
+  "#7a55e0",
+  "#3fbf4a",
+  "#ff8a1f",
+  "#2fa8e0",
+  "#e0405a"
+ ],
+ "dusk_steps": [
+  1.0,
+  0.55,
+  0.3
+ ],
+ "renderer": "GPU (EGL)"
+}

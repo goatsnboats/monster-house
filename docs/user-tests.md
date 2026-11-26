@@ -1,6 +1,6 @@
 # User tests
 
-> **Status:** Current · **Updated:** 2026-11-25
+> **Status:** Current · **Updated:** 2026-11-26
 
 Checks that need the owner: watching it run and judging it, at the desktop now, and on
 the real devices (Pis, projectors, radar, lights) from Stage 1. Automated tests and
@@ -33,8 +33,9 @@ Two kinds:
 | [UT-001](#ut-001) | desktop | Both eyes in real windows, 60 fps | Step 2 | 2026-11-23 | VE-002 | owed |
 | [UT-002](#ut-002) | desktop | The eyes follow a kid on the fake radar | Step 3 | 2026-11-23 | VE-005 | owed |
 | [UT-003](#ut-003) | desktop | A pretend visit feels right | Step 4 | 2026-11-25 | VE-005 | owed |
+| [UT-004](#ut-004) | desktop | Decide the eyes' look on the house preview | Step 5 | 2026-11-26 | VE-005 | owed |
 
-All three can be done in one sitting at the desktop, with the broker running and each
+All four can be done in one sitting at the desktop, with the broker running and each
 command in its own terminal. UT-003's setup covers UT-002.
 
 ### UT-001
@@ -81,6 +82,24 @@ command in its own terminal. UT-003's setup covers UT-002.
   - whether a short visit is too quiet (the 10 s gap can push comments out).
 - **Pass when:** a visit plays through from asleep to goodbye and back to sleep, and it
   feels right to the owner.
+- **Result:** _not yet run._
+
+### UT-004
+
+**Decide the eyes' look on the house preview**: Step 5's "done when"
+([Step 5 results](results/stage-0-step-5/README.md), TBD-004).
+
+- **Run:** `.venv/bin/python -m sim.house_preview` (keys in `sim/README.md`). For a whole
+  visit on the house, run it alongside UT-003's programs.
+- **Check first:** the window corners and lip points sit right on the photo (drag them,
+  press `s`); dragging and the keys work.
+- **Decide** (tell Claude, or set them in `config/site.yaml` and the theme):
+  - lopsided or matched eyes (`m` cycles the four modes);
+  - eye size within each window;
+  - iris color (`c`), and whether the lids' purple suits it;
+  - whether the iris is big enough in the "fills its window" mode;
+  - whether `happy` hiding much of the iris for a kid close to the porch is all right.
+- **Pass when:** the owner has decided the eye layout, size and color with it.
 - **Result:** _not yet run._
 
 ## Done

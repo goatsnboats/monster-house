@@ -1,6 +1,6 @@
 # Concept of operations — Monster House
 
-> **Status:** Draft for the owner to edit (SRR package, item 1) · **Updated:** 2026-11-18 · **Reviews:** [plan](reviews/README.md)
+> **Status:** Draft for the owner to edit (SRR package, item 1) · **Updated:** 2026-11-26 · **Reviews:** [plan](reviews/README.md)
 
 How the monster is used, told as a season and an evening, from the point of view of
 the people around it. Each step cites the system requirements (`SYS-NNN`,
@@ -154,6 +154,10 @@ sequenceDiagram
 | S7.4 | Talking to a neighbor at the door, the owner taps **mute**: no voice, but the eyes and lips carry on | SYS-013 |
 | S7.5 | **Sleep now** and **wake now** put the monster to sleep or wake it on demand, at any hour, for testing and demos (owner: Q5) | SYS-012, SYS-014 |
 
+The buttons either change the mood (sleep now, wake now) or add a one-off action to it
+(costume, burp, sing, mute). Controlling the mood is enough for now: pre-coordinated
+"scenes" on a button or a mood change aren't wanted yet (owner, 2026-11-19; see §10).
+
 ### S8 — End of show hours
 
 | Step | What happens | Requirements |
@@ -189,6 +193,12 @@ sequenceDiagram
 | Step | What happens | Requirements |
 |---|---|---|
 | S12.1 | The owner picks the Christmas theme on the phone; the eyes, voice, lips and timings change, with no software change | SYS-016, SYS-041 |
+| S12.2 | Outside Halloween the visitors are mostly passers-by. Someone walking by on the sidewalk gets a sleepy peek; if they stop, a holiday greeting ("Merry Christmas!") | saved for later (§10, sleepy peek) |
+| S12.3 | For a long season (all of December), the monster can run as a quiet decoration: eyes only, slow blinks and glances, no voice, kind to the neighbors | saved for later (§10) |
+| S12.4 | Other special days (a birthday, the Fourth of July) get their own themes, chosen the same way | SYS-016 |
+
+The owner chose these three (2026-11-23). Caroling, with songs and the lips singing
+along, isn't wanted until the lips can move.
 
 ### S13 — Season teardown
 
@@ -252,5 +262,8 @@ becomes one when its phase is planned.
   dozes off again (Q4, Q10).
 - **Crowd mode:** with three visitors for a while, talk less and look around more (Q6).
 - **Dog action:** something special for dogs, if they can be told apart from kids (Q7).
-- **Other holidays:** what the monster does when the visitors are mainly passers-by
-  (gloss comment on S12, open).
+- **Other holidays** (S12, owner 2026-11-23): the sleepy peek and a holiday greeting for
+  passers-by; a quiet decoration mode (eyes only, no voice) for a long season; themes for
+  other special days. Caroling waits for moving lips.
+- **Scenes:** a pre-coordinated mix of eyes, voice and lips played on a button or a mood
+  change. Not wanted yet; controlling the mood is enough (S7, owner 2026-11-19).

@@ -148,7 +148,7 @@ sequenceDiagram
 
 | Step | What happens | Requirements |
 |---|---|---|
-| S7.1 | The owner opens the phone page on the home Wi-Fi; it shows the current mood | SYS-012, SYS-032, SYS-038 |
+| S7.1 | The owner opens the phone page (through Tailscale, at home or away); it shows the current mood | SYS-012, SYS-032, SYS-038 |
 | S7.2 | A great costume walks up: the owner taps **great costume**; the eyes sparkle and the monster pays a compliment within half a second | SYS-012, SYS-023 |
 | S7.3 | For fun, **burp** or **sing** | SYS-012 |
 | S7.4 | Talking to a neighbor at the door, the owner taps **mute**: no voice, but the eyes and lips carry on | SYS-013 |

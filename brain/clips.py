@@ -55,10 +55,11 @@ class Voice:
         self._playing = False              # FPP has said "playing"
         self._ended_at: float | None = None
 
-    def say(self, pool: str, now: float, keep_gap: bool = True) -> bool:
-        """Start the next clip from `pool` if allowed now; True if one started."""
+    def say(self, pool: str, now: float, keep_gap: bool = True, interrupt: bool = False) -> bool:
+        """Start the next clip from `pool` if allowed now; True if one started.
+        interrupt=True (the owner's phone) cuts off a clip that is playing."""
         self._check_answer(now)
-        if self.muted or self._clip is not None:
+        if self.muted or (self._clip is not None and not interrupt):
             return False
         if keep_gap and self._ended_at is not None and now - self._ended_at < self.min_gap_s:
             return False

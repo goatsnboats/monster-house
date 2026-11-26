@@ -1,0 +1,19 @@
+{
+ "press_to_eyes_ms": [
+  2.4,
+  23.4,
+  22.6,
+  18.4,
+  23.9,
+  22.5,
+  23.2,
+  22.6,
+  23.3,
+  23.6
+ ],
+ "max_ms": 23.9,
+ "requirement_ms": 500,
+ "presses": 10,
+ "answered": 10,
+ "brain_tick_ms": 100
+}

@@ -2,7 +2,6 @@
 
 The one place where decisions are made: moods (Asleep → Waking → Greeting → Watching →
 Goodbye), who to look at, blinks and voice clips. See `docs/architecture.md` §3b.
-The phone page comes in Step 6.
 
 **Status:** Stage 0 Step 4, first version (2026-11-25). Results:
 [docs/results/stage-0-step-4/](../docs/results/stage-0-step-4/README.md).
@@ -34,6 +33,18 @@ Watch the mood with `.venv/bin/python -m shared.mqtt_tool sub state`, and the cl
 the fake FPP's terminal. **Without windows:** `.venv/bin/python -m sim.pretend_visit`
 plays a scripted visit and prints what the brain did, second by second.
 
+## Phone page (Step 6)
+
+While the brain runs, it serves the phone page on `http://127.0.0.1:8080/` (ICD-004):
+the current mood and big buttons for great costume, burp, sing, mute/unmute, sleep now
+and wake now, plus a theme choice. Sleep now holds the monster asleep until wake now;
+wake now works outside show hours until sleep now. The owner's clips skip the 10 s gap.
+
+The phone reaches it through `tailscale serve` (`https://lighthouse.tail3dcfe9.ts.net:8080/`)
+once lighthouse's proposal is approved and set up
+([draft](../docs/proposals/lighthouse-phone-page.md)). `--phone-port` changes the port;
+`--no-phone` turns it off.
+
 ## What it does
 
 | | |
@@ -59,4 +70,5 @@ visitors are tracked (smoothing 0.15 s, coming/going over 0.5 s).
 - `clips.py`: clip pools (shuffle, no repeats), minimum gap, clip finished (ICD-003).
 - `settings.py`: reads the theme's timings, pools and show hours.
 - `radar.py`: puts ESPHome's separate radar values back together (ICD-002).
+- `phone.py`: the phone page and its API (ICD-004), standard library only.
 - `__main__.py`: the MQTT loop.

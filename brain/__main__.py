@@ -18,6 +18,7 @@ import logging
 import queue
 import time
 
+from brain import phone
 from brain.core import SUBSCRIPTIONS, Brain
 from brain.settings import DEFAULT_THEME, ThemeError, load_theme_settings
 from shared.mqtt_client import DEFAULT_HOST, DEFAULT_PORT, new_client
@@ -34,6 +35,8 @@ def parse_args(argv=None):
     p.add_argument("--port", type=int, default=DEFAULT_PORT)
     p.add_argument("--theme", default=DEFAULT_THEME)
     p.add_argument("--any-time", action="store_true", help="ignore the theme's show hours")
+    p.add_argument("--phone-port", type=int, default=phone.PORT, help="the phone page's port (ICD-004)")
+    p.add_argument("--no-phone", action="store_true", help="don't serve the phone page")
     p.add_argument("--seconds", type=float, help="quit after this long (for tests)")
     return p.parse_args(argv)
 
@@ -51,6 +54,15 @@ def main(argv=None) -> int:
     if not args.any_time:
         log.info("show hours %s (use --any-time to ignore them)", theme.show_hours)
     inbox: queue.Queue = queue.Queue()
+
+    presses: queue.Queue = queue.Queue()
+    page = None
+    if not args.no_phone:
+        try:
+            page = phone.PhonePage(presses, port=args.phone_port)
+            page.start()
+        except OSError as err:                  # port taken: carry on without the page
+            log.warning("no phone page: %s", err)
 
     client = new_client("brain")
     client.reconnect_delay_set(1, 10)
@@ -78,7 +90,14 @@ def main(argv=None) -> int:
                     out += brain.on_message(*inbox.get_nowait(), now)
                 except queue.Empty:
                     break
+            while True:
+                try:
+                    out += phone.handle(brain, presses.get_nowait(), now)
+                except queue.Empty:
+                    break
             out += brain.tick(now)
+            if page:
+                page.set_state(brain.state())
             for o in out:
                 client.publish(o.topic, o.payload, qos=o.qos, retain=o.retain)
             out = []
@@ -86,6 +105,8 @@ def main(argv=None) -> int:
     except KeyboardInterrupt:
         pass
     finally:
+        if page:
+            page.stop()
         client.disconnect()
         client.loop_stop()
     return 0

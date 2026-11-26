@@ -105,6 +105,13 @@ class MoodMachine:
         """True when the eyes are open and the brain should blink them (SHW-015)."""
         return self.mood is not Mood.ASLEEP or self.ambient
 
+    def force(self, mood: Mood, now: float) -> list[Action]:
+        """Go to a mood now, from the phone (sleep now, wake now: SHW-019, SHW-030)."""
+        if mood is not Mood.ASLEEP:
+            self._last_present = now          # don't fall straight back asleep for want of visitors
+        self._enter(mood, now)
+        return self._flush()
+
     def note_blink(self, now: float) -> None:
         """A blink was sent for another reason (a focus switch): restart the blink timer."""
         self._schedule_blink(now)

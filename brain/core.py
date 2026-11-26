@@ -21,7 +21,7 @@ from brain.focus import Focus
 from brain.gaze import visitor_point
 from brain.moods import EXPRESSION_MS, MOOD_EXPRESSION, Action, Mood, MoodMachine, Senses
 from brain.radar import RadarState
-from brain.settings import ThemeSettings
+from brain.settings import THEMES_DIR, ThemeError, ThemeSettings, load_theme_settings
 from brain.visitors import Tracker
 from shared import topics
 from shared.messages import clips as fpp_icd
@@ -32,7 +32,10 @@ log = logging.getLogger("brain")
 
 GLANCE_S = 0.8          # SHW-014: a surprised glance at a new kid coming, this long
 RECENT_BLINK_S = 0.5    # no blink for a focus switch this soon after another blink
-KEEPALIVE_S = 2.0       # re-send the look at least this often, inside the eyes' 5 s fallback
+KEEPALIVE_S = 2.0
+COSTUME_S = 3.0         # great costume: sparkle this long
+
+BUTTONS = ("costume", "burp", "sing", "mute", "unmute", "sleep", "wake")   # ICD-004       # re-send the look at least this often, inside the eyes' 5 s fallback
 
 SUBSCRIPTIONS = [topics.RADAR_SENSOR_ALL, topics.RADAR_STATUS, topics.EYES_STATUS_ALL, topics.FPP_STATUS]
 
@@ -52,6 +55,7 @@ class Brain:
         self.site = site
         self.theme = theme
         self.any_time = any_time                     # ignore show hours (development)
+        self.hold: str | None = None                 # "sleep" or "wake" from the phone, until the other
         self.radar = RadarState()
         self.tracker = Tracker(site, t.door_hold_s)
         self.focus = Focus(t.focus_hold_s, rng)
@@ -120,7 +124,8 @@ class Brain:
             approaching=any(v.heading == "coming" and self.tracker.range_m(v) <= self.site.approach_range_m
                             for v in visitors),
             radar_online=self.radar.online,
-            show_time=self.any_time or self.theme.in_show_hours(wall or dt.datetime.now()),
+            show_time=self.hold == "wake" or (self.hold != "sleep" and (
+                self.any_time or self.theme.in_show_hours(wall or dt.datetime.now()))),
         )
         actions = self.moods.tick(now, senses)
         if any(a.kind == "expression" for a in actions):
@@ -155,6 +160,56 @@ class Brain:
         out += self._look_out(now)
         out += [Out(topics.fpp_playlist_start(name), b"", 1, False) for name in self.voice.take_starts()]
         return out
+
+    # ── The owner's phone (ICD-004, SHW-019, SHW-020, SHW-023, SHW-030) ──────────────
+
+    def press(self, name: str, now: float) -> list[Out]:
+        """A button from the phone page. Acts at once; returns what to publish."""
+        if name not in BUTTONS:
+            return []
+        log.info("phone: %s", name)
+        actions: list[Action] = []
+        if name in ("mute", "unmute"):
+            self.voice.muted = name == "mute"
+        elif name == "sleep":
+            self.hold = "sleep"
+            if self.moods.mood is not Mood.ASLEEP:
+                actions += self.moods.force(Mood.ASLEEP, now)
+        elif name == "wake":
+            self.hold = "wake"                       # show hours don't apply until sleep now
+            if self.moods.mood is Mood.ASLEEP:
+                actions += self.moods.force(Mood.WAKING, now)
+        elif name == "costume":
+            actions.append(Action("expression", "sparkle"))
+            self._glance_until = now + COSTUME_S
+            self.voice.say("costume", now, keep_gap=False, interrupt=True)
+        else:                                        # burp, sing: the owner's clips skip the gap
+            self.voice.say(name, now, keep_gap=False, interrupt=True)
+        out = self._actions(actions)
+        out += [Out(topics.fpp_playlist_start(n), b"", 1, False) for n in self.voice.take_starts()]
+        return out
+
+    def set_theme(self, name: str) -> list[Out]:
+        """Switch to another theme folder (SHW-021). A bad theme is logged and ignored."""
+        try:
+            theme = load_theme_settings(name)
+        except ThemeError as err:
+            log.warning("%s", err)
+            return []
+        t = theme.timing
+        self.theme = theme
+        self.moods.timing = t
+        self.voice.pools = Voice(theme.clips, t.min_gap_s, self.focus.rng).pools
+        self.voice.min_gap_s = t.min_gap_s
+        self.tracker.door_hold_s = t.door_hold_s
+        self.focus.hold_s = t.focus_hold_s
+        log.info("theme: %s", theme.name)
+        return [Out(topics.THEME, eyes.encode("theme", eyes.Theme(theme.name)), 1, True)]
+
+    def state(self) -> dict:
+        """What the phone page shows (ICD-004 state)."""
+        return {"mood": self.moods.mood.value, "muted": self.voice.muted, "theme": self.theme.name,
+                "themes": themes()}
 
     def _look_out(self, now: float) -> list[Out]:
         """Where to look (SHW-009): the focus visitor about 10 times a second; wander; or
@@ -191,3 +246,8 @@ class Brain:
             elif a.kind == "blink":
                 out.append(Out(topics.EYES_BLINK, eyes.encode("blink", eyes.Blink(int(a.value))), 0, False))
         return out
+
+
+def themes(themes_dir=THEMES_DIR) -> list[str]:
+    """The theme folders that have settings."""
+    return sorted(p.parent.name for p in themes_dir.glob("*/settings.yaml"))

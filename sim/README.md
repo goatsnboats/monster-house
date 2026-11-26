@@ -102,7 +102,7 @@ as one. Each eye is drawn by the real eye renderer and warped onto its window.
 | `m` | Eye mode: fills each window (lopsided) · ovals as big as each window · matched ovals (both the small window's size, in meters) · ovals stretched to each window |
 | `c` | Next iris color (`iris_colors` in the layout file) |
 | `d` | Dusk: dim the photo (the eyes are lit) |
-| `l`, `h` | Lips on/off, handles on/off |
+| `p`, `l`, `h` | Window panes on/off (set in the layout file), lips on/off, handles on/off |
 | `s` | Save the corners and lip points to `sim/house_preview.yaml` |
 | `Space`, `1`-`6`, `i` | Blink, expressions, wander (when no brain is running) |
 

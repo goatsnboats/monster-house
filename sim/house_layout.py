@@ -34,6 +34,8 @@ class HouseLayout:
     lips: dict[str, list[Point]] = field(default_factory=dict)
     lip_color: str = "#c050ff"
     iris_colors: list[str] = field(default_factory=list)
+    panes: dict[str, dict[str, list[tuple[float, float]]]] = field(default_factory=dict)  # side -> v/h bars
+    pane_color: str = "#1e1b18"
 
 
 def _points(raw, n: int | None = None) -> list[Point]:
@@ -52,6 +54,9 @@ def load_layout(path: Path = LAYOUT_FILE) -> HouseLayout:
             lips={name: _points(pts) for name, pts in (raw.get("lips") or {}).items()},
             lip_color=str(raw.get("lip_color", "#c050ff")),
             iris_colors=[str(c) for c in raw.get("iris_colors", [])],
+            panes={side: {k: [(float(a), float(b)) for a, b in bars.get(k, [])] for k in ("v", "h")}
+                   for side, bars in (raw.get("panes") or {}).items()},
+            pane_color=str(raw.get("pane_color", "#1e1b18")),
         )
     except FileNotFoundError:
         raise LayoutError(f"no house preview layout at {path}") from None
@@ -63,14 +68,16 @@ def save_layout(layout: HouseLayout, path: Path = LAYOUT_FILE) -> None:
     """Write the dragged positions back, keeping the file's comments (only the numbers change)."""
     lines = path.read_text().splitlines()
     fmt = lambda pts: "[" + ", ".join(f"[{round(x)}, {round(y)}]" for x, y in pts) + "]"   # noqa: E731
-    values = {**{s: layout.windows[s] for s in SIDES}, **layout.lips}
-    out = []
+    values = {"windows": {s: layout.windows[s] for s in SIDES}, "lips": layout.lips}
+    out, section = [], None
     for line in lines:
+        if line and not line.startswith((" ", "#")):
+            section = line.split(":", 1)[0]          # the top-level key we're under
         key = line.strip().split(":", 1)[0]
-        if line.startswith("  ") and key in values and ":" in line:
+        if line.startswith("  ") and section in values and key in values[section] and ":" in line:
             indent = line[:len(line) - len(line.lstrip())]
             pad = " " * max(1, 7 - len(key))
-            line = f"{indent}{key}:{pad}{fmt(values[key])}"
+            line = f"{indent}{key}:{pad}{fmt(values[section][key])}"
         out.append(line)
     path.write_text("\n".join(out) + "\n")
 

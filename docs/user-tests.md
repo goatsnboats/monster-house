@@ -97,7 +97,10 @@ command in its own terminal. UT-003's setup covers UT-002.
   - lopsided or matched eyes (`m` cycles the four modes);
   - eye size within each window;
   - iris color (`c`), and whether the lids' purple suits it;
-  - whether the iris is big enough in the "fills its window" mode;
+  - whether the iris is big enough in the "fills its window" mode (made about 1.25×
+    bigger on 2026-11-26);
+  - the window panes over the eye (`p`), and the mouth's shape: flat or curved lips
+    (drag the lip points);
   - whether `happy` hiding much of the iris for a kid close to the porch is all right.
 - **Pass when:** the owner has decided the eye layout, size and color with it.
 - **Result:** _not yet run._

@@ -9,7 +9,8 @@ laid onto its window in the photo with a perspective warp, all on the GPU.
 
 Mouse: drag a corner (or a lip point) to move it.
 Keys: m eye mode (fills the window / oval / matched ovals / stretched) · c iris color ·
-d dusk (dims the photo; the eyes are lit) · l lips on/off · h hide the handles ·
+d dusk (dims the photo; the eyes are lit) · p window panes on/off · l lips on/off ·
+h hide the handles ·
 s save the layout to sim/house_preview.yaml · Space blink · 1-6 expressions ·
 i wander · Esc quit.
 """
@@ -73,11 +74,21 @@ in vec2 v_photo;
 out vec4 color;
 uniform sampler2D u_tex;
 uniform mat3 u_to_eye;          // photo px -> eye image 0..1 (top-left origin)
+uniform vec2 u_vbars[4];        // vertical pane bars: x, width (fractions of the glass)
+uniform vec2 u_hbars[4];        // horizontal pane bars: y, height
+uniform int u_nv;
+uniform int u_nh;
+uniform vec3 u_pane_color;
 void main() {
     vec3 p = u_to_eye * vec3(v_photo, 1.0);
     vec2 uv = p.xy / p.z;
     if (any(lessThan(uv, vec2(0.0))) || any(greaterThan(uv, vec2(1.0)))) discard;
-    color = vec4(texture(u_tex, vec2(uv.x, 1.0 - uv.y)).rgb, 1.0);   // GL images start at the bottom
+    vec3 rgb = texture(u_tex, vec2(uv.x, 1.0 - uv.y)).rgb;           // GL images start at the bottom
+    for (int i = 0; i < 4; i++) {
+        if (i < u_nv && abs(uv.x - u_vbars[i].x) < u_vbars[i].y * 0.5) rgb = u_pane_color;
+        if (i < u_nh && abs(uv.y - u_hbars[i].x) < u_hbars[i].y * 0.5) rgb = u_pane_color;
+    }
+    color = vec4(rgb, 1.0);
 }
 """
 
@@ -167,6 +178,7 @@ class Preview:
         self.iris = 0
         self.dusk = 0
         self.lips_on = True
+        self.panes_on = True
         self.handles_on = True
         self.eyes: dict[str, EyeRenderer] = {}
         self.eye_fbo: dict[str, moderngl.Framebuffer] = {}
@@ -245,6 +257,12 @@ class Preview:
             self.eye_fbo[side].color_attachments[0].use(0)
             self.p_eye["u_tex"].value = 0
             self.p_eye["u_to_eye"].value = tuple(m[r][c] for c in range(3) for r in range(3))  # column-major
+            bars = self.layout.panes.get(side, {}) if self.panes_on else {}
+            v, h = bars.get("v", [])[:4], bars.get("h", [])[:4]
+            self.p_eye["u_vbars"].value = v + [(0.0, 0.0)] * (4 - len(v))
+            self.p_eye["u_hbars"].value = h + [(0.0, 0.0)] * (4 - len(h))
+            self.p_eye["u_nv"].value, self.p_eye["u_nh"].value = len(v), len(h)
+            self.p_eye["u_pane_color"].value = _hex(self.layout.pane_color)
             self.vao_eye[side].render(moderngl.TRIANGLE_STRIP)
         self._overlay()
 
@@ -301,7 +319,7 @@ def parse_args(argv=None):
 def render_png(path: Path, layout: HouseLayout, windows, theme, height: int, mode: str = "window",
                expression: str | None = None, software: bool = False, handles: bool = False,
                iris: int = 0, dusk: int = 0, settle_s: float = 1.0,
-               look: tuple[float, float, float] = (0.8, 4.0, 1.0)) -> None:
+               look: tuple[float, float, float] = (0.8, 4.0, 1.0), panes: bool = True) -> None:
     """One frame drawn offscreen and saved as a PNG (for docs and tests). The eyes look at
     `look` (house m; default a kid on the walk, right of center)."""
     import pygame
@@ -311,7 +329,7 @@ def render_png(path: Path, layout: HouseLayout, windows, theme, height: int, mod
     preview = Preview(ctx, fbo, view, layout, windows, theme)
     preview.set_mode(mode)
     preview.set_iris(iris)
-    preview.dusk, preview.handles_on = dusk, handles
+    preview.dusk, preview.handles_on, preview.panes_on = dusk, handles, panes
     states = {s: EyeState(windows[s].position_m, (1e6, 1e6), theme.blink_ms) for s in SIDES}
     for st in states.values():
         st.look_at(look)
@@ -395,6 +413,8 @@ def run_window(args, layout: HouseLayout, windows, theme) -> int:
                     preview.dusk = (preview.dusk + 1) % len(DUSK)
                 elif k == pygame.K_l:
                     preview.lips_on = not preview.lips_on
+                elif k == pygame.K_p:
+                    preview.panes_on = not preview.panes_on
                 elif k == pygame.K_h:
                     preview.handles_on = not preview.handles_on
                 elif k == pygame.K_s:

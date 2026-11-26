@@ -35,7 +35,8 @@ at the porch roof edge and the railing.
 ![The four eye modes](figures/03-eye-modes.png)
 
 - **Fills each window:** the site config's default (`square`). The window frame is the
-  eye's edge, so the eyes are as different as the windows, and the iris looks small.
+  eye's edge, so the eyes are as different as the windows. (The iris was made bigger
+  on 2026-11-26; see Updates.)
 - **Ovals as big as each window:** still lopsided, but rounder.
 - **Matched:** both ovals the small window's size in meters, so they read as a pair.
   The big window shows more dark glass around its eye.
@@ -59,7 +60,7 @@ The eyes are about 5 m up, so a kid near the porch makes them look well down. In
 
 1. Lopsided or matched eyes, and their size.
 2. Iris color, and whether the purple lids go with it.
-3. In "fills each window": is the iris big enough?
+3. In "fills each window": is the iris big enough? (Made about 1.25× bigger on 2026-11-26.)
 4. Is `happy` hiding the iris for a nearby kid all right, or should it rise less?
 
 ## Tests
@@ -119,3 +120,27 @@ Technical calls Claude made during the step. Overturn any of them with a gloss c
 
 - **2026-11-26:** The owner's decisions are filed as
   [UT-004](../../user-tests.md#ut-004). Added where to run the commands.
+- **2026-11-26, the owner's review (gloss #26):** "House looks worried but might be the
+  flat lips and not the eyes. I think the eye pupil/iris can be larger with a full
+  window. Could we do a version with the panes?" All three are done. The figures above
+  are redrawn with the bigger iris and the panes.
+
+  **A bigger iris in "fills each window".** The iris, pupil and lines are now sized to
+  the eye's white, not the whole sketch, so they are about 1.25× bigger. This changes
+  the real eye renderer too (`eyes/render.py`), not just the preview.
+
+  ![The iris before and after](figures/06-bigger-iris.png)
+
+  **The window panes.** The sashes, grilles and the right window's mullion are drawn over
+  the eye, dark, as they'd look backlit by a rear-projection screen. They were read from
+  the photo, and are set in `sim/house_preview.yaml` (`panes`). `p` turns them off.
+
+  ![The eyes behind the panes](figures/07-panes.png)
+
+  **The mouth.** Three shapes to compare (with `happy` eyes). The real lips are LED strips,
+  so a curve means bending the strip along the railing (and the roof edge) rather than
+  running it straight. That's a choice for the lip design (UT-004, and the lip-lights
+  trade study in gloss #22). The lip points in the preview can be dragged into any
+  shape.
+
+  ![Flat, lower lip curved, both curved](figures/08-mouth-shapes.png)

@@ -69,10 +69,8 @@
 - budget lip-psu: power_w, stage 4–5: waiting for TBD-033
 - budget porch-pi: memory_mb, stage 3–5: waiting for TBD-031, TBD-032
 
-### Warnings (ICD topics vs `shared/topics.py`) (3)
+### Warnings (ICD topics vs `shared/topics.py`) (1)
 
-- ICD-003: topic falcon/player/FPP/playlist/name/status is in the ICD but not in shared/topics.py
-- ICD-003: topic falcon/player/FPP/status is in the ICD but not in shared/topics.py
 - shared/topics.py: DEBUG_TEST = monster/debug/test is in no ICD
 
 ### TBDs cited by requirements

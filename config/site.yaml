@@ -10,6 +10,9 @@ radar:
   # Where the radar loses a visitor walking up to the door (radar mm). A guess until
   # measured at the Stage 2 install (TBD-029); the fake radar's blind spot uses it.
   door_zone_mm: {x1: -1800, y1: 0, x2: -500, y2: 900}  # TBD-029
+# Where the eyes look while a visitor is at the door (SHW-012), house meters: a guess at
+# a kid's head in the middle of the door zone, until measured at install (TBD-029).
+door_point: {x: -1.15, y: 0.45, z: 1.0}  # TBD-029
 head_height_m: 1.0
 eyes:
   left:                                     # as seen from the street: the smaller window

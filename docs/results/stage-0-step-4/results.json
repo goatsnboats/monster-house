@@ -1,0 +1,161 @@
+{
+ "one_kid": {
+  "moods": [
+   [
+    0.0,
+    "asleep"
+   ],
+   [
+    3.8,
+    "waking"
+   ],
+   [
+    6.3,
+    "greeting"
+   ],
+   [
+    8.8,
+    "watching"
+   ],
+   [
+    34.9,
+    "goodbye"
+   ],
+   [
+    54.9,
+    "asleep"
+   ]
+  ],
+  "expressions": [
+   [
+    0.0,
+    "asleep"
+   ],
+   [
+    3.8,
+    "neutral"
+   ],
+   [
+    6.3,
+    "happy"
+   ],
+   [
+    34.9,
+    "neutral"
+   ],
+   [
+    36.9,
+    "sleepy"
+   ],
+   [
+    54.9,
+    "asleep"
+   ]
+  ],
+  "clips": [
+   [
+    3.8,
+    "yawn_01"
+   ],
+   [
+    6.3,
+    "greet_02"
+   ],
+   [
+    25.0,
+    "bye_01"
+   ]
+  ],
+  "blinks": [
+   3.8,
+   6.7,
+   9.5,
+   14.9,
+   18.2,
+   21.7,
+   24.6,
+   27.9,
+   33.3,
+   36.5,
+   40.1,
+   44.8,
+   49.9
+  ],
+  "look_points_per_s_while_watching": 10.0
+ },
+ "two_kids": {
+  "switch_times": [
+   3.8,
+   8.0,
+   11.7,
+   15.6,
+   19.3,
+   24.8,
+   28.4,
+   33.3,
+   37.9,
+   43.8
+  ],
+  "holds_s": [
+   4.2,
+   3.7,
+   3.9,
+   3.7,
+   5.5,
+   3.6,
+   4.9,
+   4.6,
+   5.9
+  ],
+  "switches_with_a_blink": 9,
+  "blinks": [
+   1.8,
+   3.9,
+   7.0,
+   8.1,
+   11.8,
+   15.0,
+   15.7,
+   19.4,
+   24.8,
+   28.5,
+   33.4,
+   36.6,
+   38.0,
+   43.6
+  ]
+ },
+ "radar_offline": {
+  "offline_at": 12.0,
+  "moods_after": [
+   "asleep"
+  ],
+  "expressions_after": [
+   "neutral"
+  ],
+  "last_look": "LookIdle",
+  "blinks_in_30_s": 8,
+  "clips_after": 0
+ },
+ "no_fpp": {
+  "moods": [
+   [
+    0.0,
+    "asleep"
+   ],
+   [
+    1.8,
+    "waking"
+   ],
+   [
+    3.9,
+    "greeting"
+   ],
+   [
+    5.9,
+    "watching"
+   ]
+  ],
+  "fpp_responding": false
+ }
+}

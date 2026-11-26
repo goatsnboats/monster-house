@@ -52,13 +52,16 @@ _Still to check (deferred by the owner, 2026-11-23): both eyes in real windows a
 _Placeholder brain (`python -m brain`): looks at the closest kid. `tests/test_step3_end_to_end.py` moves a kid through Mosquitto and checks both eyes' gaze follows (2026-11-23). Pictures and test results: [build results](results/stage-0-step-3/README.md). Still to see by eye: the four programs together at the desktop screen (`sim/README.md`)._
 
 ## Step 4 — Monster brain, first version (December)
-- [ ] Mood state machine: Asleep → Waking → Greeting → Watching → Goodbye (see architecture §3b), with timings from the theme settings.
-- [ ] Gaze: radar to house coordinates, smoothing, focus-target choice (new arrival wins, hold 3–6 s, closest breaks ties), and per-eye angle math with parallax.
-- [ ] Brain-owned blinks (both eyes together).
-- [ ] Clip pools with no-repeat shuffling and a minimum gap between lines.
-- [ ] Fake FPP: logs clip triggers and plays placeholder audio files through the desktop speakers. It reports "clip finished" like FPP will.
-- [ ] Failure behavior: radar missing → ambient mode; eye missing → keep going.
-- [ ] Tests for mood transitions, gaze math and clip pools.
+- [x] Mood state machine: Asleep → Waking → Greeting → Watching → Goodbye (see architecture §3b), with timings from the theme settings.
+- [x] Gaze: radar to house coordinates, smoothing, focus-target choice (new arrival wins, hold 3–6 s, closest breaks ties), and per-eye angle math with parallax.
+- [x] Brain-owned blinks (both eyes together).
+- [x] Clip pools with no-repeat shuffling and a minimum gap between lines.
+- [x] Fake FPP: logs clip triggers and plays placeholder audio files through the desktop speakers. It reports "clip finished" like FPP will.
+- [x] Failure behavior: radar missing → ambient mode; eye missing → keep going.
+- [x] Tests for mood transitions, gaze math and clip pools.
+- [ ] The owner watches a pretend visit in the real windows and tunes the values: on the [device testing](device-testing.md) list ([results](results/stage-0-step-4/README.md), 2026-11-25).
+
+_Starting values (owner, 2026-11-24), all in `themes/halloween/settings.yaml` to tune in the simulator: goodbye after 5 s with nobody, asleep after 20 quiet seconds, a comment every 10–20 s, at least 10 s between lines; focus: new arrival wins, hold 3–6 s, closest breaks ties; brain blinks every 2.5–6 s (200 ms), plus one when the eyes switch kids; door hold 15 s (TBD-028)._
 
 **Done when:** a pretend visit plays through from asleep to goodbye and back to sleep, and it *feels* right to the owner.
 

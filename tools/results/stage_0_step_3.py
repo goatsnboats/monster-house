@@ -20,7 +20,8 @@ import json
 import os
 from pathlib import Path
 
-from brain.__main__ import Brain
+from brain import gaze
+from brain.radar import RadarState
 from eyes.config import load_theme, load_window
 from eyes.render import EyeRenderer, offscreen, output_size
 from eyes.state import EyeState
@@ -29,6 +30,22 @@ from shared.messages import eye_commands as eyes
 from shared.radar_frame import load_radar_site
 from sim.fake_radar import Layout, draw, eye_windows_from_site
 from sim.radar_model import Kid, RadarModel
+
+
+class Brain:
+    """Step 3's placeholder brain (look at the closest kid), kept here so this page can be
+    rebuilt as it was. The real brain is brain/core.py (Step 4)."""
+
+    def __init__(self, site) -> None:
+        self.site, self.radar = site, RadarState()
+
+    def tick(self):
+        point = gaze.look_point(self.radar.targets(), self.site)
+        if point is None:
+            return [(topics.EYES_LOOK, eyes.encode("look", eyes.LookIdle("idle")))]
+        x, y, z = (round(v, 3) for v in point)
+        return [(topics.EYES_LOOK, eyes.encode("look", eyes.LookAt(x, y, z)))]
+
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT = REPO_ROOT / "docs" / "results" / "stage-0-step-3"

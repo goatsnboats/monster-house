@@ -1,5 +1,7 @@
 # Halloween theme settings (ICD-005). Read by the brain and the eye renderer.
 # Values are architecture §3a's examples until tuned; show hours wait for TBD-024.
+# Timings, focus hold, blink rhythm and door hold confirmed by the owner as starting
+# values on 2026-11-24, to tune together in the Stage 0 simulator (Step 4).
 
 theme: halloween
 show_hours: ["17:30", "21:30"]              # TBD-024
@@ -13,6 +15,7 @@ timing:
   blink_every_s: [2.5, 6.0]
   blink_ms: 200
   focus_hold_s: [3, 6]
+  door_hold_s: 15                         # TBD-028: starting value, tune in the simulator
 clips:
   wake: [yawn_01]
   greet: [greet_01, greet_02, greet_03, greet_04, greet_05]

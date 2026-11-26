@@ -3,7 +3,8 @@
 Desktop stand-ins for hardware, sending and receiving *exactly* the same MQTT
 messages as the real thing:
 - **fake radar** (drag pretend visitors; mimics ESPHome's LD2450 topics). Step 3, done
-- fake Falcon Player (logs clip triggers, plays placeholder audio). Step 4
+- **fake Falcon Player** (logs clip triggers, answers playing/idle, plays the theme's audio). Step 4, done
+- **pretend visit** (a scripted visit with the real brain, no windows). Step 4, done
 - house preview (eyes composited onto the house photo). Step 5
 
 ## Fake radar
@@ -36,14 +37,9 @@ The panel at the bottom shows the last value sent for each slot. Options: `--no-
 (don't connect), `--host`/`--port`, `--screenshot file.png` (one frame with example kids,
 no window needed).
 
-**See the eyes follow a kid** (Step 3's "done when"): run these in four terminals.
-
-```bash
-.venv/bin/python -m eyes --side left
-.venv/bin/python -m eyes --side right
-.venv/bin/python -m brain              # placeholder: look at the closest kid
-.venv/bin/python -m sim.fake_radar
-```
+**See a pretend visit:** run the eyes, the fake FPP, the brain and the fake radar
+(commands in `brain/README.md`), then drag a kid up the path. The monster wakes only
+for a kid coming toward the house.
 
 Watch the raw messages with `.venv/bin/python -m shared.mqtt_tool sub radar`.
 
@@ -68,3 +64,23 @@ slots; a new kid takes the lowest free slot.
 
 - `radar_model.py`: kids in, ESPHome messages out. No window, so it's easy to test.
 - `fake_radar.py`: the window, the mouse and the MQTT connection.
+
+## Fake Falcon Player
+
+Takes the brain's clip starts and answers as Falcon Player will (ICD-003, SIM-004):
+`playing` and the clip's name, then `idle` when it ends. A clip lasts as long as
+`themes/<theme>/audio/<clip>.wav`, or `--clip-seconds` (3 s) while there's no recording.
+
+```bash
+.venv/bin/python -m sim.fake_fpp            # --sound plays the .wav files (paplay or aplay)
+```
+
+## Pretend visit
+
+```bash
+.venv/bin/python -m sim.pretend_visit
+```
+
+Plays a scripted visit (a kid walks up, goes to the door, walks away) through the real
+brain, the radar model and the fake FPP on a pretend clock, and prints every mood,
+expression, clip and blink. The tests and `tools/results/stage_0_step_4.py` use it too.

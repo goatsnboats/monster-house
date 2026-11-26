@@ -7,10 +7,8 @@ from __future__ import annotations
 import pytest
 
 from brain import gaze
-from brain.__main__ import Brain
 from brain.radar import RadarState
 from shared import topics
-from shared.messages import eye_commands as eyes
 from shared.radar_frame import RadarSite
 from sim.radar_model import Kid, RadarModel
 
@@ -57,16 +55,3 @@ def test_placeholder_gaze_looks_at_the_closest_visitor():
     state = fed(RadarModel(SITE), [[Kid(2.0, 4.0), Kid(-1.0, 2.0)]])
     assert gaze.look_point(state.targets(), SITE) == pytest.approx((-1.0, 2.0, 1.0))
     assert gaze.look_point([], SITE) is None
-
-
-def test_brain_sends_look_points_then_idle_once_when_they_leave():
-    model, brain = RadarModel(SITE), Brain(SITE)
-    fed(model, [[Kid(0.5, 3.0)]], brain.radar)
-    (topic, payload), = brain.tick()
-    assert topic == topics.EYES_LOOK
-    assert eyes.decode("look", payload) == eyes.LookAt(0.5, 3.0, 1.0)
-
-    fed(model, [[]], brain.radar)
-    (_, payload), = brain.tick()
-    assert eyes.decode("look", payload) == eyes.LookIdle("idle")
-    assert brain.tick() == []                    # idle is said once, not ten times a second

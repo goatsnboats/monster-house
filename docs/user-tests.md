@@ -9,7 +9,8 @@ how a visit *feels*. They are the owner's part of the
 [verification plan](requirements/verification-plan.md) (mostly its *demonstration*
 events, VE-…).
 
-Two kinds:
+Kinds:
+- **Phone tests:** the owner's real phone, reaching the monster through Tailscale.
 - **Desktop tests:** the simulator in real windows at the desktop (Stage 0).
 - **Device tests:** the real hardware (Stage 1 on). Each Stage's CDR plans its own.
 
@@ -34,6 +35,7 @@ Two kinds:
 | [UT-002](#ut-002) | desktop | The eyes follow a kid on the fake radar | Step 3 | 2026-11-23 | VE-005 | owed |
 | [UT-003](#ut-003) | desktop | A pretend visit feels right | Step 4 | 2026-11-25 | VE-005 | owed |
 | [UT-004](#ut-004) | desktop | Decide the eyes' look on the house preview | Step 5 | 2026-11-26 | VE-005 | owed |
+| [UT-005](#ut-005) | phone | Press the buttons on the real phone | Step 6 | 2026-11-26 | VE-005 | owed: waits for lighthouse to publish the page |
 
 All four can be done in one sitting at the desktop, with the broker running and each
 command in its own terminal. UT-003's setup covers UT-002.
@@ -103,6 +105,21 @@ command in its own terminal. UT-003's setup covers UT-002.
     (drag the lip points);
   - whether `happy` hiding much of the iris for a kid close to the porch is all right.
 - **Pass when:** the owner has decided the eye layout, size and color with it.
+- **Result:** _not yet run._
+
+### UT-005
+
+**Press the buttons on the real phone**: Step 6's "done when"
+([Step 6 results](results/stage-0-step-6/README.md)).
+
+- **Before:** lighthouse has published the page on the tailnet
+  ([draft proposal](proposals/lighthouse-phone-page.md)).
+- **Run:** UT-003's programs (eyes, fake FPP, brain, fake radar), at the desktop. On the
+  phone, open `https://lighthouse.tail3dcfe9.ts.net:8080/` and add it to the home screen.
+- **Pass when:** each button visibly changes the monster within half a second: great
+  costume sparkles, sleep now closes the eyes, wake now opens them, mute stops the voice,
+  and the mood on the page follows. Also try it away from home Wi-Fi (on Tailscale).
+- **Judge:** the page's look and the button labels.
 - **Result:** _not yet run._
 
 ## Done

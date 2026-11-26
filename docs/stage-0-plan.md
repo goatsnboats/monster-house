@@ -76,7 +76,8 @@ _Starting values (owner, 2026-11-24), all in `themes/halloween/settings.yaml` to
 **Done when:** the owner can decide lopsided vs. matched eyes, eye size and colors by looking at it.
 
 ## Step 6 — Phone buttons (January)
-- [ ] A small web page served by the brain on the home network: great costume (sparkle + compliment), burp, sing, mute voice, sleep now, wake now, and current mood.
+- [x] A small web page served by the brain (reached through Tailscale, owner 2026-11-26): great costume (sparkle + compliment), burp, sing, mute voice, sleep now, wake now, and current mood.
+- [ ] Lighthouse publishes it on the tailnet ([draft proposal](proposals/lighthouse-phone-page.md)), then the owner presses the buttons on the phone: [UT-005](user-tests.md#ut-005) ([results](results/stage-0-step-6/README.md), 2026-11-26).
 
 **Done when:** pressing a button on a phone changes the monster within half a second.
 

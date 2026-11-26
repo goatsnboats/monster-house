@@ -22,3 +22,4 @@ step go to gloss as notes, not here.
 | [Stage 0, Step 3: fake radar](stage-0-step-3/README.md) | A pretend kid on the fake radar, and both eyes following them | 2026-11-23 |
 | [Stage 0, Step 4: monster brain](stage-0-step-4/README.md) | A pretend visit from asleep to goodbye and back; switching between kids; failures | 2026-11-25 |
 | [Stage 0, Step 5: house preview](stage-0-step-5/README.md) | The live eyes and lips on the house photo; eye modes, iris colors, expressions | 2026-11-26 |
+| [Stage 0, Step 6: phone buttons](stage-0-step-6/README.md) | The phone page; a press reaching the eyes in under 25 ms | 2026-11-26 |

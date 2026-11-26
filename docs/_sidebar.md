@@ -83,6 +83,7 @@
   - [Stage 0, Step 3: fake radar, and the eyes following a pretend kid](/results/stage-0-step-3/README.md)
   - [Stage 0, Step 4: the monster brain, first version](/results/stage-0-step-4/README.md)
   - [Stage 0, Step 5: house preview](/results/stage-0-step-5/README.md)
+  - [Stage 0, Step 6: phone buttons](/results/stage-0-step-6/README.md)
 - Decisions (ADRs)
   - [0001 — Requirements, architecture and ICDs in Markdown and YAML, SysML-ready](/decisions/0001-requirements-and-architecture-format.md)
   - [0002 — Eye renderer: Python + moderngl + pygame-ce](/decisions/0002-eye-renderer.md)

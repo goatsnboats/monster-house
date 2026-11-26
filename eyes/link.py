@@ -34,14 +34,18 @@ RECONNECT_S = (1, 10)
 
 
 class EyeLink:
-    def __init__(self, side: str, host: str = DEFAULT_HOST, port: int = DEFAULT_PORT) -> None:
+    def __init__(self, side: str | None, host: str = DEFAULT_HOST, port: int = DEFAULT_PORT,
+                 client_name: str | None = None) -> None:
+        """side=None listens only, and never reports a status (the house preview, SIM-006):
+        the brain then doesn't mistake it for an eye."""
         self.host, self.port = host, port
-        self.status_topic = topics.eye_status(side)
+        self.status_topic = topics.eye_status(side) if side else None
         self.inbox: queue.Queue = queue.Queue()
         self.connected = False
-        self.client = new_client(f"eye-{side}")
-        # If this eye disappears without saying goodbye, the broker says it for us.
-        self.client.will_set(self.status_topic, eyes.encode("status", "offline"), qos=STATUS_QOS, retain=True)
+        self.client = new_client(client_name or f"eye-{side}")
+        if self.status_topic:
+            # If this eye disappears without saying goodbye, the broker says it for us.
+            self.client.will_set(self.status_topic, eyes.encode("status", "offline"), qos=STATUS_QOS, retain=True)
         self.client.reconnect_delay_set(*RECONNECT_S)
         self.client.on_connect = self._on_connect
         self.client.on_disconnect = self._on_disconnect
@@ -54,7 +58,7 @@ class EyeLink:
 
     def stop(self) -> None:
         """Say goodbye ("offline") and disconnect."""
-        if self.connected:
+        if self.connected and self.status_topic:
             info = self.client.publish(self.status_topic, eyes.encode("status", "offline"),
                                        qos=STATUS_QOS, retain=True)
             info.wait_for_publish(timeout=2)
@@ -80,7 +84,8 @@ class EyeLink:
         self.connected = True
         log.info("connected to %s:%d", self.host, self.port)
         client.subscribe([(topic, 1) for topic in LISTENS_TO])
-        client.publish(self.status_topic, eyes.encode("status", "online"), qos=STATUS_QOS, retain=True)
+        if self.status_topic:
+            client.publish(self.status_topic, eyes.encode("status", "online"), qos=STATUS_QOS, retain=True)
 
     def _on_disconnect(self, _client, _userdata, _flags, reason_code, _properties) -> None:
         if self.connected:

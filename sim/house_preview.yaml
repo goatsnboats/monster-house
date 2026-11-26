@@ -1,0 +1,19 @@
+# House preview layout (sim/house_preview.py). Positions are pixels on the photo
+# (1536 x 2040), x right, y down. Drag them in the preview and press s to save here.
+photo: docs/reference/house-front.jpg
+
+# Each window's glass, corners in order: top-left, top-right, bottom-right, bottom-left
+# (as seen from the street). Measured from the photo, 2026-11-26.
+windows:
+  left:  [[602, 652], [690, 652], [690, 815], [602, 815]]
+  right: [[918, 652], [1042, 652], [1042, 815], [918, 815]]
+
+# Where the LED lips go: points along each lip. A guess at the porch roof edge (upper)
+# and the railing (lower), to drag into place.
+lips:
+  upper: [[430, 925], [835, 925], [1240, 925]]
+  lower: [[430, 1150], [835, 1150], [1240, 1150]]
+lip_color: "#c050ff"       # the lips' idle purple "breathe" (architecture §5)
+
+# Iris colors to try with c; the first is the theme's own.
+iris_colors: ["#7a55e0", "#3fbf4a", "#ff8a1f", "#2fa8e0", "#e0405a"]

@@ -11,13 +11,17 @@ sidewalk (6 m out) for the comparisons, and on the walk (4 m) for the expression
 from __future__ import annotations
 
 import argparse
+import copy
 import json
+import math
 from pathlib import Path
+from unittest import mock
 
 import pygame
 
 from eyes.config import load_theme, load_window
 from sim.house_layout import SIDES, load_layout
+import eyes.render
 from sim.house_preview import DUSK, MODE_TEXT, MODES, render_png
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -46,6 +50,23 @@ def grid(tiles: list[tuple[str, pygame.Surface]], cols: int, path: Path) -> None
         out.blit(img, (x, y))
         out.blit(font.render(label, True, (235, 235, 230)), (x + 4, y + h + 8))
     pygame.image.save(out, str(path))
+
+
+def old_layout(size, eye_size, shape):
+    """The full-window rule before 2026-11-26 (iris sized to the whole sketch), for the
+    before/after figure only."""
+    if shape != "square":
+        return ORIGINAL_LAYOUT(size, eye_size, shape)
+    scale = min(size[0] / 300, size[1] / 400)
+    return scale, (size[0] / (236 * scale), size[1] / (320 * scale)), True
+
+
+ORIGINAL_LAYOUT = eyes.render.layout
+
+
+def curve(x0: float, x1: float, y: float, dip: float, n: int = 7) -> list[tuple[float, float]]:
+    """n points from x0 to x1 at height y, sagging by `dip` px in the middle (a smile)."""
+    return [(x0 + (x1 - x0) * i / (n - 1), y + dip * math.sin(math.pi * i / (n - 1))) for i in range(n)]
 
 
 def main(argv=None) -> int:
@@ -81,6 +102,39 @@ def main(argv=None) -> int:
             render(tmp, expression=name, dusk=1, look=point)
             tiles.append((f"{name}, kid on the {where}", crop(tmp)))
     grid(tiles, 2, OUT / "figures" / "05-expressions.png")
+
+    # Owner feedback, 2026-11-26 (gloss #26): bigger iris, panes, a less worried mouth.
+    tiles = []
+    with mock.patch("eyes.render.layout", old_layout):
+        render(tmp, expression="neutral", dusk=1, look=SIDEWALK, panes=False)
+    tiles.append(("before: iris sized to the whole sketch", crop(tmp)))
+    render(tmp, expression="neutral", dusk=1, look=SIDEWALK, panes=False)
+    tiles.append(("now: iris sized to the white (about 1.25x)", crop(tmp)))
+    grid(tiles, 2, OUT / "figures" / "06-bigger-iris.png")
+
+    tiles = []
+    for on in (False, True):
+        render(tmp, expression="neutral", dusk=1, look=SIDEWALK, panes=on)
+        tiles.append(("window panes " + ("on" if on else "off"), crop(tmp)))
+    for mode in ("oval", "matched"):
+        render(tmp, mode=mode, expression="neutral", dusk=1, look=SIDEWALK)
+        tiles.append((f"panes on, {MODE_TEXT[mode]}", crop(tmp)))
+    grid(tiles, 2, OUT / "figures" / "07-panes.png")
+
+    (ux0, uy), (ux1, _) = layout.lips["upper"][0], layout.lips["upper"][-1]
+    (lx0, ly), (lx1, _) = layout.lips["lower"][0], layout.lips["lower"][-1]
+    mouths = [("flat (as now)", layout.lips),
+              ("lower lip curved into a smile", {"upper": layout.lips["upper"], "lower": curve(lx0, lx1, ly, 90)}),
+              ("both lips curved", {"upper": curve(ux0, ux1, uy, 45), "lower": curve(lx0, lx1, ly, 110)})]
+    small = []
+    for label, lips in mouths:
+        alt = copy.deepcopy(layout)
+        alt.lips = lips
+        render_png(tmp, alt, windows, theme, HEIGHT, expression="happy", dusk=1, look=SIDEWALK,
+                   software=args.software)
+        img = pygame.image.load(str(tmp)).subsurface((180, 250, 460, 380)).copy()
+        small.append((label, img))
+    grid(small, 3, OUT / "figures" / "08-mouth-shapes.png")
     tmp.unlink()
 
     left, right = windows["left"], windows["right"]

@@ -38,7 +38,7 @@ def layout(size: tuple[int, int], eye_size: float, shape: str) -> tuple[float, t
     """How the eye fills its output: (pixels per sketch unit, stretch, fill a rectangle).
 
     square   the white fills the whole window; the window frame is the eye's edge
-             (eye_size is not used)
+             (eye_size is not used); the iris is sized to the white, not the whole sketch
     oval     the sketch's oval (3 wide x 4 tall), as big as fits (eye_size of the window)
     stretch  an oval stretched to the window's shape (eye_size of each side)
     The size here is the window as seen from the street (before any rotation).
@@ -50,7 +50,10 @@ def layout(size: tuple[int, int], eye_size: float, shape: str) -> tuple[float, t
     if shape == "stretch":
         return scale * eye_size, (sx / scale, sy / scale), False
     if shape == "square":
-        # The white is 236 x 320 sketch units; make it cover the whole window.
+        # The white is 236 x 320 sketch units. Size the round things (iris, pupil, lines) as
+        # if that white were scaled up to just fit the window (owner, 2026-11-26: a bigger
+        # iris), then stretch the white to cover the whole window.
+        scale = min(size[0] / 236, size[1] / 320)
         return scale, (size[0] / (236 * scale), size[1] / (320 * scale)), True
     raise ValueError(f"eye shape must be one of {SHAPES}, not {shape!r}")
 

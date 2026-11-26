@@ -44,6 +44,7 @@ def test_layout_saves_dragged_points_and_keeps_the_comments(tmp_path):
     assert again.windows["left"][0] == (600, 650)
     assert again.lips["upper"][1] == (800, 930)
     assert again.windows["right"] == layout.windows["right"]
+    assert again.panes == layout.panes and again.panes["right"]["v"]       # other sections untouched
     assert path.read_text().count("#") == LAYOUT_FILE.read_text().count("#")
 
 

@@ -222,7 +222,7 @@ stateDiagram-v2
 #### Inputs
 - **Radar positions:** ESPHome publishes each value on its own MQTT topic (for example, `monster-radar/sensor/target_1_x/state`). The brain combines them into up to three targets, each with x, y and speed.
 - **FPP status:** Tells the brain when a clip is playing and when it ends.
-- **Phone buttons:** The brain serves a tiny web page on the home network. Buttons: **great costume** (sparkle eyes + compliment), **burp**, **sing**, **mute voice**, **sleep now**, **wake now**. These cover what the radar can't know, like costumes or when candy was handed out.
+- **Phone buttons:** The brain serves a tiny web page, reached from the owner's phone through Tailscale. Buttons: **great costume** (sparkle eyes + compliment), **burp**, **sing**, **mute voice**, **sleep now**, **wake now**. These cover what the radar can't know, like costumes or when candy was handed out.
 - **Timers:** For blinks, comment spacing, timeouts.
 
 #### Outputs
@@ -424,7 +424,7 @@ Then, in xLights: import the voice clip, type the line, let it break into phonem
   - `monster-lips`
   - `monster-radar`
 - Clocks sync automatically (needed for show hours).
-- Nothing is exposed to the internet. The phone page works only on the home network.
+- Nothing is exposed to the internet. The phone page works only on the owner's tailnet (`tailscale serve`, owner 2026-11-26).
 
 ---
 

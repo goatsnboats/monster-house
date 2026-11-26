@@ -405,7 +405,7 @@ The phone page shall offer great costume, burp, sing, mute and unmute, sleep now
 
 ## SHW-031
 
-The phone page shall work in an ordinary phone browser and answer only on the home network, as specified in ICD-004.
+The phone page shall work in an ordinary phone browser and answer only on the brain's own computer, reached from the owner's phone through Tailscale, as specified in ICD-004.
 
 | | |
 |---|---|

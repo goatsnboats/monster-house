@@ -469,14 +469,15 @@ The eye screens shall never show an error message, text, a desktop or a cursor.
 
 ## SYS-038
 
-No part of the monster shall be reachable from the internet; the phone page shall work only on the home network.
+No part of the monster shall be reachable from the internet; the phone page shall work only for the owner's devices on the tailnet.
 
 | | |
 |---|---|
 | Type, stage, status | constraint, stage 0, approved |
 | Children | [INF-010](inf.md#inf-010), [SHW-031](shw.md#shw-031), [SHW-039](shw.md#shw-039) |
-| How it splits | The network forwards nothing in (INF-010); the phone page and the broker answer only on the home network (SHW-031, SHW-039). |
+| How it splits | The network forwards nothing in (INF-010); the phone page answers only through Tailscale (SHW-031) and the broker only on the home network (SHW-039). |
 | Verified by | inspection ([VE-006](ve.md#ve-006)) |
+| Notes | Changed 2026-11-26 by the owner, from "only on the home network": the phone page is published with `tailscale serve` (HTTPS, tailnet only), as gloss is, rather than as plain HTTP on the home Wi-Fi with no login. It then also works away from home. |
 | Source | architecture.md §8 Network |
 
 ## SYS-039

@@ -106,3 +106,5 @@
   - [TS-NNN — &lt;the question, in a few words&gt;](/templates/trade-study.md)
 - Design
   - [Doc feedback — design note](/design/doc-feedback.md)
+- Proposals
+  - [Proposal for lighthouse: publish the Monster House phone page on the tailnet](/proposals/lighthouse-phone-page.md)

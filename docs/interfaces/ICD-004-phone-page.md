@@ -1,8 +1,8 @@
 # ICD-004 — Phone buttons and current mood
 
-> **Status:** Draft (proposed format, owner to confirm) · **Updated:** 2026-11-09 · **Requirements:** SHW-030, SHW-031 · **Spec tree:** [N² chart](../requirements/spec-tree.md)
+> **Status:** Draft (proposed format, owner to confirm) · **Updated:** 2026-11-26 · **Requirements:** SHW-030, SHW-031 · **Spec tree:** [N² chart](../requirements/spec-tree.md)
 
-The owner's phone opens a small web page served by the brain on the home network. The
+The owner's phone opens a small web page served by the brain, through Tailscale. The
 page shows the current mood and sends button presses and a theme choice. Nothing here
 existed before this ICD; the HTTP paths and the `monster/state` payload are **proposals**
 for the owner to confirm. The topic name `monster/state` is from architecture §3b.
@@ -15,7 +15,7 @@ ends:
   - {external: owner-phone}
   - {component: phone-page}
   - {component: monster-brain}
-medium: HTTP on the home network (port 8080 on monster-brain); MQTT for the mood
+medium: HTTP on 127.0.0.1:8080 on monster-brain, published to the tailnet as HTTPS by `tailscale serve`; MQTT for the mood
 messages:
   - name: page
     path: GET /
@@ -100,4 +100,6 @@ A button must visibly change the monster within 0.5 s (SYS-023). The brain's sha
 ## Failure behavior
 
 If the brain is down, the phone simply can't load the page; nothing shows on the eyes.
-The page answers only on the home network (SYS-038).
+The page listens only on its own computer (127.0.0.1). The phone reaches it through
+`tailscale serve`, on the owner's tailnet only, never the internet (SYS-038, changed by the
+owner 2026-11-26). The message formats are unchanged.
